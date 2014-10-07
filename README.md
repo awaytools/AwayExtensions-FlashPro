@@ -26,17 +26,17 @@ You should be able to create a new Project of Type "AwayJS".
 
 * MAC version is still the same as version 0.9.3
 
-* Refactored geometry export. The plugin now makes use of the libTess2 library, instead of the poly2tri. This loosens a lot if restrictions of the data to tesselate, and can handle self-intersecting pathes (ODD_WINDINGS).
+* Refactored geometry export. The plugin now makes use of the libTess2 library, instead of the poly2tri. This loosens a lot of restrictions on the data to tesselate, and can handle self-intersecting pathes (ODD_WINDINGS).
 
-* Major improvemts in exporter speed
+* Major improvments on exporter speed
 
 * Improvements to preview-option "Open in Browser":
 	* no need to ceater the shapoes at the flash-origin no more, the width and height of the stage is passed to the Viewer, and the shapes are centered.
-	* ortographic view. new camera mode. we know can view shapes in plain 2d.
+	* Panning-cam / ortographic view. new camera mode. we know can view shapes in plain 2d.
 	* traces to the output console of the browser.
 
 
-* Memory leaks should have been elimitnated. I still see the memory that is used by flash rise with every export process, but the used memory is even smaller than the memory used by flash when exporting the same scene as a swf (from a as3 document)
+* Memory leaks should have been elimitnated. I still see the memory that is used by flash rise with every export process, but the memory that is used, is even smaller than the memory used by flash when exporting the same scene as a swf (from a as3 document)
 
 
 
