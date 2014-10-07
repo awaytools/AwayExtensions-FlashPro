@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\attr.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\audio.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\awd.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\awd_types.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\block.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\FileWriter.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\fonts.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\libawd.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\lodepng.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\message.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\meta.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\name.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\ns.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\primitive.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2D.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2Dfill.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2Dtimeline.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\stream.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\texture.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\texturepacker.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\util.h" />
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Include\tesselator.h" />
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\bucketalloc.h" />
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\dict.h" />
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\geom.h" />
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\mesh.h" />
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\priorityq.h" />
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\sweep.h" />
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\tess.h" />
+    <ClInclude Include="..\..\include\DocType.h" />
+    <ClInclude Include="..\..\include\FontPathShape.h" />
+    <ClInclude Include="..\..\include\IOutputWriter.h" />
+    <ClInclude Include="..\..\include\MyXmlParser.h" />
+    <ClInclude Include="..\..\include\OutputWriter.h" />
+    <ClInclude Include="..\..\include\Publisher.h" />
+    <ClInclude Include="..\..\include\ShapeEncoder.h" />
+    <ClInclude Include="..\..\include\Utils.h" />
+    <ClInclude Include="..\..\include\Version.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\attr.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\audio.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\awd.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\block.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\FileWriter.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\fonts.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\lodepng.cpp" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\message.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\meta.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\name.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\ns.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2D.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2Dfill.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2Dtimeline.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\stream.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\texture.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\texturepacker.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\util.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\bucketalloc.c" />
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\dict.c" />
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\geom.c" />
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\mesh.c" />
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\priorityq.c" />
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\sweep.c" />
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\tess.c" />
+    <ClCompile Include="..\..\src\DocType.cpp" />
+    <ClCompile Include="..\..\src\FontGenerator.cpp" />
+    <ClCompile Include="..\..\src\FontPathShape.cpp" />
+    <ClCompile Include="..\..\src\Main.cpp" />
+    <ClCompile Include="..\..\src\MyXmlParser.cpp" />
+    <ClCompile Include="..\..\src\OutputWriter.cpp" />
+    <ClCompile Include="..\..\src\Publisher.cpp" />
+    <ClCompile Include="..\..\src\PublisherUtils.cpp" />
+    <ClCompile Include="..\..\src\RessourcePalette.cpp" />
+    <ClCompile Include="..\..\src\ShapeEncoder.cpp" />
+    <ClCompile Include="..\..\src\ShapeEncoderEncode.cpp" />
+    <ClCompile Include="..\..\src\ShapeEncoderUtils.cpp" />
+    <ClCompile Include="..\..\src\TimeLineBuilder.cpp" />
+    <ClCompile Include="..\..\src\Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AwayExtensionsFlashPro.rc" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{52D2400F-94F1-46C1-B14B-3BBD0ACA744D}</ProjectGuid>
+    <RootNamespace>AwayExtensionsFlashPro</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetExt>.fcm</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <OutDir>C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\AwayExtensionsFlashPro\plugin\lib\win</OutDir>
+    <IntDir>..\..\obj\win\release\64\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\ThirdParty\libjson_7.6.1\libjson;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\ThirdParty\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\ThirdParty\poly2tri\poly2tri;..\..\..\ThirdParty\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>"..\..\..\ThirdParty\xerces-c-3.1.1\Build\Win64\VC10\Release\xerces-c_3.lib";"..\..\..\ThirdParty\cpp-libawd\build\libawd2D.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>
+      </SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\ThirdParty\libjson_7.6.1\libjson;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\ThirdParty\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_SYSTEM_NO_DEPRECATED;FLASHPRO_DVA_CUSTOM;BOOST_ALL_DYN_LINK;_WINDOWS;MSWindows;_WIN32_WINNT=0x600;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;PRERELEASE;DVA_MAJOR_DISPLAY_VERSION=2014;DVA_MINOR_DISPLAY_VERSION=0;DVA_PATCH_DISPLAY_VERSION=0;DVA_SUITE_VERSION=14;DVA_MAJOR_VERSION=14;DVA_MINOR_VERSION=1;DVA_PATCH_VERSION=0;DVA_BUILD_YEAR=2014;WIN_ENV;__EXCEPTION_TRACER__;USE_DVA_WORKSPACE=1;USE_EXO_MESSAGING=1;NDEBUG;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <BrowseInformation />
+      <DisableSpecificWarnings>4355;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\ThirdParty\libtess2-master\Source;..\..\..\ThirdParty\libtess2-master\Include;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\ThirdParty\cpp-libawd\src;..\..\..\ThirdParty\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeaderOutputFile />
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <AdditionalDependencies>"..\..\..\ThirdParty\xerces-c-3.1.1\Build\Win64\VC10\Release\xerces-c_3.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalManifestDependencies>%(AdditionalManifestDependencies)</AdditionalManifestDependencies>
+      <BaseAddress>0x00400000</BaseAddress>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile />
+      <SubSystem>NotSet</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+    </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;DVA_INTERNAL_NAME=\"$(TargetName)\";DVA_ORIGINAL_FILENAME=\"$(TargetFileName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <ResourceCompile>
+      <Culture>0x0000</Culture>
+    </ResourceCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\ext\adobe;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
