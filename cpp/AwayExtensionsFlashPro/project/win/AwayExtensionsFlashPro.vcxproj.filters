@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{5617a68d-c0fa-4ad4-be61-93bddb384863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{df038eb0-4cc7-4bb4-8e18-d44a739e2a2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{3b9b7c43-3ab0-4bba-bb5d-2d870a1f5b89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\libtess">
+      <UniqueIdentifier>{2d5aa9e2-d210-42de-871b-949e9b15b695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\libtess">
+      <UniqueIdentifier>{74029938-8bbb-4f33-b5d1-437844f37eae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\libAWD2D">
+      <UniqueIdentifier>{d1cc6880-4e3b-4e6c-ab32-8003c0477601}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\libAWD2D">
+      <UniqueIdentifier>{b89d684e-4975-4c1b-acab-b7353500b448}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\DocType.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\IOutputWriter.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MyXmlParser.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\OutputWriter.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Publisher.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Utils.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="..\..\include\ShapeEncoder.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\FontPathShape.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\bucketalloc.h">
+      <Filter>Header\libtess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\dict.h">
+      <Filter>Header\libtess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\geom.h">
+      <Filter>Header\libtess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\mesh.h">
+      <Filter>Header\libtess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\priorityq.h">
+      <Filter>Header\libtess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\sweep.h">
+      <Filter>Header\libtess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\tess.h">
+      <Filter>Header\libtess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Include\tesselator.h">
+      <Filter>Header\libtess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Version.h">
+      <Filter>Header\libtess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\attr.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\audio.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\awd.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\awd_types.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\block.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\FileWriter.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\fonts.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\libawd.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\lodepng.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\message.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\meta.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\name.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\ns.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\primitive.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2D.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2Dfill.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2Dtimeline.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\stream.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\texture.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\texturepacker.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\util.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\DocType.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MyXmlParser.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OutputWriter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShapeEncoder.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShapeEncoderUtils.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShapeEncoderEncode.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Publisher.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FontPathShape.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FontGenerator.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PublisherUtils.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RessourcePalette.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TimeLineBuilder.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\bucketalloc.c">
+      <Filter>Source\libtess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\dict.c">
+      <Filter>Source\libtess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\mesh.c">
+      <Filter>Source\libtess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\priorityq.c">
+      <Filter>Source\libtess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\sweep.c">
+      <Filter>Source\libtess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\tess.c">
+      <Filter>Source\libtess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\geom.c">
+      <Filter>Source\libtess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\attr.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\audio.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\awd.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\block.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\FileWriter.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\fonts.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\lodepng.cpp">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\message.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\meta.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\name.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\ns.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2D.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2Dfill.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2Dtimeline.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\stream.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\texture.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\texturepacker.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\util.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AwayExtensionsFlashPro.rc" />
+  </ItemGroup>
+</Project>

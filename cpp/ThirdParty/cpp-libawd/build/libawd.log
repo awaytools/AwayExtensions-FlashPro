@@ -1,0 +1,24 @@
+﻿  stream.cc
+  libawd.vcxproj -> C:\Users\80prozent\Documents\GitHub\icycle_project\flashpro_awd_publisher\cpp\ThirdParty\cpp-libawd\build\libawd2D.lib
+  include\attr.h
+  include\audio.h
+  include\awd.h
+  include\awd_types.h
+  include\block.h
+  include\FileWriter.h
+  include\fonts.h
+  include\libawd.h
+  include\lodepng.h
+  include\message.h
+  include\meta.h
+  include\name.h
+  include\ns.h
+  include\primitive.h
+  include\shape2D.h
+  include\shape2Dfill.h
+  include\shape2Dtimeline.h
+  include\stream.h
+  include\texture.h
+  include\texturepacker.h
+  include\util.h
+  21 File(s) copied
