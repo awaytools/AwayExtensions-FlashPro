@@ -9,12 +9,15 @@
 /* Begin PBXBuildFile section */
 		"39bc731b-2e23-3bd5-8a52-4c4fdaea828f" /* AwayExtensionsFlashPro_Precomp.pch in Sources */ = {isa = PBXBuildFile; fileRef = "03808352-6196-31b4-8c5e-4f73bfb163c3" /* AwayExtensionsFlashPro_Precomp.pch */; };
 		"3d2672b1-0866-3624-aee1-94810aaacbe2" /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "c58c975c-ea68-3b1b-ac2e-cf1f2f514dc0" /* Main.cpp */; };
+		48DDB2761A02C52A00E10FE1 /* libtess2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DDB2731A02C4A300E10FE1 /* libtess2.a */; };
+		48DDB2781A02C7CF00E10FE1 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DDB2771A02C7CF00E10FE1 /* CoreServices.framework */; };
+		48DDB27A1A02C7DB00E10FE1 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DDB2791A02C7DB00E10FE1 /* ApplicationServices.framework */; };
+		48DDB27C1A02C7E200E10FE1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DDB27B1A02C7E200E10FE1 /* Foundation.framework */; };
+		48DDB27E1A02C7E800E10FE1 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DDB27D1A02C7E800E10FE1 /* AppKit.framework */; };
 		"4bf1e4be-32f5-37b5-925a-f2c8eab21c50" /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "c78ff038-b243-317f-b0b6-5195bb3fd2f9" /* Utils.cpp */; };
 		"5293945a-eaba-334b-a308-832aa11f8a13" /* libxerces-c-3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = "eb67bf0d-8e7a-3332-8636-505d02f49323" /* libxerces-c-3.1.dylib */; };
-		"74bb80ac-cc4d-36f5-a856-6e72252d7c2a" /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "a5c8cc87-799c-3623-8213-805ddee9f093" /* AppKit.framework */; };
 		"8f862c22-5363-34ef-afd8-157266c01be0" /* Publisher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "b1a2804b-f42f-39c2-b2e2-d55db7993956" /* Publisher.cpp */; };
 		"910d0b4a-13e5-38b4-84a0-48143ce41e0d" /* DocType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "01a6d173-601f-3266-b381-7d953e6689f8" /* DocType.cpp */; };
-		"92731f36-70dc-30d5-b1d2-d4bcfe86e566" /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "39c2f374-f2b6-3757-ba02-b26ecbea7e97" /* Foundation.framework */; };
 		B815717319C9E3200058F45B /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B815717219C9E3200058F45B /* lodepng.cpp */; };
 		B82A6193199E988100F7802D /* awd.cc in Sources */ = {isa = PBXBuildFile; fileRef = B82A6183199E988100F7802D /* awd.cc */; };
 		B82A6195199E988100F7802D /* attr.cc in Sources */ = {isa = PBXBuildFile; fileRef = B82A6184199E988100F7802D /* attr.cc */; };
@@ -40,16 +43,26 @@
 		B89C9A9719DB45B3002897FD /* PublisherUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89C9A9319DB45B3002897FD /* PublisherUtils.cpp */; };
 		B89C9A9819DB45B3002897FD /* RessourcePalette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89C9A9419DB45B3002897FD /* RessourcePalette.cpp */; };
 		B89C9A9919DB45B3002897FD /* TimeLineBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89C9A9519DB45B3002897FD /* TimeLineBuilder.cpp */; };
-		B8D391B819A55E6000D55948 /* shapes.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D391AC19A55E6000D55948 /* shapes.cc */; };
-		B8D391B919A55E6000D55948 /* advancing_front.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D391B019A55E6000D55948 /* advancing_front.cc */; };
-		B8D391BA19A55E6000D55948 /* cdt.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D391B219A55E6000D55948 /* cdt.cc */; };
-		B8D391BB19A55E6000D55948 /* sweep.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D391B419A55E6000D55948 /* sweep.cc */; };
-		B8D391BC19A55E6000D55948 /* sweep_context.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8D391B619A55E6000D55948 /* sweep_context.cc */; };
 		"a59df84d-bfae-3c34-9aa7-e918143f6c55" /* MyXmlParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "9161bd95-29d7-3842-bdb6-007e7cbeb5aa" /* MyXmlParser.cpp */; };
-		"ceab2716-9f87-3f9e-942f-7c5e75af5ff0" /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "09e16f42-a590-33ea-bf89-3152a65b62a1" /* ApplicationServices.framework */; };
-		"d11de667-5fa5-3996-89d1-28e66b0241cd" /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "163c156c-990d-3bbe-b1df-52bc72c85705" /* CoreServices.framework */; };
 		"f2050b8d-f453-3837-9eb3-d3d851feb622" /* OutputWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "941a5804-c71a-3bbb-9824-390135d752e4" /* OutputWriter.cpp */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		48DDB2721A02C4A300E10FE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48DDB26E1A02C4A300E10FE1 /* tess2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 48DDB2471A02B8BD00E10FE1;
+			remoteInfo = tess2;
+		};
+		48DDB2741A02C50A00E10FE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48DDB26E1A02C4A300E10FE1 /* tess2.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 48DDB2461A02B8BD00E10FE1;
+			remoteInfo = tess2;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		"01a6d173-601f-3266-b381-7d953e6689f8" /* DocType.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 30; path = DocType.cpp; sourceTree = "<group>"; };
@@ -57,6 +70,11 @@
 		"09e16f42-a590-33ea-bf89-3152a65b62a1" /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ApplicationServices.framework; sourceTree = "<group>"; };
 		"163c156c-990d-3bbe-b1df-52bc72c85705" /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreServices.framework; sourceTree = "<group>"; };
 		"39c2f374-f2b6-3757-ba02-b26ecbea7e97" /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Foundation.framework; sourceTree = "<group>"; };
+		48DDB26E1A02C4A300E10FE1 /* tess2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tess2.xcodeproj; path = "../../../ThirdParty/libtess2-master/mac/tess2/tess2.xcodeproj"; sourceTree = "<group>"; };
+		48DDB2771A02C7CF00E10FE1 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		48DDB2791A02C7DB00E10FE1 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		48DDB27B1A02C7E200E10FE1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		48DDB27D1A02C7E800E10FE1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		"9161bd95-29d7-3842-bdb6-007e7cbeb5aa" /* MyXmlParser.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 30; path = MyXmlParser.cpp; sourceTree = "<group>"; };
 		"941a5804-c71a-3bbb-9824-390135d752e4" /* OutputWriter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 30; path = OutputWriter.cpp; sourceTree = "<group>"; };
 		B815717219C9E3200058F45B /* lodepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lodepng.cpp; sourceTree = "<group>"; };
@@ -104,18 +122,6 @@
 		B89C9A9319DB45B3002897FD /* PublisherUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PublisherUtils.cpp; sourceTree = "<group>"; };
 		B89C9A9419DB45B3002897FD /* RessourcePalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RessourcePalette.cpp; sourceTree = "<group>"; };
 		B89C9A9519DB45B3002897FD /* TimeLineBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLineBuilder.cpp; sourceTree = "<group>"; };
-		B8D391AB19A55E6000D55948 /* ptot_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ptot_utils.h; sourceTree = "<group>"; };
-		B8D391AC19A55E6000D55948 /* shapes.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shapes.cc; sourceTree = "<group>"; };
-		B8D391AD19A55E6000D55948 /* shapes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shapes.h; sourceTree = "<group>"; };
-		B8D391AE19A55E6000D55948 /* poly2tri.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = poly2tri.h; path = ../../../ThirdParty/poly2tri/poly2tri/poly2tri.h; sourceTree = "<group>"; };
-		B8D391B019A55E6000D55948 /* advancing_front.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = advancing_front.cc; sourceTree = "<group>"; };
-		B8D391B119A55E6000D55948 /* advancing_front.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = advancing_front.h; sourceTree = "<group>"; };
-		B8D391B219A55E6000D55948 /* cdt.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cdt.cc; sourceTree = "<group>"; };
-		B8D391B319A55E6000D55948 /* cdt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cdt.h; sourceTree = "<group>"; };
-		B8D391B419A55E6000D55948 /* sweep.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sweep.cc; sourceTree = "<group>"; };
-		B8D391B519A55E6000D55948 /* sweep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sweep.h; sourceTree = "<group>"; };
-		B8D391B619A55E6000D55948 /* sweep_context.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sweep_context.cc; sourceTree = "<group>"; };
-		B8D391B719A55E6000D55948 /* sweep_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sweep_context.h; sourceTree = "<group>"; };
 		F5977F0C09B7D3B80058A43E /* project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = project.xcconfig; path = ../AwayExtensionsFlashPro.xcconfigs/project.xcconfig; sourceTree = "<group>"; };
 		F5977F0F09B7D4150058A43E /* project_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = project_debug.xcconfig; path = ../AwayExtensionsFlashPro.xcconfigs/project_debug.xcconfig; sourceTree = "<group>"; };
 		F5977F1109B7D41E0058A43E /* project_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = project_release.xcconfig; path = ../AwayExtensionsFlashPro.xcconfigs/project_release.xcconfig; sourceTree = "<group>"; };
@@ -132,11 +138,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				"d11de667-5fa5-3996-89d1-28e66b0241cd" /* CoreServices.framework in Frameworks */,
-				"ceab2716-9f87-3f9e-942f-7c5e75af5ff0" /* ApplicationServices.framework in Frameworks */,
-				"92731f36-70dc-30d5-b1d2-d4bcfe86e566" /* Foundation.framework in Frameworks */,
-				"74bb80ac-cc4d-36f5-a856-6e72252d7c2a" /* AppKit.framework in Frameworks */,
+				48DDB2781A02C7CF00E10FE1 /* CoreServices.framework in Frameworks */,
+				48DDB27A1A02C7DB00E10FE1 /* ApplicationServices.framework in Frameworks */,
+				48DDB27C1A02C7E200E10FE1 /* Foundation.framework in Frameworks */,
+				48DDB27E1A02C7E800E10FE1 /* AppKit.framework in Frameworks */,
 				"5293945a-eaba-334b-a308-832aa11f8a13" /* libxerces-c-3.1.dylib in Frameworks */,
+				48DDB2761A02C52A00E10FE1 /* libtess2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +161,14 @@
 			name = Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks;
 			path = ../../../../../../../../Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks;
 			sourceTree = SOURCE_ROOT;
+		};
+		48DDB26F1A02C4A300E10FE1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				48DDB2731A02C4A300E10FE1 /* libtess2.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
 		};
 		"49dc3bc4-4c3b-302b-9adc-04839eae0b45" /* ThirdParty/libjson_7.6.1/libjson/_internal/Source */ = {
 			isa = PBXGroup;
@@ -242,43 +257,6 @@
 			name = libawd2D;
 			sourceTree = "<group>";
 		};
-		B8D391A919A55E3B00D55948 /* Poly2Tri */ = {
-			isa = PBXGroup;
-			children = (
-				B8D391AA19A55E5F00D55948 /* common */,
-				B8D391AE19A55E6000D55948 /* poly2tri.h */,
-				B8D391AF19A55E6000D55948 /* sweep */,
-			);
-			name = Poly2Tri;
-			sourceTree = "<group>";
-		};
-		B8D391AA19A55E5F00D55948 /* common */ = {
-			isa = PBXGroup;
-			children = (
-				B8D391AB19A55E6000D55948 /* ptot_utils.h */,
-				B8D391AC19A55E6000D55948 /* shapes.cc */,
-				B8D391AD19A55E6000D55948 /* shapes.h */,
-			);
-			name = common;
-			path = ../../../ThirdParty/poly2tri/poly2tri/common;
-			sourceTree = "<group>";
-		};
-		B8D391AF19A55E6000D55948 /* sweep */ = {
-			isa = PBXGroup;
-			children = (
-				B8D391B019A55E6000D55948 /* advancing_front.cc */,
-				B8D391B119A55E6000D55948 /* advancing_front.h */,
-				B8D391B219A55E6000D55948 /* cdt.cc */,
-				B8D391B319A55E6000D55948 /* cdt.h */,
-				B8D391B419A55E6000D55948 /* sweep.cc */,
-				B8D391B519A55E6000D55948 /* sweep.h */,
-				B8D391B619A55E6000D55948 /* sweep_context.cc */,
-				B8D391B719A55E6000D55948 /* sweep_context.h */,
-			);
-			name = sweep;
-			path = ../../../ThirdParty/poly2tri/poly2tri/sweep;
-			sourceTree = "<group>";
-		};
 		F5977F0909B7D3970058A43E /* AwayExtensionsFlashPro.xcconfigs */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,7 +271,7 @@
 		F5D357220948E8C4008C36CA = {
 			isa = PBXGroup;
 			children = (
-				B8D391A919A55E3B00D55948 /* Poly2Tri */,
+				48DDB26E1A02C4A300E10FE1 /* tess2.xcodeproj */,
 				B82A61C2199E9ED300F7802D /* libawd2D */,
 				F5977F0909B7D3970058A43E /* AwayExtensionsFlashPro.xcconfigs */,
 				F5D3576909491A7D008C36CA /* Frameworks */,
@@ -332,6 +310,10 @@
 		F5D3576909491A7D008C36CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48DDB27D1A02C7E800E10FE1 /* AppKit.framework */,
+				48DDB27B1A02C7E200E10FE1 /* Foundation.framework */,
+				48DDB2791A02C7DB00E10FE1 /* ApplicationServices.framework */,
+				48DDB2771A02C7CF00E10FE1 /* CoreServices.framework */,
 				"076473ed-5431-374b-9e6e-cc5f66a9208e" /* Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks */,
 			);
 			name = Frameworks;
@@ -384,6 +366,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				48DDB2751A02C50A00E10FE1 /* PBXTargetDependency */,
 			);
 			name = AwayExtensionsFlashPro.Release;
 			productName = Release;
@@ -396,7 +379,7 @@
 		F5D357240948E8C4008C36CA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 			};
 			buildConfigurationList = F5D357250948E8C4008C36CA /* Build configuration list for PBXProject "AwayExtensionsFlashPro.mp" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -408,12 +391,28 @@
 			mainGroup = F5D357220948E8C4008C36CA;
 			productRefGroup = F5D357400948EBCB008C36CA /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 48DDB26F1A02C4A300E10FE1 /* Products */;
+					ProjectRef = 48DDB26E1A02C4A300E10FE1 /* tess2.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				"77186053-fc6d-3c6a-b941-bb2ba01205b2" /* AwayExtensionsFlashPro.Release */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		48DDB2731A02C4A300E10FE1 /* libtess2.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtess2.a;
+			remoteRef = 48DDB2721A02C4A300E10FE1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F5D357440948EC91008C36CA /* Resources */ = {
@@ -458,7 +457,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				"3d2672b1-0866-3624-aee1-94810aaacbe2" /* Main.cpp in Sources */,
-				B8D391B819A55E6000D55948 /* shapes.cc in Sources */,
 				B82A619F199E988100F7802D /* name.cc in Sources */,
 				B880637519C4F81A00AAAB38 /* ShapeEncoder.cpp in Sources */,
 				B82A61AB199E988100F7802D /* shape2Dtimeline.cc in Sources */,
@@ -470,8 +468,6 @@
 				"8f862c22-5363-34ef-afd8-157266c01be0" /* Publisher.cpp in Sources */,
 				B83DE99C19BF69CF0005BE5D /* fonts.cc in Sources */,
 				"4bf1e4be-32f5-37b5-925a-f2c8eab21c50" /* Utils.cpp in Sources */,
-				B8D391B919A55E6000D55948 /* advancing_front.cc in Sources */,
-				B8D391BC19A55E6000D55948 /* sweep_context.cc in Sources */,
 				"f2050b8d-f453-3837-9eb3-d3d851feb622" /* OutputWriter.cpp in Sources */,
 				B89C9A9819DB45B3002897FD /* RessourcePalette.cpp in Sources */,
 				"a59df84d-bfae-3c34-9aa7-e918143f6c55" /* MyXmlParser.cpp in Sources */,
@@ -482,13 +478,11 @@
 				B83DE99B19BF69CF0005BE5D /* audio.cc in Sources */,
 				B82A6193199E988100F7802D /* awd.cc in Sources */,
 				B82A6197199E988100F7802D /* block.cc in Sources */,
-				B8D391BB19A55E6000D55948 /* sweep.cc in Sources */,
 				B82A619B199E988100F7802D /* meta.cc in Sources */,
 				B82A61A7199E988100F7802D /* stream.cc in Sources */,
 				B82A61A5199E988100F7802D /* util.cc in Sources */,
 				B880637619C4F81A00AAAB38 /* ShapeEncoderEncode.cpp in Sources */,
 				B82A61A1199E988100F7802D /* shape2D.cc in Sources */,
-				B8D391BA19A55E6000D55948 /* cdt.cc in Sources */,
 				B82A61A3199E988100F7802D /* shape2Dfill.cc in Sources */,
 				B89C9A9119DB45A3002897FD /* FontGenerator.cpp in Sources */,
 				B88830B619A97EFD00BF8C67 /* FileWriter.cc in Sources */,
@@ -498,6 +492,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		48DDB2751A02C50A00E10FE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = tess2;
+			targetProxy = 48DDB2741A02C50A00E10FE1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		F5D357270948E8C4008C36CA /* Default */ = {
@@ -510,11 +512,15 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
 			};
 			name = Default;
 		};
@@ -527,6 +533,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = ../../../../AwayExtensionsFlashPro_eclipse/ExtensionContent/plugin/lib/mac/;
 				DVA_BUNDLE_IDENTIFIER = com.adobe.flashpro.AwayExtensionsFlashPro.plugin;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = AwayExtensionsFlashPro_Precomp.pch;
@@ -537,10 +544,12 @@
 					../../../../XDK/app/include/common,
 					../../../../XDK/app/include/interfaces,
 					../../../../XDK/app/include/interfaces/DOM,
+					"../../../ThirdParty/libtess2-master/Include",
 					../../../ThirdParty/libjson_7.6.1/libjson,
 					"../../../ThirdParty/xerces-c-3.1.1/src",
 					../../../../XDK/app/include/interfaces/Exporter,
 					../../include,
+					$SOURCE_ROOT/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = AwayExtensionsFlashPro;

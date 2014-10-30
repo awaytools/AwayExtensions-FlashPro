@@ -10,31 +10,31 @@
 	<string>AwayExtensionsFlashPro.mp</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>B501106F-B75E-44A1-9D30-1A85A62AD35A</key>
-		<string>ssh://github.com/awaystudios/icycle_project.git</string>
+		<key>1AF003D0C5FA82152659457A86914B3CE82E49F0</key>
+		<string>https://github.com/awaytools/AwayExtensions-FlashPro.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>_work/flashpro_awd_publisher/cpp/AwayExtensionsFlashPro/project/mac/AwayExtensionsFlashPro.mp.xcodeproj/project.xcworkspace</string>
+	<string>cpp/AwayExtensionsFlashPro/project/mac/AwayExtensionsFlashPro.mp.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>B501106F-B75E-44A1-9D30-1A85A62AD35A</key>
-		<string>../../../../../../../..</string>
+		<key>1AF003D0C5FA82152659457A86914B3CE82E49F0</key>
+		<string>../../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/awaystudios/icycle_project.git</string>
+	<string>https://github.com/awaytools/AwayExtensions-FlashPro.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>B501106F-B75E-44A1-9D30-1A85A62AD35A</string>
+	<string>1AF003D0C5FA82152659457A86914B3CE82E49F0</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>B501106F-B75E-44A1-9D30-1A85A62AD35A</string>
+			<string>1AF003D0C5FA82152659457A86914B3CE82E49F0</string>
 			<key>IDESourceControlWCCName</key>
-			<string>icycle_project</string>
+			<string>AwayExtensions-FlashPro</string>
 		</dict>
 	</array>
 </dict>
