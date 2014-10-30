@@ -427,8 +427,8 @@ AWDMergedSubShape::calc_sub_length(BlockSettings * blockSettings)
 void
 AWDMergedSubShape::write_sub(AWDFileWriter * fileWriter, BlockSettings * blockSettings, double scale)
 {
-    AWDDataStream *str;
-    awd_uint32 sub_len;
+    AWDDataStream *str = NULL;
+    awd_uint32 sub_len = 0;
 
     // Verify byte-order
    // sub_len = this->calc_streams_length();

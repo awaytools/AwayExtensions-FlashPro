@@ -1,5 +1,5 @@
 #include "ShapeEncoder.h"
-#include "tesselator.h"
+#include <tesselator.h>
 
 void
 ShapeEncoder::encode_subShape(bool checkForIntersect)

@@ -1,0 +1,308 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		48DDB25F1A02B91700E10FE1 /* tesselator.h in Headers */ = {isa = PBXBuildFile; fileRef = 48DDB24F1A02B91700E10FE1 /* tesselator.h */; };
+		48DDB2601A02B91700E10FE1 /* bucketalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 48DDB2511A02B91700E10FE1 /* bucketalloc.c */; };
+		48DDB2611A02B91700E10FE1 /* bucketalloc.h in Headers */ = {isa = PBXBuildFile; fileRef = 48DDB2521A02B91700E10FE1 /* bucketalloc.h */; };
+		48DDB2621A02B91700E10FE1 /* dict.c in Sources */ = {isa = PBXBuildFile; fileRef = 48DDB2531A02B91700E10FE1 /* dict.c */; };
+		48DDB2631A02B91700E10FE1 /* dict.h in Headers */ = {isa = PBXBuildFile; fileRef = 48DDB2541A02B91700E10FE1 /* dict.h */; };
+		48DDB2641A02B91700E10FE1 /* geom.c in Sources */ = {isa = PBXBuildFile; fileRef = 48DDB2551A02B91700E10FE1 /* geom.c */; };
+		48DDB2651A02B91700E10FE1 /* geom.h in Headers */ = {isa = PBXBuildFile; fileRef = 48DDB2561A02B91700E10FE1 /* geom.h */; };
+		48DDB2661A02B91700E10FE1 /* mesh.c in Sources */ = {isa = PBXBuildFile; fileRef = 48DDB2571A02B91700E10FE1 /* mesh.c */; };
+		48DDB2671A02B91700E10FE1 /* mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 48DDB2581A02B91700E10FE1 /* mesh.h */; };
+		48DDB2681A02B91700E10FE1 /* priorityq.c in Sources */ = {isa = PBXBuildFile; fileRef = 48DDB2591A02B91700E10FE1 /* priorityq.c */; };
+		48DDB2691A02B91700E10FE1 /* priorityq.h in Headers */ = {isa = PBXBuildFile; fileRef = 48DDB25A1A02B91700E10FE1 /* priorityq.h */; };
+		48DDB26A1A02B91700E10FE1 /* sweep.c in Sources */ = {isa = PBXBuildFile; fileRef = 48DDB25B1A02B91700E10FE1 /* sweep.c */; };
+		48DDB26B1A02B91700E10FE1 /* sweep.h in Headers */ = {isa = PBXBuildFile; fileRef = 48DDB25C1A02B91700E10FE1 /* sweep.h */; };
+		48DDB26C1A02B91700E10FE1 /* tess.c in Sources */ = {isa = PBXBuildFile; fileRef = 48DDB25D1A02B91700E10FE1 /* tess.c */; };
+		48DDB26D1A02B91700E10FE1 /* tess.h in Headers */ = {isa = PBXBuildFile; fileRef = 48DDB25E1A02B91700E10FE1 /* tess.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		48DDB2471A02B8BD00E10FE1 /* libtess2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtess2.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		48DDB24F1A02B91700E10FE1 /* tesselator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tesselator.h; sourceTree = "<group>"; };
+		48DDB2511A02B91700E10FE1 /* bucketalloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bucketalloc.c; sourceTree = "<group>"; };
+		48DDB2521A02B91700E10FE1 /* bucketalloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bucketalloc.h; sourceTree = "<group>"; };
+		48DDB2531A02B91700E10FE1 /* dict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dict.c; sourceTree = "<group>"; };
+		48DDB2541A02B91700E10FE1 /* dict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dict.h; sourceTree = "<group>"; };
+		48DDB2551A02B91700E10FE1 /* geom.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = geom.c; sourceTree = "<group>"; };
+		48DDB2561A02B91700E10FE1 /* geom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geom.h; sourceTree = "<group>"; };
+		48DDB2571A02B91700E10FE1 /* mesh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mesh.c; sourceTree = "<group>"; };
+		48DDB2581A02B91700E10FE1 /* mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh.h; sourceTree = "<group>"; };
+		48DDB2591A02B91700E10FE1 /* priorityq.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = priorityq.c; sourceTree = "<group>"; };
+		48DDB25A1A02B91700E10FE1 /* priorityq.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = priorityq.h; sourceTree = "<group>"; };
+		48DDB25B1A02B91700E10FE1 /* sweep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sweep.c; sourceTree = "<group>"; };
+		48DDB25C1A02B91700E10FE1 /* sweep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sweep.h; sourceTree = "<group>"; };
+		48DDB25D1A02B91700E10FE1 /* tess.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tess.c; sourceTree = "<group>"; };
+		48DDB25E1A02B91700E10FE1 /* tess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tess.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		48DDB2441A02B8BD00E10FE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		48DDB23E1A02B8BD00E10FE1 = {
+			isa = PBXGroup;
+			children = (
+				48DDB24E1A02B91700E10FE1 /* Include */,
+				48DDB2501A02B91700E10FE1 /* Source */,
+				48DDB2481A02B8BD00E10FE1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		48DDB2481A02B8BD00E10FE1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				48DDB2471A02B8BD00E10FE1 /* libtess2.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		48DDB24E1A02B91700E10FE1 /* Include */ = {
+			isa = PBXGroup;
+			children = (
+				48DDB24F1A02B91700E10FE1 /* tesselator.h */,
+			);
+			name = Include;
+			path = ../../Include;
+			sourceTree = "<group>";
+		};
+		48DDB2501A02B91700E10FE1 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				48DDB2511A02B91700E10FE1 /* bucketalloc.c */,
+				48DDB2521A02B91700E10FE1 /* bucketalloc.h */,
+				48DDB2531A02B91700E10FE1 /* dict.c */,
+				48DDB2541A02B91700E10FE1 /* dict.h */,
+				48DDB2551A02B91700E10FE1 /* geom.c */,
+				48DDB2561A02B91700E10FE1 /* geom.h */,
+				48DDB2571A02B91700E10FE1 /* mesh.c */,
+				48DDB2581A02B91700E10FE1 /* mesh.h */,
+				48DDB2591A02B91700E10FE1 /* priorityq.c */,
+				48DDB25A1A02B91700E10FE1 /* priorityq.h */,
+				48DDB25B1A02B91700E10FE1 /* sweep.c */,
+				48DDB25C1A02B91700E10FE1 /* sweep.h */,
+				48DDB25D1A02B91700E10FE1 /* tess.c */,
+				48DDB25E1A02B91700E10FE1 /* tess.h */,
+			);
+			name = Source;
+			path = ../../Source;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		48DDB2451A02B8BD00E10FE1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48DDB2671A02B91700E10FE1 /* mesh.h in Headers */,
+				48DDB2651A02B91700E10FE1 /* geom.h in Headers */,
+				48DDB2611A02B91700E10FE1 /* bucketalloc.h in Headers */,
+				48DDB26D1A02B91700E10FE1 /* tess.h in Headers */,
+				48DDB2631A02B91700E10FE1 /* dict.h in Headers */,
+				48DDB2691A02B91700E10FE1 /* priorityq.h in Headers */,
+				48DDB26B1A02B91700E10FE1 /* sweep.h in Headers */,
+				48DDB25F1A02B91700E10FE1 /* tesselator.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		48DDB2461A02B8BD00E10FE1 /* tess2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48DDB24B1A02B8BD00E10FE1 /* Build configuration list for PBXNativeTarget "tess2" */;
+			buildPhases = (
+				48DDB2431A02B8BD00E10FE1 /* Sources */,
+				48DDB2441A02B8BD00E10FE1 /* Frameworks */,
+				48DDB2451A02B8BD00E10FE1 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tess2;
+			productName = tess2;
+			productReference = 48DDB2471A02B8BD00E10FE1 /* libtess2.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		48DDB23F1A02B8BD00E10FE1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Claus Wahlers";
+				TargetAttributes = {
+					48DDB2461A02B8BD00E10FE1 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = 48DDB2421A02B8BD00E10FE1 /* Build configuration list for PBXProject "tess2" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 48DDB23E1A02B8BD00E10FE1;
+			productRefGroup = 48DDB2481A02B8BD00E10FE1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				48DDB2461A02B8BD00E10FE1 /* tess2 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		48DDB2431A02B8BD00E10FE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48DDB26C1A02B91700E10FE1 /* tess.c in Sources */,
+				48DDB26A1A02B91700E10FE1 /* sweep.c in Sources */,
+				48DDB2661A02B91700E10FE1 /* mesh.c in Sources */,
+				48DDB2681A02B91700E10FE1 /* priorityq.c in Sources */,
+				48DDB2601A02B91700E10FE1 /* bucketalloc.c in Sources */,
+				48DDB2621A02B91700E10FE1 /* dict.c in Sources */,
+				48DDB2641A02B91700E10FE1 /* geom.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		48DDB2491A02B8BD00E10FE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.9;
+			};
+			name = Debug;
+		};
+		48DDB24A1A02B8BD00E10FE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx10.9;
+			};
+			name = Release;
+		};
+		48DDB24C1A02B8BD00E10FE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		48DDB24D1A02B8BD00E10FE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		48DDB2421A02B8BD00E10FE1 /* Build configuration list for PBXProject "tess2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48DDB2491A02B8BD00E10FE1 /* Debug */,
+				48DDB24A1A02B8BD00E10FE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		48DDB24B1A02B8BD00E10FE1 /* Build configuration list for PBXNativeTarget "tess2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48DDB24C1A02B8BD00E10FE1 /* Debug */,
+				48DDB24D1A02B8BD00E10FE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 48DDB23F1A02B8BD00E10FE1 /* Project object */;
+}

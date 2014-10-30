@@ -175,7 +175,7 @@ ShapeEncoder::get_edge_styles(int thisIdx1, int thisIdx2, int thisIdx3)
 void
 ShapeEncoder::get_edge_style(AWDPathSegment* pathSeg, SimplePoint* c)
 {
-	/*
+	#if 0
 	if(pathSeg->get_edgeType()==CURVED_EDGE){
 		double isSide_ctr=Sign(pathSeg->get_startPoint(),pathSeg->get_endPoint(),pathSeg->get_controlPoint());
 		double isSide_filled=Sign(pathSeg->get_startPoint(),pathSeg->get_endPoint(),c);
@@ -186,8 +186,7 @@ ShapeEncoder::get_edge_style(AWDPathSegment* pathSeg, SimplePoint* c)
 			pathSeg->set_edgeType(CONVEX_EDGE);
 		}
 	}
-	*/
-/*
+	#endif
 }
 
 double
