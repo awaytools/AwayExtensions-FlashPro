@@ -60,28 +60,69 @@ typedef enum {
     CURVED_EDGE=5
 } AWD_edge_type;
 
+typedef enum {
+    RESOLVED=1,
+    UNCHECKED=2,
+    UNSOLVEABLE=3,
+} AWD_intersect_state;
 
+class AWDPathSegment;
+class AWDPathIntersection
+{
+    private:
+	AWDPathSegment* pathSeg1;
+	AWDPathSegment* pathSeg2;
+	AWD_intersect_state state;
+    public:
+        AWDPathIntersection(AWDPathSegment*, AWDPathSegment*);     
+        ~AWDPathIntersection();
+        AWD_intersect_state get_state(); 
+		AWDPathSegment* get_pathSeg1();		
+		AWDPathSegment* get_pathSeg2();
+        void set_state(AWD_intersect_state);
+        bool compare(AWDPathSegment*, AWDPathSegment*);       
+};
 class AWDPathSegment
 {
     private:
 		bool subdivide;
+		bool intersects;
+		bool deleteIt;
 		ShapePoint* startPoint;
 		ShapePoint* endPoint;
 		ShapePoint* controlPoint;
 		AWD_edge_type edgeType;
+		vector< AWDPathSegment*> subdividedPath;
 		int hole_idx;
 		int originalSegment;
+		vector<double> bounds;
+		double size;
+		double length;
+		double curviness;
+		vector<AWDPathIntersection*> path_intersections;
+		 
     public:
         AWDPathSegment();
         ~AWDPathSegment();
 
 		
+		void add_path_intersections(AWDPathIntersection*);
+		AWDPathIntersection* find_path_intersections(AWDPathSegment* path1, AWDPathSegment* path2);
+		vector<AWDPathIntersection*> get_path_intersections();
 		int get_this_hole_idx();
+		double get_size();
+		double get_length();
+        void set_deleteIt(bool);
+        bool get_deleteIt(); 
         void set_hole_idx(int);
+        bool get_intersects();       
+        void set_intersects(bool);
         bool get_subdivide();       
         void set_subdivide(bool);
         int get_originalSegment();       
-        void set_originalSegment(int);
+        void set_originalSegment(int); 
+        void clear_subdivison();
+        double get_curviness();
         ShapePoint* get_startPoint();
         void set_startPoint(ShapePoint*);
         ShapePoint* get_endPoint();
@@ -90,6 +131,12 @@ class AWDPathSegment
         void set_controlPoint(ShapePoint*);
         AWD_edge_type get_edgeType();
         void set_edgeType(AWD_edge_type);
+        vector<double> get_bounds();
+        vector<AWDPathSegment*> get_subdivided_path();
+		void subdividePath();
+		vector<double> subDivideCurve(double startx, double starty, double cx, double cy, double endx, double endy);
+		double minimum(double x, double y, double z);
+		double maximum(double x, double y, double z);
 
 };
 
@@ -185,7 +232,6 @@ class AWDShape2D :
         awd_float64 * bind_mtx;
 		vector<AWDMergedSubShape*> mergerSubShapes;
 
-
     protected:
         awd_uint32 calc_body_length(BlockSettings *);
         void write_body(AWDFileWriter * , BlockSettings *curBlockSettings);
@@ -193,7 +239,8 @@ class AWDShape2D :
     public:
         AWDShape2D(string& name);
         ~AWDShape2D();
-		
+		bool delete_subs;
+		void set_delete_subs(bool delete_subs);
         void merge_subs();
         unsigned int get_num_subs();
         AWDSubShape2D *get_sub_at(unsigned int);

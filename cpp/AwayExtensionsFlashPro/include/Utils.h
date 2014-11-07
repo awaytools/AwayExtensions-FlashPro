@@ -128,7 +128,7 @@ namespace AwayJS
         static void Log(const char* fmt, ...);
 		
 		//CopyFile is a simple function that copies a file from arg1 to arg2
-		static int CopyOneFile(std::string initialFilePath, std::string outputFilePath);
+		static int CopyOneFile(std::string initialFilePath, std::string outputFilePath, FCM::PIFCMCallback pCallback);
 
 
 

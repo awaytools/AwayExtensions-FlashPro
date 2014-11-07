@@ -1,6 +1,72 @@
 #include "ShapeEncoder.h"
 
+#ifdef _DEBUG
+	#include <stdlib.h>
+	#include <crtdbg.h>
+   #ifndef DBG_NEW
+      #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+      #define new DBG_NEW
+   #endif
+#endif  // _DEBUG
 
+// Given three colinear points p, q, r, the function checks if
+// point q lies on line segment 'pr'
+bool onSegment(ShapePoint* p, ShapePoint* q, ShapePoint* r)
+{
+    if (q->x <= max(p->x, r->x) && q->x >= min(p->x, r->x) &&
+        q->y <= max(p->y, r->y) && q->y >= min(p->y, r->y))
+       return true;
+ 
+    return false;
+}
+ 
+// To find orientation of ordered triplet (p, q, r).
+// The function returns following values
+// 0 --> p, q and r are colinear
+// 1 --> Clockwise
+// 2 --> Counterclockwise
+int orientation(ShapePoint* p, ShapePoint* q, ShapePoint* r)
+{
+    // See 10th slides from following link for derivation of the formula
+    // http://www.dcs.gla.ac.uk/~pat/52233/slides/Geometry1x1.pdf
+    int val = (q->y - p->y) * (r->x - q->x) -
+              (q->x - p->x) * (r->y - q->y);
+ 
+    if (val == 0) return 0;  // colinear
+ 
+    return (val > 0)? 1: 2; // clock or counterclock wise
+}
+ 
+// The main function that returns true if line segment 'p1q1'
+// and 'p2q2' intersect.
+bool doIntersect(ShapePoint* p1, ShapePoint* q1, ShapePoint* p2, ShapePoint* q2)
+{
+    // Find the four orientations needed for general and
+    // special cases
+    int o1 = orientation(p1, q1, p2);
+    int o2 = orientation(p1, q1, q2);
+    int o3 = orientation(p2, q2, p1);
+    int o4 = orientation(p2, q2, q1);
+ 
+    // General case
+    if (o1 != o2 && o3 != o4)
+        return true;
+ 
+    // Special Cases
+    // p1, q1 and p2 are colinear and p2 lies on segment p1q1
+    if (o1 == 0 && onSegment(p1, p2, q1)) return true;
+ 
+    // p1, q1 and p2 are colinear and q2 lies on segment p1q1
+    if (o2 == 0 && onSegment(p1, q2, q1)) return true;
+ 
+    // p2, q2 and p1 are colinear and p1 lies on segment p2q2
+    if (o3 == 0 && onSegment(p2, p1, q2)) return true;
+ 
+     // p2, q2 and q1 are colinear and q1 lies on segment p2q2
+    if (o4 == 0 && onSegment(p2, q1, q2)) return true;
+ 
+    return false; // Doesn't fall in any of the above cases
+}
 /*
 int
 ShapeEncoder::get_point_idx(SimplePoint * point)
@@ -175,7 +241,7 @@ ShapeEncoder::get_edge_styles(int thisIdx1, int thisIdx2, int thisIdx3)
 void
 ShapeEncoder::get_edge_style(AWDPathSegment* pathSeg, SimplePoint* c)
 {
-	#if 0
+	
 	if(pathSeg->get_edgeType()==CURVED_EDGE){
 		double isSide_ctr=Sign(pathSeg->get_startPoint(),pathSeg->get_endPoint(),pathSeg->get_controlPoint());
 		double isSide_filled=Sign(pathSeg->get_startPoint(),pathSeg->get_endPoint(),c);
@@ -186,7 +252,8 @@ ShapeEncoder::get_edge_style(AWDPathSegment* pathSeg, SimplePoint* c)
 			pathSeg->set_edgeType(CONVEX_EDGE);
 		}
 	}
-	#endif
+	*/
+/*
 }
 
 double
@@ -222,7 +289,220 @@ void ShapeEncoder::add_inner_tri(int idx1, int idx2, int idx3){
 		triangles_inner.push_back(idx3);
 	}*/
 }
+vector<double> 
+	ShapeEncoder::mergeBounds(vector<double> bounds1, vector<double> bounds2) {
+	vector<double> returnBounds;
+	
+	if (bounds1[0] <= bounds2[0]){
+		returnBounds.push_back(bounds1[0]);
+	}
+	else{
+		returnBounds.push_back(bounds2[0]);
+	}
+	if (bounds1[1] <= bounds2[1]){
+		returnBounds.push_back(bounds2[1]);
+	}
+	else{
+		returnBounds.push_back(bounds1[1]);
+	}
 
+
+	if (bounds1[2] <= bounds2[2]){
+		returnBounds.push_back(bounds1[2]);
+	}
+	else{
+		returnBounds.push_back(bounds2[2]);
+	}
+	if (bounds1[3] <= bounds2[3]){
+		returnBounds.push_back(bounds2[3]);
+	}
+	else{
+		returnBounds.push_back(bounds1[3]);
+	}
+					
+	return returnBounds; 
+} 
+bool ShapeEncoder::resolve_segment_intersection(AWDPathIntersection* thisIntersection) {
+	
+	double min_Curveiness=awd->getExporterSettings()->get_curve_threshold();
+	int maxSteps=awd->getExporterSettings()->get_max_iterations();
+	ShapePoint* start1;
+	ShapePoint* start2;
+	ShapePoint* end1;
+	ShapePoint* end2;
+	ShapePoint* control1;
+	ShapePoint* control2;
+	AWDPathSegment* seg1=thisIntersection->get_pathSeg1();
+	AWDPathSegment* seg2=thisIntersection->get_pathSeg2();
+	AWDPathSegment* curveSeg=NULL;
+	AWDPathSegment* edgeSeg=NULL;
+	if((seg1->get_edgeType()!=OUTTER_EDGE)&&(seg2->get_edgeType()==OUTTER_EDGE)){
+		curveSeg=seg1;
+		edgeSeg=seg2;
+	}
+	else if((seg1->get_edgeType()==OUTTER_EDGE)&&(seg2->get_edgeType()!=OUTTER_EDGE)){
+		curveSeg=seg2;
+		edgeSeg=seg1;
+	}
+	else if((seg1->get_edgeType()!=OUTTER_EDGE)&&(seg2->get_edgeType()!=OUTTER_EDGE)){
+		bool isResolved=false;
+		int iterCnt=0;
+		for(AWDPathSegment* subSeg:seg2->get_subdivided_path()){
+			subSeg->set_subdivide(true);
+		}
+		for(AWDPathSegment* subSeg:seg1->get_subdivided_path()){
+			subSeg->set_subdivide(true);
+		}
+		while((thisIntersection->get_state()==UNCHECKED)&&(iterCnt<maxSteps)){
+			//AwayJS::Utils::Trace(m_pCallback, "RESOLVE CURVE VS CURVE %d\n", iterCnt);
+			iterCnt++;
+			isResolved=true;
+			for(AWDPathSegment* subSeg:seg1->get_subdivided_path()){
+				if(subSeg->get_curviness()<min_Curveiness){
+					subSeg->set_subdivide(false);
+				}
+				if(subSeg->get_subdivide()){
+					start1=subSeg->get_startPoint();
+					end1=subSeg->get_endPoint();
+					control1=subSeg->get_controlPoint();
+					bool intersectswith=false;
+					for(AWDPathSegment* subSeg2:seg2->get_subdivided_path()){
+						bool isIntersect=bounds_interesect(subSeg->get_bounds(), subSeg2->get_bounds());
+						if(isIntersect){
+							start2=subSeg2->get_startPoint();
+							end2=subSeg2->get_endPoint();
+							control2=subSeg2->get_controlPoint();
+							bool isTriIntersect=tris_intersecting(start1,  control1, end1, start2,  control2, end2);
+							if(isTriIntersect){		
+								
+								intersectswith=true;
+								isResolved=false;
+							}
+						}
+					}
+					subSeg->set_subdivide(intersectswith);
+				}
+			}
+			for(AWDPathSegment* subSeg:seg2->get_subdivided_path()){
+				if(subSeg->get_curviness()<min_Curveiness){
+					subSeg->set_subdivide(false);
+				}
+				if(subSeg->get_subdivide()){
+					start1=subSeg->get_startPoint();
+					end1=subSeg->get_endPoint();
+					control1=subSeg->get_controlPoint();
+					bool intersectswith=false;
+					for(AWDPathSegment* subSeg2:seg1->get_subdivided_path()){
+						bool isIntersect=bounds_interesect(subSeg->get_bounds(), subSeg2->get_bounds());
+						if(isIntersect){
+							start2=subSeg2->get_startPoint();
+							end2=subSeg2->get_endPoint();
+							control2=subSeg2->get_controlPoint();
+							bool isTriIntersect=tris_intersecting(start1,  control1, end1, start2,  control2, end2);
+							if(isTriIntersect){					
+								intersectswith=true;
+								isResolved=false;
+							}
+						}
+					}
+					subSeg->set_subdivide(intersectswith);
+				}
+			}
+			if(isResolved){
+				if(thisIntersection->get_state()==UNCHECKED){
+					//AwayJS::Utils::Trace(m_pCallback, "RESOLVED CURVE VS CURVE INTERSECTION with %d subdivisions\n", iterCnt);
+					thisIntersection->set_state(RESOLVED);
+				}
+				iterCnt=maxSteps+1;
+			}
+			else{
+				if(iterCnt==maxSteps){
+					iterCnt=maxSteps+1;
+					AwayJS::Utils::Trace(m_pCallback, "UNRESOLVED CURVE CURVE\n");
+					thisIntersection->set_state(UNSOLVEABLE);
+				}
+				else{
+					seg1->subdividePath();
+					seg2->subdividePath();
+				}
+			}
+		}
+	}
+	if((curveSeg!=NULL)&&(edgeSeg!=NULL)){
+		start1=edgeSeg->get_startPoint();
+		end1=edgeSeg->get_endPoint();
+		//AwayJS::Utils::Trace(m_pCallback, "RESOLVE CURVE VS EDGE\n");
+		bool isResolved=false;
+		int iterCnt=0;
+		for(AWDPathSegment* subSeg:curveSeg->get_subdivided_path()){
+			subSeg->set_subdivide(true);
+		}
+		while((thisIntersection->get_state()==UNCHECKED)&&(iterCnt<maxSteps)){
+			iterCnt++;
+			isResolved=true;
+			for(AWDPathSegment* subSeg:curveSeg->get_subdivided_path()){
+				if(subSeg->get_curviness()<min_Curveiness){
+					subSeg->set_subdivide(false);}
+				if(subSeg->get_subdivide()){
+					bool isIntersect=bounds_interesect(subSeg->get_bounds(), edgeSeg->get_bounds());
+					if(isIntersect){
+						start2=curveSeg->get_startPoint();
+						end2=curveSeg->get_endPoint();
+						control2=curveSeg->get_controlPoint();
+						bool intersects_edge=line_intersect(start1, end1, start2, end2);
+						bool intersects_curve1=line_intersect(start1, end1, start2, control2);
+						bool intersects_curve2=line_intersect(start1, end1, control2, end2);
+						// if a line cuts the base.line of a tri, and a curved line, it is definitve not solveable by subdividing
+						if((intersects_edge)&&((intersects_curve1)||(intersects_curve2))){
+							thisIntersection->set_state(UNSOLVEABLE);
+							//AwayJS::Utils::Trace(m_pCallback, "UNSOLVEABLE EDGE CURVE\n");
+						}
+						else if ((intersects_curve1)||(intersects_curve2)||(intersects_curve2)){
+							//AwayJS::Utils::Trace(m_pCallback, "INTERSECTS EDGE CURVE\n");
+							isResolved=false;
+						}
+						else{
+							subSeg->set_subdivide(false);
+							//AwayJS::Utils::Trace(m_pCallback, "NO INTERSECTS EDGE CURVE\n");
+						}
+					}
+					else{
+						subSeg->set_subdivide(false);
+						//AwayJS::Utils::Trace(m_pCallback, "NO INTERSECTS EDGE CURVE\n");
+					}
+				}
+			}
+			if(isResolved){
+				if(thisIntersection->get_state()==UNCHECKED){
+					//AwayJS::Utils::Trace(m_pCallback, "RESOLVED EDGE VS CURVE INTERSECTION with %d subdivisions\n", iterCnt);
+					thisIntersection->set_state(RESOLVED);
+				}
+				iterCnt=maxSteps+1;
+			}
+			else{
+				if(iterCnt==maxSteps){
+					iterCnt=maxSteps+1;
+					AwayJS::Utils::Trace(m_pCallback, "UNRESOLVED EDGE CURVE\n");
+					thisIntersection->set_state(UNSOLVEABLE);
+				}
+				else{
+					curveSeg->subdividePath();
+				}
+			}
+
+		}
+
+	}
+	return true;
+} 
+bool ShapeEncoder::bounds_interesect(vector<double> bounds1, vector<double> bounds2) {
+	
+	if(bounds1[1] <= bounds2[0]) {return false;}
+	if(bounds1[3] <= bounds2[2]) {return false;}
+	if(bounds2[1] <= bounds1[0]) {return false;}
+	if(bounds2[3] <= bounds1[2]) {return false;}
+	return true; 
+} 
 double ShapeEncoder::maximum(double x, double y, double z) {
 	double max_val = x; 
 	if (y > max_val) max_val = y;
@@ -244,7 +524,7 @@ float Side(float px, float py,float qx,float qy, float ax,float ay,  float bx, f
 }
 
 /* Check whether segment P0P1 intersects with triangle t0t1t2 */
-int Intersecting(float p0x,float p0y, float p1x, float p1y, float t0x, float t0y, float t1x, float t1y, float t2x,float t2y)
+int ShapeEncoder::Intersecting(float p0x,float p0y, float p1x, float p1y, float t0x, float t0y, float t1x, float t1y, float t2x,float t2y)
 {
     /* Check whether segment is outside one of the three half-planes
      * delimited by the triangle. */
@@ -275,315 +555,10 @@ int Intersecting(float p0x,float p0y, float p1x, float p1y, float t0x, float t0y
     /* If both segment points are strictly inside the triangle, we
      * are not intersecting either */
     if (f1 > 0 && f2 > 0 && f3 > 0 && f4 > 0 && f5 > 0 && f6 > 0)
-        return -1;
+        return 5;
 
     /* Otherwise we're intersecting with at least one edge */
     return 1;
-}
-bool
-ShapeEncoder::remove_overlapping()
-{
-			
-	bool removed_overlapping_all=false;
-	vector<vector<AWDPathSegment*> > newAllPathes;
-	for(vector<AWDPathSegment*> path:all_segments){		
-		
-		//AwayJS::Utils::Trace(m_pCallback, "\nCheck for overlapping triangles %d \n\n", path.size() );
-		bool removed_overlapping=false;
-		vector<AWDPathSegment*> newPath;
-		int segCnt=0;
-		int segCnt2=0;
-		int pathCnt=0;
-		int pathCnt2=0;
-		AWDPathSegment* check_seg;
-		ShapePoint * start;
-		ShapePoint * end;
-		ShapePoint * control;
-		ShapePoint * lstart;
-		ShapePoint * lend;
-		vector<double> newPoints;
-		vector<double> newPoints_1;
-		vector<double> newPoints_2;
-		ShapePoint* tpoint1;
-		ShapePoint* tpoint2;
-		ShapePoint* tpoint3;
-		ShapePoint* tpoint4;
-		ShapePoint* tpoint5;
-		ShapePoint* tpoint6;
-		ShapePoint* tpoint7;
-		ShapePoint* tpoint8;
-		ShapePoint* tpoint9;
-		ShapePoint* tpoint10;
-		AWDPathSegment* newSeg1;
-		AWDPathSegment* newSeg2;
-		AWDPathSegment* newSeg3;
-		pathCnt=0;
-		for(AWDPathSegment* seg : path){
-			if(seg->get_edgeType()!=OUTTER_EDGE){
-				start=seg->get_startPoint();
-				end=seg->get_endPoint();
-				control=seg->get_controlPoint();
-				//with this we only count the curved-segments-list (to reduce lookup in curved-segments-list
-				// not subDivided yet. check if subdividing is needed.
-				if(!seg->get_subdivide()){
-					for(pathCnt2=0; pathCnt2<all_segments.size(); pathCnt2++){
-						vector<AWDPathSegment*> checkPath=all_segments[pathCnt2];		
-						// check if segment overlaps with any straight segment
-						for(segCnt2=0; segCnt2<checkPath.size(); segCnt2++){
-
-							if(((pathCnt==pathCnt2)&&(segCnt2!=segCnt))||(pathCnt!=pathCnt2)){
-								check_seg=checkPath[segCnt2];
-								if(!check_seg->get_subdivide()){
-									if(check_seg->get_edgeType()==OUTTER_EDGE){
-										lstart=check_seg->get_startPoint();
-										lend=check_seg->get_endPoint();
-										int intersects=Intersecting(lstart->x, lstart->y, lend->x, lend->y, start->x, start->y, control->x, control->y,end->x, end->y);
-										if(intersects==1){
-												AwayJS::Utils::Trace(m_pCallback, "Line start<->control intersects\n");
-												seg->set_subdivide(true);
-												segCnt2=checkPath.size();
-												pathCnt2=all_segments.size();
-										}
-										/*
-										if(test_bounding_box_lines(start, control, lstart, lend)){
-											AwayJS::Utils::Trace(m_pCallback, "Line start<->control intersects\n");
-											if(line_intersect(start, control, lstart, lend)){
-												AwayJS::Utils::Trace(m_pCallback, "Line start<->control intersects\n");
-												seg->set_subdivide(true);
-												segCnt2=checkPath.size();
-												pathCnt2=all_segments.size();
-											}
-										}
-										else if(test_bounding_box_lines(end, control, lstart, lend)){
-											AwayJS::Utils::Trace(m_pCallback, "Line start<->control intersects\n");
-											if(line_intersect(end, control, lstart, lend)){
-												AwayJS::Utils::Trace(m_pCallback, "Line end<->control intersects\n");
-												seg->set_subdivide(true);
-												segCnt2=checkPath.size();
-												pathCnt2=all_segments.size();
-											}
-										}
-										else if(test_bounding_box_lines(end, start, lstart, lend)){
-											AwayJS::Utils::Trace(m_pCallback, "Line start<->control intersects\n");
-											if(line_intersect(end, start, lstart, lend)){// think its not needed, but to make sure
-												AwayJS::Utils::Trace(m_pCallback, "Line end<->start intersects\n");
-												seg->set_subdivide(true);
-												segCnt2=checkPath.size();
-												pathCnt2=all_segments.size();
-											}
-										}
-										*/
-									}
-									else{// this must be a Convecx or Concave
-										if(!check_seg->get_subdivide()){
-											lstart=check_seg->get_startPoint();
-											lend=check_seg->get_endPoint();
-											ShapePoint * lcontrol=check_seg->get_controlPoint();
-											int intersects=Intersecting(lstart->x, lstart->y, lend->x, lend->y, start->x, start->y, control->x, control->y,end->x, end->y);
-											if(intersects==1){
-													AwayJS::Utils::Trace(m_pCallback, "Line start<->control intersects\n");
-													seg->set_subdivide(true);
-													segCnt2=checkPath.size();
-													pathCnt2=all_segments.size();}
-											else{
-												intersects=Intersecting(lcontrol->x, lcontrol->y, lend->x, lend->y, start->x, start->y, control->x, control->y,end->x, end->y);
-												if(intersects==1){
-													AwayJS::Utils::Trace(m_pCallback, "Line start<->control intersects\n");
-													seg->set_subdivide(true);
-													segCnt2=checkPath.size();
-													pathCnt2=all_segments.size();}
-												else{
-													intersects=Intersecting(lstart->x, lstart->y, lcontrol->x, lcontrol->y, start->x, start->y, control->x, control->y,end->x, end->y);
-													if(intersects==1){
-														AwayJS::Utils::Trace(m_pCallback, "Line start<->control intersects\n");
-														seg->set_subdivide(true);
-														segCnt2=checkPath.size();
-														pathCnt2=all_segments.size();
-													}
-												}
-											}
-										/*	
-											//AwayJS::Utils::Trace(m_pCallback, "check triangles intersect\n");
-											if(tris_intersecting(start, control, end, check_seg->get_startPoint(), check_seg->get_controlPoint(), check_seg->get_endPoint())){
-												AwayJS::Utils::Trace(m_pCallback, "Curve triangles intersect %d, %d\n", pathCnt, pathCnt2);
-												AwayJS::Utils::Trace(m_pCallback, "Curve triangles intersect %d, %d\n", segCnt, segCnt2);
-												seg->set_subdivide(true);
-												check_seg->set_subdivide(true);
-												segCnt2=checkPath.size();
-												pathCnt2=all_segments.size();
-											}
-											else{
-												//AwayJS::Utils::Trace(m_pCallback, "Curve is good %d %d\n");
-								
-											}
-											*/
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-				// if still no need to subdivide, just add to output...
-				if(!seg->get_subdivide()){
-					newPath.push_back(seg);
-					//AwayJS::Utils::Trace(m_pCallback, "Added Segment without dividing\n");
-				}
-				// need to subDivide
-				else{
-					//AwayJS::Utils::Trace(m_pCallback, "Subdivide triangle\n");
-
-					// if the control-point is  nearly on the ancor1<->ancor2 line, we add the seg as line-segment
-					if(false){//abs(Sign(control, start, end))<0.01){
-						seg->set_edgeType(OUTTER_EDGE);
-						newPath.push_back(seg);
-					}
-					else{
-						newPoints=subDivideCurve(start->x, start->y, control->x, control->y, end->x, end->y);					
-					
-						if(!this->double_subdivide){
-							//AwayJS::Utils::Trace(m_pCallback, "Single Subdivide Curve\n");
-
-							//AwayJS::Utils::Trace(m_pCallback, "tpoint1 %f %f\n", tpoint1->x, tpoint1->y);
-							//AwayJS::Utils::Trace(m_pCallback, "tpoint2 %f %f\n", tpoint2->x, tpoint2->y);
-							//AwayJS::Utils::Trace(m_pCallback, "tpoint3 %f %f\n", tpoint3->x, tpoint3->y);
-							pointlength[pathCnt]+=1;
-							if(seg->get_edgeType()==CONVEX_EDGE)
-								pointlength[pathCnt]+=1;
-							seg->get_controlPoint()->x=newPoints[2];
-							seg->get_controlPoint()->y=newPoints[3];
-
-							tpoint2=new ShapePoint();
-							tpoint2->x=newPoints[4];
-							tpoint2->y=newPoints[5];
-
-							seg->get_endPoint()->x=tpoint2->x;
-							seg->get_endPoint()->y=tpoint2->y;
-
-							newSeg1= new AWDPathSegment();
-							newSeg1->set_edgeType(seg->get_edgeType());
-							newSeg1->set_startPoint(tpoint2);
-
-							tpoint3=new ShapePoint();
-							tpoint3->x=newPoints[6];
-							tpoint3->y=newPoints[7];
-							newSeg1->set_controlPoint(tpoint3);
-
-							tpoint4=new ShapePoint();
-							tpoint4->x=newPoints[8];
-							tpoint4->y=newPoints[9];
-							newSeg1->set_endPoint(tpoint4);
-
-							newSeg1->set_hole_idx(seg->get_this_hole_idx());
-							seg->set_originalSegment(1);
-							newSeg1->set_originalSegment(3);
-							newPath.push_back(seg);
-							newPath.push_back(newSeg1);
-							newPoints.clear();
-						}
-						else{
-							// DOUBLE SUBDIVIDE:
-							//AwayJS::Utils::Trace(m_pCallback, "Double Subdivide\n");
-							newPoints_1=subDivideCurve(newPoints[0], newPoints[1], newPoints[2], newPoints[3], newPoints[4], newPoints[5]);
-							newPoints_2=subDivideCurve(newPoints[4], newPoints[5], newPoints[6], newPoints[7], newPoints[8], newPoints[9]);
-				
-							pointlength[pathCnt]+=3;
-							if(seg->get_edgeType()==CONVEX_EDGE)
-								pointlength[pathCnt]+=3;
-														
-							seg->get_controlPoint()->x=newPoints_1[2];
-							seg->get_controlPoint()->y=newPoints_1[3];
-							tpoint2=new ShapePoint();
-							tpoint2->x=newPoints_1[4];
-							tpoint2->y=newPoints_1[5];
-							seg->get_endPoint()->x=tpoint2->x;
-							seg->get_endPoint()->y=tpoint2->y;
-							newSeg1= new AWDPathSegment();
-							newSeg1->set_edgeType(seg->get_edgeType());
-							newSeg1->set_startPoint(tpoint2);
-							tpoint3=new ShapePoint();
-							tpoint3->x=newPoints_1[6];
-							tpoint3->y=newPoints_1[7];
-							newSeg1->set_controlPoint(tpoint3);
-							tpoint4=new ShapePoint();
-							tpoint4->x=newPoints_1[8];
-							tpoint4->y=newPoints_1[9];
-							newSeg1->set_endPoint(tpoint4);
-							newSeg1->set_hole_idx(seg->get_this_hole_idx());
-							newSeg2= new AWDPathSegment();
-							newSeg2->set_edgeType(seg->get_edgeType());
-							tpoint5=new ShapePoint();
-							tpoint5->x=newPoints_1[8];
-							tpoint5->y=newPoints_1[9];
-							newSeg2->set_startPoint(tpoint5);
-							tpoint6=new ShapePoint();
-							tpoint6->x=newPoints_2[2];
-							tpoint6->y=newPoints_2[3];
-							newSeg2->set_controlPoint(tpoint6);
-							tpoint7=new ShapePoint();
-							tpoint7->x=newPoints_2[4];
-							tpoint7->y=newPoints_2[5];
-							newSeg2->set_endPoint(tpoint7);
-							newSeg2->set_hole_idx(seg->get_this_hole_idx());
-							newSeg3= new AWDPathSegment();
-							newSeg3->set_edgeType(seg->get_edgeType());
-							tpoint8=new ShapePoint();
-							tpoint8->x=newPoints_2[4];
-							tpoint8->y=newPoints_2[5];
-							newSeg3->set_startPoint(tpoint8);
-							tpoint9=new ShapePoint();
-							tpoint9->x=newPoints_2[6];
-							tpoint9->y=newPoints_2[7];
-							newSeg3->set_controlPoint(tpoint9);
-							newSeg3->set_hole_idx(seg->get_this_hole_idx());
-							tpoint10=new ShapePoint();
-							tpoint10->x=newPoints_2[8];
-							tpoint10->y=newPoints_2[9];
-							newSeg3->set_endPoint(tpoint10);
-							seg->set_originalSegment(1);
-							newSeg1->set_originalSegment(2);
-							newSeg2->set_originalSegment(2);
-							newSeg3->set_originalSegment(3);
-
-							newPath.push_back(seg);
-							newPath.push_back(newSeg1);
-							newPath.push_back(newSeg2);
-							newPath.push_back(newSeg3);
-							newPoints_1.clear();
-							newPoints_2.clear();
-						}
-					}
-					// set output to true, so we know that overlapping had existed...
-					removed_overlapping=true;
-				}
-			}
-			// this is a linear Path...add to output...
-			else{
-				newPath.push_back(seg);
-			}
-			segCnt++;
-		}
-
-		if(removed_overlapping){
-			removed_overlapping_all=true;
-		}
-		newAllPathes.push_back(newPath);
-		pathCnt++;
-	}
-	// update the lists
-	if(!removed_overlapping_all){		
-		newAllPathes.clear();
-		return false;
-	}
-	all_segments.clear();
-	for(vector<AWDPathSegment*> pathSeg : newAllPathes){
-		for (AWDPathSegment* newSeg : pathSeg){
-			newSeg->set_subdivide(false);
-		}
-		all_segments.push_back(pathSeg);
-	}
-	newAllPathes.clear();
-	return true;
 }
 
 bool ShapeEncoder::PointInPath(double x, double y)
@@ -605,6 +580,35 @@ bool ShapeEncoder::PointInPath(double x, double y)
             }
             j = i;
         }
+   return oddNodes;
+}
+bool ShapeEncoder::PointInTri(double x, double y, double x1, double y1, double x2, double y2,double x3, double y3)
+{
+		
+	FCM::Result res;		
+	bool oddNodes = false;
+	//Utils::Trace(GetCallback(), "check points %f vs %f\n", newPoints[i]->x, newPoints[i]->y);
+    if (((y1 < y) && (y3 >= y))||((y3 < y) && (y1 >= y)))
+    {
+		if ((x1 + (y - y1)/(y3 - y1)*(x3 - x1)) < x)
+		{
+             oddNodes = !oddNodes;
+        }
+	}
+    if (((y2 < y) && (y1 >= y))||((y1 < y) && (y2 >= y)))
+    {
+		if ((x2 + (y - y2)/(y1 - y2)*(x1 - x2)) < x)
+		{
+             oddNodes = !oddNodes;
+        }
+	}
+    if (((y3 < y) && (y2 >= y))||((y2 < y) && (y3 >= y)))
+    {
+		if ((x3 + (y - y3)/(y2 - y3)*(x2 - x3)) < x)
+		{
+             oddNodes = !oddNodes;
+        }
+	}
    return oddNodes;
 }
 bool ShapeEncoder::PointInHole(int holeIdx, double x, double y)
@@ -630,33 +634,54 @@ bool ShapeEncoder::PointInHole(int holeIdx, double x, double y)
 }
 bool
 ShapeEncoder::tris_intersecting(ShapePoint * a1, ShapePoint* a2, ShapePoint * a3, ShapePoint * b1, ShapePoint * b2, ShapePoint * b3)
-{
-	
-	if(!test_bounding_box(a1, a2, a3, b1, b2, b3))	return false;	
+{	
+	//allready tested for bounding box (with precalculated bounds...)
+	//if(!test_bounding_box(a1, a2, a3, b1, b2, b3))	return false;	
 	//AwayJS::Utils::Trace(m_pCallback, "		triangle BoundingBox intersect!!\n");
 	
 	// we only want to check if the control-point of a curve is inside another curve
-	if(point_in_tr(a2, b1, b2, b3)) return true;
+	//if(point_in_tr(a2, b1, b2, b3)) return true;
 	//AwayJS::Utils::Trace(m_pCallback, "		Point 1 not in tri!!\n");
+	//if(PointInTri(b2->x, b2->y,a1->x, a1->y,a2->x, a2->y,a3->x, a3->y)) return true;
+	//if(PointInTri(b1->x, b1->y,a1->x, a1->y,a2->x, a2->y,a3->x, a3->y)) return true;
+	//if(PointInTri(b3->x, b3->y,a1->x, a1->y,a2->x, a2->y,a3->x, a3->y)) return true;
 	if(point_in_tr(b2, a1, a2, a3)) return true;
-	//AwayJS::Utils::Trace(m_pCallback, "		Point not in tri!!\n");
-	/*
-	if(point_in_tr(a1, b1, b2, b3)) return true;
 	if(point_in_tr(b1, a1, a2, a3)) return true;
-	if(point_in_tr(a3, b1, b2, b3)) return true;
-	if(point_in_tr(b3, a1, a2, a3)) return true;*/
-	if(line_intersect(a1, a2, b1, b2)) return true;
+	if(point_in_tr(b3, a1, a2, a3)) return true;
+	//AwayJS::Utils::Trace(m_pCallback, "		Point not in tri!!\n");
+	
+	bool base_intersect=false;
+	if(doIntersect(a1, a3, b1, b2)){
+		base_intersect=true;
+	}
+	else if(doIntersect(a1, a3, b2, b3)){
+		base_intersect=true;
+	}
+	else if(doIntersect(a1, a3, b1, b3)){
+		base_intersect=true;
+	}
+	/*
+	if(doIntersect(a1, a2, b2, b3)&&(!base_intersect)) return true;
+	if(doIntersect(a1, a2, b1, b2)&&(!base_intersect)) return true;
+	if(doIntersect(a1, a2, b3, b1)&&(!base_intersect)) return true;
+	if(doIntersect(a2, a3, b1, b2)&&(!base_intersect)) return true;
+	if(doIntersect(a2, a3, b2, b3)&&(!base_intersect)) return true;
+	if(doIntersect(a2, a3, b3, b1)&&(!base_intersect)) return true;
+	*/
+	
+	if(doIntersect(a1, a2, b2, b3)) return true;
+	if(doIntersect(a1, a2, b1, b2)) return true;
+	if(doIntersect(a1, a2, b3, b1)) return true;
+	if(doIntersect(a2, a3, b1, b2)) return true;
+	if(doIntersect(a2, a3, b2, b3)) return true;
+	if(doIntersect(a2, a3, b3, b1)) return true;
+	
+
+	//if((point_in_tr(a1, b1, b2, b3)&&(!base_intersect)) return true;
+	//if(point_in_tr(a3, b1, b2, b3)) return true;
 	//AwayJS::Utils::Trace(m_pCallback, "		line1 not in tri!!\n");
-	if(line_intersect(a1, a2, b2, b3)) return true;
 	//AwayJS::Utils::Trace(m_pCallback, "		line1 not in tri!!\n");
-	if(line_intersect(a1, a2, b3, b1)) return true;
 	//AwayJS::Utils::Trace(m_pCallback, "		line1 not in tri!!\n");
-	if(line_intersect(a2, a3, b1, b2)) return true;
-	if(line_intersect(a2, a3, b2, b3)) return true;
-	if(line_intersect(a2, a3, b3, b1)) return true;
-	if(line_intersect(a3, a1, b1, b2)) return true;
-	if(line_intersect(a3, a1, b2, b3)) return true;
-	if(line_intersect(a3, a1, b3, b1)) return true;
 	//AwayJS::Utils::Trace(m_pCallback, "		No lines intersect\n");
 	return false;
 
@@ -732,7 +757,6 @@ ShapeEncoder::line_intersect(ShapePoint * p1, ShapePoint * p2, ShapePoint * p3, 
 	// If d is zero, there is no intersection
 	if (d == 0) return false;
 	
-	 AwayJS::Utils::Trace(m_pCallback, "aha\n");
 												
 	// Get the x and y
 	float pre = (x1*y2 - y1*x2);

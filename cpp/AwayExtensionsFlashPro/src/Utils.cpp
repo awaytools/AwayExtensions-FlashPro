@@ -43,6 +43,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <iostream>
+//#include <crtdbg.h>
 
 /* -------------------------------------------------- Constants */
 #ifdef _WINDOWS
@@ -451,52 +452,34 @@ namespace AwayJS
     }
 	
 //CopyFile is a simple function that copies a file from arg1 to arg2
-int Utils::CopyOneFile(std::string initialFilePath, std::string outputFilePath)
+int Utils::CopyOneFile(std::string initialFilePath, std::string outputFilePath, FCM::PIFCMCallback pCallback)
 {
-
-#ifdef _WINDOWS
-	std::ifstream initialFile(initialFilePath.c_str(), std::ifstream::binary);
-	std::ofstream outputFile(outputFilePath.c_str(), std::ofstream::binary);
-	//defines the size of the buffer
-	initialFile.seekg(0, std::ifstream::end);
-	long fileSize = initialFile.tellg();
-	//Requests the buffer of the predefined size
+    std::ifstream inFile(initialFilePath.c_str(), std::ifstream::in | std::ifstream::binary);
+    std::ofstream outFile(outputFilePath.c_str(), std::ofstream::out | std::ofstream::binary);
+    //FILE* outFile= fopen (outputFilePath.c_str(), "wb");
     
-    
-	//As long as both the input and output files are open...
-	if(initialFile.is_open() && outputFile.is_open())
-	{
-		char * buffer = new char[fileSize];
-		//Determine the file's size
-		//Then starts from the beginning
-		initialFile.seekg(0, std::ifstream::beg);
-		//Then read enough of the file to fill the buffer
-		initialFile.read((char*)buffer, fileSize);
-		//And then write out all that was read
-		outputFile.write((char*)buffer, fileSize);
-		delete[] buffer;
-	}
-#else
-	std::ifstream initialFile(initialFilePath.c_str(), std::fstream::binary);
-	std::ofstream outputFile(outputFilePath.c_str(), std::fstream::trunc|std::fstream::binary);
-    outputFile << initialFile.rdbuf();
-    
-    
-#endif
-	//If there were any problems with the copying process, let the user know
-    if(!outputFile.is_open())
-	{
-		//cout<<"I couldn't open "<<outputFilePath<<" for copying!\n";
-		return 0;
-	}
-	else if(!initialFile.is_open())
-	{
-		//cout<<"I couldn't open "<<initialFilePath<<" for copying!\n";
-		return 0;
-	}
-		
-	initialFile.close();
-	outputFile.close();
+    char *buffer = NULL;
+    long length = 0;
+    if(!inFile){
+		Utils::Trace(pCallback, "\ninFile not found = !\n\n");
+    }
+    if(!outFile){
+		Utils::Trace(pCallback, "\noutFile not created = !\n\n");
+    }
+    if ((inFile)&&(outFile))
+    {
+        inFile.seekg (0, inFile.end);
+        length = (long)inFile.tellg();
+        
+		Utils::Trace(pCallback, "\nlength: %d !\n\n",length);
+        inFile.seekg (0, inFile.beg);
+        buffer = new char [length + 1];
+        inFile.read (buffer, length);
+        buffer[length] = 0;
+		outFile.write((char*)buffer, length);
+    }
+    inFile.close();
+    outFile.close();
 
 	return 1;
 }

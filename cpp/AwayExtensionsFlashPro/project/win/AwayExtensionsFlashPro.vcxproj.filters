@@ -139,6 +139,15 @@
     <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\util.h">
       <Filter>Header\libAWD2D</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\TimeLineEncoder.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ShapePool.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\settings.h">
+      <Filter>Header\libAWD2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\DocType.cpp">
@@ -256,6 +265,15 @@
       <Filter>Source\libAWD2D</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\util.cc">
+      <Filter>Source\libAWD2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TimeLineEncoder.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShapePool.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\settings.cc">
       <Filter>Source\libAWD2D</Filter>
     </ClCompile>
   </ItemGroup>

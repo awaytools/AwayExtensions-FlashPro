@@ -26,7 +26,6 @@
 #define PUBLISHER_H_
 
 #include <vector>
-
 #include "Version.h"
 #include "FCMTypes.h"
 #include "FCMPluginInterface.h"
@@ -43,9 +42,16 @@
 
 #include "OutputWriter.h"
 #include "awd.h"
-
 /* -------------------------------------------------- Forward Decl */
 
+#ifdef _DEBUG
+	#include <stdlib.h>
+	#include <crtdbg.h>
+   #ifndef DBG_NEW
+      #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+      #define new DBG_NEW
+   #endif
+#endif  // _DEBUG
 using namespace FCM;
 using namespace Publisher;
 using namespace Exporter::Service;
@@ -144,7 +150,7 @@ namespace AwayJS
 
     private:
 		
-		void GenerateFonts(DOM::PIFLADocument pFlaDocument, ResourcePalette* pResPalette);
+		void GenerateFonts(DOM::PIFLADocument pFlaDocument, ResourcePalette* pResPalette, AWD* awd);
         bool ReadString(
             const FCM::PIFCMDictionary pDict, 
             FCM::StringRep8 key, 
@@ -226,7 +232,7 @@ namespace AwayJS
 
         FCM::Result ExportStroke(DOM::FrameElement::PIShape pIShape);
 
-        FCM::Result ExportStrokeForFont(DOM::FrameElement::PIShape pIShape);
+        FCM::Result ExportStrokeForFont(DOM::FrameElement::PIShape pIShape, AWDFontShape*);
 
 		bool PointInPolygon(double x, double y,  std::vector<AWDPathSegment*> );
 

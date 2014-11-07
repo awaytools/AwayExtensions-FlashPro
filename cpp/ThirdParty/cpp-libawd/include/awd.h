@@ -20,6 +20,8 @@ using namespace std;
 #include "shape2Dtimeline.h"
 #include "audio.h"
 #include "fonts.h"
+#include "settings.h"
+//#include <crtdbg.h>
 
 #define AWD_STREAMING               0x1
 #define AWD_TEXTUREATLAS_LIMIT              8192
@@ -27,6 +29,7 @@ using namespace std;
 class AWD
 {
     private:
+		AWDExporterSettings* exporterSettings;
         // File header fields
         awd_uint8 major_version;
         awd_uint8 minor_version;
@@ -48,6 +51,7 @@ class AWD
         AWDBlockList * text_blocks;
         AWDBlockList * font_blocks;
         AWDBlockList * audio_blocks;
+        AWDBlockList * textFormat_blocks;
 
         AWDBlockList * shape2Dblocks;
         AWDBlockList * shapeFillBlocks;
@@ -70,11 +74,11 @@ class AWD
         void check_exported_blocks(AWDBlockList *);
 
     public:
-        AWD(BlockSettings *, string&);
+        AWD();
         ~AWD();
-        awd_uint32 flush();
+        awd_uint32 flush(std::string&);
         awd_uint32 write_blocks_to_file(AWDBlockList *);
-
+		
         bool has_flag(int);
 
         static const int VERSION_MAJOR;
@@ -87,14 +91,16 @@ class AWD
         int count_all_valid_blocks();
         void set_out_path(string& outputPath);
 		
+		AWDExporterSettings* getExporterSettings();
         void add_root_scene(AWDBlock *);
         void add_texture(AWDBitmapTexture *);
 		void add_shape2Dblock(AWDShape2D *);
 		void add_shapeFillBlock(AWDShape2DFill *);
 		void add_timelineBlock(AWDShape2DTimeline *);
 		void add_textBlock(AWDTextElement *);
-		void add_fontBlock(AWDFontShapes *);
+		void add_fontBlock(AWDFont *);
 		void add_audioBlock(AWDAudio *);
+		void add_textFormatBlock(AWDTextFormat *);
 		
 		void get_awd_blocks_for_objIDs();
         void add_namespace(AWDNamespace *);
@@ -107,14 +113,19 @@ class AWD
         AWDBlockList * get_text_blocks();
         AWDBlockList * get_font_blocks();
         AWDBlockList * get_audio_blocks();
-		AWDBitmapTexture * get_texture(string& );
-		AWDAudio *		get_audio(string& );
-		AWDFontShapes *	get_font_shapes(string& );
-		AWDTextElement * get_text(string& );
-        AWDShape2DFill * get_solid_fill(awd_color);
-        AWDShape2DFill * get_bitmap_fill(string& );
-        AWDShape2DFill * get_linear_gradient_fill();
-        AWDShape2DFill * get_radial_gradient_fill();
+        AWDBlockList * get_text_format_blocks();
+
+		AWDBitmapTexture *	get_texture(string& );
+		AWDAudio *			get_audio(string& );
+		AWDFont *			get_font_shapes(string& );
+		AWDTextElement *	get_text(string& );
+		AWDTextFormat *		get_text_format(string&);
+        AWDShape2DFill *	get_solid_fill(awd_color);
+        AWDShape2DFill *	get_bitmap_fill(string& );
+        AWDShape2DFill *	get_linear_gradient_fill();
+        AWDShape2DFill *	get_radial_gradient_fill();
+		AWDShape2DTimeline *	get_timeline(string&);
+        void create_TextureAtlas(string&);
         
 };
 

@@ -45,7 +45,7 @@ AWDFileWriter::writeUINT8(awd_uint8 val)
 void
 AWDFileWriter::writeBytes(awd_uint8* val, int length)
 {
-    fwrite(reinterpret_cast<const char*>(val), length, 1, this->file);
+    fwrite(reinterpret_cast<const char*>(val), sizeof(awd_uint8), length, this->file);
 	fflush (this->file);
 }
 void

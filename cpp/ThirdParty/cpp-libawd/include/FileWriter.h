@@ -7,6 +7,8 @@
 #include <string>
 //#include "awd.h"
 #include "awd_types.h"
+
+//#include <crtdbg.h>
 using namespace std;
 class AWDFileWriter
 {

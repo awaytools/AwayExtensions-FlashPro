@@ -148,7 +148,7 @@ vector<vector<AWDPathSegment*> > FontPathShape::remove_intersecting()
 						//AwayJS::Utils::Trace(m_pCallback, "Check POINS\n");
 						if((start->x==lstart->x)&&(start->y==lstart->y)){
 							//AwayJS::Utils::Trace(m_pCallback, "POINS EQUAL 1\n");
-							#if 0
+							
 							removed_overlapping=true;
 							removed_overlapping_path=true;
 							vector<AWDPathSegment*> path_1;
@@ -163,12 +163,11 @@ vector<vector<AWDPathSegment*> > FontPathShape::remove_intersecting()
 							vector<AWDPathSegment*> path_2;
 							for(tmpCnt=segCnt;tmpCnt<segCnt2; tmpCnt++){
 								path_2.push_back(returned_paths[pathCnt][tmpCnt]);
-							}
-                            #endif
+							}*/
 						//}
 						//else if((end->x==lstart->x)&&(end->y==lstart->y)){
 							//AwayJS::Utils::Trace(m_pCallback, "POINS EQUAL 2\n");
-                            #if 0
+							/*
 							removed_overlapping=true;
 							removed_overlapping_path=true;
 							vector<AWDPathSegment*> path_1;
@@ -183,12 +182,11 @@ vector<vector<AWDPathSegment*> > FontPathShape::remove_intersecting()
 							vector<AWDPathSegment*> path_2;
 							for(tmpCnt=segCnt+1;tmpCnt<segCnt2; tmpCnt++){
 								path_2.push_back(returned_paths[pathCnt][tmpCnt]);
-							}
-                            #endif
+							}*/
 						//}
 						//else if((end->x==lend->x)&&(end->y==lend->y)){
 							//AwayJS::Utils::Trace(m_pCallback, "POINS EQUAL 3\n");
-							#if 0
+							/*
 							removed_overlapping=true;
 							removed_overlapping_path=true;
 							vector<AWDPathSegment*> path_1;
@@ -202,13 +200,12 @@ vector<vector<AWDPathSegment*> > FontPathShape::remove_intersecting()
 							vector<AWDPathSegment*> path_2;
 							for(tmpCnt=segCnt+1;tmpCnt<=segCnt2; tmpCnt++){
 								path_2.push_back(returned_paths[pathCnt][tmpCnt]);
-							}
-                            #endif
+							}*/
 						//}
 
 						//else if((start->x==lend->x)&&(start->y==lend->y)){
 							//AwayJS::Utils::Trace(m_pCallback, "POINS EQUAL 4\n");
-							#if 0
+							/*
 							removed_overlapping=true;
 							removed_overlapping_path=true;
 							vector<AWDPathSegment*> path_1;
@@ -222,8 +219,8 @@ vector<vector<AWDPathSegment*> > FontPathShape::remove_intersecting()
 							vector<AWDPathSegment*> path_2;
 							for(tmpCnt=segCnt;tmpCnt<=segCnt2; tmpCnt++){
 								path_2.push_back(returned_paths[pathCnt][tmpCnt]);
-							}
-                            #endif
+							}*/
+							/*
 						}
 
 						if(test_bounding_box_lines(start, end, lstart, lend)){

@@ -133,6 +133,7 @@ typedef enum {
     SHAPE2D_TIMELINE=133,
     TEXT_ELEMENT=134,
     FONT=135,
+    FORMAT=136,
     // Misc
     COMMAND=253,
     NAMESPACE=254,

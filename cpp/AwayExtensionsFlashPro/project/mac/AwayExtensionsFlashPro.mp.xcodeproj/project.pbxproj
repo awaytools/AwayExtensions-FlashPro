@@ -43,6 +43,10 @@
 		B89C9A9719DB45B3002897FD /* PublisherUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89C9A9319DB45B3002897FD /* PublisherUtils.cpp */; };
 		B89C9A9819DB45B3002897FD /* RessourcePalette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89C9A9419DB45B3002897FD /* RessourcePalette.cpp */; };
 		B89C9A9919DB45B3002897FD /* TimeLineBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89C9A9519DB45B3002897FD /* TimeLineBuilder.cpp */; };
+		B8B2ECE21A084ED300944FA3 /* ShapePool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8B2ECE01A084ED300944FA3 /* ShapePool.cpp */; };
+		B8B2ECE31A084ED300944FA3 /* TimeLineEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8B2ECE11A084ED300944FA3 /* TimeLineEncoder.cpp */; };
+		B8B2ECE81A084F1300944FA3 /* settings.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B2ECE61A084F1300944FA3 /* settings.cc */; };
+		B8B2ECE91A084F1300944FA3 /* texturepacker.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8B2ECE71A084F1300944FA3 /* texturepacker.cc */; };
 		"a59df84d-bfae-3c34-9aa7-e918143f6c55" /* MyXmlParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "9161bd95-29d7-3842-bdb6-007e7cbeb5aa" /* MyXmlParser.cpp */; };
 		"f2050b8d-f453-3837-9eb3-d3d851feb622" /* OutputWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "941a5804-c71a-3bbb-9824-390135d752e4" /* OutputWriter.cpp */; };
 /* End PBXBuildFile section */
@@ -122,6 +126,12 @@
 		B89C9A9319DB45B3002897FD /* PublisherUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PublisherUtils.cpp; sourceTree = "<group>"; };
 		B89C9A9419DB45B3002897FD /* RessourcePalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RessourcePalette.cpp; sourceTree = "<group>"; };
 		B89C9A9519DB45B3002897FD /* TimeLineBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLineBuilder.cpp; sourceTree = "<group>"; };
+		B8B2ECE01A084ED300944FA3 /* ShapePool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShapePool.cpp; sourceTree = "<group>"; };
+		B8B2ECE11A084ED300944FA3 /* TimeLineEncoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLineEncoder.cpp; sourceTree = "<group>"; };
+		B8B2ECE41A084EFA00944FA3 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
+		B8B2ECE51A084EFA00944FA3 /* texturepacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texturepacker.h; sourceTree = "<group>"; };
+		B8B2ECE61A084F1300944FA3 /* settings.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = settings.cc; sourceTree = "<group>"; };
+		B8B2ECE71A084F1300944FA3 /* texturepacker.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texturepacker.cc; sourceTree = "<group>"; };
 		F5977F0C09B7D3B80058A43E /* project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = project.xcconfig; path = ../AwayExtensionsFlashPro.xcconfigs/project.xcconfig; sourceTree = "<group>"; };
 		F5977F0F09B7D4150058A43E /* project_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = project_debug.xcconfig; path = ../AwayExtensionsFlashPro.xcconfigs/project_debug.xcconfig; sourceTree = "<group>"; };
 		F5977F1109B7D41E0058A43E /* project_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = project_release.xcconfig; path = ../AwayExtensionsFlashPro.xcconfigs/project_release.xcconfig; sourceTree = "<group>"; };
@@ -198,6 +208,8 @@
 		B82A6181199E988100F7802D /* libawd2D_src */ = {
 			isa = PBXGroup;
 			children = (
+				B8B2ECE61A084F1300944FA3 /* settings.cc */,
+				B8B2ECE71A084F1300944FA3 /* texturepacker.cc */,
 				B815717219C9E3200058F45B /* lodepng.cpp */,
 				B83DE99919BF69CF0005BE5D /* audio.cc */,
 				B83DE99A19BF69CF0005BE5D /* fonts.cc */,
@@ -223,6 +235,8 @@
 		B82A61AC199E989200F7802D /* libawd2D_include */ = {
 			isa = PBXGroup;
 			children = (
+				B8B2ECE41A084EFA00944FA3 /* settings.h */,
+				B8B2ECE51A084EFA00944FA3 /* texturepacker.h */,
 				B815717419C9E3290058F45B /* lodepng.h */,
 				B83DE99719BF69BB0005BE5D /* audio.h */,
 				B83DE99819BF69BB0005BE5D /* fonts.h */,
@@ -322,6 +336,8 @@
 		"aed4d327-1bab-36b0-bc9d-707e1564a2c0" /* src */ = {
 			isa = PBXGroup;
 			children = (
+				B8B2ECE01A084ED300944FA3 /* ShapePool.cpp */,
+				B8B2ECE11A084ED300944FA3 /* TimeLineEncoder.cpp */,
 				B89C9A9219DB45B3002897FD /* FontPathShape.cpp */,
 				B89C9A9319DB45B3002897FD /* PublisherUtils.cpp */,
 				B89C9A9419DB45B3002897FD /* RessourcePalette.cpp */,
@@ -479,12 +495,16 @@
 				B82A6193199E988100F7802D /* awd.cc in Sources */,
 				B82A6197199E988100F7802D /* block.cc in Sources */,
 				B82A619B199E988100F7802D /* meta.cc in Sources */,
+				B8B2ECE91A084F1300944FA3 /* texturepacker.cc in Sources */,
+				B8B2ECE31A084ED300944FA3 /* TimeLineEncoder.cpp in Sources */,
 				B82A61A7199E988100F7802D /* stream.cc in Sources */,
 				B82A61A5199E988100F7802D /* util.cc in Sources */,
+				B8B2ECE21A084ED300944FA3 /* ShapePool.cpp in Sources */,
 				B880637619C4F81A00AAAB38 /* ShapeEncoderEncode.cpp in Sources */,
 				B82A61A1199E988100F7802D /* shape2D.cc in Sources */,
 				B82A61A3199E988100F7802D /* shape2Dfill.cc in Sources */,
 				B89C9A9119DB45A3002897FD /* FontGenerator.cpp in Sources */,
+				B8B2ECE81A084F1300944FA3 /* settings.cc in Sources */,
 				B88830B619A97EFD00BF8C67 /* FileWriter.cc in Sources */,
 				"39bc731b-2e23-3bd5-8a52-4c4fdaea828f" /* AwayExtensionsFlashPro_Precomp.pch in Sources */,
 				B880637719C4F81A00AAAB38 /* ShapeEncoderUtils.cpp in Sources */,

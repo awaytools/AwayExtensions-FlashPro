@@ -3,6 +3,7 @@
 #include <cstdio>
 #include "util.h"
 #include "awd_types.h"
+//#include <crtdbg.h>
 
 awd_float64 *
 awdutil_id_mtx4x4(awd_float64 *mtx)

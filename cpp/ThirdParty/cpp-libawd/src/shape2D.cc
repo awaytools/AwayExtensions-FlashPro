@@ -22,26 +22,282 @@ ShapePoint::~ShapePoint()
 {
 }
 static int RESSOURCE_LIMIT = 0xffff;
+
+
+AWDPathIntersection::AWDPathIntersection(AWDPathSegment* pathSeg1, AWDPathSegment* pathSeg2)
+{
+	this->state=UNCHECKED;
+	this->pathSeg1=pathSeg1;
+	this->pathSeg2=pathSeg2;
+
+}
+AWDPathIntersection::~AWDPathIntersection()
+{
+}
+
+AWD_intersect_state AWDPathIntersection::get_state()
+{
+	return this->state;
+}
+AWDPathSegment* AWDPathIntersection::get_pathSeg1()
+{
+	return this->pathSeg1;
+}
+AWDPathSegment* AWDPathIntersection::get_pathSeg2()
+{
+	return this->pathSeg2;
+}
+void AWDPathIntersection::set_state(AWD_intersect_state state)
+{
+	this->state=state;
+}
+bool AWDPathIntersection::compare(AWDPathSegment* pathSeg1, AWDPathSegment* pathSeg2)
+{
+	if((pathSeg1==this->pathSeg1)&&(pathSeg2==this->pathSeg2))
+		return true;
+	if((pathSeg2==this->pathSeg1)&&(pathSeg1==this->pathSeg2))
+		return true;
+	return false;
+}
 AWDPathSegment::AWDPathSegment() 
 {
-    this->subdivide = false;
+	size=0;
+	length=0;
+	this->intersects=true;
+    this->subdivide = true;
     this->startPoint = NULL;
     this->endPoint = NULL;
     this->controlPoint = NULL;
 	this->edgeType=OUTTER_EDGE;
 	this->hole_idx=0;
 	this->originalSegment=0;
+	this->deleteIt=false;
+	this->curviness=-1;
 }
 AWDPathSegment::~AWDPathSegment()
 {
 	delete this->startPoint;
 	delete this->endPoint;
 	delete this->controlPoint;	
+	int pathCnt=0;
+	for(AWDPathSegment* segment:subdividedPath){
+		if(segment->get_deleteIt())
+			delete segment;
+	}
+}
+
+void AWDPathSegment::clear_subdivison() {
+	subdividedPath.clear();
+}
+double 
+Sign(ShapePoint * p1, ShapePoint * p2, ShapePoint * p3)
+{
+  return (p1->x - p3->x) * (p2->y - p3->y) - (p2->x - p3->x) * (p1->y - p3->y);
+}
+double AWDPathSegment::get_curviness() {
+	if(curviness<0.0){		
+		double middlex=startPoint->x+((endPoint->x-startPoint->x)*0.5);
+		double middley=startPoint->y+((endPoint->y-startPoint->y)*0.5);
+		double controlLength=sqrt(((controlPoint->x-middlex)*(controlPoint->x-middlex))+((controlPoint->y-middley)*(controlPoint->y-middley)));
+		curviness=controlLength/get_length();
+	}
+	return curviness;
+}
+double AWDPathSegment::get_length() {
+	if(length==0){
+		length=sqrt(((startPoint->x-endPoint->x)*(startPoint->x-endPoint->x))+((startPoint->y-endPoint->y)*(startPoint->y-endPoint->y)));
+	}
+	return length;
+}
+double AWDPathSegment::get_size() {
+	if(size==0){
+		if(edgeType!=OUTTER_EDGE){
+			double first=sqrt(((startPoint->x-endPoint->x)*(startPoint->x-endPoint->x))+((startPoint->y-endPoint->y)*(startPoint->y-endPoint->y)));
+			double second=sqrt(((startPoint->x-controlPoint->x)*(startPoint->x-controlPoint->x))+((startPoint->y-controlPoint->y)*(startPoint->y-controlPoint->y)));
+			double third=sqrt(((controlPoint->x-endPoint->x)*(controlPoint->x-endPoint->x))+((controlPoint->y-endPoint->y)*(controlPoint->y-endPoint->y)));
+			double s = (first+second+third)/2;
+			size = sqrt(s*(s-first)*(s-second)*(s-third));
+		}
+	}
+	return size;
+}
+
+AWDPathIntersection* AWDPathSegment::find_path_intersections(AWDPathSegment* path1, AWDPathSegment* path2) {
+	for(AWDPathIntersection* intersect:path_intersections){
+		if(intersect->compare(path1, path2))
+			return intersect;
+	}
+	return NULL;
+}
+void AWDPathSegment::add_path_intersections(AWDPathIntersection* newIntersection) {
+
+	path_intersections.push_back(newIntersection);
+}
+vector<AWDPathIntersection*> AWDPathSegment::get_path_intersections() {
+	return path_intersections;
+}
+
+double AWDPathSegment::maximum(double x, double y, double z) {
+	double max_val = x; 
+	if (y > max_val) max_val = y;
+	if (z > max_val) max_val = z;
+	return max_val; 
+} 
+double AWDPathSegment::minimum(double x, double y, double z) {
+	double min_val = x; 
+	if (y < min_val) min_val = y;
+	if (z < min_val) min_val = z;
+	return min_val; 
+} 
+vector<double>
+AWDPathSegment::get_bounds(){
+	if(bounds.size()==0){
+		if(this->edgeType==OUTTER_EDGE){
+			if(this->startPoint->x>this->endPoint->x){
+				bounds.push_back(this->endPoint->x);
+				bounds.push_back(this->startPoint->x);
+			}
+			else{
+				bounds.push_back(this->startPoint->x);
+				bounds.push_back(this->endPoint->x);
+			}
+			if(this->startPoint->y>this->endPoint->y){
+				bounds.push_back(this->endPoint->y);
+				bounds.push_back(this->startPoint->y);
+			}
+			else{
+				bounds.push_back(this->startPoint->y);
+				bounds.push_back(this->endPoint->y);
+			}
+		}
+		else{
+			bounds.push_back(minimum(this->startPoint->x, this->endPoint->x, this->controlPoint->x));
+			bounds.push_back(maximum(this->startPoint->x, this->endPoint->x, this->controlPoint->x));
+			bounds.push_back(minimum(this->startPoint->y, this->endPoint->y, this->controlPoint->y));
+			bounds.push_back(maximum(this->startPoint->y, this->endPoint->y, this->controlPoint->y));
+		}
+	}
+	return bounds;
 }
 ShapePoint*
 AWDPathSegment::get_startPoint(){
 	return this->startPoint;
 }
+vector<AWDPathSegment*>
+AWDPathSegment::get_subdivided_path()
+{
+	if(subdividedPath.size()==0)subdividedPath.push_back(this);
+	return subdividedPath;
+}
+
+bool AWDPathSegment::get_intersects()
+{
+	return this->intersects;
+}
+void AWDPathSegment::set_intersects(bool intersects)
+{
+	this->intersects=intersects;
+}
+vector<double>
+AWDPathSegment::subDivideCurve(double startx, double starty, double cx, double cy, double endx, double endy)
+  {
+   double c1x = startx + (cx - startx) * 0.5;
+   double c1y = starty + (cy - starty) * 0.5;
+   
+   double c2x = cx + (endx - cx) * 0.5;
+   double c2y = cy + (endy - cy) * 0.5;
+   
+   double ax = c1x + (c2x - c1x) * 0.5;
+   double ay = c1y + (c2y - c1y) * 0.5;
+   vector<double> resultVec;
+   resultVec.push_back(startx);
+   resultVec.push_back(starty);
+   resultVec.push_back(c1x);
+   resultVec.push_back(c1y);
+   resultVec.push_back(ax);
+   resultVec.push_back(ay);
+   resultVec.push_back(c2x);
+   resultVec.push_back(c2y);
+   resultVec.push_back(endx);
+   resultVec.push_back(endy);
+   return resultVec;
+  }
+
+void
+AWDPathSegment::set_deleteIt(bool deleteIt)
+{
+	this->deleteIt=deleteIt;
+}
+bool
+AWDPathSegment::get_deleteIt()
+{
+	return this->deleteIt;
+}
+void
+AWDPathSegment::subdividePath()
+{
+	vector<double> newPoints;
+	vector<AWDPathSegment*> newPath;
+	AWDPathSegment* newSeg1;
+	AWDPathSegment* newSeg2;
+	ShapePoint* tpoint1;
+	ShapePoint* tpoint2;
+	ShapePoint* tpoint3;
+	ShapePoint* tpoint4;
+	ShapePoint* tpoint5;
+	ShapePoint* tpoint6;
+	if(subdividedPath.size()==0)subdividedPath.push_back(this);
+	for(AWDPathSegment* pathSeg:subdividedPath){
+		if(pathSeg->get_subdivide()){
+			newPoints=subDivideCurve(pathSeg->get_startPoint()->x, pathSeg->get_startPoint()->y, pathSeg->get_controlPoint()->x, pathSeg->get_controlPoint()->y,  pathSeg->get_endPoint()->x,  pathSeg->get_endPoint()->y);					
+		
+			newSeg1= new AWDPathSegment();
+			newSeg1->set_deleteIt(true);
+			newSeg2= new AWDPathSegment();
+			newSeg2->set_deleteIt(true);
+			tpoint1=new ShapePoint();
+			tpoint1->x=newPoints[0];
+			tpoint1->y=newPoints[1];
+			newSeg1->set_startPoint(tpoint1);
+
+			tpoint2=new ShapePoint();
+			tpoint2->x=newPoints[2];
+			tpoint2->y=newPoints[3];
+			newSeg1->set_controlPoint(tpoint2);
+
+			tpoint3=new ShapePoint();
+			tpoint3->x=newPoints[4];
+			tpoint3->y=newPoints[5];
+			newSeg1->set_endPoint(tpoint3);
+
+			tpoint4=new ShapePoint();
+			tpoint4->x=newPoints[4];
+			tpoint4->y=newPoints[5];
+			newSeg2->set_startPoint(tpoint4);
+
+			tpoint5=new ShapePoint();
+			tpoint5->x=newPoints[6];
+			tpoint5->y=newPoints[7];
+			newSeg2->set_controlPoint(tpoint5);
+
+			tpoint6=new ShapePoint();
+			tpoint6->x=newPoints[8];
+			tpoint6->y=newPoints[9];
+			newSeg2->set_endPoint(tpoint6);
+
+			newSeg1->set_edgeType(this->edgeType);
+			newSeg2->set_edgeType(this->edgeType);
+			newPath.push_back(newSeg1);
+			newPath.push_back(newSeg2);
+			newPoints.clear();
+		}
+		else{
+			newPath.push_back(pathSeg);
+		}
+	}
+	subdividedPath=newPath;
+}
+	
 void
 AWDPathSegment::set_startPoint(ShapePoint* startPoint)
 {
@@ -427,23 +683,23 @@ AWDMergedSubShape::calc_sub_length(BlockSettings * blockSettings)
 void
 AWDMergedSubShape::write_sub(AWDFileWriter * fileWriter, BlockSettings * blockSettings, double scale)
 {
-    AWDDataStream *str = NULL;
-    awd_uint32 sub_len = 0;
+    //AWDDataStream *str;
+    //awd_uint32 sub_len;
 
     // Verify byte-order
    // sub_len = this->calc_streams_length();
 
     // Write sub-mesh header
-	fileWriter->writeUINT32(sub_len);
+	//fileWriter->writeUINT32(sub_len);
     //write(fd, &sub_len, sizeof(awd_uint32));
 
   //  this->properties->write_attributes(fileWriter, blockSettings);
 
  //   str = this->first_stream;
-    while(str) {
+   /* while(str) {
         str->write_stream(fileWriter, scale);
         str = str->next;
-    }
+    }*/
 
  //   this->user_attributes->write_attributes(fileWriter, blockSettings);
 }
@@ -604,6 +860,7 @@ AWDShape2D::AWDShape2D(string& name) :
     this->last_sub = NULL;
     this->num_subs = 0;
 	this->fill=NULL;
+	this->delete_subs=true;
 		
 }
 
@@ -614,7 +871,9 @@ AWDShape2D::~AWDShape2D()
     while (cur) {
         AWDSubShape2D *next = cur->next;
         cur->next = NULL;
-        delete cur;
+		if(this->delete_subs){
+			delete cur;
+		}
         cur = next;
     }
 
@@ -635,6 +894,12 @@ vector<AWDMergedSubShape*>
 AWDShape2D::get_mergerSubShapes()
 {
 	return this->mergerSubShapes;
+}
+void
+AWDShape2D::set_delete_subs(bool delete_subs)
+{
+	this->delete_subs=delete_subs;
+
 }
 AWDBlock *
 AWDShape2D::get_fill()
@@ -702,7 +967,7 @@ AWDShape2D::get_first_sub()
  AWDMergedSubShape * 
 AWDShape2D::compare_mergerSubShapes(AWDMergedSubShape * mshape1, AWDMergedSubShape * mshape2)
  {
-	 if(true){// todo: Add the check if this can be merged based on assigned fill (assigned fill is NULL for shapes generated from fonts)
+	 if(false){// todo: Add the check if this can be merged based on assigned fill (assigned fill is NULL for shapes generated from fonts)
 		return mshape1;
 	 }
 	 return NULL;
@@ -718,19 +983,26 @@ AWDShape2D::merge_subs()
 			finalmergedShapes.push_back(mergSubShape);
 		}
 		else{
+			bool isnew=false;
 			for(AWDMergedSubShape* finalMerged : finalmergedShapes)
 			{
 				AWDMergedSubShape* mergeTarget=compare_mergerSubShapes(finalMerged, mergSubShape);
 				if(mergeTarget==NULL){
+					isnew=true;
 					// this is a new subGeometry - should not happen at the moment
 				}
 				else{
 					// merge into he found MergerSubShape
 					mergeTarget->addSubShape(mergSubShape);
 					mergSubShape->set_isMerged(true);
+					delete mergSubShape;
 				}
 
 			}
+			if(isnew){
+				finalmergedShapes.push_back(mergSubShape);
+			}
+
 		}
 		cntShapes++;
 	}

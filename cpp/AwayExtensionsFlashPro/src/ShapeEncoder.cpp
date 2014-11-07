@@ -1,17 +1,23 @@
 #include "ShapeEncoder.h"
-ShapeEncoder::ShapeEncoder(FCM::PIFCMCallback* pCallback)
+
+#ifdef _DEBUG
+	#include <stdlib.h>
+	#include <crtdbg.h>
+   #ifndef DBG_NEW
+      #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+      #define new DBG_NEW
+   #endif
+#endif  // _DEBUG
+ShapeEncoder::ShapeEncoder(FCM::PIFCMCallback* pCallback, AWD* awd)
 {
 
     m_pCallback=*pCallback;
 	string name("nameless");
-	this->awd_shape=new AWDShape2D(name);
+	this->awd=awd;
 	this->red=0.5;
 	this->green=0.5;
 	this->blue=0.5;
 	this->alpha=1.0;
-	this->outline_threshold=0.2;
-	this->save_interstect=true;
-	this->double_subdivide=true;
 	vector<AWDPathSegment *> boundary_segs;
 	all_segments.push_back(boundary_segs);
 }
@@ -33,7 +39,13 @@ ShapeEncoder::~ShapeEncoder()
 		std::vector<awd_uint32>().swap(triangles_concave_edge);
 		std::vector<awd_uint32>().swap(triangles_covex_edge);
 }
-
+void
+ShapeEncoder::reset(AWDShape2D* newShape){
+	this->awd_shape=newShape;
+	all_segments.clear();
+	vector<AWDPathSegment *> boundary_segs;
+	all_segments.push_back(boundary_segs);
+}
 AWDShape2D* 
 ShapeEncoder::get_shape(){
 	return this->awd_shape;
@@ -48,30 +60,6 @@ ShapeEncoder::set_color(double red, double green, double blue, double alpha)
 	this->alpha=alpha;
 }
 
-double
-ShapeEncoder::get_outline_threshold(){
-	return this->outline_threshold;
-}
-void
-ShapeEncoder::set_outline_threshold(double outline_threshold){
-	this->outline_threshold=outline_threshold;
-}
-bool
-ShapeEncoder::get_save_interstect(){
-	return this->save_interstect;
-}
-void
-ShapeEncoder::set_save_interstect(bool save_interstect){
-	this->save_interstect=save_interstect;
-}
-bool
-ShapeEncoder::get_double_subdivide(){
-	return this->double_subdivide;
-}
-void
-ShapeEncoder::set_double_subdivide(bool double_subdivide){
-	this->double_subdivide=double_subdivide;
-}
 void
 ShapeEncoder::add_path_segment(AWDPathSegment* newPath)
 

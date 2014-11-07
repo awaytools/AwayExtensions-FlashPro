@@ -23,6 +23,14 @@
 #include "Publisher.h"
 #include "awd.h"
 
+#ifdef _DEBUG
+	#include <stdlib.h>
+	#include <crtdbg.h>
+   #ifndef DBG_NEW
+      #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+      #define new DBG_NEW
+   #endif
+#endif  // _DEBUG
 namespace AwayJS
 {
     BEGIN_MODULE(AwayJSModule)
@@ -104,7 +112,7 @@ namespace AwayJS
     extern "C" FCMPLUGIN_IMP_EXP FCM::Result PluginShutdown()
     {
         g_AwayJSModule.finalize();
-
+		
         return FCM_SUCCESS;
     }
 

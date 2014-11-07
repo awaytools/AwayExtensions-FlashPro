@@ -5,8 +5,6 @@
 #include "block.h"
 #include "name.h"
 #include "attr.h"
-#include "block.h"
-//#include "shape2Dfill.h"
 #include <vector>
 typedef enum {
     EXTERNAL=0,

@@ -83,6 +83,14 @@
 #include "Exporter/Service/ISWFExportService.h"
 #include "Application/Service/IOutputConsoleService.h"
 
+#ifdef _DEBUG
+	#include <stdlib.h>
+	#include <crtdbg.h>
+   #ifndef DBG_NEW
+      #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+      #define new DBG_NEW
+   #endif
+#endif  // _DEBUG
 namespace AwayJS
 {
 
@@ -360,7 +368,7 @@ namespace AwayJS
 
         res = pTextStyleItem->GetFontName(&pFontName);
         ASSERT(FCM_SUCCESS_CODE(res));
-
+		
         res = pTextStyleItem->GetFontStyle(&pFontStyle);
         ASSERT(FCM_SUCCESS_CODE(res));
 
@@ -462,9 +470,9 @@ namespace AwayJS
     {
         FCM::Result res;
         FCM::FCMListPtr pFilledRegionList;
-        FCM::AutoPtr<FCM::IFCMUnknown> pUnkSRVReg;
         FCM::U_Int32 regionCount;
 		
+        FCM::AutoPtr<FCM::IFCMUnknown> pUnkSRVReg;
         GetCallback()->GetService(DOM::FLA_REGION_GENERATOR_SERVICE,pUnkSRVReg.m_Ptr);
         AutoPtr<DOM::Service::Shape::IRegionGeneratorService> pIRegionGeneratorService(pUnkSRVReg);
 		//Utils::Trace(GetCallback(), "Fill1\n");
@@ -630,7 +638,7 @@ namespace AwayJS
     }
 
 	
-    FCM::Result ResourcePalette::ExportStrokeForFont(DOM::FrameElement::PIShape pIShape)
+    FCM::Result ResourcePalette::ExportStrokeForFont(DOM::FrameElement::PIShape pIShape, AWDFontShape* fontShape)
     {
 		
         AutoPtr<FCM::IFCMUnknown> pGrad;
@@ -639,7 +647,7 @@ namespace AwayJS
         FCM::FCMListPtr pStrokeGroupList;
         FCM::U_Int32 strokeStyleCount;
         FCM::Result res;
-		/*
+		
         FCM::AutoPtr<FCM::IFCMUnknown> pUnkSRVReg;
         GetCallback()->GetService(DOM::FLA_REGION_GENERATOR_SERVICE,pUnkSRVReg.m_Ptr);
         AutoPtr<DOM::Service::Shape::IRegionGeneratorService> pIRegionGeneratorService(pUnkSRVReg);
@@ -652,21 +660,11 @@ namespace AwayJS
         res = pStrokeGroupList->Count(strokeStyleCount);
         ASSERT(FCM_SUCCESS_CODE(res));
 		//Utils::Trace(GetCallback(), "Export Stroke-groups count = %d.\n", strokeStyleCount);
-
-
-
+		
         for (FCM::U_Int32 j = 0; j < strokeStyleCount; j++)
         {
             AutoPtr<DOM::Service::Shape::IStrokeGroup> pStrokeGroup = pStrokeGroupList[j];
             ASSERT(pStrokeGroup);
-
-            //res = m_pOutputWriter->StartDefineStrokeGroup();
-            //ASSERT(FCM_SUCCESS_CODE(res));
-
-            //AutoPtr<FCM::IFCMUnknown> pStrokeStyle;
-            //pStrokeGroup->GetStrokeStyle(pStrokeStyle.m_Ptr);
-
-            //DOM::Utils::COLOR color = {};
 
             FCMListPtr pPathList;
             FCM::U_Int32 pathCount;
@@ -677,366 +675,33 @@ namespace AwayJS
             res = pPathList->Count(pathCount);
             ASSERT(FCM_SUCCESS_CODE(res));
 			
-			//Utils::Trace(GetCallback(), "Stroke-path-Count = %d.\n", pathCount);
-			bool windingBool_start=true;
-            if(pathCount>200){
-				Utils::Trace(GetCallback(), "Skipping glyph because Stroke-pathCount count is to big.");
-			}
-			else{
-				*/
-				/*
-				m_pOutputWriter->StartDefineShape();
-				std::vector<FontPathShape*> newFontPathes;
+			m_pOutputWriter->StartDefineShape();
+			std::vector<FontPathShape*> newFontPathes;
 			
-				for (FCM::U_Int32 k = 0; k < pathCount; k++)
-				{
-					DOM::Service::Shape::IPath* pPath = ( DOM::Service::Shape::IPath*)pPathList[k];
-					ASSERT(pPath);			
-					FCM::U_Int32 edgeCount;
-					FCM::FCMListPtr pEdgeList;
-
-					res = pPath->GetEdges(pEdgeList.m_Ptr);
-					ASSERT(FCM_SUCCESS_CODE(res));
-
-					res = pEdgeList->Count(edgeCount);
-				
-					//Utils::Trace(GetCallback(), "Export edgeCount-pathCount count = %d.\n", edgeCount);
-					ASSERT(FCM_SUCCESS_CODE(res));	
-					if(edgeCount>0){
-					
-						FCM::Result res;
-		
-						FCM::U_Int32 edgeCount;
-						FCM::FCMListPtr pEdgeList;
-						res = pPath->GetEdges(pEdgeList.m_Ptr);
-						ASSERT(FCM_SUCCESS_CODE(res));
-
-						res = pEdgeList->Count(edgeCount);
-						ASSERT(FCM_SUCCESS_CODE(res));
-
-					
-						double startx=0;
-						double starty=0;
-						double endx=0;
-						double endy=0;
-						std::vector<AWDPathSegment*> newSegs;
-						for (FCM::U_Int32 l = 0; l < edgeCount; l++)
-						{
-			
-							DOM::Utils::SEGMENT segment;
-							segment.structSize = sizeof(DOM::Utils::SEGMENT);
-							FCM::AutoPtr<DOM::Service::Shape::IEdge> pEdge = pEdgeList[l];			
-							res = pEdge->GetSegment(segment);
-							AWDPathSegment* newSeg=new AWDPathSegment();
-							if (segment.segmentType == DOM::Utils::LINE_SEGMENT)
-								{
-									if(l==0){
-										startx=segment.line.endPoint1.x;
-										starty=segment.line.endPoint1.y;
-									}
-									if(l==edgeCount-1){
-										endx=segment.line.endPoint2.x;
-										endy=segment.line.endPoint2.y;
-									}
-									newSeg->set_startPoint(new SimplePoint(segment.line.endPoint1.x, segment.line.endPoint1.y));	
-									newSeg->set_endPoint(new SimplePoint(segment.line.endPoint2.x, segment.line.endPoint2.y));	
-								}
-							else{
-									if(l==0){
-										startx=segment.quadBezierCurve.anchor1.x;
-										starty=segment.quadBezierCurve.anchor1.y;
-									}
-									if(l==edgeCount-1){
-										endx=segment.quadBezierCurve.anchor2.x;
-										endy=segment.quadBezierCurve.anchor2.y;
-									}
-									newSeg->set_startPoint(new SimplePoint(segment.quadBezierCurve.anchor1.x, segment.quadBezierCurve.anchor1.y));	
-									newSeg->set_endPoint(new SimplePoint(segment.quadBezierCurve.anchor2.x, segment.quadBezierCurve.anchor2.y));	
-									newSeg->set_controlPoint(new SimplePoint(segment.quadBezierCurve.control.x, segment.quadBezierCurve.control.y));	
-									newSeg->set_edgeType(CURVED_EDGE);
-							}
-							newSegs.push_back(newSeg);
-						}
-						if((startx!=endx)||(starty!=endy)){
-							Utils::Trace(GetCallback(), "PATH IS NOT CLOSED: TODO: Convert unClosed pathes into shapes and export those\n");
-						}
-						else{		
-							FCM::PIFCMCallback pCallback = GetCallback();
-							FontPathShape* newFontshape=new FontPathShape(&pCallback, newSegs, k);
-							vector<vector<AWDPathSegment*> > newShapePathes = newFontshape->remove_intersecting();
-							if(newShapePathes.size() > 0){
-								newFontPathes.push_back(newFontshape);
-								for (FCM::U_Int32 l = 1; l < newShapePathes.size(); l++){
-									vector<AWDPathSegment*> shapePath = newShapePathes[l];
-									if(shapePath.size()>2){
-										//Utils::Trace(GetCallback(), "Add segment\n");
-										FontPathShape* newFontshape2=new FontPathShape(&pCallback, shapePath, newFontPathes.size());
-										newFontPathes.push_back(newFontshape2);
-									}
-									else{
-										//Utils::Trace(GetCallback(), "Skipped invalide Path (segmentcount smaller 3)\n");
-									}
-								}
-							}
-							else{
-								Utils::Trace(GetCallback(), "PATH IS EMPTY\n");
-							}
-
-						}
-
-					}*/
-			//	}
-
-				// combine FontPathShapes (put holes into fills...)
-	/*
-					res = m_pOutputWriter->StartDefineStroke();
-					ASSERT(FCM_SUCCESS_CODE(res));
-
-					res = ExportStrokeStyle(pStrokeStyle);
-					ASSERT(FCM_SUCCESS_CODE(res));
-				
-					AutoPtr<DOM::FillStyle::ISolidFillStyle> pSolidFillStyle;
-	*/
-			/*
-				std::vector<FontPathShape*> newFontPathes2=arrangeFontPathes(newFontPathes);	
-				for (FCM::U_Int32 k = 0; k < newFontPathes2.size(); k++)
-				{	
-					std::vector<AWDPathSegment*> newSegs = newFontPathes2[k]->get_main_path();
-				
-					for (AWDPathSegment* oneSeg : newSegs)
-					{
-						m_pOutputWriter->SetAWDSegment(oneSeg);
-					}
-					std::vector<FontPathShape*> holes=newFontPathes2[k]->get_holes();
-					for (FontPathShape* fontShape : holes)
-					{		
-						m_pOutputWriter->StartDefineHole();
-						std::vector<AWDPathSegment*> newSegs2 = fontShape->get_main_path();
-						for (AWDPathSegment* oneSeg2 : newSegs2)
-						{
-							m_pOutputWriter->SetAWDSegment(oneSeg2);
-						}
-					}
-					m_pOutputWriter->EndDefineFontStroke();
-				
-				}
-				m_pOutputWriter->EndDefineShapeLetter();
-				*/
-		//	}
-		/*
-				double xNumber=0.0;
-				double yNumber=0.0;
-				double oneLine=0.0;
-				for (FCM::U_Int32 l = 0; l < edgeCount; l++)
-				{
+			for (FCM::U_Int32 k = 0; k < pathCount; k++)
+			{
+				DOM::Service::Shape::IPath* pPath = ( DOM::Service::Shape::IPath*)pPathList[k];
+				ASSERT(pPath);			
 				FCM::U_Int32 edgeCount;
 				FCM::FCMListPtr pEdgeList;
 
 				res = pPath->GetEdges(pEdgeList.m_Ptr);
 				ASSERT(FCM_SUCCESS_CODE(res));
-
+				if(k>0){
+					m_pOutputWriter->StartDefineHole();}
 				res = pEdgeList->Count(edgeCount);
-				ASSERT(FCM_SUCCESS_CODE(res));
 				ExportPath(pPath);
-					DOM::Utils::SEGMENT segment;
+				//Utils::Trace(GetCallback(), "Export edgeCount-pathCount count = %d.\n", edgeCount);
+				ASSERT(FCM_SUCCESS_CODE(res));	
+			}
+			m_pOutputWriter->EndDefineFontStroke(fontShape);
+			
+		}
 
-					segment.structSize = sizeof(DOM::Utils::SEGMENT);
-
-					FCM::AutoPtr<DOM::Service::Shape::IEdge> pEdge = pEdgeList[l];
-
-					res = pEdge->GetSegment(segment);
-					if (segment.segmentType == DOM::Utils::LINE_SEGMENT)
-					{
-						xNumber=segment.line.endPoint1.x;
-						yNumber=segment.line.endPoint1.y;
-						oneLine+=(segment.line.endPoint2.x-segment.line.endPoint1.x)*(segment.line.endPoint2.y+segment.line.endPoint1.y);	
-					}
-					else{
-						xNumber=segment.quadBezierCurve.anchor1.x;
-						yNumber=segment.quadBezierCurve.anchor1.y;
-						oneLine+=(segment.quadBezierCurve.anchor2.x-segment.quadBezierCurve.anchor1.x)*(segment.quadBezierCurve.anchor2.y+segment.quadBezierCurve.anchor1.y);	
-					}
-				}
-				bool windingBool=true;
-				if(oneLine<0){
-					windingBool=false;
-				}
-				Utils::Trace(GetCallback(), "WINDING ORDER = %f\n", oneLine);
-				if(k==0){
-					Utils::Trace(GetCallback(), "NEW filled Path\n");
-					//prevPath=pPath;
-					//windingBool_start=windingBool;
-					ExportPath(pPath);
-				}
-				else{*/
-					/*
-					//prevPath = pPathList[k-1];
-					bool isHole=PointInPolygon(xNumber, yNumber, prevPath);
-					if(isHole){
-						Utils::Trace(GetCallback(), "Hole in previous Path\n");
-						m_pOutputWriter->StartDefineHole();
-						ExportPath(pPath);
-					}
-					else{
-						prevPath=pPath;
-						m_pOutputWriter->EndDefineFill();// finalize the previous path. 
-						ExportPath(pPath);
-						Utils::Trace(GetCallback(), "NEW filled Path\n");
-					}
-					*/
-					/*
-					// same winding as first path, so this must be a new shape-element
-					if(windingBool_start==windingBool){
-						m_pOutputWriter->EndDefineFill();// finalize the previous path. 
-						ExportPath(pPath);
-						Utils::Trace(GetCallback(), "NEW filled Path\n");
-					}
-					// not same winding as first path, so this must be a hole in the previous path
-					else{
-					}
-					*/
-				
-
-              //  res = m_pOutputWriter->EndDefineStroke();
-               // ASSERT(FCM_SUCCESS_CODE(res));
-            
-
-           // res = m_pOutputWriter->EndDefineStrokeGroup();
-           // ASSERT(FCM_SUCCESS_CODE(res));
-       // }
-		
 		return FCM_SUCCESS;//res;
 		
 	}
 	
-    std::vector<FontPathShape*> ResourcePalette::arrangeFontPathes(std::vector<FontPathShape*> fontPathes)
-    {
-		FontPathShape* thisFontshapetest;
-		FontPathShape* thisFontshape;
-		int pathesCount=fontPathes.size();
-        for (FCM::U_Int32 k = 0; k < pathesCount; k++)
-        {
-			thisFontshape=fontPathes[k];
-			std::vector<AWDPathSegment*> newSegs = fontPathes[k]->get_main_path();
-			if(thisFontshape->get_parentID()<0){
-				// TO DO: we are testing each path against each path. This can be optimizted (?)
-				for (FCM::U_Int32 tcnt = 0; tcnt < pathesCount; tcnt++){
-					if(tcnt!=k){
-						thisFontshapetest=fontPathes[tcnt];
-						std::vector<AWDPathSegment*> pPath = fontPathes[tcnt]->get_main_path();		
-						bool isInPath=PointInPolygon(thisFontshape->get_startX(), thisFontshape->get_startY(), pPath);
-						if(isInPath){
-							bool isInPath2=PointInPolygon(thisFontshape->get_endX(), thisFontshape->get_endY(), pPath);
-							if(isInPath2){
-								thisFontshape->set_parentID(thisFontshapetest->get_pathID());
-								thisFontshapetest->add_hole(thisFontshape);
-								tcnt=pathesCount;
-							}
-						}
-					}
-				}
-			}
-		}
-		vector<FontPathShape*> return_Shapes;
-        for (FCM::U_Int32 k = 0; k < pathesCount; k++)
-        {
-			thisFontshape=fontPathes[k];
-			if(thisFontshape->get_parentID()<0){
-				return_Shapes.push_back(thisFontshape);
-			}
-		}
-        for (FCM::U_Int32 k = 0; k < return_Shapes.size(); k++)
-        {
-			thisFontshape=return_Shapes[k];
-			std::vector<AWDPathSegment*> pPath = return_Shapes[k]->get_main_path();		
-			for (FCM::U_Int32 fsCnt = 0; fsCnt <  thisFontshape->get_holes().size(); fsCnt++){
-				FontPathShape* fs=thisFontshape->get_holes()[fsCnt];
-				for (FCM::U_Int32 fsChildCnt = 0; fsChildCnt <  fs->get_holes().size(); fsChildCnt++){
-					FontPathShape* fsChild=fs->get_holes()[fsChildCnt];
-						fsChild->set_parentID(-1);
-						return_Shapes.push_back(fsChild);
-					
-				}
-				fs->get_holes().clear();
-			}
-		}
-		pathesCount=return_Shapes.size();
-        for (FCM::U_Int32 k = 0; k < pathesCount; k++)
-        {
-			thisFontshape=return_Shapes[k];
-			std::vector<AWDPathSegment*> newSegs = return_Shapes[k]->get_main_path();
-			if(thisFontshape->get_parentID()<0){
-				// TO DO: we are testing each path against each path. This can be optimizted (?)
-				for (FCM::U_Int32 tcnt = 0; tcnt < pathesCount; tcnt++){
-					if(tcnt!=k){
-						thisFontshapetest=return_Shapes[tcnt];
-						std::vector<AWDPathSegment*> pPath = return_Shapes[tcnt]->get_main_path();		
-						bool isInPath=PointInPolygon(thisFontshape->get_startX(), thisFontshape->get_startY(), pPath);
-						if(isInPath){
-							bool isInPath2=PointInPolygon(thisFontshape->get_endX(), thisFontshape->get_endY(), pPath);
-							if(isInPath2){
-								bool isInHole=false;
-								for (FCM::U_Int32 fsCnt = 0; fsCnt <  thisFontshapetest->get_holes().size(); fsCnt++){
-									FontPathShape* fs=thisFontshapetest->get_holes()[fsCnt];
-									std::vector<AWDPathSegment*> pPath2 = fs->get_main_path();	
-									bool isInPathHole=PointInPolygon(thisFontshape->get_startX(), thisFontshape->get_startY(), pPath2);
-									if(isInPathHole){
-										isInHole=true;
-										fsCnt=thisFontshapetest->get_holes().size();
-									}
-								}
-								if(!isInHole){
-									thisFontshape->set_parentID(thisFontshapetest->get_pathID());
-									thisFontshapetest->add_hole(thisFontshape);
-									tcnt=pathesCount;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		vector<FontPathShape*> return_Shapes_final;
-        for (FCM::U_Int32 k = 0; k < pathesCount; k++)
-        {
-			thisFontshape=return_Shapes[k];
-			if(thisFontshape->get_parentID()<0){
-				return_Shapes_final.push_back(thisFontshape);
-			}
-		}
-		return return_Shapes_final;
-
-	}
-    bool ResourcePalette::PointInPolygon(double x, double y,  std::vector<AWDPathSegment*> segments)
-    {
-		
-        bool oddNodes = false;
-		/*
-
-		std::vector<SimplePoint*> newPoints;
-        for (AWDPathSegment* seg : segments)
-        {
-			newPoints.push_back(seg->get_startPoint());
-		}
-
-        int j = newPoints.size() - 1;
-
-        for (int i = 0; i < newPoints.size(); i++)
-        {
-			//Utils::Trace(GetCallback(), "check points %f vs %f\n", newPoints[i]->x, newPoints[i]->y);
-            if (((newPoints[i]->y < y) && (newPoints[j]->y >= y))||
-                ((newPoints[j]->y < y) && (newPoints[i]->y >= y)))
-            {
-                if ((newPoints[i]->x + (y - newPoints[i]->y)/(newPoints[j]->y - newPoints[i]->y)*(newPoints[j]->x - newPoints[i]->x)) < x)
-                {
-                    oddNodes = !oddNodes;
-                }
-            }
-            j = i;
-        }
-		*/
-        return oddNodes;
-    }
     FCM::Result ResourcePalette::ExportStroke(DOM::FrameElement::PIShape pIShape)
     {
 		

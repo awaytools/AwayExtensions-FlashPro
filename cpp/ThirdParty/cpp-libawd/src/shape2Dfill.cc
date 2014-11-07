@@ -18,6 +18,8 @@ AWDShape2DFill::AWDShape2DFill(string& name, AWD_fill_type fill_type) :
 	this->green=0.5;
 	this->blue=0.5;
 	this->alpha=1;
+	this->tex_width=0;
+	this->tex_height=0;
 
 }
 
@@ -69,6 +71,46 @@ AWDShape2DFill::get_color_alpha()
 {
     return this->alpha;
 }
+int
+AWDShape2DFill::get_tex_width()
+{
+	return this->tex_width;
+}
+void
+AWDShape2DFill::set_tex_width( int  tex_width)
+{
+    this->tex_width = tex_width;
+}
+int
+AWDShape2DFill::get_tex_height()
+{
+	return this->tex_height;
+}
+void
+AWDShape2DFill::set_tex_height( int  tex_height)
+{
+    this->tex_height = tex_height;
+}
+string&
+AWDShape2DFill::get_texture_url()
+{
+	return this->texture_url;
+}
+void
+AWDShape2DFill::set_texture_url( string&  texture_url)
+{
+    this->texture_url = texture_url;
+}
+ AWDGradientitem* 
+AWDShape2DFill::get_gradient()
+{
+	return this->gradient_item;
+}
+void
+AWDShape2DFill::set_gradient( AWDGradientitem*  gradient)
+{
+    this->gradient_item = gradient;
+}
 awd_color
 AWDShape2DFill::get_color()
 {
@@ -117,6 +159,7 @@ AWDShape2DFill::prepare_and_add_dependencies(AWDBlockList *export_list)
 	if (this->fill_type == AWD_FILLTYPE_SOLID) {
 		this->add_color_property(PROP_MAT_COLOR,this->color,0xffffff);
     }
+	// todo: get the textureatlas information from the TextureAtlasItem
 	/*
     if (this->texture) {
             if (this->texture->get_tex_type()!=UNDEFINEDTEXTYPE){

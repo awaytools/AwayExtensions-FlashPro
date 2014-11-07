@@ -8,4 +8,8 @@
     <LocalDebuggerWorkingDirectory>C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\AwayExtensionsFlashPro\plugin\lib\win</LocalDebuggerWorkingDirectory>
     <LocalDebuggerAttach>true</LocalDebuggerAttach>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LocalDebuggerCommand>C:\Program Files\Adobe\Adobe Flash CC Prerelease\Flash.exe</LocalDebuggerCommand>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

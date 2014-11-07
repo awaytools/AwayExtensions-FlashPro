@@ -87,7 +87,6 @@ AWDDataStream::write_stream(AWDFileWriter * fileWriter, double scale)
         }
     }
     else if (this->data_type == AWD_FIELD_UINT16) {
-        for (e=0; e<num; e++) {
 			awd_uint16 *pf = (awd_uint16*)malloc(sizeof(awd_uint16)*num);				
             for (e=0; e<num; e++) {
 				awd_uint32 *p = (this->data.ui32 + e);
@@ -96,7 +95,6 @@ AWDDataStream::write_stream(AWDFileWriter * fileWriter, double scale)
             }
 			fileWriter->writeUINT16multi((awd_uint16*)pf, num);
 			free(pf);
-        }
     }
     else if (this->data_type == AWD_FIELD_UINT32) {
         for (e=0; e<num; e++) {

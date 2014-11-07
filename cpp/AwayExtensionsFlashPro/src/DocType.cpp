@@ -97,9 +97,13 @@ namespace AwayJS
         }
 
         Utils::GetModuleFilePath(featureXMLPath, pCallback);
-		
+        std::string findThis="AwayExtensionsFlashPro.fcm.plugin/Contents/MacOS/";
+        int foundIndex=featureXMLPath.find(findThis);
+        if(foundIndex>0){
+            featureXMLPath = featureXMLPath.substr(0, foundIndex);
+        }
         featureXMLPath += "AwayJS_Features.xml";
-
+        
         // trace
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
         FCM::Result res = pCallback->GetService(Application::Service::FLASHAPP_OUTPUT_CONSOLE_SERVICE, pUnk.m_Ptr);

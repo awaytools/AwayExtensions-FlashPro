@@ -94,6 +94,8 @@
 #include "Exporter/Service/ISWFExportService.h"
 #include "Application/Service/IOutputConsoleService.h"
 #include "Application/Service/IFlashApplicationService.h"
+#include <stdio.h>
+#include <iostream>
 #ifdef _WINDOWS
 #include "direct.h"
 #else
@@ -132,7 +134,7 @@ namespace AwayJS
 		};\r\n \
 		swfobject.embedSWF(\r\n \
 			\"awdrender.swf\", \r\n \
-			\"altContent\", \"100%s\", \"100%s\", \"10.0.0\", \r\n \
+			\"altContent\", \"100%s\", \"100%s\", \"15.0.0.152\", \r\n \
 			\"expressInstall.swf\", \r\n \
 			flashvars, params, attributes);\r\n \
 	</script>\r\n \
@@ -176,9 +178,9 @@ namespace AwayJS
         mkdir(m_outputSoundFolder.c_str());
         mkdir(outputjsFolder.c_str());
 #else
-        mkdir(m_outputImageFolder.c_str(), 0);
-        mkdir(m_outputSoundFolder.c_str(), 0);
-        mkdir(outputjsFolder.c_str(), 0);
+        mkdir(m_outputImageFolder.c_str(), 0777);
+        mkdir(m_outputSoundFolder.c_str(), 0777);
+        mkdir(outputjsFolder.c_str(), 0777);
 #endif
         return FCM_SUCCESS;
     }
@@ -246,6 +248,8 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 		
         std::string awdName;
         Utils::GetFileNameWithoutExtension(m_outputHTMLFile, awdName);
+		
+		//awd_color awdColor=awdutil_int_color( background.alpha, background.red, background.green, background.blue );
         backColor = (background.red << 16) | (background.green << 8) | (background.blue);
         sprintf(m_HTMLOutput, htmlOutput, awdName.c_str(), backColor, fps, stageWidth, stageHeight, "%", "%", "%");
         return FCM_SUCCESS;
@@ -255,21 +259,21 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
     FCM::Result AWDOutputWriter::EndDocument()
     {
 		
-
         std::string as_viewer_path;
 		std::string swfObjectSourcePath;
-		Utils::GetModuleFilePath(as_viewer_path, m_pCallback);		
+		Utils::GetModuleFilePath(as_viewer_path, m_pCallback);
+        
+        std::string findThis="AwayExtensionsFlashPro.fcm.plugin/Contents/MacOS/";
+        int foundIndex=as_viewer_path.find(findThis);
+        if(foundIndex>0){
+            as_viewer_path = as_viewer_path.substr(0, foundIndex);
+        }
 		swfObjectSourcePath = as_viewer_path + SWF_OBJECT_PATH;
 		as_viewer_path += AS_VIEWER_NAME;
-#ifdef _WINDOWS
-		AwayJS::Utils::CopyOneFile(as_viewer_path, m_target_asViewer_path);
-		AwayJS::Utils::CopyOneFile(swfObjectSourcePath, m_target_swfObject_path);
-#endif
-		//Utils::Trace(m_pCallback, "\nCopy file : %s !\n\n",as_viewer_path.c_str());
-		//Utils::Trace(m_pCallback, "\nTo: %s !\n\n",m_target_asViewer_path.c_str());
-		//Utils::Trace(m_pCallback, "\nCopy file : %s !\n\n",swfObjectSourcePath.c_str());
-		//Utils::Trace(m_pCallback, "\nTo: %s !\n\n",m_target_swfObject_path.c_str());
-		// Write the HTML file (Remove file if it already exists)
+        
+		AwayJS::Utils::CopyOneFile(as_viewer_path, m_target_asViewer_path, m_pCallback);
+		AwayJS::Utils::CopyOneFile(swfObjectSourcePath, m_target_swfObject_path, m_pCallback);
+
         std::ofstream file;
         remove(m_outputHTMLFile.c_str());
 
@@ -306,10 +310,11 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 
     FCM::Result AWDOutputWriter::StartDefineShape()
     {
-		shape_encoder = new ShapeEncoder(&m_pCallback);
-		shape_encoder->set_double_subdivide(double_subdivide);
-		shape_encoder->set_outline_threshold(outline_threshold);
-		shape_encoder->set_save_interstect(save_interstect);
+		shape_encoder = new ShapeEncoder(&m_pCallback, this->awd);
+        std::string namestr=std::string("");
+		AWDShape2D* newShape=new AWDShape2D(namestr);
+		awd->add_shape2Dblock(newShape);
+		shape_encoder->reset(newShape);
         return FCM_SUCCESS;
     }
 
@@ -327,7 +332,7 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         return FCM_SUCCESS;
     }
     // Marks the end of a shape
-    FCM::Result AWDOutputWriter::EndDefineShapeLetter()
+    FCM::Result AWDOutputWriter::EndDefineShapeLetter(AWDFontShape* fontShape)
     {
 		
         string objID_string=AwayJS::Utils::ToString(100);
@@ -387,7 +392,7 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         DOM::Utils::COLOR fontColor;
         FCM::Result res;     
 		
-        std::string text_instance_name=std::string(""); 
+        std::string text_instance_name=Utils::ToString(resId);
 
         pTextItem = pTextItem2;
         AutoPtr<DOM::FrameElement::ITextBehaviour> textBehaviour;
@@ -395,105 +400,159 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         AutoPtr<DOM::FrameElement::IDynamicTextBehaviour> dynamicTextBehaviour = textBehaviour.m_Ptr;
         AutoPtr<DOM::FrameElement::IModifiableTextBehaviour> modifyableTextBehaviour = textBehaviour.m_Ptr;
 		 
+		bool merge_Paragraphs=false;		
+		bool export_localized=false;	
+		bool use_localized_str=false;
+		bool export_this_localized=false;
+		string localized_str="_AWDlocal";
         if(modifyableTextBehaviour)
         {
 			modifyableTextBehaviour->GetInstanceName(&txt_instance_name16);
 			text_instance_name = Utils::ToString(txt_instance_name16, m_pCallback);
-			//Utils::Trace(m_pCallback, "Instance Name '%s'\n", text_instance_name.c_str());
+			if((export_localized)&&(!use_localized_str)){
+				export_this_localized=true;
+			}
+			if((export_localized)&&(use_localized_str)){
+				int find_localized=text_instance_name.find(use_localized_str);
+				if(find_localized>0){
+					export_this_localized=true;
+				}
+			}
 		}
-        pTextItem->GetParagraphs(pParagraphsList.m_Ptr);
-        res = pParagraphsList->Count(count);
-        ASSERT(FCM_SUCCESS_CODE(res));
-		res = pTextItem->GetText(&textDisplay);
-        ASSERT(FCM_SUCCESS_CODE(res));
-        displayText2 = AwayJS::Utils::ToString(textDisplay, m_pCallback);
-
 		
-		//Utils::Trace(m_pCallback, "The text-element encountered: '%s'\n", displayText2.c_str());
-
 		AWDTextElement * textElement;
-		AWDFontShapes * fontShapes;
-		if(count>0){
-			textElement=awd->get_text(text_instance_name);
-			string objID_string=AwayJS::Utils::ToString(resId);
-			textElement->set_objectID(objID_string);
+		textElement=awd->get_text(text_instance_name);
+		string objID_string=AwayJS::Utils::ToString(resId);
+		textElement->set_objectID(objID_string);
+
+		if(export_this_localized){
+			textElement->set_isLocalized(export_this_localized);
 		}
-        for (FCM::U_Int32 pIndex = 0; pIndex < count; pIndex++)
-        {
-            AutoPtr<DOM::FrameElement::IParagraph> pParagraph = pParagraphsList[pIndex];
+		else{
+			pTextItem->GetParagraphs(pParagraphsList.m_Ptr);
+			res = pParagraphsList->Count(count);
+			ASSERT(FCM_SUCCESS_CODE(res));
+			res = pTextItem->GetText(&textDisplay);
+			ASSERT(FCM_SUCCESS_CODE(res));
+			displayText2 = AwayJS::Utils::ToString(textDisplay, m_pCallback);
+				
+			//Utils::Trace(m_pCallback, "The text-element encountered: '%s'\n", displayText2.c_str());
+		
+			AWDFont * fontShapes;
+			AWDFontStyle * fontStyle;
+			for (FCM::U_Int32 pIndex = 0; pIndex < count; pIndex++)
+			{
+				AutoPtr<DOM::FrameElement::IParagraph> pParagraph = pParagraphsList[pIndex];
+			
+				AWDParagraph * awdParagraph=NULL;
+				if (pParagraph)
+				{
+					if((!merge_Paragraphs)||(awdParagraph==NULL)){
+						awdParagraph = new AWDParagraph();
+						textElement->add_paragraph(awdParagraph);
+					}
+					FCMListPtr pTextRunList;
+					pParagraph->GetTextRuns(pTextRunList.m_Ptr);
+					FCM::U_Int32 trCount;
+					pTextRunList->Count(trCount);
 
-            if (pParagraph)
-            {
-				//AWDParagraph * awdParagraph = new AWDParagraph();
-                FCMListPtr pTextRunList;
-                pParagraph->GetTextRuns(pTextRunList.m_Ptr);
-                FCM::U_Int32 trCount;
-                pTextRunList->Count(trCount);
+					for (FCM::U_Int32 trIndex = 0; trIndex < trCount; trIndex++)
+					{
+						AWDTextRun* awdTextRun = new AWDTextRun();
+						AutoPtr<DOM::FrameElement::ITextRun> pTextRun = pTextRunList[trIndex];
+						AutoPtr<DOM::FrameElement::ITextStyle> trStyle;
 
-                for (FCM::U_Int32 trIndex = 0; trIndex < trCount; trIndex++)
-                {
-					//AWDTextRun* awdTextRun = new AWDTextRun();
-                    AutoPtr<DOM::FrameElement::ITextRun> pTextRun = pTextRunList[trIndex];
-                    AutoPtr<DOM::FrameElement::ITextStyle> trStyle;
+						pTextRun->GetTextStyle(trStyle.m_Ptr);  
 
-                    pTextRun->GetTextStyle(trStyle.m_Ptr);
-                    
-                    res = trStyle->GetFontSize(fontSize);
-                    ASSERT(FCM_SUCCESS_CODE(res));
-                    res = trStyle->GetFontColor(fontColor);
-                    ASSERT(FCM_SUCCESS_CODE(res));
-					//trStyle->GetBaseLineShiftStyle();
-					//trStyle->GetFontName
-					FCM::U_Int32 startIndex;
-					FCM::U_Int32 length;
-					pTextRun->GetStartIndex(startIndex);
-					pTextRun->GetLength(length);
-					std::string str = displayText2.substr (startIndex,length);
-					//Utils::Trace(m_pCallback, "	The text-run content: '%s'\n", str.c_str());
-					//awdTextRun->set_text(str);
-                    // Form font info in required format
-                    //GetFontInfo(trStyle, fName, fontSize);
-					//awdParagraph->add_textrun(awdTextRun);
-					//fontShapes=m_pOutputWriter->get_awd()->get_font_shapes(fName);
+						string formatString="";
+						
+						FCM::StringRep16 pFontName;
+						res = trStyle->GetFontName(&pFontName);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						formatString+=AwayJS::Utils::ToString(pFontName, m_pCallback);
+						
+						FCM::StringRep8 pFontStyle;
+						res = trStyle->GetFontStyle(&pFontStyle);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						formatString+=pFontStyle;
 
-					//Define Text Element
-                }
-				//textElement->add_paragraph(awdParagraph);
+						res = trStyle->GetFontSize(fontSize);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						formatString+=AwayJS::Utils::ToString(fontSize);
 
-            }
-        }    
+						res = trStyle->GetFontColor(fontColor);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						awd_color awdColor=awdutil_int_color( fontColor.alpha, fontColor.red, fontColor.green, fontColor.blue );
+						formatString+=AwayJS::Utils::ToString(awdColor);
 
-		/*
-        std::string txt = displayText;
-        std::string fontName = name;
-        std::string colorStr = Utils::ToString(color);
-        std::string find = "\r";
-        std::string replace = "\\r";
-        std::string::size_type i =0;
-        while (true) {
-            // Locate the substring to replace. 
-            i = txt.find(find, i);
-           
-            if (i == std::string::npos) beak;
-            // Make the replacement. 
-            txt.replace(i, find.length(), replace);
+						FCM::S_Int16 letterSpacing;
+						trStyle->GetLetterSpacing(letterSpacing);
+						formatString+=AwayJS::Utils::ToString(letterSpacing);
+												                 
+						DOM::FrameElement::BaseLineShiftStyle baselineshiftStyle;
+						trStyle->GetBaseLineShiftStyle(baselineshiftStyle);
+						AWD_baselineshift_type baselineshift=BASELINE_NORMAL;
+						if(baselineshiftStyle==DOM::FrameElement::BASE_LINE_SHIFT_STYLE_SUBSCRIPT){
+							baselineshift=BASELINE_DOWN;
+						}
+						else if(baselineshiftStyle==DOM::FrameElement::BASE_LINE_SHIFT_STYLE_SUPERSCRIPT){
+							baselineshift=BASELINE_UP;
+						}
+						formatString+=AwayJS::Utils::ToString(baselineshift);
+						
+						FCM::Boolean autoKerning;
+						res = trStyle->IsAutoKernEnabled(autoKerning);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						formatString+=AwayJS::Utils::ToString(autoKerning);
 
-            // Advance index forward so the next iteration doesn't pick it up as well. 
-            i += replace.length();
+						FCM::Boolean isRotated;
+						res = trStyle->IsAutoKernEnabled(isRotated);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						formatString+=AwayJS::Utils::ToString(isRotated);
+
+						AWDTextFormat* thisTextFormat=awd->get_text_format(formatString);						
+						string fontstyle="";
+						fontstyle+=pFontStyle;
+						thisTextFormat->set_fontStyle(fontstyle);
+                        std::string tfstring=AwayJS::Utils::ToString(pFontName, m_pCallback);
+						thisTextFormat->set_fontName(tfstring);
+						thisTextFormat->set_fontSize(fontSize);
+						thisTextFormat->set_fill(awd->get_solid_fill(awdColor));
+						thisTextFormat->set_letterSpacing(letterSpacing);
+						thisTextFormat->set_baseLineShift(baselineshift);
+						// set autoKerning
+						// set IsRotated
+
+						awdTextRun->set_format(thisTextFormat);
+
+						FCM::U_Int32 startIndex;
+						FCM::U_Int32 length;
+						pTextRun->GetStartIndex(startIndex);
+						pTextRun->GetLength(length);
+						std::string str = displayText2.substr (startIndex,length);
+						//Utils::Trace(m_pCallback, "	The text-run content: '%s'\n", str.c_str());
+						awdTextRun->set_text(str);
+						std::string styleStr;					
+						
+						styleStr = pFontStyle;
+                        std::string fontNamestr=Utils::ToString(pFontName, m_pCallback);
+						fontShapes=awd->get_font_shapes(fontNamestr);
+						fontStyle=fontShapes->get_font_style(styleStr);
+						int strcnt=0;
+						for(char& c : str) {
+							if(int(c)<0){
+								Utils::Trace(m_pCallback, "Found Unsupported Font-char  = %d \n", c);
+							}
+							else{
+								fontStyle->get_fontShape(c);
+								strcnt++;
+							}
+						}
+						awdParagraph->add_textrun(awdTextRun);
+					}
+				}
+			} 
 		}
-		Utils::Trace(m_pCallback, "The Text-element: '%s' should have been created.\n", txt.c_str());
-		AWDTextElement* newTextElement=awd->get_text(txt);
-        string objID_string=AwayJS::Utils::ToString(resId);
-		newTextElement->set_objectID(objID_string);
-
-		Utils::Trace(m_pCallback, "The Text-element: '%s' should have been created.\n", fontName.c_str());
-		awd->get_font_shapes(fontName);
-        */
-        FCM::AutoPtr<FCM::IFCMCalloc> pCalloc;
-		pCalloc = AwayJS::Utils::GetCallocService(m_pCallback);
-		ASSERT(pCalloc.m_Ptr != NULL);
-		pCalloc->Free(textDisplay);
-		pCalloc->Free(txt_instance_name16);
         return FCM_SUCCESS;
 	}
 
@@ -721,13 +780,13 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         return FCM_SUCCESS;
 
 	}
-    // Sets a segment of a path (Used for boundary, holes)
+    
+	// Sets a segment of a path (Used for boundary, holes)
     FCM::Result AWDOutputWriter::SetSegment(const DOM::Utils::SEGMENT& segment)
     {
 	
 		ShapePoint* startPoint= new ShapePoint();
 		ShapePoint* endPoint= new ShapePoint();
-		ShapePoint* controlPoint= new ShapePoint();
 		AWDPathSegment* awdPathSeg = new AWDPathSegment();
         if (segment.segmentType == DOM::Utils::LINE_SEGMENT)
         {			
@@ -743,6 +802,7 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 			startPoint->y=segment.quadBezierCurve.anchor1.y;
 			endPoint->x=segment.quadBezierCurve.anchor2.x;
 			endPoint->y=segment.quadBezierCurve.anchor2.y;
+			ShapePoint* controlPoint= new ShapePoint();
 			controlPoint->x=segment.quadBezierCurve.control.x;
 			controlPoint->y=segment.quadBezierCurve.control.y;
 			awdPathSeg->set_controlPoint(controlPoint);
@@ -858,11 +918,24 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 		//AwayJS::Utils::Trace(m_pCallback, "End define Shape2\n");
         return FCM_SUCCESS;
     }
-    FCM::Result AWDOutputWriter::EndDefineFontStroke()
+	FCM::Result AWDOutputWriter::EndDefineFontStroke(AWDFontShape* fontShape)
     {
 		// this calculates a acctual subgeometry
 		//AwayJS::Utils::Trace(m_pCallback, "End define Shape3\n");
-		shape_encoder->encode_subShape(true);
+		shape_encoder->encode_subShape(false);
+		
+		AWDShape2D* shape=shape_encoder->get_shape();
+		shape->set_delete_subs(false);
+		if((shape->get_mergerSubShapes().size()>1)||(shape->get_mergerSubShapes().size()==0)){
+			AwayJS::Utils::Trace(m_pCallback, "ERROR CONVERTING FONT!!\n");
+			return FCM_SUCCESS;
+		}
+		shape->merge_subs();
+		fontShape->set_subShape(shape->get_first_sub());
+		delete shape;
+		delete shape_encoder;
+
+		
 		//AwayJS::Utils::Trace(m_pCallback, "End define Shape4\n");
         return FCM_SUCCESS;
     }
@@ -880,12 +953,23 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
         std::string soundRelPath;
         std::string soundName=name;
-        std::string soundExportPath = m_outputSoundFolder + "/";
-        soundExportPath += name;
-        soundRelPath = "./";
+        std::string soundExportPath = m_outputSoundFolder + "\\";
+        soundRelPath = ".\\";
         soundRelPath += SOUND_FOLDER;
-        soundRelPath += "/";
-        soundRelPath += name;
+        soundRelPath += "\\";
+        FCM::AutoPtr<DOM::ILibraryItem> libItem = pMediaItem;
+		FCM::StringRep16 sName;
+		libItem->GetName(&sName);
+		if(libItem){
+			//Utils::Trace(m_pCallback, "		Sound name = '%s'\n",Utils::ToString(sName,m_pCallback).c_str());  
+			soundName=Utils::ToString(sName,m_pCallback);   
+            FCM::AutoPtr<FCM::IFCMCalloc> pCalloc;
+			pCalloc = AwayJS::Utils::GetCallocService(m_pCallback);
+			ASSERT(pCalloc.m_Ptr != NULL);
+			pCalloc->Free(sName);  
+		}
+        soundRelPath += soundName;
+        soundExportPath += soundName;
         res = m_pCallback->GetService(DOM::FLA_SOUND_SERVICE, pUnk.m_Ptr);
         ASSERT(FCM_SUCCESS_CODE(res));
         FCM::AutoPtr<DOM::Service::Sound::ISoundExportService> soundExportService = pUnk;
@@ -901,25 +985,16 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 			//Utils::Trace(m_pCallback, "The Sound-file: '%s' should have been created in this folder.\n", soundExportPath.c_str());
 
         }
-        FCM::AutoPtr<DOM::ILibraryItem> libItem = pMediaItem;
-		FCM::StringRep16 sName;
-		libItem->GetName(&sName);
-		if(libItem){
-			//Utils::Trace(m_pCallback, "		Sound name = %s.\n",Utils::ToString(sName,m_pCallback).c_str());  
-			soundName=Utils::ToString(sName,m_pCallback);   
-            FCM::AutoPtr<FCM::IFCMCalloc> pCalloc;
-			pCalloc = AwayJS::Utils::GetCallocService(m_pCallback);
-			ASSERT(pCalloc.m_Ptr != NULL);
-			pCalloc->Free(sName);  
-		}
 		AWDAudio* newAudio=awd->get_audio(soundName);		
 		newAudio->set_url(soundExportPath);
-		//newAudio->set_embed_data();
-		//newAudio->set_saving_type(EMBEDDED_AUDIO);
 		newAudio->set_objectID(objectID);
-		//Utils::Trace(m_pCallback, "The Sound-file: '%d' should have been created in this folder.\n", resId);
-
-		
+		Utils::Trace(m_pCallback, "The Sound-file: '%s' should have been exported.\n", soundExportPath.c_str());
+		newAudio->set_embed_data();
+		newAudio->set_saving_type(EMBEDDED_AUDIO);
+		//double length=newAudio->get_embbed_length()/1024;
+		//Utils::Trace(m_pCallback, "The Sound-file embbed length: '%d'.\n", sizeof(data));
+		//Utils::Trace(m_pCallback, "The Sound-file embbed length: '%f'.\n", length);
+				
         return FCM_SUCCESS;
 	}
     
@@ -936,8 +1011,6 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 
         std::string bitmapPath;
         std::string bitmapName;
-		
-
         // Form the image path
         bitmapName = Utils::ToString(pName, m_pCallback);
         std::size_t pos = bitmapName.find(".");
@@ -1085,12 +1158,12 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         FCM::PIFCMUnknown pUnknown /* = NULL*/)
     {
 		
-		AWDFrameCommand* frameCommand=thisTimeLine->get_frame()->get_command(objectId);
+		AWDFrameCommandDisplayObject* frameCommand=(AWDFrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
 		frameCommand->set_command_type(AWD_FRAME_COMMAND_UPDATE_OBJECT);
         string resID=AwayJS::Utils::ToString(resId);
 
 		frameCommand->set_resID(resID);
-		frameCommand->set_place_after_objectID(placeAfterObjectId);
+		frameCommand->set_depth(placeAfterObjectId);
 		string newString("");
 		FCM::AutoPtr<DOM::FrameElement::IMovieClip>pMovieClip = pUnknown;
         if (pMovieClip)
@@ -1115,7 +1188,7 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         {			
 			frameCommand->set_display_matrix(get_mtx_2x3(pMatrix));
         }
-
+		
 
         return FCM_SUCCESS;
     }
@@ -1126,11 +1199,13 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         FCM::PIFCMUnknown pUnknown /* = NULL*/)
     {
         FCM::Result res=FCM_SUCCESS;
-		AWDFrameCommand* frameCommand=thisTimeLine->get_frame()->get_command(objectId);
+		
+		AWDFrameCommandDisplayObject* frameCommand=(AWDFrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
 		frameCommand->set_command_type(AWD_FRAME_COMMAND_SOUND);
         string resID=AwayJS::Utils::ToString(resId);
 		frameCommand->set_resID(resID);
 		//Utils::Trace(m_pCallback, "		-> Placing a SoundObject into the timeline.\n");
+		
 		/*
         JSONNode commandElement(JSON_NODE);
         FCM::AutoPtr<DOM::FrameElement::ISound> pSound;
@@ -1185,8 +1260,10 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
     FCM::Result AWDTimelineWriter::RemoveObject(
         FCM::U_Int32 objectId)
     {
-		AWDFrameCommand* frameCommand=thisTimeLine->get_frame()->get_command(objectId);
+		
+		AWDFrameCommandDisplayObject* frameCommand=(AWDFrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
 		frameCommand->set_command_type(AWD_FRAME_COMMAND_REMOVE_OBJECT);
+		
         return FCM_SUCCESS;
     
 	}
@@ -1197,8 +1274,9 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         FCM::U_Int32 objectId,
         FCM::U_Int32 placeAfterObjectId)
     {
-		AWDFrameCommand* frameCommand=thisTimeLine->get_frame()->get_command(objectId);
-		frameCommand->set_place_after_objectID(placeAfterObjectId);
+		
+		AWDFrameCommandDisplayObject* frameCommand=(AWDFrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
+		frameCommand->set_depth(placeAfterObjectId);
 		
 		//TODO: test if the updateZOrder works...
         // Goutam: Commenting out the code for demo as fix is necessary in the Exporter service for it work properly.
@@ -1220,9 +1298,10 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
     {
         // Not tested yet
 		
-		AWDFrameCommand* frameCommand=thisTimeLine->get_frame()->get_command(objectId);
+		AWDFrameCommandDisplayObject* frameCommand=(AWDFrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
 		//TODO: convert blendmode into int before passing to awdlib
 		//frameCommand->set_blendMode(blendMode);
+		
         return FCM_SUCCESS;
     }
 
@@ -1231,7 +1310,8 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         FCM::U_Int32 objectId,
         FCM::Boolean visible)
     {
-		AWDFrameCommand* frameCommand=thisTimeLine->get_frame()->get_command(objectId);
+		
+		AWDFrameCommandDisplayObject* frameCommand=(AWDFrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
 		frameCommand->set_visible(visible);
         return FCM_SUCCESS;
     }
@@ -1241,7 +1321,9 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         FCM::U_Int32 objectId,
         FCM::PIFCMUnknown pFilter)
     {
-		AWDFrameCommand* frameCommand=thisTimeLine->get_frame()->get_command(objectId);
+		
+		AWDFrameCommandDisplayObject* frameCommand=(AWDFrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
+		
         FCM::Result res;
         //JSONNode commandElement(JSON_NODE);
         //commandElement.push_back(JSONNode("cmdType", "UpdateFilter"));
@@ -1830,7 +1912,7 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         FCM::U_Int32 objectId,
         const DOM::Utils::MATRIX2D& matrix)
     {
-		AWDFrameCommand* frameCommand=thisTimeLine->get_frame()->get_command(objectId);
+		AWDFrameCommandDisplayObject* frameCommand=(AWDFrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
 		frameCommand->set_display_matrix(get_mtx_2x3(&matrix));
 
         return FCM_SUCCESS;
@@ -1841,7 +1923,7 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         FCM::U_Int32 objectId,
         const DOM::Utils::COLOR_MATRIX& colorMatrix)
     {
-		AWDFrameCommand* frameCommand=thisTimeLine->get_frame()->get_command(objectId);
+		AWDFrameCommandDisplayObject* frameCommand=(AWDFrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
 		frameCommand->set_color_matrix(get_color_mtx_4x5(&colorMatrix));
         // Not tested yet
         return FCM_SUCCESS;
@@ -1850,9 +1932,9 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 
     FCM::Result AWDTimelineWriter::ShowFrame(FCM::U_Int32 frameNum)
     {
-		string frame_name("Frame nr");// TODO frame has only label, not name (?)
-		AWDTimeLineFrame* newFrame=new AWDTimeLineFrame(frame_name);
-		thisTimeLine->add_frame(newFrame);
+		AWDTimeLineFrame* newFrame=new AWDTimeLineFrame();
+		newFrame->set_frame_duration(1000/awd->getExporterSettings()->get_fps());
+		thisTimeLine->add_frame(newFrame, false);
 
         return FCM_SUCCESS;
     }
@@ -1924,9 +2006,8 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 		string name("");
 		thisTimeLine=new AWDShape2DTimeline(name);		
 		m_pCallback = pcallback;
-		string frame_name("Frame nr");// TODO 
-		AWDTimeLineFrame* newFrame=new AWDTimeLineFrame(frame_name);
-		thisTimeLine->add_frame(newFrame);
+		AWDTimeLineFrame* newFrame=new AWDTimeLineFrame();
+		thisTimeLine->add_frame(newFrame, false);
     }
 
 
@@ -1955,12 +2036,12 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         {
             string objID_string=AwayJS::Utils::ToString(resId);
 			thisTimeLine->set_objectID(objID_string);
-			thisTimeLine->set_is_scene(false);
+			thisTimeLine->set_scene_id(resId);
 		}
 
 		else{
 			thisTimeLine->set_name(timeLineName);
-			thisTimeLine->set_is_scene(true);
+			thisTimeLine->set_scene_id(resId);
 			awd->add_root_scene(thisTimeLine);
 			//Utils::Trace(m_pCallback, "ADDED THE ROOT SCENE TO AWD!\n");
 		}

@@ -5,6 +5,99 @@
 #include "audio.h"
 #include <sys/stat.h>
 
+AWDTextFormat::AWDTextFormat(string& name) :
+    AWDBlock(FORMAT),
+    AWDNamedElement(name),
+    AWDAttrElement()
+{
+	this->baseLineShift=BASELINE_NORMAL;
+	this->fontSize=0;
+	this->letterSpacing=0;
+	this->fill=NULL;
+}
+
+AWDTextFormat::~AWDTextFormat()
+{
+	//free the url ?
+}
+AWD_baselineshift_type AWDTextFormat::get_baseLineShift()
+{
+	return this->baseLineShift;
+}
+void AWDTextFormat::set_baseLineShift(AWD_baselineshift_type baseLineShift)
+{
+	this->baseLineShift=baseLineShift;
+}
+string& AWDTextFormat::get_fontStyle()
+{
+	return this->fontStyle;
+}
+void AWDTextFormat::set_fontStyle(string& fontStyle)
+{
+	this->fontStyle=fontStyle;
+}
+
+string& AWDTextFormat::get_fontName()
+{
+	return this->fontName;
+}
+void AWDTextFormat::set_fontName(string& fontName)
+{
+	this->fontName=fontName;
+}
+
+int AWDTextFormat::get_fontSize()
+{
+	return this->fontSize;
+}
+void AWDTextFormat::set_fontSize(int fontSize)
+{
+	this->fontSize=fontSize;
+}
+int AWDTextFormat::get_letterSpacing()
+{
+	return this->letterSpacing;
+}
+void AWDTextFormat::set_letterSpacing(int letterSpacing)
+{
+	this->letterSpacing=letterSpacing;
+}
+
+AWDBlock* AWDTextFormat::get_fill()
+{
+	return this->fill;
+}
+void AWDTextFormat::set_fill(AWDBlock* fill)
+{
+	this->fill=fill;
+}
+
+
+awd_uint32
+AWDTextFormat::calc_body_length(BlockSettings * curBlockSettings)
+{
+    awd_uint32 len;
+
+    len = 0;//sizeof(awd_uint32); //datalength;
+    len += this->calc_attr_length(true, true, curBlockSettings);
+
+    return len;
+}
+
+
+void
+ AWDTextFormat::prepare_and_add_dependencies(AWDBlockList * targetList)
+{
+    // Do nothing
+}
+
+void
+AWDTextFormat::write_body(AWDFileWriter * fileWriter, BlockSettings * curBlockSettings)
+{
+    awd_uint32 data_len;
+    this->properties->write_attributes(fileWriter,  curBlockSettings);
+    this->user_attributes->write_attributes(fileWriter,  curBlockSettings);
+}
 AWDTextRun::AWDTextRun() :
     AWDAttrElement()
 {
@@ -14,6 +107,14 @@ AWDTextRun::~AWDTextRun()
 {
 	//free the url ?
 }
+AWDTextFormat* AWDTextRun::get_format()
+{
+	return this->textFormat;
+}
+void AWDTextRun::set_format(AWDTextFormat* textFormat)
+{
+	this->textFormat=textFormat;
+}
 string& AWDTextRun::get_text()
 {
 	return this->text;
@@ -22,6 +123,7 @@ void AWDTextRun::set_text(string& text)
 {
 	this->text=text;
 }
+
 awd_uint32
 AWDTextRun::calc_body_length(BlockSettings * curBlockSettings)
 {
@@ -88,6 +190,7 @@ AWDParagraph::write_body(AWDFileWriter * fileWriter, BlockSettings * curBlockSet
 
 AWDFontShape::AWDFontShape() 
 {
+	shape_data=false;
 }
 
 AWDFontShape::~AWDFontShape()
@@ -95,7 +198,7 @@ AWDFontShape::~AWDFontShape()
 	//free the url ?
 }
     
-
+	
 int AWDFontShape::get_charCode() 
 {
 	return this->charCode;
@@ -114,7 +217,10 @@ AWDSubShape2D* AWDFontShape::get_subShape()
 }
 void AWDFontShape::set_subShape(AWDSubShape2D* subShape) 
 {
-	this->subShape=subShape;
+	if(subShape!=NULL){
+		this->subShape=subShape;
+		this->shape_data=true;
+	}
 }
 		
 awd_uint32 AWDFontShape::calc_body_length(BlockSettings*) 
@@ -125,8 +231,14 @@ void AWDFontShape::write_body(AWDFileWriter*, BlockSettings*)
 {
 }
 
-AWDFontStyle::AWDFontStyle() 
+AWDFontStyle::AWDFontStyle(string& name) 
 {
+	this->style_size=0.0;
+	this->style_name=name;
+}
+string& AWDFontStyle::get_style_name() 
+{
+	return this->style_name;
 }
 
 AWDFontStyle::~AWDFontStyle()
@@ -134,16 +246,44 @@ AWDFontStyle::~AWDFontStyle()
 	//free the url ?
 }
 
-AWDFontShape* AWDFontStyle::get_fontShape(int char_code) 
+void AWDFontStyle::set_style_size(int style_size) 
 {
-	for(AWDFontShape* fs : shapes){
-		if(fs->get_charCode()==char_code){
-			return fs;
+	this->style_size=style_size;
+}
+vector<AWDFontShape*> AWDFontStyle::get_ungenerated_chars()
+{
+	vector<AWDFontShape*> returner;
+	typedef std::map<int, AWDFontShape*>::iterator it_type;
+	for(it_type iterator = shapesmap.begin(); iterator != shapesmap.end(); iterator++) {
+		// iterator->first = key
+		if(!iterator->second->has_shape_data()){	
+			returner.push_back(iterator->second);
 		}
 	}
-	AWDFontShape* newFS = new AWDFontShape();
-	newFS->set_charCode(char_code);
-	return newFS;
+	return returner;
+}
+void AWDFontStyle::delete_fontShape(int char_code){
+	if(shapesmap.find(char_code) == shapesmap.end())
+	{
+		return;
+	}
+	AWDFontShape* newFS=shapesmap[char_code];
+	shapesmap.erase(char_code);
+	delete newFS;
+}
+AWDFontShape* AWDFontStyle::get_fontShape(int char_code) 
+{
+	if(char_code==32){
+		return NULL;
+	}
+	if(shapesmap.find(char_code) == shapesmap.end())
+	{
+		AWDFontShape* newFS = new AWDFontShape();
+		newFS->set_charCode(char_code);
+		shapesmap[char_code]=newFS;
+		return newFS;
+	}
+	return shapesmap[char_code];
 }
 awd_uint32 AWDFontStyle::calc_body_length(BlockSettings*) 
 {
@@ -153,22 +293,36 @@ void AWDFontStyle::write_body(AWDFileWriter*, BlockSettings*)
 {
 }
 
-AWDFontShapes::AWDFontShapes(string& name) :
+AWDFont::AWDFont(string& name) :
     AWDBlock(FONT),
     AWDNamedElement(name),
     AWDAttrElement()
 {
 }
 
-AWDFontShapes::~AWDFontShapes()
+AWDFont::~AWDFont()
 {
 	//free the url ?
 }
 
+AWDFontStyle* AWDFont::get_font_style(string& fontstyleName)
+{
+	for(AWDFontStyle* font_style: font_styles){
+		if(font_style->get_style_name()==fontstyleName){
+			return font_style;
+		}
+	}
+	font_styles.push_back(new AWDFontStyle(fontstyleName));
+	return font_styles.back();
+}
 
 
+vector<AWDFontStyle*> AWDFont::get_font_styles()
+{
+	return font_styles;
+}
 awd_uint32
-AWDFontShapes::calc_body_length(BlockSettings * curBlockSettings)
+AWDFont::calc_body_length(BlockSettings * curBlockSettings)
 {
     if(!this->get_isValid())
         return 0;
@@ -186,7 +340,7 @@ AWDFontShapes::calc_body_length(BlockSettings * curBlockSettings)
 
 
 void
-    AWDFontShapes::prepare_and_add_dependencies(AWDBlockList * targetList)
+ AWDFont::prepare_and_add_dependencies(AWDBlockList * targetList)
 {
     // Do nothing
 }
@@ -194,7 +348,7 @@ void
 
 
 void
-AWDFontShapes::write_body(AWDFileWriter * fileWriter, BlockSettings * curBlockSettings)
+AWDFont::write_body(AWDFileWriter * fileWriter, BlockSettings * curBlockSettings)
 {
     awd_uint32 data_len;
 
@@ -218,6 +372,11 @@ AWDTextElement::~AWDTextElement()
 }
 
 
+void
+AWDTextElement::set_isLocalized(bool isLocalized)
+{
+	this->isLocalized=isLocalized;
+}
 bool
 AWDTextElement::get_isLocalized()
 {

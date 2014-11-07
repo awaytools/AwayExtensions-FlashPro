@@ -3,40 +3,22 @@
 #include "util.h"
 #include <vector>
 
-
-AWDTextureAtlasItem::AWDTextureAtlasItem(awd_color color) 
+AWDGradientitem::AWDGradientitem() 
 {
-	this->colors.push_back(color);
-	this->distributions.push_back(0);
-	this->item_type=TEXTURE_ATLAS_COLOR;
-    this->width = 1;
-    this->height = 1;
-}
-AWDTextureAtlasItem::AWDTextureAtlasItem(string& source_url, int width, int height) 
-{
-    this->source_url = source_url;
-	this->item_type=TEXTURE_ATLAS_TEXTURE;
-    this->width = width;
-    this->height = height;
 }
 
-AWDTextureAtlasItem::~AWDTextureAtlasItem()
+AWDGradientitem::~AWDGradientitem() 
 {
 }
-void AWDTextureAtlasItem::add_color(awd_color color, double distribution){
-	if (this->item_type==TEXTURE_ATLAS_COLOR){
-		this->item_type=TEXTURE_ATLAS_GRADIENT;
-		this->width = 256;
-		this->height = 1;
-	}
+
+void AWDGradientitem::add_color(awd_color color, double distribution){
 	this->colors.push_back(color);
 	this->distributions.push_back(distribution);
 }
-bool AWDTextureAtlasItem::compare(AWDTextureAtlasItem* atlas_item){
-	if (atlas_item->get_item_type()!=item_type)
-		return false;
+
+bool AWDGradientitem::compare(AWDGradientitem* atlas_item){
 	vector<awd_color> newColors = atlas_item->get_colors();
-	if (colors.size()!=atlas_item->get_colors().size())
+	if (this->colors.size()!=atlas_item->get_colors().size())
 		return false;
 	int cnt=0;
 	vector<double> newDistributions = atlas_item->get_distribution();
@@ -50,11 +32,39 @@ bool AWDTextureAtlasItem::compare(AWDTextureAtlasItem* atlas_item){
 	return true;
 }
 
- vector<awd_color> AWDTextureAtlasItem::get_colors(){
+ vector<awd_color> AWDGradientitem::get_colors(){
     return this->colors;
 }
- vector<double> AWDTextureAtlasItem::get_distribution(){
+ vector<double> AWDGradientitem::get_distribution(){
     return this->distributions;
+}
+
+AWDTextureAtlasItem::AWDTextureAtlasItem(awd_color color) 
+{
+	this->color=color;
+	this->gradient=NULL;
+	this->item_type=TEXTURE_ATLAS_COLOR;
+    this->width = 1;
+    this->height = 1;
+}
+AWDTextureAtlasItem::AWDTextureAtlasItem(AWDGradientitem* gradient) 
+{
+	this->gradient=gradient;
+	this->item_type=TEXTURE_ATLAS_GRADIENT;
+    this->width = 256;
+    this->height = 1;
+}
+AWDTextureAtlasItem::AWDTextureAtlasItem(string& source_url, int width, int height) 
+{
+    this->source_url = source_url;
+	this->gradient=NULL;
+	this->item_type=TEXTURE_ATLAS_TEXTURE;
+    this->width = width;
+    this->height = height;
+}
+
+AWDTextureAtlasItem::~AWDTextureAtlasItem()
+{
 }
 void AWDTextureAtlasItem::set_width(int width){
     this->width = width;
@@ -74,75 +84,17 @@ void AWDTextureAtlasItem::set_source_url(string& source_url){
 string& AWDTextureAtlasItem::get_source_url(){
     return this->source_url;
 }
+AWDGradientitem* AWDTextureAtlasItem::get_gradient(){
+    return this->gradient;
+}
+awd_color AWDTextureAtlasItem::get_color(){
+    return this->color;
+}
 AWD_tex_atlas_item_type AWDTextureAtlasItem::get_item_type(){
     return this->item_type;
 }
 void AWDTextureAtlasItem::set_item_type(AWD_tex_atlas_item_type item_type){
     this->item_type = item_type;
-}
-
-BlockSettings::BlockSettings(bool wideMatrix, bool wideGeom, bool wideProps, bool wideAttributes, double scale)
-{
-        this->wideMatrix=wideMatrix;
-        this->wideGeom=wideGeom;
-        this->wideProps=wideProps;
-        this->wideAttributes=wideAttributes;
-        this->scale=scale;
-}
-
-BlockSettings::~BlockSettings()
-{
-}
-
-bool
-BlockSettings::get_wide_matrix()
-{
-    return this->wideMatrix;
-}
-void
-BlockSettings::set_wide_matrix(bool wideMatrix)
-{
-    this->wideMatrix=wideMatrix;
-}
-bool
-BlockSettings::get_wide_geom()
-{
-    return this->wideGeom;
-}
-void
-BlockSettings::set_wide_geom(bool wideGeom)
-{
-    this->wideGeom=wideGeom;
-}
-bool
-BlockSettings::get_wide_props()
-{
-    return this->wideProps;
-}
-void
-BlockSettings::set_wide_props(bool wideProps)
-{
-    this->wideProps=wideProps;
-}
-bool
-BlockSettings::get_wide_attributes()
-{
-    return this->wideAttributes;
-}
-void
-BlockSettings::set_wide_attributes(bool wideAttributes)
-{
-    this->wideAttributes=wideAttributes;
-}
-double
-BlockSettings::get_scale()
-{
-    return this->scale;
-}
-void
-BlockSettings::set_scale(double scale)
-{
-    this->scale=scale;
 }
 
 AWDBlock::AWDBlock(AWD_block_type type)
@@ -152,7 +104,10 @@ AWDBlock::AWDBlock(AWD_block_type type)
     // TODO: Allow setting flags
     this->flags = 0;
     this->addr = 0;
-    this->isValid =true; //true as long as the block is valid and should get exported
+    this->isValid = true; //true as long as no 
+
+	this->isProcessed = false; // false until the block isProcessed. This is not neccessry used for all block-types
+
     this->isExported =false; //true if block was exported by the export process (for all files)
     this->isExportedToFile =false; //true if block was exported for one file (gets reset befor exporting one file)
 }
@@ -171,6 +126,16 @@ AWDBlock::make_invalide()
 {
     this->isValid = false;
 }
+bool
+AWDBlock::get_isProcessed()
+{
+    return this->isProcessed;
+}
+void
+AWDBlock::set_isProcessed(bool isProcessed)
+{
+    this->isProcessed = isProcessed;
+}
 
 void
 AWDBlock::prepare_and_add_dependencies(AWDBlockList *export_list)
@@ -183,7 +148,7 @@ AWDBlock::prepare_and_add_dependencies(AWDBlockList *export_list)
 void
 AWDBlock::prepare_and_add_with_dependencies( AWDBlockList *target_list)
 {
-    if(this->isValid){
+    if(true){//this->isValid){
         if (!this->isExportedToFile){
             this->isExportedToFile=true;
             this->isExported=true;

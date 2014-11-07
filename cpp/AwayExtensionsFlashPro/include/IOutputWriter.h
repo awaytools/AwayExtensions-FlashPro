@@ -169,7 +169,7 @@ namespace AwayJS
         virtual FCM::Result EndDefineFill() = 0;
 		
         // End of fill style definition
-        virtual FCM::Result EndDefineFontStroke()=0;
+        virtual FCM::Result EndDefineFontStroke(AWDFontShape*)=0;
         // Marks the end of a shape
         virtual FCM::Result EndDefineShape(FCM::U_Int32 resId) = 0;
 		
@@ -200,12 +200,13 @@ namespace AwayJS
 		virtual double get_outline_threshold()= 0;
 		virtual void set_outline_threshold(double)= 0;
 
-		virtual  FCM::Result EndDefineShapeLetter()= 0;
+		virtual  FCM::Result EndDefineShapeLetter(AWDFontShape*)= 0;
 		virtual  AWD * get_awd()= 0;
 		
 		virtual void set_awd(AWD*)= 0;
 
 		virtual FCM::PIFCMCallback* get_mCallback()= 0;
+		
 
     };
 

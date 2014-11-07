@@ -30,7 +30,9 @@ class ShapeEncoder
 		double green;
 		double blue;
 		double alpha;
-		bool save_interstect;
+		double maxSize;
+		
+		AWD* awd;
 		bool double_subdivide;
 		double outline_threshold;
         FCM::PIFCMCallback m_pCallback;
@@ -39,13 +41,16 @@ class ShapeEncoder
 		void add_outter_face(int thisIdx1, int thisIdx2, int thisIdx3);
 
     public:
-        ShapeEncoder(FCM::PIFCMCallback* pCallback);
+        ShapeEncoder(FCM::PIFCMCallback* pCallback, AWD* awd);
         ~ShapeEncoder();
 
 		void encode_subShape(bool);// ShapeEncoderEncode.cpp
-		
+		bool bounds_interesect(vector<double> bounds1, vector<double> bounds2) ;
+		vector<double> mergeBounds(vector<double> bounds1, vector<double> bounds2) ;
 		void add_inner_tri(int idx1, int idx2, int idx3);
- 
+		int Intersecting(float p0x,float p0y, float p1x, float p1y, float t0x, float t0y, float t1x, float t1y, float t2x,float t2y);
+		
+        void reset(AWDShape2D*);
         AWDShape2D* get_shape();
 		void set_color(double, double, double, double);
 		FCM::PIFCMCallback* get_mCallback();
@@ -53,14 +58,9 @@ class ShapeEncoder
         bool add_point(int, SimplePoint *);
         void add_hole();
         int get_hole_idx();
-        bool get_save_interstect();
-        void set_save_interstect(bool);
-        bool get_double_subdivide();
-        void set_double_subdivide(bool);
-        double get_outline_threshold();
-        void set_outline_threshold(double);
 		bool PointInPath(double, double);
 		bool PointInHole(int holeIdx, double x, double y);
+		bool PointInTri(double x, double y, double x1, double y1, double x2, double y2,double x3, double y3);
         void add_path_segment(AWDPathSegment*);
         void add_new_point(SimplePoint *);
 		bool remove_overlapping();
@@ -73,7 +73,7 @@ class ShapeEncoder
         bool point_in_tr(ShapePoint *, ShapePoint *, ShapePoint *, ShapePoint *);
         bool line_intersect(ShapePoint *, ShapePoint *, ShapePoint *, ShapePoint *);
         ShapePoint * line_intersection_point(ShapePoint *, ShapePoint *, ShapePoint *, ShapePoint *);
-		
+		bool resolve_segment_intersection(AWDPathIntersection* thisIntersection);
 		bool test_bounding_box_lines(ShapePoint * a1, ShapePoint* a2, ShapePoint * b1, ShapePoint * b2);
 		bool test_bounding_box(ShapePoint * a1, ShapePoint* a2, ShapePoint * a3, ShapePoint * b1, ShapePoint * b2, ShapePoint * b3);
 		double Sign(ShapePoint * p1, ShapePoint * p2, ShapePoint * p3);

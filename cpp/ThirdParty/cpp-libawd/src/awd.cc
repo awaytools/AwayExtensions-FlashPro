@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "OutputWriter.h"
 #include "awd.h"
 #include "util.h"
 #include "message.h"
@@ -11,8 +11,11 @@ const int AWD::VERSION_MAJOR = 3;
 const int AWD::VERSION_MINOR = 0;
 const int AWD::VERSION_BUILD = 0;
 const char AWD::VERSION_RELEASE = 'a';
+#include "texturepacker.h"
+#include "lodepng.h"
 
-AWD::AWD(BlockSettings * thisBlockSettings, string& outputPath)
+//#include <crtdbg.h>
+AWD::AWD()
 {
 
     this->major_version = VERSION_MAJOR;
@@ -21,8 +24,6 @@ AWD::AWD(BlockSettings * thisBlockSettings, string& outputPath)
     this->flags = 0;
     //this->splitByRootObjs = splitByRootObjs;
     //this->exportEmtpyContainers=exportEmtpyContainers;
-    this->thisBlockSettings=thisBlockSettings;
-	this->file = fopen (outputPath.c_str(), "wb");
     // all this block-lists should have non-weak reference set, so they will delete the blocks
     // this means, that every awdblock should only occur one time in only one of this lists:
     this->texture_blocks = new AWDBlockList(false);
@@ -32,9 +33,10 @@ AWD::AWD(BlockSettings * thisBlockSettings, string& outputPath)
 	this->audio_blocks = new AWDBlockList(false);
 	this->font_blocks = new AWDBlockList(false);
 	this->text_blocks = new AWDBlockList(false);
-
+	this->exporterSettings= new AWDExporterSettings();
     this->shape2Dblocks = new AWDBlockList(false);
     this->shapeFillBlocks = new AWDBlockList(false);
+    this->textFormat_blocks = new AWDBlockList(false);
     this->timelineBlocks = new AWDBlockList(false);
 	this->root_timelines = new AWDBlockList(true);
     this->metadata = NULL;
@@ -57,13 +59,175 @@ AWD::~AWD()
     delete this->font_blocks;
     delete this->text_blocks;
     delete this->root_timelines;
+    delete this->textFormat_blocks;
 	
 
     if (this->metadata){
         delete this->metadata;}
     this->metadata=NULL;
-    delete this->thisBlockSettings;
+    delete this->exporterSettings;
 }
+AWDExporterSettings* AWD::getExporterSettings(){
+	return this->exporterSettings;
+}
+void
+AWD::create_TextureAtlas( string& url)
+{
+	int maxTexSize=512;
+	int maxTexSizeQuad=512*512;
+	bool force_quad=true;
+	AWDShape2DFill* fill;
+	AWDBlockIterator it(shapeFillBlocks);
+	vector<vector<vector<AWDTextureAtlasItem*> > > colorAtlasItems;
+	vector<vector<AWDTextureAtlasItem*> >bitmapAtlasItems;
+	int bitmapSizeCnt=0;
+	int colorsSize=0;
+	vector<vector<AWDTextureAtlasItem*> > first_colors_items;
+	vector<AWDTextureAtlasItem*> first_solid_items;
+	vector<AWDTextureAtlasItem*> first_gradient_items;
+	first_colors_items.push_back(first_solid_items);
+	first_colors_items.push_back(first_gradient_items);
+	colorAtlasItems.push_back(first_colors_items);
+	vector<AWDTextureAtlasItem*> first_bitmap_items;
+	bitmapAtlasItems.push_back(first_bitmap_items);
+	int atlas_col_cnt=0;
+	int atlas_tex_cnt=0;
+	
+    while ((fill = (AWDShape2DFill *)it.next()) != NULL) {
+		AWDTextureAtlasItem* newAtlasitem;
+		if(fill->get_fill_type()==AWD_FILLTYPE_SOLID){			
+			colorsSize++;
+			if(colorsSize>maxTexSizeQuad){
+				atlas_col_cnt++;
+				vector<vector<AWDTextureAtlasItem*> > next_colors_items;
+				vector<AWDTextureAtlasItem*> next_solid_items;
+				vector<AWDTextureAtlasItem*> next_gradient_items;
+				next_colors_items.push_back(next_solid_items);
+				next_colors_items.push_back(next_gradient_items);
+				colorAtlasItems.push_back(next_colors_items);
+			}
+			newAtlasitem=new AWDTextureAtlasItem(fill->get_color());
+			colorAtlasItems[atlas_col_cnt][0].push_back(newAtlasitem);
+		}
+		else if((fill->get_fill_type()==AWD_FILLTYPE_GRADIENT_LINEAR)||(fill->get_fill_type()==AWD_FILLTYPE_GRADIENT_RADIAL)){
+			colorsSize+=256;
+			if(colorsSize>maxTexSizeQuad){
+				atlas_col_cnt++;
+				vector<vector<AWDTextureAtlasItem*> > next_colors_items;
+				vector<AWDTextureAtlasItem*> next_solid_items;
+				vector<AWDTextureAtlasItem*> next_gradient_items;
+				next_colors_items.push_back(next_solid_items);
+				next_colors_items.push_back(next_gradient_items);
+				colorAtlasItems.push_back(next_colors_items);
+			}
+			newAtlasitem=new AWDTextureAtlasItem(fill->get_gradient());
+			colorAtlasItems[atlas_col_cnt][1].push_back(newAtlasitem);
+		}
+		else if(fill->get_fill_type()==AWD_FILLTYPE_TEXTURE){
+			if(fill->get_tex_width()>maxTexSize){
+			}
+			else if(fill->get_tex_height()>maxTexSize){
+			}
+			else if(fill->get_tex_width()*fill->get_tex_height()>maxTexSizeQuad){
+			}
+			else {
+				bitmapSizeCnt+=fill->get_tex_width()*fill->get_tex_height();
+				if(bitmapSizeCnt+colorsSize>maxTexSizeQuad){
+					atlas_tex_cnt++;
+					bitmapSizeCnt=fill->get_tex_width()*fill->get_tex_height();
+					vector<AWDTextureAtlasItem*> next_bitmap_items;
+					bitmapAtlasItems.push_back(next_bitmap_items);
+				}
+				newAtlasitem=new AWDTextureAtlasItem(fill->get_texture_url(),  fill->get_tex_width(), fill->get_tex_height());
+				bitmapAtlasItems[atlas_tex_cnt].push_back(newAtlasitem);
+			}
+		}
+	}
+	string url_start=url+"/ColorAtlas_";
+	string url_extens=".png";
+	int bitmapCnter=0;
+	vector<AWDTextureAtlasItem*> atlasToMerge;
+	/*
+	TEXTURE_PACKER::TexturePacker *tp = TEXTURE_PACKER::createTexturePacker();
+	tp->setTextureCount(10);	
+	tp->addTexture(512,1);
+	int width;
+	int height;
+	int unused_area = tp->packTextures(width,height,true,true);
+	int texX;
+	int texY;
+	int texWidth;
+	int texHeight;
+	bool isflipped=tp->getTextureLocation(0, texX, texY, texWidth, texHeight);
+	*/
+	/*
+	for(vector<AWDTextureAtlasItem*> bitTexAtlasList:bitmapAtlasItems){
+		bool exportThis=true;
+		if(bitmapCnter<bitmapAtlasItems.size()-1){
+			if(!bitmapSizeCnt+colorsSize>maxTexSizeQuad){
+				atlasToMerge=bitTexAtlasList;
+				exportThis=false;
+			}
+		}
+		if(exportThis){
+			// export this ínto a textureAtlas
+		}
+		bitmapCnter++;
+	}*/
+	int colorAtlasCnter=0;
+	for(vector<vector<AWDTextureAtlasItem*> > bitTexAtlasList:colorAtlasItems){
+		vector<AWDTextureAtlasItem*> solidColors=bitTexAtlasList[0];
+		vector<AWDTextureAtlasItem*> gradientColors=bitTexAtlasList[1];
+		if((colorAtlasCnter==colorAtlasItems.size()-1)&&(atlasToMerge.size()>0)){
+			// merge textureatlas into solidAtlas
+		}		
+		int texHeight=2;
+		int texWidth=2;
+		bool findSize=true;
+		int thisSize=512*512;
+		/*
+		while (findSize){
+			if((texHeight*texWidth)>thisSize){
+			}
+		}
+		*/
+		string url_final=url_start+AwayJS::Utils::ToString(colorAtlasCnter)+url_extens;//
+		const char* filename = url_final.c_str();
+		unsigned width = 512, height = 512;
+		std::vector<unsigned char> image;
+		image.resize(width * height * 4);
+		int colorCnt=0;
+		for(AWDTextureAtlasItem* texAtlas:solidColors){
+			awd_color color=texAtlas->get_color();
+			for(int tester=0; tester<4000; tester++){
+				if((4 * colorCnt + 4)<(width * height * 4)){
+					image[4 * colorCnt] = (color >> 16);
+					image[4 * colorCnt + 1] =(color >> 8);
+					image[4 * colorCnt + 2] = (color >> 0);
+					image[4 * colorCnt + 3] = (color >> 24);
+					colorCnt++;
+				}
+			}
+		}
+		/*
+		for(unsigned y = 0; y < height; y++)
+		for(unsigned x = 0; x < width; x++)
+		{
+			image[4 * width * y + 4 * x + 0] = 255 * !(x & y);
+			image[4 * width * y + 4 * x + 1] = x ^ y;
+			image[4 * width * y + 4 * x + 2] = x | y;
+			image[4 * width * y + 4 * x + 3] = 255;
+		}	*/
+		unsigned error = lodepng::encode(filename, image, width, height);
+	}
+	//for(AWDTextureAtlasItem* bitTexAtlas:
+	/*string atlasName="atlas_";
+	int atlascnt=0;//todo:add atlas nr to name
+	AWDBitmapTexture* newTextureAtlas=new AWDBitmapTexture(atlasName);*/
+	//NOTE: this sample will overwrite the file or test.png without warning!
+	//generate some image
+}
+
 int
 AWD::count_all_valid_blocks()
 {
@@ -83,38 +247,65 @@ AWD::has_flag(int flag)
 }
 
 
-
+		
+AWDTextFormat *
+AWD::get_text_format(string& newtexFormat)
+{
+	AWDTextFormat *texFormat;
+	AWDBlockIterator it(textFormat_blocks);
+    while ((texFormat = (AWDTextFormat *)it.next()) != NULL) {
+		if(texFormat->get_name()==newtexFormat){
+			return texFormat;
+		}
+    }
+	AWDTextFormat* newAWDTextFormat = new AWDTextFormat(newtexFormat);
+	add_textFormatBlock(newAWDTextFormat);
+	return newAWDTextFormat;
+}
 AWDTextElement *
 AWD::get_text(string& newText)
 {
 	AWDTextElement *tex;
 	AWDBlockIterator it(text_blocks);
     while ((tex = (AWDTextElement *)it.next()) != NULL) {
-		if(tex->get_text()==newText){
+		if(tex->get_name()==newText){
 			return tex;
 		}
     }
-	string newTextName("Textelement");
-	AWDTextElement* newTextElement = new AWDTextElement(newTextName);
-	newTextElement->set_text(newText);
+	AWDTextElement* newTextElement = new AWDTextElement(newText);
 	add_textBlock(newTextElement);
 	return newTextElement;
 }
-AWDFontShapes *
+AWDFont *
 AWD::get_font_shapes(string& newFontName)
 {
-	AWDFontShapes *font_shapes;
+	AWDFont *font_shapes;
 	AWDBlockIterator it(font_blocks);
-    while ((font_shapes = (AWDFontShapes *)it.next()) != NULL) {
+    while ((font_shapes = (AWDFont *)it.next()) != NULL) {
 		if(font_shapes->get_name()==newFontName){
 			return font_shapes;
 		}
     }
-	AWDFontShapes* newFontShapes = new AWDFontShapes(newFontName);
+	AWDFont* newFontShapes = new AWDFont(newFontName);
 	add_fontBlock(newFontShapes);
 	return newFontShapes;
 }
 
+AWDShape2DTimeline *
+	AWD::get_timeline(string& newAudioPath)
+{
+	AWDShape2DTimeline *tex;
+	AWDBlockIterator it(timelineBlocks);
+    while ((tex = (AWDShape2DTimeline *)it.next()) != NULL) {
+		if(tex->get_name()==newAudioPath){
+			return tex;
+		}
+    }
+	string newAudioName(newAudioPath);
+	AWDShape2DTimeline* newAudio = new AWDShape2DTimeline(newAudioName);
+	add_timelineBlock(newAudio);
+	return newAudio;
+}
 AWDAudio *
 AWD::get_audio(string& newAudioPath)
 {
@@ -238,9 +429,14 @@ AWD::add_textBlock(AWDTextElement *block)
 	this->text_blocks->append(block);
 }
 void
-AWD::add_fontBlock(AWDFontShapes *block)
+AWD::add_fontBlock(AWDFont *block)
 {
 	this->font_blocks->append(block);
+}
+void
+AWD::add_textFormatBlock(AWDTextFormat *block)
+{
+	this->textFormat_blocks->append(block);
 }
 void
 AWD::add_audioBlock(AWDAudio *block)
@@ -287,7 +483,11 @@ AWD::get_audio_blocks()
 {
     return this->audio_blocks;
 }
-
+AWDBlockList *
+AWD::get_text_format_blocks()
+{
+    return this->textFormat_blocks;
+}
 
 
 void
@@ -371,8 +571,8 @@ AWD::re_order_blocks(AWDBlockList *blocks, AWDBlockList *targetList)
     AWDBlockIterator it(blocks);
     len = 0;
     while ((block = it.next()) != NULL) {
-        if(block->get_isValid())
-            block->prepare_and_add_with_dependencies(targetList);
+       // if(block->get_isValid())
+        block->prepare_and_add_with_dependencies(targetList);
     }
 }
 size_t
@@ -384,7 +584,7 @@ AWD::write_blocks(AWDBlockList *blocks)
 
     len = 0;
     while ((block = it.next()) != NULL) {
-		len += block->write_block(this->fileWriter, this->thisBlockSettings);
+		len += block->write_block(this->fileWriter, this->exporterSettings->get_blockSettings());
     }
 
     return len;
@@ -430,14 +630,15 @@ AWD::reset_all_blocks2()
 void
 AWD::get_awd_blocks_for_objIDs()
 {
+	
 	AWDShape2DTimeline *block;
     AWDBlockIterator it(timelineBlocks);
     while ((block = (AWDShape2DTimeline*)it.next()) != NULL) {
 		vector<AWDTimeLineFrame*> thisFrames=block->get_frames();
 		for (AWDTimeLineFrame * f : thisFrames) 
 		{
-			vector<AWDFrameCommand*> thisCommands=f->get_commands();
-			for (AWDFrameCommand * c : thisCommands) 
+			vector<AWDFrameCommandBase*> thisCommands=f->get_commands();
+			for (AWDFrameCommandBase * c : thisCommands) 
 			{
 				if((c->get_command_type()==AWD_FRAME_COMMAND_UPDATE_OBJECT)||(c->get_command_type()==AWD_FRAME_COMMAND_SOUND)){
 					string resID=c->get_resID();
@@ -462,6 +663,7 @@ AWD::get_awd_blocks_for_objIDs()
 			}
 		}
 	}
+	
 }
 
 void
@@ -470,18 +672,17 @@ AWD::add_root_scene(AWDBlock* root)
 	this->root_timelines->append(root);
 }
 awd_uint32
-AWD::flush()
+AWD::flush(std::string& outfile)
 {
 	
+	this->file = fopen (outfile.c_str(), "wb");
 	if(this->file==NULL){
 		return AWD_FALSE;
 	}
-	
 	this->fileWriter=new AWDFileWriter(this->file);
     //contain all blocks that are going to be written in the main AWD file.
     AWDBlockList * blocks_mainAWD = new AWDBlockList();
 
-	get_awd_blocks_for_objIDs();
 
     //make shure the metadata block exists, because no other awdblock should have the id=0
     if (this->metadata==NULL)
@@ -506,9 +707,9 @@ AWD::flush()
 	//this->re_order_blocks(this->text_blocks, blocks_mainAWD);
 	
     // write the main file
-    if (blocks_mainAWD->get_num_blocks()>=1){
+   // if (blocks_mainAWD->get_num_blocks()>=1){
 		this->write_blocks_to_file(blocks_mainAWD);
-    }
+   // }
 
     this->check_exported_blocks(this->texture_blocks);
 

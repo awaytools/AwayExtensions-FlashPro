@@ -31,6 +31,10 @@ class AWDShape2DFill :
 		double blue;
 		double alpha;
         awd_color color;
+		string texture_url;
+		int tex_width;
+		int tex_height;
+		AWDGradientitem* gradient_item;
         AWDBitmapTexture *texture;
         awd_float64 * uv_transform_mtx;
 		AWDTextureAtlasItem* textureAtlasItem;// for solid and texture, size shoudl be 1
@@ -48,6 +52,14 @@ class AWDShape2DFill :
         void set_fill_type(AWD_fill_type);
         AWD_fill_type get_fill_type();
 		
+        void set_tex_width(int);
+        int get_tex_width();
+        void set_tex_height(int);
+        int get_tex_height();
+        void set_texture_url(string& );
+        string&  get_texture_url();
+        void set_gradient(AWDGradientitem* );
+        AWDGradientitem*  get_gradient();
         void set_color(awd_color);
         awd_color get_color();
         double get_color_red();

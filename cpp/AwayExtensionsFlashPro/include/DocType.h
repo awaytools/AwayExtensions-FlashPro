@@ -26,6 +26,7 @@
 #ifndef DOC_TYPE_H_
 #define DOC_TYPE_H_
 
+
 #include <map>
 
 #include "Version.h"

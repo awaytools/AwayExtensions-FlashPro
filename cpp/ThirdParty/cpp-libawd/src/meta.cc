@@ -14,12 +14,6 @@ AWDMetaData::AWDMetaData() :
 }
 
 AWDMetaData::~AWDMetaData() {
-	/*
-	free this->encoder_name ?
-	free this->encoder_version ?
-	free this->generator_name ?
-	free this->generator_version ?
-	*/
 }
 void
 AWDMetaData::override_encoder_metadata(string& name, string& version)

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "ns.h"
 #include "util.h"
+//#include <crtdbg.h>
 
 
 AWDNamespace::AWDNamespace(string& ns) :

@@ -20,6 +20,15 @@ body {
 			padding-top:4px;
 			padding-right:11px;
       }
+      .myLabel3{
+           width:180px;
+            text-align:left;
+            display:block;
+            float:left;
+			padding-top:4px;
+			margin-left:11px;
+	  }
+	  
       .clearer{
       	clear:both;
       }
@@ -45,6 +54,39 @@ body {
             border:1px solid #D49B00;
         }
         
+        #docInfos{
+       	right:15px;
+        top:180px;
+        height:25px;
+        width:120px;
+        position:absolute;
+        border:1px solid #070707;
+        background:#444444;
+        padding:4px;
+        color:#c6c6c6;
+        }
+        #sceneInfos{
+       	right:15px;
+        top:215px;
+        height:25px;
+        width:120px;
+        position:absolute;
+        border:1px solid #070707;
+        background:#444444;
+        padding:4px;
+        color:#c6c6c6;
+        }
+        #timelineInfos{
+       	right:15px;
+        top:250px;
+        height:25px;
+        width:120px;
+        position:absolute;
+        border:1px solid #070707;
+        background:#444444;
+        padding:4px;
+        color:#c6c6c6;
+        }
         #cancel{
        	right:15px;
         bottom:15px;
@@ -94,6 +136,24 @@ body {
        background:#515151;
     }
     
+    #help:hover{
+       background:#515151;
+    }
+    #ok:hover{
+       background:#515151;
+    }
+    #cancel:hover{
+       background:#515151;
+    }  
+    #docInfos:hover{
+       background:#515151;
+    }
+    #sceneInfos:hover{
+       background:#515151;
+    }
+    #timelineInfos:hover{
+       background:#515151;
+    }
     input[type="image"] {
     height:16px;
     width:16px;

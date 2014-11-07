@@ -33,6 +33,7 @@
     <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\name.h" />
     <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\ns.h" />
     <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\primitive.h" />
+    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\settings.h" />
     <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2D.h" />
     <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2Dfill.h" />
     <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2Dtimeline.h" />
@@ -55,6 +56,8 @@
     <ClInclude Include="..\..\include\OutputWriter.h" />
     <ClInclude Include="..\..\include\Publisher.h" />
     <ClInclude Include="..\..\include\ShapeEncoder.h" />
+    <ClInclude Include="..\..\include\ShapePool.h" />
+    <ClInclude Include="..\..\include\TimeLineEncoder.h" />
     <ClInclude Include="..\..\include\Utils.h" />
     <ClInclude Include="..\..\include\Version.h" />
     <ClInclude Include="resource.h" />
@@ -71,6 +74,7 @@
     <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\meta.cc" />
     <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\name.cc" />
     <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\ns.cc" />
+    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\settings.cc" />
     <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2D.cc" />
     <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2Dfill.cc" />
     <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2Dtimeline.cc" />
@@ -97,7 +101,9 @@
     <ClCompile Include="..\..\src\ShapeEncoder.cpp" />
     <ClCompile Include="..\..\src\ShapeEncoderEncode.cpp" />
     <ClCompile Include="..\..\src\ShapeEncoderUtils.cpp" />
+    <ClCompile Include="..\..\src\ShapePool.cpp" />
     <ClCompile Include="..\..\src\TimeLineBuilder.cpp" />
+    <ClCompile Include="..\..\src\TimeLineEncoder.cpp" />
     <ClCompile Include="..\..\src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,7 +157,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.fcm</TargetExt>
+    <OutDir>C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\AwayExtensionsFlashPro\plugin\lib\win</OutDir>
+    <IntDir>$(OutDir)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.fcm</TargetExt>
@@ -160,6 +168,10 @@
     <OutDir>C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\AwayExtensionsFlashPro\plugin\lib\win</OutDir>
     <IntDir>..\..\obj\win\release\64\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetExt>.fcm</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -167,22 +179,45 @@
       <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\ThirdParty\libjson_7.6.1\libjson;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\ThirdParty\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_SYSTEM_NO_DEPRECATED;FLASHPRO_DVA_CUSTOM;BOOST_ALL_DYN_LINK;_WINDOWS;MSWindows;_WIN32_WINNT=0x600;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;PRERELEASE;DVA_MAJOR_DISPLAY_VERSION=2014;DVA_MINOR_DISPLAY_VERSION=0;DVA_PATCH_DISPLAY_VERSION=0;DVA_SUITE_VERSION=14;DVA_MAJOR_VERSION=14;DVA_MINOR_VERSION=1;DVA_PATCH_VERSION=0;DVA_BUILD_YEAR=2014;WIN_ENV;__EXCEPTION_TRACER__;USE_DVA_WORKSPACE=1;USE_EXO_MESSAGING=1;DEBUG=1;_DEBUG;_ITERATOR_DEBUG_LEVEL=2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <OmitFramePointers />
+      <DisableSpecificWarnings>4355;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+      <AdditionalDependencies>"..\..\..\Common\ThirdParty\\xerces-c-3.1.1\Build\Win64\VC10\Release\xerces-c_3.lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\ThirdParty\poly2tri\poly2tri;..\..\..\ThirdParty\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\ThirdParty\libtess2-master\Source;..\..\..\ThirdParty\libtess2-master\Include;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\ThirdParty\cpp-libawd\src;..\..\..\ThirdParty\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_SYSTEM_NO_DEPRECATED;FLASHPRO_DVA_CUSTOM;BOOST_ALL_DYN_LINK;_WINDOWS;MSWindows;_WIN32_WINNT=0x600;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;PRERELEASE;DVA_MAJOR_DISPLAY_VERSION=2014;DVA_MINOR_DISPLAY_VERSION=0;DVA_PATCH_DISPLAY_VERSION=0;DVA_SUITE_VERSION=14;DVA_MAJOR_VERSION=14;DVA_MINOR_VERSION=1;DVA_PATCH_VERSION=0;DVA_BUILD_YEAR=2014;WIN_ENV;__EXCEPTION_TRACER__;USE_DVA_WORKSPACE=1;USE_EXO_MESSAGING=1;DEBUG=1;_DEBUG;_ITERATOR_DEBUG_LEVEL=2;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <DisableSpecificWarnings>4355;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalOptions>/Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>"..\..\..\ThirdParty\xerces-c-3.1.1\Build\Win64\VC10\Release\xerces-c_3.lib";"..\..\..\ThirdParty\cpp-libawd\build\libawd2D.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"..\..\..\ThirdParty\xerces-c-3.1.1\Build\Win64\VC10\Release\xerces-c_3.lib";%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>
       </SubSystem>
+      <AdditionalOptions>/Zi %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

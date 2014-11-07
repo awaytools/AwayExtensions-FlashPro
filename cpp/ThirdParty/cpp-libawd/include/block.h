@@ -2,12 +2,27 @@
 #define _LIBAWD_BLOCK_H
 
 #include <stdlib.h>
-
+#include "settings.h"
 #include "FileWriter.h"
 //#include "awd.h"
 #include "awd_types.h"
 #include <vector>
+//#include <crtdbg.h>
 
+class AWDGradientitem
+{
+    private:
+		vector<awd_color> colors;
+		vector<double> distributions;
+
+    public:
+        AWDGradientitem();
+        ~AWDGradientitem();
+		bool compare(AWDGradientitem* atlas_item);
+        void add_color(awd_color, double);
+        vector<awd_color> get_colors();
+        vector<double> get_distribution();
+};
 typedef enum {
     TEXTURE_ATLAS_COLOR=0,
     TEXTURE_ATLAS_GRADIENT=1,
@@ -16,22 +31,19 @@ typedef enum {
 class AWDTextureAtlasItem
 {
     private:
-		vector<awd_color> colors;
-		vector<double> distributions;
-		string source_url;// only for texture items
 		int width;
 		int height;
+		AWDGradientitem* gradient;
+		awd_color color;
+		string source_url;
 		AWD_tex_atlas_item_type item_type;
 
 
     public:
+        AWDTextureAtlasItem(AWDGradientitem*);
         AWDTextureAtlasItem(awd_color);
 		AWDTextureAtlasItem(string&, int, int);
         ~AWDTextureAtlasItem();
-        void add_color(awd_color, double);
-        bool compare(AWDTextureAtlasItem* atlas_item);
-        vector<awd_color> get_colors();
-        vector<double> get_distribution();
 
         void set_source_url(string&);
         string& get_source_url();
@@ -39,37 +51,12 @@ class AWDTextureAtlasItem
         int get_width();
         void set_height(int);
         int get_height();
+        AWDGradientitem* get_gradient();
+        awd_color get_color();
         void set_item_type(AWD_tex_atlas_item_type);
         AWD_tex_atlas_item_type get_item_type();
 };
 
-class BlockSettings
-{
-    private:
-        // File header fields
-        bool wideMatrix;
-        bool wideGeom;
-        bool wideProps;
-        bool wideAttributes;
-
-
-        double scale;
-
-    public:
-        BlockSettings(bool,bool, bool, bool, double);
-        ~BlockSettings();
-		
-        bool get_wide_matrix();
-        void set_wide_matrix(bool);
-        bool get_wide_geom();
-        void set_wide_geom(bool);
-        bool get_wide_props();
-        void set_wide_props(bool);
-        bool get_wide_attributes();
-        void set_wide_attributes(bool);
-        double get_scale();
-        void set_scale(double);
-};
 
 class AWDBlockList;
 class AWDBlock
@@ -78,6 +65,7 @@ class AWDBlock
         awd_baddr addr;
         awd_uint8 flags;
         bool isValid;
+        bool isProcessed;
 		string objectID;
 
     protected:
@@ -98,6 +86,8 @@ class AWDBlock
         AWD_block_type get_type();
         bool get_isValid();
         void make_invalide();
+        bool get_isProcessed();
+        void set_isProcessed(bool);
 
         void prepare_and_add_with_dependencies(AWDBlockList *);
 

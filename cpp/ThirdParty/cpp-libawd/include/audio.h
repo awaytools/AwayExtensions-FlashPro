@@ -26,6 +26,7 @@ class AWDAudio :
         awd_uint32 embed_data_len;
         int height;
         int width;
+		char* test;
 
     protected:
         awd_uint32 calc_body_length(BlockSettings *);
@@ -37,7 +38,9 @@ class AWDAudio :
         ~AWDAudio();
 
         bool set_embed_data();
-
+		
+		int get_embbed_length();
+		awd_uint8 * get_embbed_data();
         string get_url();
         awd_uint16 get_url_length();
         void set_url(string& url);

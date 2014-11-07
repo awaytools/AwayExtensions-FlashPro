@@ -214,7 +214,7 @@ namespace AwayJS
         // End of fill style definition
         virtual FCM::Result EndDefineFill();
         // End of fill style definition
-        virtual FCM::Result EndDefineFontStroke();
+        virtual FCM::Result EndDefineFontStroke(AWDFontShape*);
 		
         // Marks the end of a shape
         virtual FCM::Result EndDefineShape(FCM::U_Int32 resId);
@@ -252,12 +252,13 @@ namespace AwayJS
 		virtual double get_outline_threshold();
 		virtual void set_outline_threshold(double);
 
-		virtual  FCM::Result EndDefineShapeLetter();
+		virtual  FCM::Result EndDefineShapeLetter(AWDFontShape*);
 		virtual  AWD * get_awd();
 		
 		virtual void set_awd(AWD*);
 
 		virtual FCM::PIFCMCallback* get_mCallback();
+        std::string m_outputImageFolder;
 		
     private:
 		
@@ -276,13 +277,12 @@ namespace AwayJS
         bool        m_firstSegment;
 
         STROKE_STYLE m_strokeStyle;
-
+		
 		
 		
         std::string m_outputHTMLFile;
         std::string m_outputJSONFile;
 
-        std::string m_outputImageFolder;
 
         std::string m_outputSoundFolder;
         std::string m_target_asViewer_path;
@@ -360,7 +360,7 @@ namespace AwayJS
 		AWDShape2DTimeline* thisTimeLine;
 		awd_float64 *get_mtx_2x3(const DOM::Utils::MATRIX2D* mtx);
 		awd_float64 *get_color_mtx_4x5(const DOM::Utils::COLOR_MATRIX* mtx);
-		vector<AWDFrameCommand*> frameCommands;
+		vector<AWDFrameCommandDisplayObject*> frameCommands;
 
 		
 		vector<AWDTimeLineFrame*> timeLineFrames;

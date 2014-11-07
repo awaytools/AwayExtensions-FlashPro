@@ -8,7 +8,7 @@ AWDAudio::AWDAudio(string& name) :
     AWDNamedElement(name),
     AWDAttrElement()
 {
-    this->saveType = EXTERNAL_AUDIO;
+	this->saveType = EMBEDDED_AUDIO;
     this->embed_data = NULL;
     this->embed_data_len = 0;
     this->height = 0;
@@ -20,7 +20,6 @@ AWDAudio::~AWDAudio()
     if (this->embed_data_len>0) free(this->embed_data);
     this->embed_data = NULL;
     this->embed_data_len = 0;
-	//free the url ?
 }
 
 int
@@ -49,7 +48,6 @@ AWDAudio::get_url()
 {
     return this->url;
 }
-
 
 void
 AWDAudio::set_url(string& url)
@@ -81,20 +79,18 @@ AWDAudio::set_embed_data()
 	//fread(this->embed_data, tmp_file->_bufsiz, tmp_file->_bufsiz, tmp_file);
     //this->embed_data_len = tmp_file->_bufsiz;
 	// obtain file size:
-	fseek (tmp_file , 0 , SEEK_END);
+
+	int curPos = ftell (tmp_file);
+	fseek (tmp_file , 0 , 2);
 	this->embed_data_len = ftell (tmp_file);
-	rewind (tmp_file);
+	fseek (tmp_file , curPos , 0);
+	//rewind (tmp_file);
+	
+	// allocate memory to contain the whole file
+	this->test = new char[this->embed_data_len+1];
+	//this->embed_data = (awd_uint8 *) malloc (sizeof(awd_uint8)*this->embed_data_len+1);
+	result = fread (this->test, sizeof(char), this->embed_data_len, tmp_file);
 
-	// allocate memory to contain the whole file:
-	this->embed_data = (awd_uint8*) malloc (sizeof(awd_uint8)*this->embed_data_len);
-	//if (this->embed_data == NULL) {fputs ("Memory error",stderr); exit (2);}
-	// copy the file into the buffer:
-	result = fread (this->embed_data,sizeof(awd_uint8),this->embed_data_len,tmp_file);
-	//if (result != this->embed_data_len) {fputs ("Reading error",stderr); exit (3);}
-
-	/* the whole file is now loaded in the memory buffer. */
-
-	  // terminate
 	fclose (tmp_file);
 	return true;
 }
@@ -109,8 +105,8 @@ void
 awd_uint32
 AWDAudio::calc_body_length(BlockSettings * curBlockSettings)
 {
-    if(!this->get_isValid())
-        return 0;
+    //if(!this->get_isValid())
+    //    return 0;
     awd_uint32 len;
 
     len = sizeof(awd_uint32); //datalength;
@@ -130,6 +126,17 @@ AWDAudio::calc_body_length(BlockSettings * curBlockSettings)
 }
 
 
+int
+AWDAudio::get_embbed_length()
+{
+	return this->embed_data_len;
+}
+awd_uint8*
+AWDAudio::get_embbed_data()
+{
+	return this->embed_data;
+}
+
 void
 AWDAudio::write_body(AWDFileWriter * fileWriter, BlockSettings * curBlockSettings)
 {
@@ -137,22 +144,19 @@ AWDAudio::write_body(AWDFileWriter * fileWriter, BlockSettings * curBlockSetting
 	
 	fileWriter->writeSTRING( this->get_name(), 1);
 	fileWriter->writeUINT8( this->saveType);
-	//awdutil_write_varstr(fd, this->get_name().c_str(), this->get_name().size());
-
-    //write(fd, &this->saveType, sizeof(awd_uint8));
+	
 	if (this->saveType == EXTERNAL_AUDIO) {
 		//fileWriter->writeUINT32(data_len);// 
         //write(fd, &data_len, sizeof(awd_uint32));
         //write(fd, this->url.c_str(), this->url.size());
-		fileWriter->writeSTRING(this->url, 2);// frame code	
+		//fileWriter->writeSTRING(this->url, 2);// frame code	
     }
     else {
-		fileWriter->writeUINT32(sizeof(this->embed_data));// 
-		awd_uint8* thisEmbeddData=this->embed_data;
-		fileWriter->writeBytes(this->embed_data, this->embed_data_len);// frame code	
-		//fwrite(reinterpret_cast<const char*>(thisEmbeddData), 1,  this->embed_data_len, fileWriter->get_file());		
+		//fileWriter->writeUINT32(this->embed_data_len);
+		//awd_uint8* thisEmbeddData=this->embed_data;
+		//fileWriter->writeBytes((awd_uint8*)this->test, this->embed_data_len);	
     }
-
-    this->properties->write_attributes(fileWriter,  curBlockSettings);
-    this->user_attributes->write_attributes(fileWriter,  curBlockSettings);
+	
+    //this->properties->write_attributes(fileWriter,  curBlockSettings);
+    //this->user_attributes->write_attributes(fileWriter,  curBlockSettings);
 }

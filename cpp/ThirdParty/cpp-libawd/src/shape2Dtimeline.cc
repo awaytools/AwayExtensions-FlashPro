@@ -5,16 +5,139 @@
 #include <cstdio>
 #include <string>
 using namespace std;
+//#include <crtdbg.h>
 
 
-AWDFrameCommand::AWDFrameCommand(awd_uint32 objectID) :
-    AWDAttrElement()
+AWDFrameCommandBase::AWDFrameCommandBase() 
 {
     this->command_properties=new AWDNumAttrList();
-    this->command_type = command_type;
-	this->objID = objectID;
+	this->command_type = AWD_FRAME_COMMAND_UPDATE_OBJECT;
+	this->hasRessource=false;// if true than the command will be "add" not "update"
+	this->objID = -1;
 	this->object_block = NULL;
 	this->hasRessource=false;// if true than the command will be "add" not "update"
+}
+
+AWDFrameCommandBase::~AWDFrameCommandBase()
+{
+    delete this->command_properties;
+	this->object_block = NULL;
+}
+
+void
+AWDFrameCommandBase::prepare_and_add_dependencies(AWDBlockList *export_list)
+{
+    // Does nothing by default. Can be optionally
+    // overriden by sub-classes to take any actions
+    // that need to happen before length is calculated
+}
+double
+AWDFrameCommandBase::compare_to_command(AWDFrameCommandBase * )
+{
+    // Does nothing by default. Can be optionally
+    // overriden by sub-classes to take any actions
+    // that need to happen before length is calculated
+	return 0;
+}
+void
+AWDFrameCommandBase::update_by_command(AWDFrameCommandBase *)
+{
+    // Does nothing by default. Can be optionally
+    // overriden by sub-classes to take any actions
+    // that need to happen before length is calculated
+}
+void
+AWDFrameCommandBase::write_command(AWDFileWriter * ,  BlockSettings *)
+{
+    // Does nothing by default. Can be optionally
+    // overriden by sub-classes to take any actions
+    // that need to happen before length is calculated
+}
+awd_uint32
+AWDFrameCommandBase::calc_command_length(BlockSettings * blockSettings)
+{
+	return 0;
+}
+string&
+AWDFrameCommandBase::get_objectType()
+{
+	return this->objectType;
+}
+void
+AWDFrameCommandBase::set_objectType(string& objectType)
+{
+    this->objectType = objectType;
+}
+string&
+AWDFrameCommandBase::get_resID()
+{
+	return this->resID;
+}
+void
+AWDFrameCommandBase::set_resID(string& new_res)
+{
+	this->hasRessource=true;
+    this->resID = new_res;
+}
+awd_uint32
+AWDFrameCommandBase::get_objID()
+{
+	return this->objID;
+}
+void
+AWDFrameCommandBase::set_objID(awd_uint32 objID)
+{
+    this->objID = objID;
+}
+void
+AWDFrameCommandBase::set_object_block(AWDBlock * object_block)
+{
+    this->object_block = object_block;
+}
+AWDBlock*
+AWDFrameCommandBase::get_object_block()
+{
+    return this->object_block;
+}
+AWDNumAttrList *
+AWDFrameCommandBase::get_command_properties()
+{
+    return this->command_properties;
+}
+AWD_Frame_Command_type
+AWDFrameCommandBase::get_command_type()
+{
+    return this->command_type;
+}
+void
+AWDFrameCommandBase::set_layerID(awd_uint32 layerID)
+{
+	this->layerID = layerID;
+}
+awd_uint32
+AWDFrameCommandBase::get_layerID()
+{
+	return this->layerID;
+}
+void
+AWDFrameCommandBase::set_command_type(AWD_Frame_Command_type command_type)
+{
+    this->command_type=command_type;
+}
+bool
+AWDFrameCommandBase::get_hasRessource()
+{
+    return this->hasRessource;
+}
+void
+AWDFrameCommandBase::set_hasRessource(bool hasRessource)
+{
+    this->hasRessource=hasRessource;
+}
+
+AWDFrameCommandDisplayObject::AWDFrameCommandDisplayObject() :
+	AWDFrameCommandBase()
+{
 	this->hasDisplayMatrix=false;
 	this->hasColorMatrix=false;
 	this->hasDepthChange=false;
@@ -26,10 +149,8 @@ AWDFrameCommand::AWDFrameCommand(awd_uint32 objectID) :
 	this->blendMode=0;
 }
 
-AWDFrameCommand::~AWDFrameCommand()
+AWDFrameCommandDisplayObject::~AWDFrameCommandDisplayObject()
 {
-    delete this->command_properties;
-	this->object_block = NULL;
 	if(hasDisplayMatrix){
 		free(display_matrix);
 		display_matrix=NULL;
@@ -41,128 +162,222 @@ AWDFrameCommand::~AWDFrameCommand()
 		hasColorMatrix=false;
 	}
 }
-
-string&
-AWDFrameCommand::get_resID()
-{
-	return this->resID;
+bool
+AWDFrameCommandDisplayObject::get_hasDisplayMatrix(){
+	return this->hasDisplayMatrix;
+}
+bool
+AWDFrameCommandDisplayObject::get_hasColorMatrix(){
+	return this->hasColorMatrix;
+}
+bool
+AWDFrameCommandDisplayObject::get_hasDepthChange(){
+	return this->hasDepthChange;
+}
+bool
+AWDFrameCommandDisplayObject::get_hasFilterChange(){
+	return this->hasFilterChange;
+}
+bool
+AWDFrameCommandDisplayObject::get_hasBlendModeChange(){
+	return this->hasBlendModeChange;
+}
+bool
+AWDFrameCommandDisplayObject::get_hasDepthClipChange(){
+	return this->hasDepthClipChange;
+}
+bool
+AWDFrameCommandDisplayObject::get_hasVisiblitiyChange(){
+	return this->hasVisiblitiyChange;
 }
 void
-AWDFrameCommand::set_resID(string& new_res)
-{
-	this->hasRessource=true;
-    this->resID = new_res;
-}
-void
-AWDFrameCommand::set_display_matrix(awd_float64* display_matrix)
+AWDFrameCommandDisplayObject::set_display_matrix(awd_float64* display_matrix)
 {
 	this->hasDisplayMatrix=true;
     this->display_matrix = display_matrix;
 }
 awd_float64*
-AWDFrameCommand::get_display_matrix()
+AWDFrameCommandDisplayObject::get_display_matrix()
 {
 	return this->display_matrix;
 }
 void
-AWDFrameCommand::set_color_matrix(awd_float64* color_matrix)
+AWDFrameCommandDisplayObject::set_color_matrix(awd_float64* color_matrix)
 {
 	this->hasColorMatrix=true;
     this->color_matrix = color_matrix;
 }
 awd_float64*
-AWDFrameCommand::get_color_matrix()
+AWDFrameCommandDisplayObject::get_color_matrix()
 {
 	return this->color_matrix;
 }
 string&
-AWDFrameCommand::get_instanceName()
+AWDFrameCommandDisplayObject::get_instanceName()
 {
 	return this->instanceName;
 }
 void
-AWDFrameCommand::set_instanceName(string& instanceName)
+AWDFrameCommandDisplayObject::set_instanceName(string& instanceName)
 {
     this->instanceName = instanceName;
 }
 void
-AWDFrameCommand::set_visible(bool visible)
+AWDFrameCommandDisplayObject::set_visible(bool visible)
 {
 	this->hasVisiblitiyChange=true;
 	this->visible = visible;
 }
 bool
-AWDFrameCommand::get_visible()
+AWDFrameCommandDisplayObject::get_visible()
 {
 	return this->visible;
 }
+int
+AWDFrameCommandDisplayObject::get_blendmode()
+{
+	return this->blendMode;
+}
 void
-AWDFrameCommand::set_place_after_objectID(awd_uint32 place_after_objectID)
+AWDFrameCommandDisplayObject::set_blendmode(int blendMode)
+{
+	this->blendMode=blendMode;
+}
+void
+AWDFrameCommandDisplayObject::set_clipDepth(awd_uint32 clipDepth)
+{
+	this->hasDepthClipChange=true;
+	this->clip_depth = clipDepth;
+}
+awd_uint32
+AWDFrameCommandDisplayObject::get_clipDepth()
+{
+	return this->clip_depth;
+}
+void
+AWDFrameCommandDisplayObject::set_depth(awd_uint32 depth)
 {
 	this->hasDepthChange=true;
-    this->place_after_objectID = place_after_objectID;
+    this->depth = depth;
 }
 awd_uint32
-AWDFrameCommand::get_place_after_objectID()
+AWDFrameCommandDisplayObject::get_depth()
 {
-	return this->place_after_objectID;
+	return this->depth;
 }
-awd_uint32
-AWDFrameCommand::get_objID()
+double
+AWDFrameCommandDisplayObject::compareColorMatrix(awd_float64* color_matrix)
 {
-	return this->objID;
+	int countvalid=0;
+	for(int i=0; i<20;i++){
+		if(this->color_matrix[i]==color_matrix[i]){
+			countvalid++;
+		}
+	}
+
+    return countvalid/20;
+}
+double
+AWDFrameCommandDisplayObject::comparedisplaMatrix(awd_float64* display_matrix)
+{
+	int countvalid=0;
+	for(int i=0; i<6;i++){
+		if(this->display_matrix[i]==display_matrix[i]){
+			countvalid++;
+		}
+	}
+
+    return countvalid/6;
+}
+
+double
+	AWDFrameCommandDisplayObject::compare_to_command(AWDFrameCommandBase* frameCommand)
+{
+	AWDFrameCommandDisplayObject* thisFC=(AWDFrameCommandDisplayObject*)frameCommand;
+	if(thisFC==NULL){
+		return 0;
+	}
+	if(this->get_objectType()!=thisFC->get_objectType()){
+		return 0;
+	}
+	if(this->get_command_type()!=AWD_FRAME_COMMAND_UPDATE_OBJECT){
+		return 0;
+	}
+	if(this->get_object_block()!=thisFC->get_object_block()){
+		return 0;
+	}
+	// the commands 
+	int equal=1;
+	int equalCnt=1;
+
+	if((this->hasColorMatrix==thisFC->get_hasColorMatrix())&&(this->hasColorMatrix)){
+		equal+=this->compareColorMatrix(thisFC->get_color_matrix());}	
+	else if((this->hasColorMatrix==thisFC->get_hasColorMatrix())&&(!this->hasColorMatrix)){
+		equal+=1;}	
+	equalCnt++;
+
+	if((this->hasDisplayMatrix==thisFC->get_hasDisplayMatrix())&&(this->hasDisplayMatrix)){
+		equal+=this->comparedisplaMatrix(thisFC->get_display_matrix());}
+	else if((this->hasDisplayMatrix==thisFC->get_hasDisplayMatrix())&&(!this->hasDisplayMatrix)){
+		equal+=1;}	
+	equalCnt++;
+	
+	if((this->hasDepthChange==thisFC->get_hasDepthChange())&&(this->hasDepthChange)){
+		if(this->get_depth()==thisFC->get_depth()){
+			equal+=1;
+		}	
+	}
+	else if((this->hasDepthChange==thisFC->get_hasDepthChange())&&(!this->hasDepthChange)){
+		equal+=1;}	
+	equalCnt++;
+
+	if((this->hasVisiblitiyChange==thisFC->get_hasVisiblitiyChange())&&(this->hasVisiblitiyChange)){
+		if(this->get_visible()==thisFC->get_visible()){
+			equal+=1;
+		}	
+	}
+	else if((this->hasVisiblitiyChange==thisFC->get_hasVisiblitiyChange())&&(!this->hasVisiblitiyChange)){
+		equal+=1;}	
+	equalCnt++;
+
+	if(this->get_instanceName()==thisFC->get_instanceName()){
+		equal+=1;
+	}	
+	equalCnt++;
+	
+	double returnEqual=double(equal)/double(equalCnt);
+	return returnEqual;
 }
 void
-AWDFrameCommand::set_objID(awd_uint32 objID)
+AWDFrameCommandDisplayObject::update_by_command(AWDFrameCommandBase* frameCommand)
 {
-    this->objID = objID;
-}
-void
-AWDFrameCommand::set_object_block(AWDBlock * object_block)
-{
-    this->object_block = object_block;
-}
-AWDNumAttrList *
-AWDFrameCommand::get_command_properties()
-{
-    return this->command_properties;
-}
-AWD_Frame_Command_type
-AWDFrameCommand::get_command_type()
-{
-    return this->command_type;
-}
-void
-AWDFrameCommand::set_command_type(AWD_Frame_Command_type command_type)
-{
-    this->command_type=command_type;
+	int equal=0;
 }
 
 
-
 void
-AWDFrameCommand::prepare_and_add_dependencies(AWDBlockList *export_list)
+AWDFrameCommandDisplayObject::prepare_and_add_dependencies(AWDBlockList *export_list)
 {
-	if (this->object_block!=NULL) {		
-		if(this->object_block->get_type()==TEXT_ELEMENT){
-			AWDTextElement* thisText = (AWDTextElement*)this->object_block;
+	if (this->get_object_block()!=NULL) {		
+		if(this->get_object_block()->get_type()==TEXT_ELEMENT){
+			AWDTextElement* thisText = (AWDTextElement*)this->get_object_block();
 			if(thisText!=NULL){
 				if(thisText->get_isLocalized()){
-					this->command_type=AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT;
+					this->set_command_type(AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT);
 				}
 			}
 		}
-		if(this->command_type!=AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT){
-			this->object_block->prepare_and_add_with_dependencies(export_list);
+		if(this->get_command_type()!=AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT){
+			this->get_object_block()->prepare_and_add_with_dependencies(export_list);
 		}
-		if(this->object_block->get_type()==SHAPE2D_GEOM){
-			AWDShape2D* thisShape = (AWDShape2D*)this->object_block;
+		if(this->get_object_block()->get_type()==SHAPE2D_GEOM){
+			AWDShape2D* thisShape = (AWDShape2D*)this->get_object_block();
 			if(thisShape!=NULL){
 				AWDSubShape2D *sub = thisShape->get_first_sub();
 				while (sub) {
 					AWDBlock * thisFill=sub->get_fill();
 					if(thisFill!=NULL){
-						//thisFill->prepare_and_add_with_dependencies(export_list);
+						thisFill->prepare_and_add_with_dependencies(export_list);
 					}
 					sub = sub->next;
 				}
@@ -172,11 +387,11 @@ AWDFrameCommand::prepare_and_add_dependencies(AWDBlockList *export_list)
 }
 
 awd_uint32
-AWDFrameCommand::calc_command_length(BlockSettings * blockSettings)
+AWDFrameCommandDisplayObject::calc_command_length(BlockSettings * blockSettings)
 {
     int len;
     len = sizeof(awd_uint16); // command_type
-	if((this->command_type==AWD_FRAME_COMMAND_UPDATE_OBJECT)||(this->command_type==AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT)){
+	if((this->get_command_type()==AWD_FRAME_COMMAND_UPDATE_OBJECT)||(this->get_command_type()==AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT)){
 		
 		len+=sizeof(bool);// add vs update
 		len+=sizeof(bool);// no display matrix / display matrix
@@ -188,13 +403,13 @@ AWDFrameCommand::calc_command_length(BlockSettings * blockSettings)
 		len+=sizeof(bool);// no change clip-depth / change clip-depth
 
 		len+=sizeof(awd_uint32);// objectID
-		if(hasRessource){
-			if(this->command_type==AWD_FRAME_COMMAND_UPDATE_OBJECT){
+		if(this->get_hasRessource()){
+			if(this->get_command_type()==AWD_FRAME_COMMAND_UPDATE_OBJECT){
 				len+=sizeof(awd_uint32);
 			}
-			else if(this->command_type==AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT){
+			else if(this->get_command_type()==AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT){
 				len+=sizeof(awd_uint32);
-				AWDTextElement* thisText = (AWDTextElement*)this->object_block;
+				AWDTextElement* thisText = (AWDTextElement*)this->get_object_block();
 				if(thisText!=NULL){
 					len += sizeof(awd_uint16) +  awd_uint16(thisText->get_name().size());//
 				}
@@ -226,12 +441,12 @@ AWDFrameCommand::calc_command_length(BlockSettings * blockSettings)
 		}
 		
 		len+=sizeof(awd_uint16);// num shapes
-		AWDBlock * thisRefObj = this->object_block;
+		AWDBlock * thisRefObj = this->get_object_block();
 		if(thisRefObj!=NULL){
 			if(thisRefObj->get_type()==SHAPE2D_GEOM){
-				AWDShape2D* thisShape = (AWDShape2D*)this->object_block;
+				AWDShape2D* thisShape = (AWDShape2D*)this->get_object_block();
 				if(thisShape!=NULL){
-					//len+=thisShape->get_num_subs()*sizeof(awd_uint32);
+					len+=thisShape->get_num_subs()*sizeof(awd_uint32);
 				}
 			}
 		}
@@ -243,7 +458,7 @@ AWDFrameCommand::calc_command_length(BlockSettings * blockSettings)
 		}
 	
 	}
-	else if(this->command_type==AWD_FRAME_COMMAND_SOUND){
+	else if(this->get_command_type()==AWD_FRAME_COMMAND_SOUND){
 		len+=sizeof(awd_uint32);// objectID
 		len+=sizeof(awd_uint32);// resID
 	}
@@ -256,12 +471,12 @@ AWDFrameCommand::calc_command_length(BlockSettings * blockSettings)
 }
 
 void
-AWDFrameCommand::write_command(AWDFileWriter * fileWriter, BlockSettings * blockSettings)
+AWDFrameCommandDisplayObject::write_command(AWDFileWriter * fileWriter, BlockSettings * blockSettings)
 {
-	fileWriter->writeUINT16(this->command_type);// command type
-	if((this->command_type==AWD_FRAME_COMMAND_UPDATE_OBJECT)||(this->command_type==AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT)){
+	fileWriter->writeUINT16(this->get_command_type());// command type
+	if((this->get_command_type()==AWD_FRAME_COMMAND_UPDATE_OBJECT)||(this->get_command_type()==AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT)){
 		
-		fileWriter->writeBOOL(hasRessource);
+		fileWriter->writeBOOL(this->get_hasRessource());
 		fileWriter->writeBOOL(hasDisplayMatrix);
 		fileWriter->writeBOOL(hasColorMatrix);
 		fileWriter->writeBOOL(hasDepthChange);
@@ -270,13 +485,13 @@ AWDFrameCommand::write_command(AWDFileWriter * fileWriter, BlockSettings * block
 		fileWriter->writeBOOL(hasDepthClipChange);
 		fileWriter->writeBOOL(hasVisiblitiyChange);
 		
-		fileWriter->writeUINT32(this->objID);
-		if(hasRessource){
-			if(this->command_type==AWD_FRAME_COMMAND_UPDATE_OBJECT){
-				fileWriter->writeUINT32(this->object_block->get_addr());
+		fileWriter->writeUINT32(this->get_objID());
+		if(this->get_hasRessource()){
+			if(this->get_command_type()==AWD_FRAME_COMMAND_UPDATE_OBJECT){
+				fileWriter->writeUINT32(this->get_object_block()->get_addr());
 			}
-			else if(this->command_type==AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT){
-				AWDTextElement* thisText = (AWDTextElement*)this->object_block;
+			else if(this->get_command_type()==AWD_FRAME_COMMAND_UPDATE_LOCALIZEDTEXT){
+				AWDTextElement* thisText = (AWDTextElement*)this->get_object_block();
 				if(thisText!=NULL){
 					fileWriter->writeSTRING(thisText->get_name(), 1);
 				}
@@ -298,7 +513,7 @@ AWDFrameCommand::write_command(AWDFileWriter * fileWriter, BlockSettings * block
 			}
 		}
 		if(hasDepthChange){
-			fileWriter->writeUINT32(this->place_after_objectID);
+			fileWriter->writeUINT32(this->depth);
 		}
 		if(hasFilterChange){
 			//TODO:ADD FILTER
@@ -313,11 +528,11 @@ AWDFrameCommand::write_command(AWDFileWriter * fileWriter, BlockSettings * block
 			fileWriter->writeBOOL(this->visible);
 		}
 		
-		AWDBlock * thisRefObj = this->object_block;
+		AWDBlock * thisRefObj = this->get_object_block();
 		if(thisRefObj!=NULL){
 			if(thisRefObj->get_type()==SHAPE2D_GEOM){
-				AWDShape2D* thisShape = (AWDShape2D*)this->object_block;
-				if(false){//thisShape!=NULL){
+				AWDShape2D* thisShape = (AWDShape2D*)this->get_object_block();
+				if(thisShape!=NULL){
 					fileWriter->writeUINT16(thisShape->get_num_subs()); // num fills (subShape)
 					AWDSubShape2D *sub = thisShape->get_first_sub();
 					while (sub) {
@@ -351,21 +566,20 @@ AWDFrameCommand::write_command(AWDFileWriter * fileWriter, BlockSettings * block
 			fileWriter->writeUINT16(0); // num fills (subShape)
 		}
 	}
-	else if(this->command_type==AWD_FRAME_COMMAND_SOUND){
-		fileWriter->writeUINT32(this->objID);
-		fileWriter->writeUINT32(this->object_block->get_addr());
+	else if(this->get_command_type()==AWD_FRAME_COMMAND_SOUND){
+		fileWriter->writeUINT32(this->get_objID());
+		fileWriter->writeUINT32(this->get_object_block()->get_addr());
 	}
 		
 	else{
-		fileWriter->writeUINT32(this->objID);
+		fileWriter->writeUINT32(this->get_objID());
 	}	
     //this->command_properties->write_attributes(fileWriter, blockSettings);
 }
 
 
 
-AWDTimeLineFrame::AWDTimeLineFrame(string& name) :
-    AWDNamedElement(name),
+AWDTimeLineFrame::AWDTimeLineFrame() :
     AWDAttrElement()
 {
 	this->frame_duration=0;
@@ -375,9 +589,26 @@ AWDTimeLineFrame::AWDTimeLineFrame(string& name) :
 AWDTimeLineFrame::~AWDTimeLineFrame()
 {
     delete this->command_properties;
-	for (AWDFrameCommand* fc :  this->commands){
-		delete fc;
+	for (AWDFrameCommandBase* fc :  this->commands){
+		//delete fc;
 	}
+}
+
+void
+AWDTimeLineFrame::add_dirty_layer(int newDirtyLayer)
+{
+	for(int i : this->dirty_layer_idx){
+		if(i==newDirtyLayer){
+			return;
+		}
+	}
+	this->dirty_layer_idx.push_back(newDirtyLayer);
+}
+
+vector<int>
+AWDTimeLineFrame::get_dirty_layers()
+{
+	return this->dirty_layer_idx;
 }
 
 awd_uint32
@@ -398,7 +629,12 @@ AWDTimeLineFrame::add_label(AWD_Frame_Label_type label_type, string& label)
 	this->labels.push_back(label);
 }
 
-vector<AWDFrameCommand*>
+vector<AWDFrameCommandBase*>
+AWDTimeLineFrame::get_inActivecommands()
+{
+	return this->inActivecommands;
+}
+vector<AWDFrameCommandBase*>
 AWDTimeLineFrame::get_commands()
 {
 	return this->commands;
@@ -415,22 +651,28 @@ AWDTimeLineFrame::get_frame_code()
     return this->frame_code;
 }
 void
-AWDTimeLineFrame::add_command(AWDFrameCommand* newFrame)
+AWDTimeLineFrame::add_command(AWDFrameCommandBase* newFrame)
 {
 	this->commands.push_back(newFrame);
 }
+void
+AWDTimeLineFrame::add_inActivecommand(AWDFrameCommandBase* newFrame)
+{
+	this->inActivecommands.push_back(newFrame);
+}
 
-AWDFrameCommand*
+AWDFrameCommandBase*
 AWDTimeLineFrame::get_command(awd_uint32 objectID)
 {
-	for (AWDFrameCommand* fc :  this->commands){
+	for (AWDFrameCommandBase* fc :  this->commands){
 		if((fc->get_command_type()==AWD_FRAME_COMMAND_UPDATE_OBJECT)&&
 			(fc->get_objID()==objectID)){
 				return fc;
 		}
 	}
 	
-	AWDFrameCommand* newFrameCommand=  new AWDFrameCommand(objectID);
+	AWDFrameCommandDisplayObject* newFrameCommand=  new AWDFrameCommandDisplayObject();
+	newFrameCommand->set_objID(objectID);
 	newFrameCommand->set_command_type(AWD_FRAME_COMMAND_UPDATE_OBJECT);
 	this->commands.push_back(newFrameCommand);
 	return newFrameCommand;
@@ -439,13 +681,12 @@ AWDTimeLineFrame::get_command(awd_uint32 objectID)
 void
 AWDTimeLineFrame::prepare_and_add_dependencies(AWDBlockList *export_list)
 {
-	for (AWDFrameCommand * f : this->commands) 
+	for (AWDFrameCommandBase * f : this->commands) 
 	{
 		f->prepare_and_add_dependencies(export_list);
 	}
 
 }
-
 awd_uint32
 AWDTimeLineFrame::calc_frame_length(BlockSettings * blockSettings)
 {
@@ -460,7 +701,7 @@ AWDTimeLineFrame::calc_frame_length(BlockSettings * blockSettings)
 
 	len += sizeof(awd_uint16);// number of frame commands
 
-	for (AWDFrameCommand * f : this->commands) 
+	for (AWDFrameCommandBase * f : this->commands) 
 	{
 		len+=f->calc_command_length(blockSettings);
 	}
@@ -472,6 +713,11 @@ AWDTimeLineFrame::calc_frame_length(BlockSettings * blockSettings)
 	return len;
 }
 
+void
+AWDTimeLineFrame::clear_commands()
+{
+	this->commands.clear();
+}
 void
 AWDTimeLineFrame::write_frame(AWDFileWriter * fileWriter, BlockSettings * blockSettings)
 {
@@ -486,11 +732,10 @@ AWDTimeLineFrame::write_frame(AWDFileWriter * fileWriter, BlockSettings * blockS
 		fileWriter->writeSTRING(s, 1);
 	}
 	fileWriter->writeUINT16(this->commands.size());// num of frames	
-	int cmdCnt=this->commands.size()-1;
-	while(cmdCnt>=0){
-		AWDFrameCommand * f = this->commands[cmdCnt]; 
+	for(int cmdCnt=0; cmdCnt<this->commands.size(); cmdCnt++){
+		AWDFrameCommandBase * f = this->commands[cmdCnt]; 
 		f->write_command(fileWriter, blockSettings);
-		cmdCnt--;
+		//cmdCnt--;
 	}
 	fileWriter->writeSTRING(this->get_frame_code(), 2);// frame code	
 	this->user_attributes->write_attributes(fileWriter, blockSettings);
@@ -503,8 +748,6 @@ AWDShape2DTimeline::AWDShape2DTimeline(string& name) :
     AWDAttrElement()
 {
 	
-	this->frames.clear();//all frames
-    this->is_processed=false;
 }
 AWDShape2DTimeline::~AWDShape2DTimeline()
 {
@@ -515,8 +758,107 @@ AWDShape2DTimeline::~AWDShape2DTimeline()
 }
 
 void
-AWDShape2DTimeline::add_frame(AWDTimeLineFrame* newFrame)
+AWDShape2DTimeline::add_frame(AWDTimeLineFrame* newFrame, bool modifyCommands)
 {
+	if(modifyCommands){
+		if(this->frames.size()>0){
+			vector<int> activeLayers=newFrame->get_dirty_layers();
+			vector<AWDFrameCommandBase*> newRemoveCommands;
+			vector<AWDFrameCommandBase*> newAddCommands;
+			vector<AWDFrameCommandBase*> newUpdateCommands;
+			vector<AWDFrameCommandBase*> newCommands=newFrame->get_commands();
+			vector<AWDFrameCommandBase*> allOldCommands;
+			vector<AWDFrameCommandBase*> oldCommands=this->frames.back()->get_commands();
+			vector<AWDFrameCommandBase*> oldInActiveCommands=this->frames.back()->get_inActivecommands();
+			for(AWDFrameCommandBase* oldCommand: oldCommands){
+				allOldCommands.push_back(oldCommand);
+			}
+			for(AWDFrameCommandBase* oldInActiveCommand: oldInActiveCommands){
+				allOldCommands.push_back(oldInActiveCommand);
+			}
+			for(AWDFrameCommandBase* oldCmd: allOldCommands){
+				int thisLayerID=oldCmd->get_layerID();
+				bool isActive=false;
+				for(int i:activeLayers){
+					if(i==thisLayerID){
+						isActive=true;
+						break;
+					}
+				}
+				if(isActive){
+					// check if one of the new cmds is a update command
+					double equal=0;
+					double testEqual=0;
+					int cmdIdx=-1;
+					int cmdCnt=0;
+					for (AWDFrameCommandBase* newCmd:newCommands){
+						if(newCmd->get_hasRessource()){
+							// we only need to check if this is still a add-object-command
+							testEqual=oldCmd->compare_to_command(newCmd);
+							if(equal<testEqual){
+								equal=testEqual;
+								cmdIdx=cmdCnt;
+							}
+							cmdCnt++;
+						}
+					}
+					if(cmdIdx<0){
+						// no connected command found for this Command. So we need to create a remove command for it!
+						reset_ressourceBlockUsageForID(oldCmd->get_objID()-1);
+						AWDFrameCommandDisplayObject* newremoveCommand=new AWDFrameCommandDisplayObject();
+						newremoveCommand->set_command_type(AWD_FRAME_COMMAND_REMOVE_OBJECT);
+						newremoveCommand->set_objID(oldCmd->get_objID());
+						newRemoveCommands.push_back(newremoveCommand);
+					}
+					else{
+						// found a connected command. - if equal is 1, there is no change at all,
+						// we put the Command in the inactiveCommands-list, because we still need it on next frame.
+						if(equal==1){
+							newCommands[cmdIdx]->set_hasRessource(false);
+						}
+						// found a connected command. - if equal is smaller than 1, there was a change
+						// we transform the object into a update command
+						else{
+							newCommands[cmdIdx]->update_by_command(oldCmd);
+							newCommands[cmdIdx]->set_objID(oldCmd->get_objID());
+							newUpdateCommands.push_back(newCommands[cmdIdx]);
+							newCommands[cmdIdx]->set_hasRessource(false);
+						}
+					}
+				}
+				else{
+					newFrame->add_inActivecommand(oldCmd);
+				}
+			}
+			for(AWDFrameCommandBase* newCmd: newCommands){
+				if(newCmd->get_hasRessource()){
+					//if the cmd is still a add command, we get a obj id for it
+					newCmd->set_objID(this->get_ressourceBlockID(newCmd->get_object_block()));
+					newAddCommands.push_back(newCmd);
+				}
+			}
+			newFrame->clear_commands();
+			for(AWDFrameCommandBase* newCmd: newRemoveCommands){
+				newFrame->add_command(newCmd);
+			}
+			for(AWDFrameCommandBase* newCmd: newUpdateCommands){
+				newFrame->add_command(newCmd);
+			}
+			for(AWDFrameCommandBase* newCmd: newAddCommands){
+				newFrame->add_command(newCmd);
+			}
+
+		}
+		else{
+			vector<AWDFrameCommandBase*> newCommands=newFrame->get_commands();
+			for(AWDFrameCommandBase* newCmd: newCommands){
+				if(newCmd->get_hasRessource()){
+					//if the cmd is still a add command, we get a obj id for it
+					newCmd->set_objID(this->get_ressourceBlockID(newCmd->get_object_block()));
+				}
+			}
+		}
+	}
 	this->frames.push_back(newFrame);
 }
 
@@ -531,28 +873,17 @@ AWDShape2DTimeline::get_frames()
 {
 	return this->frames;
 }
-bool
-AWDShape2DTimeline::get_is_processed()
+
+int
+AWDShape2DTimeline::get_scene_id()
 {
-    return this->is_processed;
+    return this->scene_id;
 }
 
 void
-AWDShape2DTimeline::set_is_processed(bool isProcessed)
+AWDShape2DTimeline::set_scene_id(int scene_id)
 {
-    this->is_processed = isProcessed;
-}
-
-bool
-AWDShape2DTimeline::get_is_scene()
-{
-    return this->is_scene;
-}
-
-void
-AWDShape2DTimeline::set_is_scene(bool is_scene)
-{
-    this->is_scene = is_scene;
+    this->scene_id = scene_id;
 }
 
 
@@ -577,19 +908,43 @@ AWDShape2DTimeline::calc_body_length(BlockSettings *curBlockSettings)
     return len;
 }
 
+void 
+AWDShape2DTimeline::reset_ressourceBlockUsage()
+{
+	for(bool thisusage: usedReccourseBlocksUsage){
+		thisusage=false;
+	}
+}
+void 
+AWDShape2DTimeline::reset_ressourceBlockUsageForID(int thisID)
+{
+	usedReccourseBlocksUsage[thisID]=false;
+}
+int 
+AWDShape2DTimeline::get_ressourceBlockID(AWDBlock* resBlock)
+{
+	int resCnt=0;
+	for(AWDBlock* thisBlock: usedRessourceBlocks){
+		if((resBlock==thisBlock)&&(!usedReccourseBlocksUsage[resCnt])){
+			usedReccourseBlocksUsage[resCnt]=true;
+			return resCnt;
+		}
+		resCnt++;
+	}
+	usedReccourseBlocksUsage.push_back(true);
+	usedRessourceBlocks.push_back(resBlock);
+	return usedRessourceBlocks.size();
+
+}
 void
 AWDShape2DTimeline::prepare_and_add_dependencies(AWDBlockList *export_list)
 
 {
-	int fps=12;//TODO: DO NOT HARDCODE THIS
-	int duration = 60000 / fps;
+	// get rid of frame that have no duration
 	vector<AWDTimeLineFrame*> newFramesList;
-	int extraduration=0;
 	AWDTimeLineFrame* lastTimeLine=NULL;
 	for (AWDTimeLineFrame * f : this->frames) 
 	{
-		f->set_frame_duration(duration+extraduration);
-		extraduration=0;
 		if(f->get_commands().size()>0){
 			newFramesList.push_back(f);
 			lastTimeLine=f;
@@ -598,24 +953,21 @@ AWDShape2DTimeline::prepare_and_add_dependencies(AWDBlockList *export_list)
 			if(lastTimeLine!=NULL){
 				lastTimeLine->set_frame_duration(f->get_frame_duration()+lastTimeLine->get_frame_duration());
 			}
-			else{
-				extraduration=f->get_frame_duration();
-			}
 			delete f;
 		}
 	}
 	this->frames.clear();
 	for (AWDTimeLineFrame * f : newFramesList) 
 	{
-		this->frames.push_back(f);
 		f->prepare_and_add_dependencies(export_list);
+		this->frames.push_back(f);
 	}
 }
 void
 AWDShape2DTimeline::write_body(AWDFileWriter * fileWriter, BlockSettings *curBlockSettings)
 {
 	fileWriter->writeSTRING(this->get_name(), 1);// name	
-	fileWriter->writeBOOL(this->is_scene);// is scene
+	fileWriter->writeUINT8(this->scene_id);// is scene
 	fileWriter->writeUINT8(0);// sceneID //TODO
 	fileWriter->writeUINT16(awd_uint16(this->frames.size()));// num of frames	
 	for (AWDTimeLineFrame * f : this->frames) 
