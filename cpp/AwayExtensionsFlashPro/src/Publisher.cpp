@@ -192,6 +192,13 @@ namespace AwayJS
 		if(openPreview_str=="true"){
 			openPreview=true;
 		}
+		std::string openPreviewJS_str;
+		bool openPreviewJS=false;
+        ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.OpenPreviewJS", openPreviewJS_str);
+		if(openPreviewJS_str=="true"){
+			openPreviewJS=true;
+		}
+
 		std::string useADobeFramegenerator_str;
 		bool useADobeFramegenerator=false;
         ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.UseAdobeFrameCommands", useADobeFramegenerator_str);
@@ -262,9 +269,8 @@ namespace AwayJS
 		ASSERT(FCM_SUCCESS_CODE(res));
 		awd->getExporterSettings()->set_fps(fps);
 		framesPerSec = (FCM::U_Int32)fps;
-
-		res = pOutputWriter->StartDocument(color, stageHeight, stageWidth, framesPerSec);
-		ASSERT(FCM_SUCCESS_CODE(res));
+        
+		//ASSERT(FCM_SUCCESS_CODE(res));
 
 		FCM::U_Int32 timelineCount;
 		res = pTimelineList->Count(timelineCount);
@@ -311,15 +317,8 @@ namespace AwayJS
 			}	
 		}		
 
-		GenerateFonts(pFlaDocument, pResPalette, awd);
-		if(openPreview){
-			res = pOutputWriter->EndDocument();
-			ASSERT(FCM_SUCCESS_CODE(res));
-		}
-
-		res = pOutputWriter->EndOutput();
-		ASSERT(FCM_SUCCESS_CODE(res));
-		
+		//GenerateFonts(pFlaDocument, pResPalette, awd);
+        
 		AWDShape2D *block;
 		AWDBlockIterator it( awd->get_shape2D_blocks());
 		while ((block = (AWDShape2D*)it.next()) != NULL) {
@@ -349,11 +348,20 @@ namespace AwayJS
 		std::string parent;
 		std::string awdName;
 		std::string openFile;
-		if(openPreview){
+		if((openPreview)||(openPreviewJS)){
+			res = pOutputWriter->PreParePreview(color, stageHeight, stageWidth, framesPerSec, openPreviewJS);
+			ASSERT(FCM_SUCCESS_CODE(res));
 			Utils::GetParent(outFile, parent);
 			Utils::GetFileNameWithoutExtension(outFile, awdName);
 			openFile = parent + awdName + ".html";
-			Utils::Trace(GetCallback(), "The test AWD-file: '%s' should have been created.\n", openFile.c_str());
+			
+			std::string previewPath_str;
+			ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.PreviewPath", previewPath_str);
+			if(!previewPath_str.empty()){
+				openFile = previewPath_str +"/"+ awdName + ".html";
+			
+			}
+			Utils::Trace(GetCallback(), "The preview-file: '%s' should have been created.\n", openFile.c_str());
 			LaunchBrowser(openFile);
 		}
 		

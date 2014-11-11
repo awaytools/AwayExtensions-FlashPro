@@ -73,6 +73,7 @@ namespace AwayJS
 #define SOUND_FOLDER "sounds"
 #define SWF_OBJECT_PATH "js/swfobject.js"
 #define AS_VIEWER_NAME "awdrender.swf"
+#define JS_VIEWER_NAME "js/AWD3Viewer.txt"
 
 #define JSON_OUTPUT_FILE_NAME "sample.json"
 
@@ -114,6 +115,13 @@ namespace AwayJS
 
         // Marks the end of the output
         virtual FCM::Result EndOutput();
+		
+		virtual FCM::Result PreParePreview(
+			const DOM::Utils::COLOR& background,
+			FCM::U_Int32 stageHeight, 
+			FCM::U_Int32 stageWidth,
+			FCM::U_Int32 fps,
+			bool doJS);
 
         // Marks the begining of the Document
         virtual FCM::Result StartDocument(
@@ -287,10 +295,15 @@ namespace AwayJS
         std::string m_outputSoundFolder;
         std::string m_target_asViewer_path;
         std::string m_target_swfObject_path;
+        std::string m_target_JSViewer_path;
+
+        std::string m_source_JSViewer_path;
+		
         std::string m_source_asViewer_path;
         std::string m_source_swfObject_path;
 
         char* m_HTMLOutput;
+        char* m_HTMLOutputJS;
 
         FCM::PIFCMCallback m_pCallback;
     };

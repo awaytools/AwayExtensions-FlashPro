@@ -418,7 +418,7 @@ bool ShapeEncoder::resolve_segment_intersection(AWDPathIntersection* thisInterse
 			else{
 				if(iterCnt==maxSteps){
 					iterCnt=maxSteps+1;
-					AwayJS::Utils::Trace(m_pCallback, "UNRESOLVED CURVE CURVE\n");
+					//AwayJS::Utils::Trace(m_pCallback, "UNRESOLVED CURVE CURVE\n");
 					thisIntersection->set_state(UNSOLVEABLE);
 				}
 				else{
@@ -649,7 +649,7 @@ ShapeEncoder::tris_intersecting(ShapePoint * a1, ShapePoint* a2, ShapePoint * a3
 	if(point_in_tr(b1, a1, a2, a3)) return true;
 	if(point_in_tr(b3, a1, a2, a3)) return true;
 	//AwayJS::Utils::Trace(m_pCallback, "		Point not in tri!!\n");
-	
+	/*
 	bool base_intersect=false;
 	if(doIntersect(a1, a3, b1, b2)){
 		base_intersect=true;
@@ -659,7 +659,7 @@ ShapeEncoder::tris_intersecting(ShapePoint * a1, ShapePoint* a2, ShapePoint * a3
 	}
 	else if(doIntersect(a1, a3, b1, b3)){
 		base_intersect=true;
-	}
+	}*/
 	/*
 	if(doIntersect(a1, a2, b2, b3)&&(!base_intersect)) return true;
 	if(doIntersect(a1, a2, b1, b2)&&(!base_intersect)) return true;
@@ -675,6 +675,9 @@ ShapeEncoder::tris_intersecting(ShapePoint * a1, ShapePoint* a2, ShapePoint * a3
 	if(doIntersect(a2, a3, b1, b2)) return true;
 	if(doIntersect(a2, a3, b2, b3)) return true;
 	if(doIntersect(a2, a3, b3, b1)) return true;
+	if(doIntersect(a1, a3, b1, b2)) return true;
+	if(doIntersect(a1, a3, b2, b3)) return true;
+	if(doIntersect(a1, a3, b3, b1)) return true;
 	
 
 	//if((point_in_tr(a1, b1, b2, b3)&&(!base_intersect)) return true;

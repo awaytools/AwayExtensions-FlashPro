@@ -18,9 +18,23 @@ You should be able to create a new project of Type "AwayJS".
 
 ### changelog:
 
+#### version 0.9.61:
+
+* Fix commit 0.9.6. (correct sources)
+
+* Added JS as preview option. Also included a optional "Path for Preview" to allow the user to change the path that will opened in the browser into a url.
+
+* Known bugs: 
+
+	* In the exporter-ui on mac, the handlers for the slider-elements are not shown. However when draging on the slider, the corresponding textfield is updated, so changing the sliders value is possible.
+
+	* The resolving of the curve intersections needs another look. Something is not correct, and not all curves seem to be subdivided correctly.
+
+
+
 #### version 0.9.6:
 
-* This update brings multple changes and is not tested much yet. Expect another update soon.
+* This update brings multiple changes and is not tested much yet. Expect another update soon.
 
 * Fixes for mac version.
 

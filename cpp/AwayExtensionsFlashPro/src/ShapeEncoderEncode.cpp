@@ -257,7 +257,8 @@ ShapeEncoder::encode_subShape(bool checkForIntersect)
 		pointlength.push_back(pntCnt);
 		newAllPathes.push_back(newPath);
 	}
-
+	
+	//AwayJS::Utils::Trace(m_pCallback, "    -> inSegments = %d, outSegments = %d\n", cnt1, cnt2);
 	// create the final list of points that will be sended to libtess
 	TESStesselator* tess = 0;
 	tess = tessNewTess(NULL);

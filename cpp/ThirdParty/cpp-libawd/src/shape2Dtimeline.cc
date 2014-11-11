@@ -685,7 +685,7 @@ AWDTimeLineFrame::prepare_and_add_dependencies(AWDBlockList *export_list)
 	{
 		f->prepare_and_add_dependencies(export_list);
 	}
-
+	
 }
 awd_uint32
 AWDTimeLineFrame::calc_frame_length(BlockSettings * blockSettings)
@@ -721,8 +721,8 @@ AWDTimeLineFrame::clear_commands()
 void
 AWDTimeLineFrame::write_frame(AWDFileWriter * fileWriter, BlockSettings * blockSettings)
 {
-	fileWriter->writeUINT32(1);// frameduration (whole frames / default = 1)
-	fileWriter->writeUINT16(this->labels.size());// frameduration (whole frames / default = 1)
+	fileWriter->writeUINT32(this->frame_duration);// frameduration (whole frames / default = 1)
+	fileWriter->writeUINT16(this->labels.size());
 	int labelCnt=0;
 	for (string s : this->labels) 
 	{
@@ -732,10 +732,25 @@ AWDTimeLineFrame::write_frame(AWDFileWriter * fileWriter, BlockSettings * blockS
 		fileWriter->writeSTRING(s, 1);
 	}
 	fileWriter->writeUINT16(this->commands.size());// num of frames	
-	for(int cmdCnt=0; cmdCnt<this->commands.size(); cmdCnt++){
-		AWDFrameCommandBase * f = this->commands[cmdCnt]; 
-		f->write_command(fileWriter, blockSettings);
-		//cmdCnt--;
+
+	// reverse the order in which commands are written to file
+	// at the moment this is done, so the as3 runtime works correctly.
+	// for js runtime, this should not be needed
+	bool reverseCommandOrder=true;
+
+	if(reverseCommandOrder){
+		int cmdCnt = this->commands.size();
+		while(cmdCnt>0){
+			cmdCnt--;
+			AWDFrameCommandBase * f = this->commands[cmdCnt]; 
+			f->write_command(fileWriter, blockSettings);
+		}
+	}
+	else{
+		for(int cmdCnt=0; cmdCnt<this->commands.size(); cmdCnt++){
+			AWDFrameCommandBase * f = this->commands[cmdCnt]; 
+			f->write_command(fileWriter, blockSettings);
+		}
 	}
 	fileWriter->writeSTRING(this->get_frame_code(), 2);// frame code	
 	this->user_attributes->write_attributes(fileWriter, blockSettings);
@@ -957,8 +972,8 @@ AWDShape2DTimeline::prepare_and_add_dependencies(AWDBlockList *export_list)
 		}
 	}
 	this->frames.clear();
-	for (AWDTimeLineFrame * f : newFramesList) 
-	{
+	for(int frameCnt=0; frameCnt<newFramesList.size(); frameCnt++){
+		AWDTimeLineFrame * f = newFramesList[frameCnt];
 		f->prepare_and_add_dependencies(export_list);
 		this->frames.push_back(f);
 	}

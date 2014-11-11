@@ -107,8 +107,15 @@ function setUI(uiState)
 	if(uiState.data.out_file !=null && uiState.data.out_file != undefined)
 	{
 		document.getElementById("of").value = uiState.data.out_file;
+		set_fileName(uiState.data.out_file);
 			
 	}	
+	if(uiState.data["PublishSettings.PreviewPath"] != null && uiState.data["PublishSettings.PreviewPath"] != "undefined")
+	{
+		document.getElementById("preview_path").value = uiState.data["PublishSettings.PreviewPath"];
+			
+	}	
+	
 	if(uiState.data["PublishSettings.IncludeInvisibleLayer"] != null && uiState.data["PublishSettings.IncludeInvisibleLayer"] != "undefined")
 	{
 		if(uiState.data["PublishSettings.IncludeInvisibleLayer"] == "true")
@@ -125,11 +132,36 @@ function setUI(uiState)
 		if(uiState.data["PublishSettings.OpenPreview"] == "true")
 		{
 			document.getElementById("usePreview").checked = true;
+			switchPreview(document.getElementById("usePreview"));
 		}else 
 		{
 			document.getElementById("usePreview").checked = false;
 		}
 	}
+	switchPreviewOnOff(document.getElementById("usePreview"));
+	if(uiState.data["PublishSettings.OpenPreviewAS"] != null && uiState.data["PublishSettings.OpenPreviewAS"] != "undefined")
+	{
+		if(uiState.data["PublishSettings.OpenPreviewAS"] == "true")
+		{
+			document.getElementById("usePreviewAS").checked = true;
+			switchPreview(document.getElementById("usePreviewAS"));
+		}else 
+		{
+			document.getElementById("usePreviewAS").checked = false;
+		}
+	}
+	if(uiState.data["PublishSettings.OpenPreviewJS"] != null && uiState.data["PublishSettings.OpenPreviewJS"] != "undefined")
+	{
+		if(uiState.data["PublishSettings.OpenPreviewJS"] == "true")
+		{
+			document.getElementById("usePreviewJS").checked = true;
+			switchPreview(document.getElementById("usePreviewJS"));
+		}else 
+		{
+			document.getElementById("usePreviewJS").checked = false;
+		}
+	}
+	
 	if(uiState.data["PublishSettings.UseAdobeFrameCommands"] != null && uiState.data["PublishSettings.UseAdobeFrameCommands"] != "undefined")
 	{
 		if(uiState.data["PublishSettings.UseAdobeFrameCommands"] == "true")
@@ -151,7 +183,6 @@ function setUI(uiState)
 		}
 	}
 	changedReolveCurves(document.getElementById("resolvCurveIntersections").checked);
-	   
 	if(uiState.data["PublishSettings.CurveTreshold"] !=null && uiState.data["PublishSettings.CurveTreshold"] != undefined)
 	{
 		document.getElementById("curve_treshold").value = uiState.data["PublishSettings.CurveTreshold"];
@@ -170,10 +201,49 @@ function publish_callback()
     
 function populate_textfield(val)
 {
-	document.getElementById("of").value = val;	
+	document.getElementById("of").value = val;
+	set_fileName(val);
+}
+
+function set_fileName(val)
+{
+	var filename = val.replace(/^.*[\\\/]/, '');
+	var filename = filename.replace("awd", "html");
+	document.getElementById("previewPathName").value = "/"+filename;	
 }
     
+function switchPreviewOnOff(value) {
+	if(document.getElementById("usePreview").checked == false)
+	{
+		document.getElementById("usePreviewJS").style.visibility  = "hidden";
+		document.getElementById("usePreviewAS").style.visibility  = "hidden";
+		document.getElementById("previewPathLabel").style.visibility  = "hidden";
+		document.getElementById("previewPathLabel1").style.visibility  = "hidden";
+		document.getElementById("previewPathLabel2").style.visibility  = "hidden";
+		document.getElementById("preview_path").style.visibility  = "hidden";
+		document.getElementById("previewPathName").style.visibility  = "hidden";
+		document.getElementById("usePreviewJS").innerHTML="";
+		document.getElementById("usePreviewAS").innerHTML="";
+	}
+	else{
+		document.getElementById("usePreviewJS").style.visibility  = "visible";
+		document.getElementById("usePreviewAS").style.visibility  = "visible";
+		document.getElementById("previewPathLabel").style.visibility  = "visible";
+		document.getElementById("previewPathLabel1").style.visibility  = "visible";
+		document.getElementById("previewPathLabel2").style.visibility  = "visible";
+		document.getElementById("preview_path").style.visibility  = "visible";
+		document.getElementById("previewPathName").style.visibility  = "visible";
+		document.getElementById("usePreviewJS").innerHTML="JS";
+		document.getElementById("usePreviewAS").innerHTML="AS";
+	}
+}
+	
 
+function switchPreview(value) {
+	document.getElementById("usePreviewAS").checked = false;
+	document.getElementById("usePreviewJS").checked = false;
+	value.checked=true;
+}
 function changedReolveCurves(value) {
 	if(document.getElementById("resolvCurveIntersections").checked == true){
 		document.getElementById("curve_treshold_label").style.visibility  = "visible";
@@ -219,6 +289,7 @@ function serializeUI()
 
     var pubSettings = new Object();
     pubSettings["out_file"] = document.getElementById("of").value.toString();
+    pubSettings["PublishSettings.PreviewPath"] = document.getElementById("preview_path").value.toString();
     
 
     //
@@ -265,6 +336,15 @@ function serializeUI()
 	{
 		pubSettings["PublishSettings.UseAdobeFrameCommands"] = "false";
 	}
+	
+	if(document.getElementById("usePreviewJS").checked == true)
+	{
+		pubSettings["PublishSettings.OpenPreviewJS"] = "true";
+	}
+	else
+	{
+		pubSettings["PublishSettings.OpenPreviewJS"] = "false";
+	}
 	if(document.getElementById("usePreview").checked == true)
 	{
 		pubSettings["PublishSettings.OpenPreview"] = "true";
@@ -274,6 +354,14 @@ function serializeUI()
 		pubSettings["PublishSettings.OpenPreview"] = "false";
 	}
 	
+	if(document.getElementById("usePreviewAS").checked == true)
+	{
+		pubSettings["PublishSettings.OpenPreviewAS"] = "true";
+	}
+	else
+	{
+		pubSettings["PublishSettings.OpenPreviewAS"] = "false";
+	}
 
     
 	event.scope = "APPLICATION";
@@ -299,6 +387,7 @@ function onLoaded() {
 	
 	document.getElementById("myCheck3").checked=true;
 	document.getElementById("usePreview").checked=true;
+	document.getElementById("usePreviewJS").checked=true;
 	document.getElementById("useAdobeFrameCommands").checked=true;
 	document.getElementById("resolvCurveIntersections").checked=true;
 	
@@ -400,8 +489,15 @@ function imsd() {
 				</p>
 				<div class="clearer">		
 				<p>
-					<input type="checkbox" id="usePreview">Open Preview in Browser (AS3) <br>
-				</p>  		
+					<input type="checkbox" id="usePreview" onchange="switchPreviewOnOff(this)">Open Preview
+					<input type="checkbox" id="usePreviewAS" onchange="switchPreview(this)"><label id="previewPathLabel1">AS3</label>
+					<input type="checkbox" id="usePreviewJS" onchange="switchPreview(this)"><label id="previewPathLabel2">AwayJS</label><br>
+				</p>  	
+				<p>
+					<label class="myLabel" id="previewPathLabel">Path for preview:</label>
+					<input type="text"  id="preview_path" style="width:200px"><input type="text"  disabled="true" id="previewPathName" style="width:100px">
+					<br/>
+				</p>	
     			</div>					
 		</p>
 	<p>

@@ -332,7 +332,7 @@ namespace AwayJS
         m_pOutputWriter->StartDefineTimeline();
 
 		m_pTimelineWriter = new AWDTimelineWriter(awd, *m_pOutputWriter->get_mCallback());
-        ASSERT(m_pTimelineWriter);
+        //ASSERT(m_pTimelineWriter);
     }
 
     /* ----------------------------------------------------- TimelineBuilderFactory */

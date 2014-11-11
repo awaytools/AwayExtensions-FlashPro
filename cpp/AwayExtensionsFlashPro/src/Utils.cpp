@@ -456,7 +456,6 @@ int Utils::CopyOneFile(std::string initialFilePath, std::string outputFilePath, 
 {
     std::ifstream inFile(initialFilePath.c_str(), std::ifstream::in | std::ifstream::binary);
     std::ofstream outFile(outputFilePath.c_str(), std::ofstream::out | std::ofstream::binary);
-    //FILE* outFile= fopen (outputFilePath.c_str(), "wb");
     
     char *buffer = NULL;
     long length = 0;
@@ -471,7 +470,6 @@ int Utils::CopyOneFile(std::string initialFilePath, std::string outputFilePath, 
         inFile.seekg (0, inFile.end);
         length = (long)inFile.tellg();
         
-		Utils::Trace(pCallback, "\nlength: %d !\n\n",length);
         inFile.seekg (0, inFile.beg);
         buffer = new char [length + 1];
         inFile.read (buffer, length);

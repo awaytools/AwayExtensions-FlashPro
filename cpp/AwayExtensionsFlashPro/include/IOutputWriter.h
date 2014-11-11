@@ -67,7 +67,13 @@ namespace AwayJS
 
         // Marks the end of the output
         virtual FCM::Result EndOutput() = 0;
-
+		
+		virtual FCM::Result PreParePreview(
+			const DOM::Utils::COLOR& background,
+			FCM::U_Int32 stageHeight, 
+			FCM::U_Int32 stageWidth,
+			FCM::U_Int32 fps,
+			bool doJS) = 0;
         // Marks the begining of the Document
         virtual FCM::Result StartDocument(
             const DOM::Utils::COLOR& background, 

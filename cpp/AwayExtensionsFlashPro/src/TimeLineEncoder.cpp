@@ -115,6 +115,13 @@ TimeLineEncoder::TimeLineEncoder(FCM::PIFCMCallback pCallback, DOM::ITimeline* t
 	this->timeline->GetName(&thisName16);
     std::string thisstring=AwayJS::Utils::ToString(thisName16, this->m_pCallback);
 	this->awd_timeline=awd->get_timeline(thisstring);
+
+	// hack for as3 runtime: the runtime excpects the root-timeline to be named "Scene"
+	if(sceneID>=0){
+        std::string sceneName = "Scene";
+		this->awd_timeline->set_name(sceneName);
+	}
+
 	this->awd_timeline->set_scene_id(sceneID);
 	this->layerIdx=0;	
 
@@ -139,6 +146,7 @@ TimeLineEncoder::encode(){
 		FCM::U_Int32 maxFrameCount;
 		res=this->timeline->GetMaxFrameCount(maxFrameCount);
 	
+		this->shapePool->newTimeline();
 	
 		FCM::FCMListPtr pLayerList;
 		this->timeline->GetLayers(pLayerList.m_Ptr);
@@ -169,6 +177,7 @@ TimeLineEncoder::encode(){
 			}
 			if(this->curFrame->get_dirty_layers().size()>0){
 				this->awd_timeline->add_frame(this->curFrame, true);
+				this->shapePool->addFrame();
 			}
 			else{
 				if(this->awd_timeline->get_frame())

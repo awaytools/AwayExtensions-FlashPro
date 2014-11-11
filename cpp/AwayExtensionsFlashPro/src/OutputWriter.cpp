@@ -105,7 +105,18 @@ namespace AwayJS
 {
 
     static const FCM::Float GRADIENT_VECTOR_CONSTANT = 16384.0;
-	
+    static const char* htmlOutputJS = "<!DOCTYPE html> \r\n \
+<html> \r\n \
+<head> \r\n \
+    <title></title> \r\n \
+	<label id= \"awdPath\">%s</label> \r\n \
+	<label id= \"awdWidth\">%d</label> \r\n \
+	<label id= \"awdHeight\">%d</label> \r\n \
+    <script type=\"text/javascript\" language=\"javascript\" src=\"js/AWD3Viewer.js\"></script> \r\n \
+</head> \r\n \
+<body> \r\n \
+</body> \r\n \
+</html>";
     static const char* htmlOutput = "<!DOCTYPE html> \r\n \
 <html lang=\"en\"> \r\n \
 <head> \r\n \
@@ -170,6 +181,7 @@ namespace AwayJS
         m_outputHTMLFile = parent + awdName + ".html";
 		m_target_asViewer_path = parent + AS_VIEWER_NAME;
 		m_target_swfObject_path = outputjsFolder + "/swfobject.js";
+		m_target_JSViewer_path = outputjsFolder + "/AWD3Viewer.js";
 		// create the 
 		//mkdir(m_outputImageFolder.c_str(), 0);//TODO
 		
@@ -229,7 +241,89 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 
         return FCM_SUCCESS;
     }
+	
+    FCM::Result AWDOutputWriter::PreParePreview(
+        const DOM::Utils::COLOR& background,
+        FCM::U_Int32 stageHeight, 
+        FCM::U_Int32 stageWidth,
+        FCM::U_Int32 fps,
+		bool doJS)
+    {
+		
+        FCM::U_Int32 backColor;
+				
+        std::string awdName;
+        Utils::GetFileNameWithoutExtension(m_outputHTMLFile, awdName);
+		if(doJS){
+			m_HTMLOutputJS = new char[strlen(htmlOutputJS) + 50];
+			if (m_HTMLOutputJS == NULL)
+			{
+				return FCM_MEM_NOT_AVAILABLE;
+			}
+			awdName+=".awd";
+			sprintf(m_HTMLOutputJS, htmlOutputJS, awdName.c_str(), stageWidth, stageHeight);
 
+			std::string js_viewer_path;
+			Utils::GetModuleFilePath(js_viewer_path, m_pCallback);
+        
+			std::string findThisjs="AwayExtensionsFlashPro.fcm.plugin/Contents/MacOS/";
+			int foundIndexjs=js_viewer_path.find(findThisjs);
+			if(foundIndexjs>0){
+				js_viewer_path = js_viewer_path.substr(0, foundIndexjs);
+			}
+			js_viewer_path += JS_VIEWER_NAME;
+
+        
+			AwayJS::Utils::CopyOneFile(js_viewer_path, m_target_JSViewer_path, m_pCallback);
+
+			std::ofstream file;
+			remove(m_outputHTMLFile.c_str());
+
+			file.open(m_outputHTMLFile.c_str());
+			file << m_HTMLOutputJS;
+			file.close();
+			//Utils::Trace(m_pCallback, "\nShould have Created HTML: %s !\n\n",m_outputHTMLFile.c_str());
+
+			delete [] m_HTMLOutputJS;
+		}
+		else{
+			m_HTMLOutput = new char[strlen(htmlOutput) + 50];
+			if (m_HTMLOutput == NULL)
+			{
+				return FCM_MEM_NOT_AVAILABLE;
+			}
+		
+			//awd_color awdColor=awdutil_int_color( background.alpha, background.red, background.green, background.blue );
+			backColor = (background.red << 16) | (background.green << 8) | (background.blue);
+			sprintf(m_HTMLOutput, htmlOutput, awdName.c_str(), backColor, fps, stageWidth, stageHeight, "%", "%", "%");
+			std::string as_viewer_path;
+			std::string swfObjectSourcePath;
+			Utils::GetModuleFilePath(as_viewer_path, m_pCallback);
+        
+			std::string findThis="AwayExtensionsFlashPro.fcm.plugin/Contents/MacOS/";
+			int foundIndex=as_viewer_path.find(findThis);
+			if(foundIndex>0){
+				as_viewer_path = as_viewer_path.substr(0, foundIndex);
+			}
+			swfObjectSourcePath = as_viewer_path + SWF_OBJECT_PATH;
+			as_viewer_path += AS_VIEWER_NAME;
+
+        
+			AwayJS::Utils::CopyOneFile(as_viewer_path, m_target_asViewer_path, m_pCallback);
+			AwayJS::Utils::CopyOneFile(swfObjectSourcePath, m_target_swfObject_path, m_pCallback);
+
+			std::ofstream file;
+			remove(m_outputHTMLFile.c_str());
+
+			file.open(m_outputHTMLFile.c_str());
+			file << m_HTMLOutput;
+			file.close();
+			//Utils::Trace(m_pCallback, "\nShould have Created HTML: %s !\n\n",m_outputHTMLFile.c_str());
+
+			delete [] m_HTMLOutput;
+		}
+        return FCM_SUCCESS;
+    }
 
     FCM::Result AWDOutputWriter::StartDocument(
         const DOM::Utils::COLOR& background,
@@ -238,20 +332,6 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
         FCM::U_Int32 fps)
     {
 		
-        FCM::U_Int32 backColor;
-
-        m_HTMLOutput = new char[strlen(htmlOutput) + 50];
-        if (m_HTMLOutput == NULL)
-        {
-            return FCM_MEM_NOT_AVAILABLE;
-        }
-		
-        std::string awdName;
-        Utils::GetFileNameWithoutExtension(m_outputHTMLFile, awdName);
-		
-		//awd_color awdColor=awdutil_int_color( background.alpha, background.red, background.green, background.blue );
-        backColor = (background.red << 16) | (background.green << 8) | (background.blue);
-        sprintf(m_HTMLOutput, htmlOutput, awdName.c_str(), backColor, fps, stageWidth, stageHeight, "%", "%", "%");
         return FCM_SUCCESS;
     }
 
@@ -259,31 +339,7 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
     FCM::Result AWDOutputWriter::EndDocument()
     {
 		
-        std::string as_viewer_path;
-		std::string swfObjectSourcePath;
-		Utils::GetModuleFilePath(as_viewer_path, m_pCallback);
-        
-        std::string findThis="AwayExtensionsFlashPro.fcm.plugin/Contents/MacOS/";
-        int foundIndex=as_viewer_path.find(findThis);
-        if(foundIndex>0){
-            as_viewer_path = as_viewer_path.substr(0, foundIndex);
-        }
-		swfObjectSourcePath = as_viewer_path + SWF_OBJECT_PATH;
-		as_viewer_path += AS_VIEWER_NAME;
-        
-		AwayJS::Utils::CopyOneFile(as_viewer_path, m_target_asViewer_path, m_pCallback);
-		AwayJS::Utils::CopyOneFile(swfObjectSourcePath, m_target_swfObject_path, m_pCallback);
-
-        std::ofstream file;
-        remove(m_outputHTMLFile.c_str());
-
-        file.open(m_outputHTMLFile.c_str());
-        file << m_HTMLOutput;
-        file.close();
-		//Utils::Trace(m_pCallback, "\nShould have Created HTML: %s !\n\n",m_outputHTMLFile.c_str());
-
-        delete [] m_HTMLOutput;
-		
+  	
         return FCM_SUCCESS;
     }
 
@@ -311,7 +367,7 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
     FCM::Result AWDOutputWriter::StartDefineShape()
     {
 		shape_encoder = new ShapeEncoder(&m_pCallback, this->awd);
-        std::string namestr=std::string("");
+        std::string namestr="shapeName";
 		AWDShape2D* newShape=new AWDShape2D(namestr);
 		awd->add_shape2Dblock(newShape);
 		shape_encoder->reset(newShape);
@@ -328,12 +384,13 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 			shape->set_objectID( objID_string);
 			this->awd->add_shape2Dblock(shape);
 		}	
-		delete shape_encoder;
+		//delete shape_encoder;
         return FCM_SUCCESS;
     }
     // Marks the end of a shape
     FCM::Result AWDOutputWriter::EndDefineShapeLetter(AWDFontShape* fontShape)
     {
+        /*
 		
         string objID_string=AwayJS::Utils::ToString(100);
 		AWDShape2D* shape=shape_encoder->get_shape();
@@ -342,7 +399,7 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
 			this->awd->add_shape2Dblock(shape);
 		}	
 		delete shape_encoder;
-		
+		*/
         return FCM_SUCCESS;
     }
 
@@ -772,11 +829,13 @@ AWDOutputWriter::set_double_subdivide(bool double_subdivide){
     // Sets a segment of a path (Used for boundary, holes)
     FCM::Result AWDOutputWriter::SetAWDSegment(AWDPathSegment* segment)
     {
+        /*
 		if(segment->get_this_hole_idx()>0){
 		}
 		int hole_idx=shape_encoder->get_hole_idx();
 		segment->set_hole_idx(hole_idx);
-		shape_encoder->add_path_segment(segment);		
+		shape_encoder->add_path_segment(segment);	
+         */
         return FCM_SUCCESS;
 
 	}

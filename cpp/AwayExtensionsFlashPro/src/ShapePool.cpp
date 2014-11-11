@@ -129,13 +129,12 @@ ShapePool::getShape(DOM::FrameElement::IShape* thisShape)
 	FCM::Result res;	
 	res = this->pIRegionGeneratorService->GetFilledRegions(thisShape, pFilledRegionList.m_Ptr);
 	ASSERT(FCM_SUCCESS_CODE(res));
-	/*
+	
 	pFilledRegionList->Count(regionCount);
 	//AwayJS::Utils::Trace(this->m_pCallback, "						Fill_regions = %d\n", regionCount);
-										
-	int shapeCnt=0;
-	for(DOM::FrameElement::IShape* thisTestShape : this->shapes_flash){		
-										
+					
+	for(int i : this->this_frame_shapes){		
+		DOM::FrameElement::IShape* thisTestShape=this->shapes_flash[i];							
 		FCM::U_Int32 regionCount_test;
 		FCM::Boolean issame;
 		DOM::Utils::MATRIX2D matrix;
@@ -147,19 +146,50 @@ ShapePool::getShape(DOM::FrameElement::IShape* thisShape)
 			res=this->pIShapeService->TestShapeSimilarity(thisTestShape, thisShape, issame, matrix);
 			if(res==FCM_SUCCESS){
 				if(issame){
-					return this->shapes_awd[shapeCnt];
+					return this->shapes_awd[i];
 				}
 			}
 		}
-		shapeCnt++;
-	}*/
+		i++;
+	}
+	for(int i : this->last_frame_shapes){		
+		DOM::FrameElement::IShape* thisTestShape=this->shapes_flash[i];							
+		FCM::U_Int32 regionCount_test;
+		FCM::Boolean issame;
+		DOM::Utils::MATRIX2D matrix;
+		res = this->pIRegionGeneratorService->GetFilledRegions(thisTestShape, pFilledRegionList.m_Ptr);
+		ASSERT(FCM_SUCCESS_CODE(res));
+		pFilledRegionList->Count(regionCount_test);
+		// if they have different regions, the shapes to not match
+		if(regionCount_test==regionCount){
+			res=this->pIShapeService->TestShapeSimilarity(thisTestShape, thisShape, issame, matrix);
+			if(res==FCM_SUCCESS){
+				if(issame){
+					return this->shapes_awd[i];
+				}
+			}
+		}
+		i++;
+	}
 	string shapeName="";
 	AWDShape2D* newAWDShape=new AWDShape2D(shapeName);
+	this->this_frame_shapes.push_back(this->shapes_flash.size());
 	this->shapes_flash.push_back(thisShape);
 	this->shapes_awd.push_back(newAWDShape);
 	this->encodeShape(thisShape, newAWDShape);
 	return newAWDShape;
 
+}
+void ShapePool::newTimeline(){
+	this->last_frame_shapes.clear();
+	this->this_frame_shapes.clear();
+}
+void ShapePool::addFrame(){
+	this->last_frame_shapes.clear();
+	for(int i : this->this_frame_shapes){
+		this->last_frame_shapes.push_back(i);
+	}
+	this->this_frame_shapes.clear();
 }
 void
 ShapePool::encodeShape(DOM::FrameElement::IShape* thisShape, AWDShape2D* shapeBlock)
