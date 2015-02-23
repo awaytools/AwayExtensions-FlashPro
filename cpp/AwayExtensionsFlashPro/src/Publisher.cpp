@@ -531,10 +531,22 @@ namespace AwayJS
 
 			}
 		}
-		// export the awd-file.
 		
-		AWD::create_TextureAtlasfor_timelines(this->awd_project, "test");
-
+		// export textureatlas 
+		std::string filepath_no_extension2;
+		if(AWD::FILES::extract_path_without_file_extension(outFile, filepath_no_extension2)!=result::AWD_SUCCESS){
+			Utils::Trace(GetCallback(), "FAILED TO GET FILENAME FROM PATH \n");
+			return FCM_EXPORT_FAILED;
+		}
+		std::string fileName2;
+		if(AWD::FILES::extract_name_from_path(filepath_no_extension2, fileName2)!=result::AWD_SUCCESS){
+			Utils::Trace(GetCallback(), "FAILED TO GET FILENAME FROM PATH \n");
+			return FCM_EXPORT_FAILED;
+		}
+		
+		AWD::create_TextureAtlasfor_timelines(this->awd_project, fileName2+"_textureAtlas");
+		
+		// export the awd-file.
 		awd_res = this->awd_project->export_file();
 		if(awd_res!=result::AWD_SUCCESS){
 			Utils::Trace(GetCallback(), "FAILED TO EXPORT %d\n", awd_res);
@@ -558,7 +570,7 @@ namespace AwayJS
 					Utils::Trace(GetCallback(), "FAILED TO GET TIMELINE FROM BASEBLOCK\n");
 					return FCM_EXPORT_FAILED;
 				}
-                
+               
                 //startTime=(double)AWD::GetTimeMs64();
                 std::vector<std::string> messages;
 				messages.push_back("\ntimeline: '"+timeline->get_name()+"' framecount: "+std::to_string(timeline->get_frames().size()));
@@ -606,7 +618,7 @@ namespace AwayJS
 			else{
 				preview_file=preview_source_path;
 			}
-
+			 
 			std::string fileName;
 			if(AWD::FILES::extract_name_from_path(outFile, fileName)!=result::AWD_SUCCESS){
 				Utils::Trace(GetCallback(), "FAILED TO GET FILENAME FROM PATH \n");
