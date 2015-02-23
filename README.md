@@ -18,6 +18,27 @@ You should be able to create a new project of Type "AwayJS".
 
 ### changelog:
 
+#### version 0.9.75:
+
+* Big refactor. Most of the exporter and lib-awd have been revisited and updated.
+
+* Source needs the dev-branch of [awd-sdk](https://github.com/awaytools/awd-sdk) to compile. 
+
+* Needs FlashPro 15.0.0.74 
+
+* Tested on mac and win
+
+* As3 preview runtim is no longor available.
+
+* Exports Colors as texture-atlas. Gradient and bitmap-fills are exported, but UV-Transform is not applied yet.
+
+* No font / text is exported yet (convert text to shapes to test)
+
+
+
+
+
+
 #### version 0.9.61:
 
 * Fix commit 0.9.6. (correct sources)
