@@ -48,8 +48,8 @@ namespace DOM
         namespace Image 
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IBitmapExportService
+             * @brief Defines the universally-unique interface ID for 
+             *        IBitmapExportService.
              *
              * @note  Textual Representation: {B795A4B4-4A08-4DE0-9DFA-5B0E8198065F}
              */
@@ -86,15 +86,15 @@ namespace DOM
                  *         An IMediaItem of a bitmap in libary.
                  *
                  * @param  pFilePath (IN)
-                 *         A string, that specifies the absolute path (including name) 
+                 *         A string that specifies the absolute path (including name) 
                  *         of the exported file. The parent directory should exist.
                  *         The file extension can be '.JPG' or '.PNG'.
                  * 
                  * @param  quality (IN)
-                 *         A number, from 1-100, that determines the quality of the exported 
+                 *         A number, from 1-100, which determines the quality of the exported 
                  *         image file. A higher number indicates higher quality.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL ExportToFile(
                     const LibraryItem::PIMediaItem pBitmap, 

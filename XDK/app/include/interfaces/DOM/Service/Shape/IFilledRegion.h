@@ -62,8 +62,8 @@ namespace DOM
         namespace Shape
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IFilledRegion
+             * @brief Defines the universally-unique interface ID for 
+             *        IFilledRegion.
              *
              * @note  Textual Representation: {8D1FE648-075B-4FA6-BF03-61C73E459EB3}
              */
@@ -99,7 +99,7 @@ namespace DOM
                  * @param  pPath (OUT)
                  *         Outline Region
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL GetBoundary(PIPath& pPath) = 0;
 
@@ -110,20 +110,28 @@ namespace DOM
                  * @param  pHoleList (OUT)
                  *         Hole list (List of IPath)
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
-                 * @see    IPath
+                 * @see    DOM::Service::Shape::IPath
                  */
                 virtual FCM::Result _FCMCALL GetHoles(PIFCMList& pHoleList) = 0;
 
 
                 /**
-                 * @brief  This functions gets the filled region style for the group of filled regions.
+                 * @brief  This functions gets the filled region style for the group of filled 
+                 *         regions.
                  *
                  * @param  pFillStyle (OUT)
-                 *         Fill style of the filled regions.
+                 *         Fill style of the filled regions. This can queried for the following 
+                 *         interfaces: ISolidFillStyle, IBitmapFillStyle and IGradientFillStyle.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+                 *
+                 * @see    DOM::FillStyle::ISolidFillStyle
+                 *
+                 * @see    DOM::FillStyle::IBitmapFillStyle
+                 *
+                 * @see    DOM::FillStyle::IGradientFillStyle
                  */
                 virtual FCM::Result _FCMCALL GetFillStyle(PIFCMUnknown& pFillStyle) = 0;
 

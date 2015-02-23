@@ -54,8 +54,8 @@ namespace DOM
 namespace DOM
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for 
-     *        IFLADocument
+     * @brief Defines the universally-unique interface ID for 
+     *        IFLADocument.
      *
      * @note  Textual Representation: {9F54B497-9471-4C13-985B-7CB1D4576030}
      */
@@ -75,17 +75,17 @@ namespace DOM
     /**
      * @class IFLADocument
      *
-     * @brief Defines the interface that represents a FLA document.
+     * @brief Defines the interface that represents an FLA document.
      */
     BEGIN_DECLARE_INTERFACE(IFLADocument, IID_IFLA_DOCUMENT)
 
         /**
-         * @brief  This function provides background color of the stage.
+         * @brief  This function provides the background color of the stage.
          *
          * @param  color (OUT)
          *         Background color of the stage.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL GetBackgroundColor(Utils::COLOR& color) = 0;
 
@@ -97,7 +97,7 @@ namespace DOM
          * @param  frameRate (OUT)
          *         Frame rate - Number of frames displayed per second.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */    
         virtual FCM::Result _FCMCALL GetFrameRate(FCM::Double& frameRate) = 0;
 
@@ -108,7 +108,7 @@ namespace DOM
          * @param height (OUT)
          *        Height of the stage.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */    
         virtual FCM::Result _FCMCALL GetStageHeight(FCM::U_Int32& height) = 0;
 
@@ -119,18 +119,33 @@ namespace DOM
          * @param  width (OUT)
          *         Width of the stage.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */        
         virtual FCM::Result _FCMCALL GetStageWidth(FCM::U_Int32& width) = 0;
 
 
         /**
-         * @brief  This returns the items which are part of the Libary.
+         * @brief  This returns the items which are part of the Library.
          *
          * @param  pLibItemsList (OUT)
-         *         List of library items.
+         *         List of library items. Each item in the list can queried for 
+         *         following depending on its type: 
+         *          Folder - ILibraryItem, IFolder
+         *          Font - ILibraryItem, IFont
+         *          Sound/Bitmap - ILibraryItem, IMediaItem
+         *          MovieClip/Graphic - ILibraryItem, ISymbolItem
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @see    DOM::ILibraryItem
+         *
+         * @see    DOM::LibraryItem::IFolderItem
+         *
+         * @see    DOM::LibraryItem::IFontItem
+         *
+         * @see    DOM::LibraryItem::IMediaItem
+         *
+         * @see    DOM::LibraryItem::ISymbolItem
          */    
         virtual FCM::Result _FCMCALL GetLibraryItems(FCM::PIFCMList& pLibItemsList) = 0;
     
@@ -142,9 +157,14 @@ namespace DOM
          *         The full path of the item in the library.
          *
          * @param  pLibItem (OUT)
-         *         Library item
+         *         Library item. The library item can queried for 
+         *         following depending on its type: 
+         *          Folder - ILibraryItem, IFolder
+         *          Font - ILibraryItem, IFont
+         *          Sound/Bitmap - ILibraryItem, IMediaItem
+         *          MovieClip/Graphic - ILibraryItem, ISymbolItem
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */    
         virtual FCM::Result _FCMCALL GetLibraryItemByPath(
             FCM::CStringRep16 pPath, 
@@ -155,9 +175,11 @@ namespace DOM
          * @brief  This function returns the list of timelines (scenes).
          *
          * @param  pTimelineList (OUT)
-         *         List of timelines (or scenes).
+         *         List of timelines or scenes (ITimeline).
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @see    DOM::ITimeline
          */    
         virtual FCM::Result _FCMCALL GetTimelines(FCM::PIFCMList& pTimelineList) = 0;
         
@@ -169,19 +191,19 @@ namespace DOM
          * @param  docId (OUT)
          *         Id to identify the document type.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL GetTypeId(FCM::FCMGUID& docId) = 0;
 
 
         /**
-         * @brief  This function returns the path of the the document.
+         * @brief  This function returns the path of the FLA document.
          *         If the document is never been saved, NULL will be returned.
          *
          * @param  ppPath (OUT)
          *         Path of the document.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          *
          * @note   Memory allocated for ppPath must be released by the caller using 
          *         FCM::IFCMCalloc.

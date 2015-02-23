@@ -21,7 +21,7 @@
  *
  * @brief This file contains interface for IFCMNotificationClient. 
  *        The IFCMNotificationClient interface must be supported by any plugin that wishes to
- *        recieve notification of specific certain event by either the host app, or by other 
+ *        receive notification of specific certain event by either the host app, or by other 
  *        plugins that want to generate system-wide events.  A Plugin wanting notification will
  *        obtain an <tt>IMoaNotificationClient</tt> Interface to itself and an 
  *        <tt>IFCMNotificationService</tt> interface from the main callback object of the 
@@ -44,7 +44,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMNotificationClient.
+     * @brief Defines the universally-unique interface ID for IFCMNotificationClient.
      *
      * @note  Textual Representation:  {44BA2FFC-2057-4C95-AA38-80D6EA007336}
      */
@@ -72,20 +72,20 @@ namespace FCM
 
         /**
          * @brief  The host application calls the Notify method of a registered Notification Client
-         *         whenever the event type that was passed in at registration time occurs.
+         *         whenever the event type that was passed in at the time of registration occurs.
          *         For each event type, additional data is passed in the pNotificationData
-         *         parameter that further describes the event that occured.
+         *         parameter that further describes the event that occurred.
          *
          * @param  nid (IN)
-         *         The event type you are being notified of.
+         *         The type of the event that occured.
          *
          * @param  pNotificationData (IN)
-         *         Event-type specific data decribing the event that occured.
+         *         Event-type specific data describing the event that occurred.
          *
          * @param  pRefCon (IN)
-         *         The refcon value passed in when the client registered for this event.
+         *         The refcon value that was passed when the client was registered for this event.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return return FCM_SUCCESS on success, else an error code.
          */
          virtual FCM::Result _FCMCALL Notify(
             ConstRefFCMNotifyID nid,

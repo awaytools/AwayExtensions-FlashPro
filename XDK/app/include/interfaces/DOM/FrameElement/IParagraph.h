@@ -19,8 +19,8 @@
 /**
  * @file  IParagraph.h
  *
- * @brief This file contains the interface for IParagraph. IParagraph interface represents paragraph
- *        of text.
+ * @brief This file contains the interface for IParagraph. IParagraph interface represents a 
+ *        paragraph of text.
  */
 
 #ifndef IPARAGRAPH_H_
@@ -47,10 +47,16 @@ namespace DOM
          */
          enum AlignMode
          {
-             /** Left align if orientation is horizontal / Top align if orientation is vertical */
+             /** 
+              * Left align if orientation is horizontal. Top align if orientation 
+              * is vertical 
+              */
              ALIGN_MODE_LEFT,
 
-             /** Right align if orientation is horizontal / Bottom align if orientation is vertical */
+             /** 
+              * Right align if orientation is horizontal. Bottom align if orientation 
+              * is vertical. 
+              */
              ALIGN_MODE_RIGHT,                
 
              /** Center Align */
@@ -70,7 +76,7 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IParagraph
          *
          * @note  Textual Representation: {BB9B73EA-06F7-4AC8-B51B-2E5A47BFC3B1}
@@ -90,7 +96,7 @@ namespace DOM
         /**
          * @struct PARAGRAPH_STYLE
          *
-         * @brief  Describes the Paragragh layout data of the text element
+         * @brief  Describes the paragraph layout data of the text element.
          */
         struct PARAGRAPH_STYLE
         {
@@ -103,16 +109,16 @@ namespace DOM
             /** Paragraph alignment */
             AlignMode alignment;
                 
-            /** Paragraph indentation. Legal value is between -720 to 720 */
+            /** Paragraph indentation. Legal value is between -720 to 720. */
             FCM::S_Int16 indent;
                 
-            /** Line spacing of paragraph (also known as leading). Legal value is between -360 to 720 */
+            /** Line spacing of paragraph (also known as leading). Legal value is between -360 to 720. */
             FCM::S_Int16 lineSpacing;
 
-            /** Paragraph's left margin. Legal value is between 0 to 720 */
+            /** Paragraph's left margin. Legal value is between 0 to 720. */
             FCM::S_Int16 leftMargin;
                 
-            /** Paragraph's right margin. Legal value is between 0 to 720 */
+            /** Paragraph's right margin. Legal value is between 0 to 720. */
             FCM::S_Int16 rightMargin;
          };
      }
@@ -140,31 +146,32 @@ namespace DOM
              *         The index of first character within Text element where this textrun 
              *         starts is returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetStartIndex(FCM::U_Int32& startIndex) = 0;
 
 
             /**
-             * @brief  This function returns length of text of paragraph.
+             * @brief  This function returns the length of the paragraph text.
              *
              * @param  length (OUT)
-             *         
+             *         Length of the paragraph text
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetLength(FCM::U_Int32& length) = 0;                    
                 
 
             /**
-             * @brief  Returns list of text runs which fit into paragraph
+             * @brief  Returns the list of text runs, which fit into the paragraph.
              *
              * @param  pTextRunList (OUT)
-             *         List of text runs.
+             *         List of text runs. Each item in the list can be queried for 
+             *         ITextRun.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              *
-             * @see    ITextRun
+             * @see    DOM::FrameElement::ITextRun
              */
             virtual FCM::Result _FCMCALL GetTextRuns(PIFCMList& pTextRunList) = 0;
                 
@@ -175,7 +182,7 @@ namespace DOM
              * @param  paragraphStyle (OUT)
              *         Paragraph Style
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              *
              * @note   Caller of this function must set paragraphStyle.structSize to 
              *         sizeof(PARAGRAPH_STYLE).

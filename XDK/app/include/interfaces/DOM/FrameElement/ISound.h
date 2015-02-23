@@ -20,7 +20,7 @@
  * @file  ISound.h
  *
  * @brief This file contains the interface for ISound. The ISound
- *        interface represents a "sound" object attached to a frame. 
+ *        interface represents a sound object attached to a frame. 
  */
 
 #ifndef ISOUND_ELEMENT_H_
@@ -56,7 +56,7 @@ namespace DOM
         /**
          * @enum  SoundRepeatMode
          *
-         * @brief This enum defines repeation mode of a sound.
+         * @brief This enum defines the repetition mode of a sound.
          */
         enum SoundRepeatMode
         {
@@ -78,7 +78,7 @@ namespace DOM
         {
             /**
              * Synchronizes the sound to the occurrence of an event. An event 
-             * sound plays when its starting keyframe first appears and the 
+             * sound plays when its starting keyframe first appears and  
              * plays in its entirety, independently of the playhead in the
              * Timeline. An event sound continues playing until explicitly 
              * stopped.
@@ -94,12 +94,12 @@ namespace DOM
 
             /**
              * Same as SOUND_SYNC_EVENT, except that if the sound is already 
-             * playing, no new instance of the sound plays.
+             * being played, no new instance of the sound is played.
              */
             SOUND_SYNC_START,
 
 
-            /** Silences the specified sound */
+            /** Silences the specified sound. */
             SOUND_SYNC_STOP,
             
 
@@ -124,8 +124,8 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ISound
+         * @brief Defines the universally-unique interface ID for 
+         *        ISound.
          *
          * @note  Textual Representation: {EF9DFF11-1B84-41BA-AC7F-C2560F692F30}
          */
@@ -181,11 +181,11 @@ namespace DOM
             size_t structSize;
             
 
-            /** Number of samples to skip at beginning of sound */
+            /** Number of samples to skip at beginning of sound. */
             FCM::S_Int32 inPos44;
 
 
-            /** Position in samples of last sample to play */
+            /** Position in samples of last sample to play. */
             FCM::S_Int32 outPos44;
         };
     }
@@ -206,13 +206,13 @@ namespace DOM
         BEGIN_DECLARE_INTERFACE(ISound, IID_ISOUND_ELEMENT)
 
             /**
-             * @brief  This functions gets the "sound" item in the library that is used to 
+             * @brief  This functions gets the sound item in the library that is used to 
              *         instantiate the sound object.
              *
              * @param  pSoundItem (OUT)
              *         Sound Library Item
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code
+             * @return On success, FCM_SUCCESS is returned, else an error code
              *         is returned.
              */
             virtual FCM::Result _FCMCALL GetSoundItem(DOM::LibraryItem::PIMediaItem& pSoundItem) = 0;
@@ -222,10 +222,12 @@ namespace DOM
              * @brief  This function gets the list of sound effects.
              *
              * @param  pISoundEffects (OUT)
-             *         List of sound effects (ISoundEffect)
+             *         List of sound effects. Each item in the list can be queried for ISoundEffect.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code
+             * @return On success, FCM_SUCCESS is returned, else an error code
              *         is returned.
+             *
+             * @see    DOM::Utils::ISoundEffect
              */
             virtual FCM::Result _FCMCALL GetSoundEffect(PIFCMList& pISoundEffects) = 0;
 
@@ -236,7 +238,7 @@ namespace DOM
              * @param  loopMode (OUT)
              *         Loop mode
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code
+             * @return On success, FCM_SUCCESS is returned, else an error code
              *         is returned.
              *
              * @note   Caller of this function must set loopMode.structSize to 
@@ -251,7 +253,7 @@ namespace DOM
              * @param  syncMode (OUT)
              *         Sync mode
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code
+             * @return On success, FCM_SUCCESS is returned, else an error code
              *         is returned.
              */
             virtual FCM::Result _FCMCALL GetSyncMode(SoundSyncMode& syncMode) = 0;
@@ -263,7 +265,7 @@ namespace DOM
              * @param  soundLimit (OUT)
              *         Sound limit
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code
+             * @return On success, FCM_SUCCESS is returned, else an error code
              *         is returned.
              *
              * @note   Caller of this function must set soundLimit.structSize to 

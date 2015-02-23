@@ -60,8 +60,8 @@ namespace Exporter
     namespace Service
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IFrameCommandGenerator
+         * @brief Defines the universally-unique interface ID for 
+         *        IFrameCommandGenerator.
          *
          * @note  Textual Representation:  {440D57C4-E12C-4AAE-9A68-D3611191FA3E}
          */
@@ -77,6 +77,11 @@ namespace Exporter
 {
     namespace Service
     {
+        /**
+         * @struct RANGE
+         *
+         * @brief  Defines a range of numbers
+         */
         struct RANGE
         {
             /** Minimum value of the range */
@@ -130,7 +135,7 @@ namespace Exporter
              * @param pTimelineBuilder (OUT)
              *        Root(or main) timeline builder
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GenerateFrameCommands(
                 DOM::PITimeline pTimeline, 

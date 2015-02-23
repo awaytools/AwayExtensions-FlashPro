@@ -44,8 +44,8 @@ namespace DOM
     namespace GraphicFilter
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IGlowFilter
+         * @brief Defines the universally-unique interface ID for 
+         *        IGlowFilter.
          *
          * @note  Textual Representation:  {473CC4CD-CD5B-48D0-B34E-59513A708451}
          */
@@ -68,7 +68,6 @@ namespace DOM
          * @class IGlowFilter
          *
          * @brief This interface defines the Glow filter applied to the object.
-         *
          */
         BEGIN_DECLARE_INTERFACE(IGlowFilter, IID_IGLOW_FILTER)
 
@@ -79,7 +78,7 @@ namespace DOM
                  * @param  blurX (OUT) 
                  *         Value of the blur-X property for the object.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL GetBlurX(FCM::Double& blurX) = 0;
 
@@ -91,7 +90,7 @@ namespace DOM
                  * @param  blurY (OUT) 
                  *         Value of the blur-Y property for the object.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */ 
                 virtual FCM::Result _FCMCALL GetBlurY(FCM::Double& blurY) = 0;
 
@@ -103,7 +102,7 @@ namespace DOM
                  * @param  strength (OUT) 
                  *         Value of the strength property for the object in context.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL GetStrength(FCM::S_Int32& strength) = 0;
                 
@@ -115,7 +114,7 @@ namespace DOM
                  * @param  qualityType (OUT) 
                  *         Quality type of the filter(High or Low or Medium).
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL GetQuality(Utils::FilterQualityType& qualityType) = 0;
 
@@ -127,7 +126,7 @@ namespace DOM
                   * @param  color (OUT) 
                   *         Color of the shadow applied to the object(in RGBA form).
                   *
-                  * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                  * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                   */
                 virtual FCM::Result _FCMCALL GetShadowColor(Utils::COLOR& color) = 0;
 
@@ -138,7 +137,7 @@ namespace DOM
                  * @param  knockOut (OUT) 
                  *         Boolean variable which is set to true when Knock out property is enabled.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL GetKnockout(FCM::Boolean& knockOut) = 0;
 
@@ -149,7 +148,7 @@ namespace DOM
                  * @param  innerShadow (OUT) 
                  *         Boolean variable which is set to true when innerShadow property is enabled.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL GetInnerShadow(FCM::Boolean& innerShadow) = 0;
 
@@ -161,7 +160,7 @@ namespace DOM
                  *         Boolean value which is set to true when filter is enabled 
                  *         for the object in context else set to false.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL IsEnabled(FCM::Boolean& enabled) = 0;
 

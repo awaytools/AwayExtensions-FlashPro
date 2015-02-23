@@ -47,8 +47,8 @@ namespace DOM
         namespace TextLayout
         {        
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        ITextLine
+             * @brief Defines the universally-unique interface ID for 
+             *        ITextLine.
              *
              * @note  Textual Representation: {72330363-CBBB-4635-BDCC-04BAC5837871}
              */
@@ -78,35 +78,39 @@ namespace DOM
             BEGIN_DECLARE_INTERFACE(ITextLine, IID_ITEXT_LINE)                
                 
                 /**
-                 * @brief  This function returns index of character within Text element where this line starts.
+                 * @brief  This function returns the index of the character within the Text 
+                 *         element where this line starts.
                  *
                  * @param  startIndex (OUT)
-                 *         The index of character within Text element where this line starts.
+                 *         Index of the character within the Text element where this line starts.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  */
                 virtual FCM::Result _FCMCALL GetStartIndex(FCM::U_Int32& startIndex) = 0;
                 
 
                 /**
-                 * @brief  This function returns length of the 
-                 *         text(number of charachters in the text).
+                 * @brief  This function returns the length of the text(number of characters 
+                 *         in the text).
                  *
                  * @param  length (OUT)
                  *         Length of the text line.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  */
                 virtual FCM::Result _FCMCALL GetLength(FCM::U_Int32& length) = 0;    
                 
 
                 /**
-                 * @brief This function gets the bounds if the charachter.
+                 * @brief This function gets the bounds for the character.
                  *
                  * @param  pCharBoundList (OUT)
-                 *         Bounds of the charachters.
+                 *         Bounds of the characters. Each item in the list can be queried from
+                 *         IRect.
                  *         
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
+                 *
+                 * @see    DOM::Utils::IRect
                  */
                 virtual FCM::Result _FCMCALL GetCharBounds(PIFCMList& pCharBoundList) = 0;
                 
@@ -117,7 +121,7 @@ namespace DOM
                  * @param  lineBound (OUT)
                  *         Bounds of the line of text.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  */
                 virtual FCM::Result _FCMCALL GetLineBound(Utils::RECT& lineBound) = 0;
 
@@ -128,7 +132,7 @@ namespace DOM
                  * @param  startPos (OUT)
                  *         Start position of the text line.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  */
                 virtual FCM::Result _FCMCALL GetStartPos(Utils::POINT2D& startPos) = 0;
             

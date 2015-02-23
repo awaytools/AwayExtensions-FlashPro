@@ -41,7 +41,7 @@ namespace FCM
     /**
      * @def   FCM_VERSION_MAJOR
      *
-     * @brief Major version of the framework
+     * @brief Major version of the framework.
      */
     #define FCM_VERSION_MAJOR                   0x01
     
@@ -49,15 +49,15 @@ namespace FCM
     /**
      * @def   FCM_VERSION_MINOR
      *
-     * @brief Minor version of the framework
+     * @brief Minor version of the framework.
      */
-    #define FCM_VERSION_MINOR                   0x00
+    #define FCM_VERSION_MINOR                   0x01
     
 
     /**
      * @def   FCM_VERSION_MAINTENANCE
      *
-     * @brief Maintenance number of the framework
+     * @brief Maintenance number of the framework.
      */
     #define FCM_VERSION_MAINTENANCE             0x00
     
@@ -65,7 +65,7 @@ namespace FCM
     /**
      * @def   FCM_VERSION_BUILD
      *
-     * @brief Build number of the framework
+     * @brief Build number of the framework.
      */
     #define FCM_VERSION_BUILD                   0x00
 
@@ -73,7 +73,7 @@ namespace FCM
     /**
      * @def   FCM_VERSION
      *
-     * @brief Complete version of the framework
+     * @brief Complete version of the framework.
      */
     #define FCM_VERSION ((FCM_VERSION_MAJOR << 24) | (FCM_VERSION_MINOR << 16) | \
                          (FCM_VERSION_MAINTENANCE << 8) | (FCM_VERSION_BUILD))
@@ -82,7 +82,7 @@ namespace FCM
     /**
      * @def   DEFINE_FCMIID
      *
-     * @brief Defines interface with name @a name and ID whose textual representaion is
+     * @brief Defines interface with name @a name and ID whose textual representation is
      *        @a l - @a w1 - @a w2 - @a b1 @a b2 - @a b3 @a b4 @a b5 @a b6 @a b7 @a b8.  
      */
     #define DEFINE_FCMIID    (name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8) \
@@ -100,7 +100,7 @@ namespace FCM
     /**
      * @def   _FCM_SIMPLEMAPENTRY
      *
-     * @brief This define makes debugging asserts easier.
+     * @brief This macro makes debugging asserts easier.
      */
     #define _FCM_SIMPLEMAPENTRY ((_FCM_CREATORARGFUNC*)0)
     
@@ -131,7 +131,7 @@ namespace FCM
      /**
      * @def   BEGIN_DECLARE_INTERFACE_INHERIT
      *
-     * @brief Used to begin the interface @a ifx with ID @a iid  which inherits from @a baseifx.
+     * @brief Used to begin the interface @a ifx with ID @a iid , which inherits from @a baseifx.
      */
     #define BEGIN_DECLARE_INTERFACE_INHERIT(ifx, iid, baseifx) \
     BEGIN_DECLARE_INTERFACE_COMMON (ifx, iid) \
@@ -142,7 +142,7 @@ namespace FCM
      /**
      * @def   BEGIN_DECLARE_INTERFACE
      *
-     * @brief Used to begin the interface @a ifx with ID @a iid  which inherits from IFCMUnknown.
+     * @brief Used to begin the interface @a ifx with ID @a iid,  which inherits from IFCMUnknown.
      */
     #define BEGIN_DECLARE_INTERFACE(ifx, iid) BEGIN_DECLARE_INTERFACE_INHERIT(ifx, iid, FCM::IFCMUnknown);
 
@@ -150,7 +150,7 @@ namespace FCM
     /**
      * @def   BEGIN_DECLARE_BASE_INTERFACE
      *
-     * @brief Used to begin the interface @a ifx with ID @a iid  which inherits from IFCMUnknown.
+     * @brief Used to begin the interface @a ifx with ID @a iid,  which inherits from IFCMUnknown.
      */    
     #define BEGIN_DECLARE_BASE_INTERFACE(ifx, iid) \
     BEGIN_DECLARE_INTERFACE_COMMON (ifx, iid) \
@@ -168,7 +168,7 @@ namespace FCM
     /**
      * @def   _FCMCALL
      *
-     * @brief Defines calling convention for interface methods
+     * @brief Defines calling convention for interface methods.
      */
     #if defined(__GNUC__) 
         #define _FCMCALL
@@ -204,7 +204,7 @@ namespace FCM
     /**
      * @def   offsetofclass
      *
-     * @brief Utility macro to get offset of a derived class. Used for internal purpose
+     * @brief Utility macro to get offset of a derived class. Used for internal purposes.
      */
     #define offsetofclass(base, derived) \
                 ((FCM::S_Int64)(static_cast<base*>((derived*)_FCM_PACKING))-_FCM_PACKING)
@@ -213,7 +213,7 @@ namespace FCM
     /**
      * @def   offsetofclasscustom
      *
-     * @brief Custom Class offset. Used for internal purpose
+     * @brief Custom Class offset. Used for internal purposes.
      */
     #define offsetofclasscustom(base,custom, derived) \
                 ((FCM::S_Int64)(static_cast<base*>((custom*)((derived*)_FCM_PACKING)))-_FCM_PACKING)
@@ -299,7 +299,7 @@ namespace FCM
     /**
      * @def   BEGIN_MODULE
      *
-     * @brief Format to mark the begining of a module. A module contains a list of class map with name @a ursModule.
+     * @brief Format to mark the beginning of a module. A module contains a list of class map with name @a ursModule.
      */
     #define BEGIN_MODULE(usrModule) \
             class usrModule : public FCM::FCMPluginModule {
@@ -359,7 +359,7 @@ namespace FCM
     /**
      * @def   FCMPLUGIN_IMP_EXP
      *
-     * @brief Used to export a function from the plugin
+     * @brief Used to export a function from the plugin.
      */
     #if defined( __FCM_INTERNAL_PLUGIN__)
         #define FCMPLUGIN_IMP_EXP

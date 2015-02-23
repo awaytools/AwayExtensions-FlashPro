@@ -17,11 +17,12 @@
 **************************************************************************/
 
 #include "FCMPluginInterface.h"
-#include "FCMUtils.h"
+#include "Utils.h"
 
 #include "DocType.h"
 #include "Publisher.h"
-#include "awd.h"
+#include "RessourcePalette.h"
+#include "TimelineBuilder.h"
 
 #ifdef _DEBUG
 	#include <stdlib.h>
@@ -38,9 +39,9 @@ namespace AwayJS
 			CLASS_ENTRY(CLSID_DocType, CDocType)
 			CLASS_ENTRY(CLSID_FeatureMatrix, FeatureMatrix)
 			CLASS_ENTRY(CLSID_Publisher, CPublisher)
-			CLASS_ENTRY(CLSID_ResourcePalette, ResourcePalette)
-			CLASS_ENTRY(CLSID_TimelineBuilder, TimelineBuilder)
-			CLASS_ENTRY(CLSID_TimelineBuilderFactory, TimelineBuilderFactory)
+            CLASS_ENTRY(CLSID_ResourcePalette, ResourcePalette)
+            CLASS_ENTRY(CLSID_TimelineBuilder, TimelineBuilder)
+            CLASS_ENTRY(CLSID_TimelineBuilderFactory, TimelineBuilderFactory)
         END_CLASS_ENTRY
         public:
             void SetResPath(const std::string& resPath) {m_resPath = resPath;}

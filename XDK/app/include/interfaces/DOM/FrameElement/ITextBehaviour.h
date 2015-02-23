@@ -43,7 +43,7 @@ namespace DOM
         /**
          * @enum  OrientationMode
          *
-         * @brief This defines orientation mode of static text element.
+         * @brief This defines orientation mode of the static text element.
          */
         enum OrientationMode
         {
@@ -75,7 +75,7 @@ namespace DOM
        /**
         * @enum  LineMode
         *
-        * @brief This defines paragraph behaviour mode of dynamic/input text element.
+        * @brief This defines the paragraph behavior mode of the dynamic/input text element.
         */
         enum LineMode
         {
@@ -103,8 +103,8 @@ namespace DOM
     {
     
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ITextBehaviour
+         * @brief Defines the universally-unique interface ID for 
+         *        ITextBehaviour.
          *
          * @note  Textual Representation: {CD4A280-95E3-4476-A064-41984A589433}
          */
@@ -113,8 +113,8 @@ namespace DOM
 
 
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IStaticTextBehaviour
+         * @brief Defines the universally-unique interface ID for 
+         *        IStaticTextBehaviour.
          *
          * @note  Textual Representation: {6327C2D6-B763-4AC9-8FBD-F4C29134D17C}
          */
@@ -123,8 +123,8 @@ namespace DOM
 
 
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ITextBehaviour
+         * @brief Defines the universally-unique interface ID for 
+         *        ITextBehaviour.
          *
          * @note  Textual Representation: {6499D11F-6AF1-4403-BDB1-760214F39D95}
          */
@@ -133,8 +133,8 @@ namespace DOM
 
 
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IDynamicTextBehaviour
+         * @brief Defines the universally-unique interface ID for 
+         *        IDynamicTextBehaviour.
          *
          * @note  Textual Representation: {94655A95-990B-4540-915B-7052933231F8}
          */
@@ -143,8 +143,8 @@ namespace DOM
 
 
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IInputTextBehaviour
+         * @brief Defines the universally-unique interface ID for 
+         *        IInputTextBehaviour.
          *
          * @note  Textual Representation: {9D1E6460-990F-4D81-BB24-8D9159CD96F9}
          */
@@ -168,17 +168,17 @@ namespace DOM
          * @class ITextBehaviour
          *
          * @brief Defines an interface that represents type of the text element 
-         *        present on the stage
+         *        present on the stage.
          */
         BEGIN_DECLARE_INTERFACE(ITextBehaviour, IID_ITEXT_BEHAVIOUR)
 
              /**
-              * @brief  This function returns if the text of text element is selectable.
+              * @brief  This function indicates whether the text of text element is selectable.
               *
               * @param  selectable (OUT)
               *         returns true if the text of text element is selectable.
               *
-              * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+              * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
               */
              virtual FCM::Result _FCMCALL IsSelectable(FCM::Boolean& selectable) = 0;
             
@@ -188,8 +188,8 @@ namespace DOM
         /**
          * @class IStaticTextBehaviour
          *
-         * @brief Defines an interface that represents static text type of the text element 
-         *        present on the stage
+         * @brief Defines an interface that represents the static text type of the text element 
+         *        present on the stage.
          */    
         BEGIN_DECLARE_INTERFACE(IStaticTextBehaviour, IID_ISTATIC_TEXT_BEHAVIOUR) 
                 
@@ -199,7 +199,7 @@ namespace DOM
              * @param  orientationMode (OUT)
              *         The orientation of the text element is returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
              */
             virtual FCM::Result _FCMCALL GetOrientationMode(OrientationMode& orientationMode) = 0;
         
@@ -220,29 +220,32 @@ namespace DOM
         /**
          * @class IModifiableTextBehaviour
          *
-         * @brief Defines an interface that represents base class for dynamic/input text type of the 
-         *        text element present on the stage
+         * @brief Defines an interface that represents the base class for the dynamic/input 
+         *        text type of the text element present on the stage.
          */    
         BEGIN_DECLARE_INTERFACE(IModifiableTextBehaviour, IID_IMODIFIABLE_TEXT_BEHAVIOUR)
             
             /**
-             * @brief  This function returns instance name of text element on stage.
+             * @brief  This function returns the instance name of the text element on the stage.
              *
              * @param  ppName (OUT)
              *         The instance name of text element on stage is returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
+             *
+             * @note   The memory allocated for 'ppName' in this function must be freed 
+             *         by the caller using IFCMCalloc::Free().
              */
             virtual FCM::Result _FCMCALL GetInstanceName(FCM::StringRep16* ppName) = 0;
             
 
             /**
-             * @brief  This function returns the paragraph behaviour mode of the text element.
+             * @brief  This function returns the paragraph behavior mode of the text element.
              *
              * @param  lineMode (OUT)
-             *         The paragraph behavioure of the text element is returned.
+             *         The paragraph behavior of the text element is returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.            
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.            
              */
              virtual FCM::Result _FCMCALL GetLineMode(LineMode& lineMode) = 0;
         
@@ -251,31 +254,31 @@ namespace DOM
              * @brief  This function returns if the text of text element is scrollable.
              *
              * @param  scrollable (OUT)
-             *         Returns true if the text of text element is scrollable.
+             *         Returns true if the text of the text element is scrollable.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
              */
             virtual FCM::Result _FCMCALL IsScrollable(FCM::Boolean& scrollable) = 0;
             
 
             /**
-             * @brief  This function returns if a border around the text element is to be drawn.
+             * @brief  This function returns whether a border around the text element is to be drawn.
              *
              * @param  borderDrawn (OUT)
              *         returns true if a border around the text element is to be drawn.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
              */
             virtual FCM::Result _FCMCALL IsBorderDrawn(FCM::Boolean& borderDrawn) = 0;
             
 
             /**
-             * @brief  This function returns if a text of the text element is to be rendered as html.
+             * @brief  This function returns if contents of the text element is to be rendered as html.
              *
              * @param  renderAsHtml (OUT)
              *         returns true if a text of the text element is to be rendered as html.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
              */
             virtual FCM::Result _FCMCALL GetRenderAsHtml(FCM::Boolean& renderAsHtml) = 0;            
 
@@ -285,8 +288,8 @@ namespace DOM
         /**
          * @class IDynamicTextBehaviour
          *
-         * @brief Defines an interface that represents dynamic text type of the text element 
-         *        present on the stage
+         * @brief Defines an interface that represents the dynamic text type of the text element 
+         *        present on the stage.
          */
         BEGIN_DECLARE_INTERFACE(IDynamicTextBehaviour, IID_IDYNAMIC_TEXT_BEHAVIOUR)               
                 
@@ -296,18 +299,18 @@ namespace DOM
         /**
          * @class IInputTextBehaviour
          *
-         * @brief Defines an interface that represents Input text type of the text element 
-         *        present on the stage
+         * @brief Defines an interface that represents the Input text type of the text element 
+         *        present on the stage.
          */
         BEGIN_DECLARE_INTERFACE(IInputTextBehaviour, IID_IINPUT_TEXT_BEHAVIOUR)
                 
             /**
-             * @brief  This function checks if Line mode password is set.
+             * @brief  This function checks if the Line mode password is set.
              *
              * @param  password (OUT)
              *         This variable is set to true if LinemodePassword is enabled.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.  
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.  
              */
             virtual FCM::Result _FCMCALL IsLineModePassword(FCM::Boolean& password) = 0;
 

@@ -20,7 +20,7 @@
  * @file  ISoundExportService.h
  *
  * @brief This file contains the interface for ISoundExportService. The ISoundExportService 
- *        is used to export the Sound library items to "WAV" format.
+ *        is used to export the Sound library items to different audio formats.
  */
 
 #ifndef ISOUND_EXPORT_SERVICE_H_
@@ -74,7 +74,8 @@ namespace DOM
             /**
              * @class ISoundExportService
              *
-             * @brief Defines the interface for converting sound library item into ".wav" format.
+             * @brief Defines the interface for converting sound library item into different 
+             *        formats.
              */
             BEGIN_DECLARE_INTERFACE(ISoundExportService, IID_ISOUND_EXPORT_SERVICE)
 
@@ -89,7 +90,7 @@ namespace DOM
                 *         of the exported file. The parent directory should exist.
                 *         The file extension must be ".WAV" or ".MP3".
                 * 
-                * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                 */
                 virtual FCM::Result _FCMCALL ExportToFile(
                     const LibraryItem::PIMediaItem pSound, 

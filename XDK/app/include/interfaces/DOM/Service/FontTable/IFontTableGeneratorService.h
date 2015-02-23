@@ -21,8 +21,7 @@
  *
  * @brief This file contains interface for IFontTableGeneratorService.  
  *        IFontTableGeneratorService contains methods to generate font table for 
- *        a set specified chars of a specified font and also generates the font table 
- *        given a font item.
+ *        a font item.
  */
 
 #ifndef IFONT_TABLE_GENERATOR_SERVICE_H_
@@ -69,7 +68,7 @@ namespace DOM
         namespace FontTable
         {        
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
+             * @brief Defines the universally-unique interface ID for 
              *        IFontTableGeneratorService
              *
              * @note  Textual Representation: {DFA12563-76B3-4F88-9E04-FD150CB63968}
@@ -94,8 +93,7 @@ namespace DOM
             /**
             * @class IFontTableGeneratorService
             *
-            * @brief Defines the interface to generate font table for a set specified chars of 
-            *        specified a font also generates the font table given a font item.
+            * @brief Defines the interface to generate the font table for a font.
             */    
             BEGIN_DECLARE_INTERFACE(IFontTableGeneratorService, IID_IFONT_TABLE_GENERATOR_SERVICE)
                 
@@ -106,21 +104,19 @@ namespace DOM
                  * @param  pFlaDoc (IN)
                  *         Document for which font table needs to be generated.
                  *
+                 * @param  pCharacterString (IN)
+                 *         The set of characters.
+                 *
                  * @param  pFontName (IN)
                  *         The name of the font for which font table needs to be generated.    
                  *          
                  * @param  pFontStyle (IN)
                  *         The style of the font in string.
                  *
-                 * @param  pCharacterString (IN)
-                 *         The set of characters.
-                 *
                  * @param  pFontTable (OUT)
                  *         The font table for the specified chars in the font is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
-                 *
-                 * @see    IFontTable                 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  */        
                 virtual FCM::Result _FCMCALL CreateFontTable(
                     const PIFLADocument& pFlaDoc, 
@@ -141,11 +137,7 @@ namespace DOM
                  *         The font table for embedded chars and embedded char ranges in 
                  *         the font item is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
-                 *
-                 * @see    IFontTable
-                 *
-                 * @see    IFontItem                 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  */
                 virtual FCM::Result _FCMCALL CreateFontTableForFontItem(
                     const LibraryItem::PIFontItem& pFontItem, 

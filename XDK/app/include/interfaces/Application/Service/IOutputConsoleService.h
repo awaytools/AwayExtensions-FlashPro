@@ -19,7 +19,8 @@
 /**
  * @file  IOutputConsoleService.h
  *
- * @brief This file contains the interface for IOutputConsoleService.
+ * @brief This file contains the interface for IOutputConsoleService. This service 
+ *        can be used to trace messages to the Flash Professional Output Panel.
  *        
  */
 
@@ -40,8 +41,7 @@ namespace Application
     namespace Service
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for
-         *        IOutputConsoleService
+         * @brief Defines the universally-unique Interface ID for IOutputConsoleService.
          *
          * @note  Textual Representation: {C02BC56E-BC02-4814-B697-8190D58D2022}
          */
@@ -64,17 +64,18 @@ namespace Application
         /**
          * @class IOutputConsoleService
          *
-         * @brief IOutputConsoleService defines an interface to trace to Flash output console.
+         * @brief IOutputConsoleService defines an interface to output messages to the Flash 
+         *        output console.
          */
         BEGIN_DECLARE_INTERFACE(IOutputConsoleService, IID_IOUTPUT_CONSOLE_SERVICE)
         
             /**
-             * @brief Traces a string to the output console
+             * @brief Traces a message to the output console.
              *
-             * @param pMessage(IN)
+             * @param pMessage (IN)
              *        The message to be traced.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL Trace(FCM::CStringRep16 pMessage) = 0;
         
@@ -82,7 +83,7 @@ namespace Application
             /**
              * @brief Clears the output console.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL Clear() = 0;
         

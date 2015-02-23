@@ -51,8 +51,8 @@ namespace DOM
         namespace Shape
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IStrokeGroup
+             * @brief Defines the universally-unique interface ID for 
+             *        IStrokeGroup.
              *
              * @note  Textual Representation:  {56820F87-EF8A-485B-B27A-B484E19FC762}
              */
@@ -86,9 +86,23 @@ namespace DOM
                  * @brief  This functions gets the stroke style of the group of edges.
                  *
                  * @param  pStrokeStyle (OUT)
-                 *         Stroke style of the stroke group.
+                 *         Stroke style of the stroke group. This can be queried for the following
+                 *         interfaces: IDashedStrokeStyle, IDottedStrokeStyle, IHatchedStrokeStyle,
+                 *         IRaggedStrokeStyle, ISolidStrokeStyle and IStippleStrokeStyle.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+                 *
+                 * @see    DOM::StrokeStyle::IDashedStrokeStyle
+                 *
+                 * @see    DOM::StrokeStyle::IDottedStrokeStyle
+                 *
+                 * @see    DOM::StrokeStyle::IHatchedStrokeStyle
+                 *
+                 * @see    DOM::StrokeStyle::IRaggedStrokeStyle
+                 *
+                 * @see    DOM::StrokeStyle::ISolidStrokeStyle
+                 *
+                 * @see    DOM::StrokeStyle::IStippleStrokeStyle
                  */
                 virtual FCM::Result _FCMCALL GetStrokeStyle(FCM::PIFCMUnknown& pStrokeStyle) = 0;
 
@@ -102,9 +116,9 @@ namespace DOM
                  *         as per the rendering order with the first in the list being the one 
                  *         that needs to be rendered first.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
-                 * @see    IPath
+                 * @see    DOM::Service::Shape::IPath
                  */
                 virtual FCM::Result _FCMCALL GetPaths(PIFCMList& pPathList) = 0;
 

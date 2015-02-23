@@ -16,6 +16,11 @@
 * from Adobe Systems Incorporated.
 ******************************************************************************/
 
+/**
+ * @file  FCMPluginInterface.h
+ *
+ * @brief This file contains core definitions of the framework Flash Component Model (FCM).
+ */
 
 #ifndef FCM_PLUGIN_INTERFACE_H_
 #define FCM_PLUGIN_INTERFACE_H_
@@ -40,7 +45,8 @@ namespace FCM
 {
     //Forward declare IFCMUnknown
     class IFCMUnknown;
-
+ 
+ /** @cond HIDE_PRIVATE */
     typedef struct {
         FCMCLSID        classID;
         FCM::U_Int32    classVersion;
@@ -91,15 +97,22 @@ namespace FCM
         FCM::U_Int32 classVersion;
     } FLCMClassMap;
 
-    
+/** @endcond */
     
 
-
-    template<typename T> //T should be derived from IFCMUnknown
+    /**
+     * @brief This defines smart pointer to manage <tt>AddRef</tt> and <tt>Release</tt> 
+     *        calls to FCM objects. In <tt> AutoPtr<T> </tt>, T has to be an 
+     *        interface derived from IFCMUnknown. <tt> AutoPtr<T> </tt> can be
+     *        used to control the lifetime of objects without explicitly 
+     *        calling <tt>AddRef</tt> and <tt>Release</tt>.
+     */
+    template<typename T> 
     class AutoPtr
     {
     public:
        
+        /** Raw pointer */
         T* m_Ptr;
         
         AutoPtr()
@@ -107,6 +120,14 @@ namespace FCM
             this->m_Ptr=0;
         }
        
+        /**
+         * @brief  Constructs an <tt> AutoPtr<T> </tt> object. 
+         *
+         * @param  p (IN)
+         *         The pointer to object of type T. T has to be derived from IFCMUnknown
+         *         The constructor in turn calls <tt>AddRef</tt> on the pointer p
+         *
+         */
         AutoPtr(T* p)
         {
             this->m_Ptr=p;
@@ -115,6 +136,14 @@ namespace FCM
             
         }
         
+        /**
+         * @brief  Copy constructor for <tt> AutoPtr<T> </tt>
+         *
+         * @param  pObj (IN)
+         *         An object of <tt> AutoPtr<T> </tt>. The constructor in turn 
+         *         calls <tt>AddRef</tt> on the pointer held by pObj.
+         *
+         */
         AutoPtr( const AutoPtr<T>& pObj)
         {
             this->m_Ptr=pObj.m_Ptr;
@@ -123,7 +152,23 @@ namespace FCM
         }
         
                 
-        template <typename Q> //Q should be derived from IFCMUnknown
+        /**
+         * @brief  Constructs an <tt> AutoPtr<T> </tt> object from a pointer to Q,
+         *         where both T and Q have to be interfaces derived from
+         *         IFCMUnknown. The construction succeeds if and only if  
+         *         the QueryInterface call for the interface T succeeds
+         *         on the object passed.
+         *
+         * @param  p (IN)
+         *         A pointer to an object of type Q. Q has to be derived
+         *         from IFCMUnknown. The QueryInterface call for the interface 
+         *         T on the object p points to should succeed for successful
+         *         construction of <tt> AutoPtr<T> </tt>. On successful construction
+         *         it calls <tt>AddRef</tt> on the pointer p. If case of failure the
+         *         <tt> AutoPtr<T> </tt> object created will point to NULL.
+         *
+         */
+        template <typename Q>
         AutoPtr(Q* p)
         {
             this->m_Ptr=0;
@@ -133,6 +178,21 @@ namespace FCM
             
         }
 
+        /**
+         * @brief  Constructs an <tt> AutoPtr<T> </tt> object from an <tt> AutoPtr<Q> </tt> 
+         *         object, where both T and Q are interfaces derived from IFCMUnknown.
+         *         The construction succeeds if and only if the QueryInterface
+         *         call for the interface T succeeds on the object passed.
+         *
+         * @param  pObj (IN)
+         *         An object of <tt> AutoPtr<Q> </tt>, where Q has to be derived
+         *         from IFCMUnknown. The QueryInterface call for the interface
+         *         T on the object pObj should succeed for successful
+         *         construction of <tt> AutoPtr<T> </tt>. On successful construction
+         *         it calls <tt>AddRef</tt> on the pObj. In case of failure the
+         *         <tt> AutoPtr<T> </tt> object created will point to NULL.
+         *
+         */
         template <typename Q>
         AutoPtr( const AutoPtr<Q>& pObj)
         {
@@ -147,35 +207,75 @@ namespace FCM
         {
             Reset();
         }
+
+        /**
+         * @brief  The operator to convert to <tt>T *</tt>. 
+         */
         operator T*() const
         {
             return this->m_Ptr;
         }
         
+        /**
+         * @brief  The member access operator to get the pointer held by this object.
+         */
         T* operator->() const
         {
             assert(this->m_Ptr != 0);
             return (this->m_Ptr);
         }
         
+        /**
+         * @brief  The address operator that returns the address of pointer held by this object.
+         */
         T** operator &()
         {
-            //Trying to assign the new value. Check whether the object is detached.
             assert(this->m_Ptr == 0);
             return &this->m_Ptr;
         }
+
+        /**
+         * @brief  The operator to convert to bool.
+         *
+         * @return Returns true if the pointer held by this object is not NULL, else returns false.
+         */
         operator bool() const
         {
             return (this->m_Ptr!=0);
         }
+        
+        /**
+         * @brief  The <tt> != </tt> comparison operator.
+         *
+         * @param  p (IN)
+         *         The pointer to compare.
+         *
+         * @return Returns true if the pointer <tt>p</tt> is not same the one held by this object.
+         */
         bool operator != (T* p) const
         {
             return  (this->m_Ptr != p);
         }
+
+        /**
+         * @brief  The == comparison operator.
+         *
+         * @param  p (IN)
+         *         The pointer to compare.
+         *
+         * @return Returns true if the pointer <tt>p</tt> is same as the one held by this object.
+         */
         bool operator == (T* p) const
         {
             return  (this->m_Ptr == p);
         }
+
+        /**
+         * @brief  The overloded assignment operator to assign a pointer
+         *
+         * @param  p (IN)
+         *         The pointer to assign.
+         */
         void operator =(T* p)
         {
             if(this->m_Ptr != p)
@@ -183,6 +283,13 @@ namespace FCM
                 assignPtrWithOwnership(this->m_Ptr,p);
             }
         }
+
+        /**
+         * @brief  The overloaded assignment operator to assign an <tt> AutoPtr<T> </tt> object.
+         *
+         * @param  pObj (IN)
+         *         The <tt> AutoPtr<T> </tt> object to assign.
+         */
         void operator =(const AutoPtr<T>& pObj)
         {
             if(this->m_Ptr != pObj.m_Ptr)
@@ -192,15 +299,33 @@ namespace FCM
             }
         }
         
+        /**
+         * @brief  The overloaded assignment operator.
+         *         to assign an <tt> AutoPtr<Q> </tt> object
+         *          
+         * @param  pObj (IN)
+         *         The <tt> AutoPtr<Q> </tt> object to assign.
+         *         The QueryInterface call for the interface
+         *         T on the object <tt>pObj</tt> should succeed
+         */
         template <typename Q>
         void operator =(const AutoPtr<Q>& pObj)
         {
             if(!IsSameUnknown(pObj.m_Ptr))
             {
                assignPtrWithQIOwnership(this->m_Ptr,pObj.m_Ptr);
-                
             }
         }
+
+
+        /**
+         * @brief  Overloaded assignment operator.
+         *
+         * @param  p (IN)
+         *         The pointer to <tt>Q</tt> to assign.
+         *         The QueryInterface call for the interface
+         *         T on the object <tt>p</tt> should succeed.
+         */
         template <typename Q>
         void operator =(Q* p)
         {
@@ -210,19 +335,28 @@ namespace FCM
                 
             }
         }
-        //Detaches the pointer with release
+
+        /**
+         * @brief  Resets the pointer after calling <tt>Release</tt>.
+         *
+         */
         void Reset()
         {
             FCM_RELEASE(this->m_Ptr);
         }
         
-         //Detaches the pointer without Release
+        /**
+         * @brief  Detaches the pointer without calling <tt>Release</tt>.
+         *
+         */
         void Detach()
         {
              this->m_Ptr = 0;
         }
         
-        //Attaches the pointer without AddRef
+        /**
+         * @brief  Attaches the pointer without calling <tt>AddRef</tt>.
+         */
         void Attach(T* p)
         {
             Reset();
@@ -230,6 +364,10 @@ namespace FCM
             
         }
         
+        /**
+         * @brief  Retuns true if the underlying <tt>IFCMUnknown</tt> pointer
+         *         this object is same as that of the argument.
+         */
         template <typename Q>
         bool IsSameUnknown(Q* pArg)
         {
@@ -276,10 +414,25 @@ namespace FCM
 
     };
    
+    /**
+     * @brief  A class implementing the AutoPtr<IFCMList>.
+     */
     class FCMListPtr : public AutoPtr <IFCMList>
     {
     public:
-           PIFCMUnknown operator [](FCM::U_Int32 index)
+        
+        /**
+         * @brief  The array index operator to access the
+         *         object at a particular index.
+         *
+         * @param  index (IN)
+         *         The index to the object in the list
+         *         that needs to be accessed
+         *
+         * @return Returns the IFCMUnknown pointer to the 
+         *         object corresponding to <tt>index</tt>
+         */
+        PIFCMUnknown operator [](FCM::U_Int32 index)
         {
             return this->m_Ptr->operator[](index);
         }
@@ -287,7 +440,8 @@ namespace FCM
     
       
 
-    
+ /** @cond HIDE_PRIVATE */
+ 
     class FCMPluginModule
     {
     public:
@@ -452,16 +606,26 @@ namespace FCM
 
     };
 
+/** @endcond */
 
+   /**
+    * @brief Every class that implements an interface should be derived from
+    *        this class.
+    */
     class FCMObjectBase
     {
     public:
+
+        /**
+         * @brief This function is used by the framework and should not be called by clients.
+         */
         FCM::Result InitDone()
         {
             return FCM_SUCCESS;
         }
     };
 
+ /** @cond HIDE_PRIVATE */
     
     template<typename IntfImpl>   
     class FCMObject : public IntfImpl,public  IFCMNoAggregationUnknown
@@ -657,24 +821,104 @@ namespace FCM
         virtual FCMPluginModule * GetPluginModule()=0;
     };
 
+/** @endcond */
 
+    /**
+     * @typedef PluginBootProc
+     *
+     * @brief   Defines the type of a function that will be called 
+     *          immediately after the DLL/framework load. Perform any 
+     *          global intitialization inside this.
+     */
     typedef FCM::Result (*PluginBootProc)(PIFCMCallback pCallback);
         
-    //Returns a null terminated array of PFCMClassInterfaceInfo; 
-    //The Plugin should expose all the pairs to the host
+    /**
+     * @typedef PluginGetClassInfoProc
+     *
+     * @brief   Defines the type of a function used by FCM framework to 
+     *          know various classes implemented by the plugin.
+     *          Do no have any app specific logic in this function
+     *
+     * @param   pCalloc (IN)
+     *          The pointer to the memory allocator service object.
+     *
+     * @param   ppClassInfo (OUT)
+     *          The pointer to an array of the FCMClassInterfaceInfo objects.
+     *          The plugin has to allocate the array using pCalloc
+     */
     typedef FCM::Result (*PluginGetClassInfoProc)(PIFCMCalloc pCalloc,PFCMClassInterfaceInfo* ppClassInfo);
 
-    //Returns a IClassFactory interface for a CLSID    
+    /**
+     * @typedef PluginGetClassObjectProc
+     *
+     * @brief   Defines the function called by FCM framework to get the 
+     *          factory objects for the classes implemented by the plugin.
+     *          Do no perform any app specific logic inside this function
+     *         
+     * @param   pUnkOuter (IN)
+     *          If NULL, indicates that the object is not being created as part of
+     *          an aggregate. If non-NULL, pointer to the aggregate object's 
+     *          IFCMUnknown interface.
+     *
+     * @param   clsid (IN)
+     *          The class ID associated with the data and code that will be used to
+     *          create the object.
+     *
+     * @param   iid (IN)
+     *          A reference to the identifier of the interface to be used to
+     *          communicate with the object.
+     *
+     * @param   pAny (OUT)
+     *          Address of pointer variable that receives the interface pointer
+     *          requested in interfaceID. Upon successful return, *ppvObj contains the
+     *          requested interface pointer pointing to the class factory object for
+     *          the class with ID clsid. Upon failure, *ppvObj contains NULL.
+     *          FCM framework will call <tt>Release</tt> on ppvObj to release the 
+     *          class factory object.
+     */
     typedef FCM::Result  (*PluginGetClassObjectProc)(PIFCMUnknown pUnkOuter,
             ConstRefFCMCLSID clsid,ConstRefFCMIID iid, FCM::PPVoid pAny);
 
+    /**
+     * @typedef PluginRegisterProc
+     *
+     * @brief   Defines the function called by FCM framework to register
+     *          the plugin. The plugin has to add the details of the
+     *          the services and the various components it contains to this
+     *          dictionary.
+     *
+     * @param   pPluginDict (IN)
+     *          pointer to the registration dictionary that has to be filled
+     *          by the plugin.
+     */
     typedef FCM::Result (*PluginRegisterProc)(PIFCMPluginDictionary pPluginDict);
 
+    /**
+     * @typedef PluginCanUnloadNowProc
+     *
+     * @brief   Defines the function called by FCM framework to check
+     *          if the plugin can be unloaded. This function returns 
+     *          the number of live object instances from by this plugin.
+     *          Just before the shutdown, all the instances should be deleted
+     *          and zero should be returned
+     *
+     * @return  This function returns the number of live object instances 
+     *          from by this plugin.
+     */
     typedef FCM::U_Int32 (*PluginCanUnloadNowProc)(void);
 
+    /**
+     * @typedef PluginShutdownProc
+     *
+     * @brief   Defines the function called by FCM framework to notify
+     *          the plugin that the plugin will be unloaded soon. This 
+     *          function allows the plugin to perform proper clean-up 
+     *          before unloading.
+     */
     typedef FCM::Result (*PluginShutdownProc)();
 
 
+ /** @cond HIDE_PRIVATE */
 
     typedef struct
     {
@@ -682,10 +926,12 @@ namespace FCM
             *  Perfrom any global intitialization inside this
             */
             PluginBootProc                m_pBoot; 
+
             /* GetClassinfo is used to find out the different classes implemented 
             *  by the plugin. Do no perform any app specific logic here
             */
             PluginGetClassInfoProc        m_pGetClassInfo;
+
     
             /* GetClassObject is used to create the factory for each class implemented 
             *  by the plugin. Do no perform any app specific logic here
@@ -696,6 +942,7 @@ namespace FCM
             *  This may not be called for plugin loading
             */
             PluginRegisterProc            m_pRegister;
+
             /* CanUnloadNow returns the number of live object instances from by this plugin.
             *  Just before the shutdown all the instances should be deleted and zero should be returned
             */
@@ -704,9 +951,9 @@ namespace FCM
             /* Shutdown allows the plugin to do proper clean-up before unloading.
             */
             PluginShutdownProc            m_pShutdown;
-    }
-    PluginProcs;
+    } PluginProcs;
 
+/** @endcond */
 
 };
 

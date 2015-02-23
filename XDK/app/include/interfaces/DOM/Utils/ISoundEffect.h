@@ -46,8 +46,7 @@ namespace DOM
     namespace Utils
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ISoundEffect
+         * @brief Defines the universally-unique Interface ID for ISoundEffect.
          *
          * @note  Textual Representation:  {DDF122A4-F880-4444-93BF-4E5B236AC90A}
          */
@@ -72,7 +71,7 @@ namespace DOM
         {
             /** 
              * Size of this structure. This must be set by the client/caller to 
-             * sizeof(SoundEnvelope).
+             * sizeof(ENVELOPE_POINT).
              */
             FCM::U_Int32 structSize;
 
@@ -119,7 +118,7 @@ namespace DOM
              * @param  soundEnvelope (OUT)
              *         Value of a sound envelope.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is 
+             * @return On success, FCM_SUCCESS is returned; else an error code is 
              *         returned.
              *
              * @note   Caller of this function must set soundEnvelope.structSize to 

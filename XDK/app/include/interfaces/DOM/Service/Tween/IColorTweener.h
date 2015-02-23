@@ -46,8 +46,8 @@ namespace DOM
         namespace Tween
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IColorTweener
+             * @brief Defines the universally-unique interface ID for 
+             *        IColorTweener.
              *
              * @note  Textual Representation: {BA44C10E-6EAA-4AEE-A9E9-F14E9BF83321}
              */
@@ -79,7 +79,7 @@ namespace DOM
             BEGIN_DECLARE_INTERFACE(IColorTweener, IID_ICOLOR_TWEENER)
 
                 /**
-                 * @brief  Returns the color transform (in the form of a matrix) within the frame span duration
+                 * @brief  Returns the color transform (in the form of a matrix) within the frame span duration.
                  *
                  * @param  pTween (IN)
                  *         Tween object
@@ -87,13 +87,13 @@ namespace DOM
                  * @param  offset (IN)
                  *         The point in the frame span for which color transform is required. 
                  *         It can have values from 0 to (FrameDuration - 2). 
-                 *         The value at (FrameDuration - 1) is available the next keyframe.
+                 *         The value at (FrameDuration - 1) is available in the next keyframe.
                  *
                  * @param  colorMatrix (OUT)
                  *         The color transform (in the form of a matrix) containing the color 
                  *         transform at the offset.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */ 
                 virtual FCM::Result _FCMCALL GetColorMatrix(
                     PITween pTween, 

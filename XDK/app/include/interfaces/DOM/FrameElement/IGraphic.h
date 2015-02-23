@@ -19,8 +19,7 @@
 /**
  * @file  IGraphic.h
  *
- * @brief This file contains the interface for IGraphic. The 
- *        IGraphic interface is a sub-class of ISymbolInstance. 
+ * @brief This file contains the interface for IGraphic. 
  *        IGraphic interface represents a "graphic" symbol on the stage.
  */
 
@@ -68,7 +67,7 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IGraphic
          *
          * @note  Textual Representation: {E8E5694B-749B-411E-9A1C-5035F37D1032}
@@ -103,7 +102,7 @@ namespace DOM
              * @param  loopMode (OUT)
              *         Loop mode of animation for the graphic instance.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetLoopMode(AnimationLoopMode& loopMode) = 0;
 
@@ -115,7 +114,7 @@ namespace DOM
              * @param  firstFrameIndex (OUT)
              *         This specifies the first frame to display.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetFirstFrameIndex(FCM::U_Int32& firstFrameIndex) = 0;
             

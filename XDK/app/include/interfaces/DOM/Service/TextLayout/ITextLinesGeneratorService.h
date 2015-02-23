@@ -57,7 +57,7 @@ namespace DOM
         {        
             /**
              * @brief Defines the Interface ID (which is universally unique) for 
-             *        ITextLinesGeneratorService
+             *        ITextLinesGeneratorService.
              *
              * @note  Textual Representation: {30D8005F-7046-4E66-A437-4FCD6A78DED5}
              */
@@ -87,17 +87,18 @@ namespace DOM
             BEGIN_DECLARE_INTERFACE(ITextLinesGeneratorService, IID_ITEXT_LINES_GENERATOR_SERVICE)
                 
                 /**
-                 * @brief  This function returns the list of text lines present in the text element.
+                 * @brief  This function returns the list of text lines present in the text 
+                 *         element.
                  *
                  * @param  pClassicText (IN)
                  *         The text element from which text lines are to be fetched.         
                  *
                  * @param  pTextLineList (OUT)
-                 *         The list of text lines present in the text element is returned.
+                 *         The list of text lines (ITextLine) present in the text element.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  *
-                 * @see ITextLine             
+                 * @see    DOM::Service::TextLayout::ITextLine             
                  */
                 virtual FCM::Result _FCMCALL GetTextLines(
                     const FrameElement::PIClassicText& pClassicText, 

@@ -22,7 +22,8 @@
  * @brief This file contains interface for IDocType. IDocType provides 
  *        information about feature matrix through which Flash is able to 
  *        control UI and handle copy/paste of items across docs of different
- *        doctypes.
+ *        doctypes. The IDocType interface needs to be implemented by a 
+ *        "DocType" plugin.
  */
 
 #ifndef IDOC_TYPE_H_
@@ -44,7 +45,7 @@
 namespace DocType
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for 
+     * @brief Defines the universally-unique Interface ID for 
      *        IDocType
      *
      * @note  Textual Representation:  {1667C414-52E0-438F-9BFF-7D896D90139B}
@@ -63,18 +64,16 @@ namespace DocType
     BEGIN_DECLARE_INTERFACE(IDocType, ID_IDOC_TYPE)
 
         /**  
-         * @brief This function gets FeatureMatrix for the associated doctype.
+         * @brief This function must return the FeatureMatrix for the associated document type.
          *
          * @param pFeatureMatrix (OUT)  
          *        Feature matrix
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned; else an error code is returned.
          */
-        virtual FCM::Result _FCMCALL GetFeatureMatrix(
-            PIFeatureMatrix& pFeatureMatrix) = 0;
+        virtual FCM::Result _FCMCALL GetFeatureMatrix(PIFeatureMatrix& pFeatureMatrix) = 0;
 
-
-        END_DECLARE_INTERFACE 
+    END_DECLARE_INTERFACE 
 }
 
 #include "FCMPostConfig.h"

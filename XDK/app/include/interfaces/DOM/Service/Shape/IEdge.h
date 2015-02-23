@@ -46,8 +46,8 @@ namespace DOM
         namespace Shape
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IEdge
+             * @brief Defines the universally-unique interface ID for 
+             *        IEdge.
              *
              * @note  Textual Representation: {4EB8864F-1901-4A59-8690-3EBE8000C280}
              */
@@ -79,7 +79,7 @@ namespace DOM
                  * @param  segment (OUT)
                  *         Segment
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
                  * @note   Caller of this function must set segment.structSize to 
                  *         sizeof(SEGMENT).

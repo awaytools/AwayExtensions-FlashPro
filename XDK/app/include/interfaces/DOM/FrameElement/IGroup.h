@@ -82,9 +82,12 @@ namespace DOM
               *         an array of FrameDisplayElements.
               *
               * @param  pMembers (OUT)
-              *         List of FrameDisplayElements
+              *         List of FrameDisplayElements. Each item in the list can be queried 
+              *         for IFrameDisplayElement.
               *
-              * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+              * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+              *
+              * @see    DOM::FrameElement::IFrameDisplayElement
               */
             virtual FCM::Result _FCMCALL GetMembers(PIFCMList& pMembers) = 0;
 

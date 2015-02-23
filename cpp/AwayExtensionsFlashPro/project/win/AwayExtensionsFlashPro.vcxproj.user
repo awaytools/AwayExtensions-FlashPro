@@ -6,7 +6,7 @@
     <LocalDebuggerDebuggerType>Script</LocalDebuggerDebuggerType>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\AwayExtensionsFlashPro\plugin\lib\win</LocalDebuggerWorkingDirectory>
-    <LocalDebuggerAttach>true</LocalDebuggerAttach>
+    <LocalDebuggerAttach>false</LocalDebuggerAttach>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerCommand>C:\Program Files\Adobe\Adobe Flash CC Prerelease\Flash.exe</LocalDebuggerCommand>

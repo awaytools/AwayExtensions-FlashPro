@@ -44,7 +44,7 @@ namespace DOM
     namespace FillStyle
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID  for 
          *        ISolidFillStyle
          *
          * @note  Textual Representation: {199BF9B9-35B4-4530-BAB2-AC94FE42478F}
@@ -67,17 +67,17 @@ namespace DOM
         /**
          * @class ISolidFillStyle
          *
-         * @brief Defines an interface that represents a "solid" fill style of a contour.
+         * @brief Defines an interface that represents a "solid" fill style of a filled region.
          */
         BEGIN_DECLARE_INTERFACE(ISolidFillStyle, IID_ISOLID_FILL_STYLE)
 
             /**
              * @brief  This function gets the solid "color" used in the fill.
              *
-             * @param  color
+             * @param  color (OUT)
              *         Color of the fill (in RGBA form)
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetColor(Utils::COLOR& color) = 0;
 

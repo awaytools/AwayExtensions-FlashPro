@@ -44,7 +44,7 @@ namespace DOM
     namespace LibraryItem
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IFolderItem
          *
          * @note  Textual Representation: {20733731-4EDF-4F5A-97C6-04FAA0E48C52}
@@ -75,9 +75,12 @@ namespace DOM
              * @brief  This function gets the  children of the folder item in the library.
              *
              * @param  pChildList (OUT)
-             *         List of items within the folder.
+             *         List of items within the folder. Each of the item in the list can be 
+             *         queried for ILibraryItem.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @see    DOM::ILibraryItem
              */
             virtual FCM::Result _FCMCALL GetChildren(PIFCMList& pChildList) = 0;
         

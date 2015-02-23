@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ExtensionManifest Version="4.0" ExtensionBundleId="AwayExtensionsFlashPro" ExtensionBundleVersion="0.9.61"
+<ExtensionManifest Version="4.0" ExtensionBundleId="AwayExtensionsFlashPro" ExtensionBundleVersion="0.9.74"
 		ExtensionBundleName="AwayExtensionsFlashPro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Author>
 		<![CDATA[www.away3d.com]]>
@@ -60,7 +60,7 @@ AwayExtensions are plugins and tools to help you create asset production workflo
 					<Menu>AwayJS</Menu>
 					<Geometry>
 						<Size>
-							<Height>450</Height>
+							<Height>650</Height>
 							<Width>500</Width>
 						</Size>
 					</Geometry>

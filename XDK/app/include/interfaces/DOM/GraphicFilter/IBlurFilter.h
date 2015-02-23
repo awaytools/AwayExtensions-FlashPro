@@ -44,8 +44,8 @@ namespace DOM
     namespace GraphicFilter
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IBlurFilter
+         * @brief Defines the universally-unique interface ID for 
+         *        IBlurFilter.
          *
          * @note  Textual Representation:  {B3C424E6-9F46-4FB3-889A-103AD516DA21}
          */
@@ -68,7 +68,6 @@ namespace DOM
          * @class IBlurFilter
          *
          * @brief This interface defines the Blur filter applied to the object.
-         *
          */
         BEGIN_DECLARE_INTERFACE(IBlurFilter, IID_IBLUR_FILTER)
 
@@ -79,7 +78,7 @@ namespace DOM
              * @param  blurX (OUT) 
              *         Value of the blur-X property for the object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetBlurX(FCM::Double& blurX) = 0;
 
@@ -91,7 +90,7 @@ namespace DOM
              * @param  blurY (OUT) 
              *         Value of the blur-Y property for the object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetBlurY(FCM::Double& blurY) = 0;
 
@@ -103,7 +102,7 @@ namespace DOM
              * @param  qualityType (OUT) 
              *         Quality type of the filter(High or Low or Medium).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetQuality(Utils::FilterQualityType& qualityType) = 0;
 
@@ -113,10 +112,10 @@ namespace DOM
              *         filter is enabled for the object.
              *
              * @param  enabled (OUT) 
-             *         Boolean value which is set to true when filter is enabled 
-             *         for the object in context else set to false.
+             *         Boolean value is set to true when filter is enabled 
+             *         for the object in context, else it is set to false.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL IsEnabled(FCM::Boolean& enabled) = 0;
             

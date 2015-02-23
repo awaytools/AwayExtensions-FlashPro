@@ -45,8 +45,8 @@ namespace DOM
     {
 
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IAdjustColorFilter
+         * @brief Defines the universally-unique interface ID for 
+         *        IAdjustColorFilter.
          *
          * @note  Textual Representation:  {4398CC6B-E5DF-4B97-918D-F8EE937685A5}
          */
@@ -69,55 +69,55 @@ namespace DOM
         /**
          * @class IAdjustColorFilter
          *
-         * @brief This interface defines properties that can modify color 
-         *        filter applied to the object
+         * @brief This interface defines the properties that can modify the color 
+         *        filter applied to the object.
          */
         BEGIN_DECLARE_INTERFACE(IAdjustColorFilter, IID_IADJUST_COLOR_FILTER)
 
             /**
              * @brief  This function is used to get the brightness value of the object to which 
-             *         Adjust Color filter is applied.
+             *         the Adjust Color filter is applied.
              *
              * @param  brightness (OUT) 
              *         Value of the brightness property for the object in context.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetBrightness(FCM::Double& brightness) = 0;
 
 
             /**
              * @brief  This function is used to get the contrast value of the object to which 
-             *         Adjust Color filter is applied.
+             *         the Adjust Color filter is applied.
              *
              * @param  contrast (OUT) 
              *         Value of the contrast property for the object in context.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetContrast(FCM::Double& contrast) = 0;
 
 
             /**
              * @brief  This function is used to get the saturation value of the object to which 
-             *         Adjust Color filter is applied.
+             *         the Adjust Color filter is applied.
              *
              * @param  saturation (OUT) 
              *         Value of the saturation property for the object in context.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetSaturation(FCM::Double& saturation) = 0;
 
 
             /**
              * @brief  This function is used to get the hue value of the object to which 
-             *         Adjust Color filter is applied.
+             *         the Adjust Color filter is applied.
              *
              * @param  hue (OUT) 
              *         Value of the hue property for the object in context.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetHue(FCM::Double& hue) = 0;
 
@@ -128,7 +128,7 @@ namespace DOM
              * @param  colorMatrix (OUT) 
              *         A 2D matrix which defines the color filter applied.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetColorMatrix(Utils::COLOR_MATRIX& colorMatrix) = 0;
 
@@ -138,10 +138,10 @@ namespace DOM
              *         filter is enabled for the object.
              *
              * @param  enabled (OUT) 
-             *         Boolean value which is set to true when filter is enabled 
-             *         for the object in context else set to false.
+             *         Boolean value is set to true when the filter is enabled 
+             *         for the object in context, else it is set to false.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL IsEnabled(FCM::Boolean& enabled) = 0;
 

@@ -48,8 +48,7 @@ namespace FCM
 namespace DOM
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for 
-     *        ITween
+     * @brief Defines the universally-unique interface ID for ITween.
      *
      * @note  Textual Representation: {1308CEB5-52FB-44E0-854B-20BC694362DF}
      */
@@ -77,11 +76,21 @@ namespace DOM
          * 
          * @param  pDictionary (OUT)
          *         Dictionary of the tweened properties. Each entry of a dictionary is 
-         *         represented by a pair of <propertyName , propertyID>. For example, 
-         *         tweening of a color transform would contain the following entry: 
-         *         <"com.adobe.color", GUID>.
+         *         represented by a pair of <propertyName , propertyID>. The propertyName
+         *         can take following values: kDOMShapeProperty, kDOMColorProperty,
+         *         kDOMFilterProperty and kDOMGeometricProperty.
+         *         For example, tweening of a color transform would contain the 
+         *         following entry: <kDOMColorProperty, GUID>. 
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @see    kDOMShapeProperty
+         *
+         * @see    kDOMColorProperty
+         *
+         * @see    kDOMFilterProperty 
+         *
+         * @see    kDOMGeometricProperty
          */
         virtual FCM::Result _FCMCALL GetTweenedProperties(FCM::PIFCMDictionary& pDictionary) = 0;
 

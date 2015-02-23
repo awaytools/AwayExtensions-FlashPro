@@ -21,7 +21,7 @@
  *
  * @brief This file contains interface for IFCMPluginDictionary. 
  *        The IFCMPluginDictionary interface provides a generic mechanism for exchanging Plugin
- *        data with FCM Application.This interface provides a list of registry dictionaries. Each
+ *        data with FCM Application. This interface provides a list of registry dictionaries. Each
  *        registry dictionary corresponds to dictionary for an interface implementation in Plugin.
  *        <tt>IFCMPluginDictionary</tt> aggregates <tt>IFCMDictionary</tt>. The FCM Application
  *        can define a set of keys for an interface and data corresponding to these keys will be 
@@ -45,7 +45,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMPluginDictionary.
+     * @brief Defines the universally-unique interface ID for IFCMPluginDictionary.
      *
      * @note  Textual Representation:  {6DC4BA91-3BF2-4DD7-85B6-8D6C3E765520}
      */
@@ -86,7 +86,7 @@ namespace FCM
          * @param  ppRegistryDict (OUT)
          *         Set with the new dictionary created.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL CreateRegistryEntry(
             ConstRefFCMCLSID classID,
@@ -100,7 +100,7 @@ namespace FCM
          * @param  count (OUT)
          *         Populated with the number of registry dictionaries.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL GetRegistryEntriesCount(FCM::U_Int32& count) = 0;
 
@@ -109,7 +109,7 @@ namespace FCM
          * @brief  Returns the nth registry dictionary. 
          *
          * @param  index (IN)
-         *         The location of the registry dictionary in the list of registry dictionaies for
+         *         The location of the registry dictionary in the list of registry dictionaries for
          *         which we need info. index should range from 1 and Count.
          *
          * @param  classID (OUT)
@@ -121,7 +121,7 @@ namespace FCM
          * @param  pRegistryDict (OUT)
          *         Set with the nth registry dictionary.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL GetNthRegistryEntry(
             FCM::U_Int32 index,

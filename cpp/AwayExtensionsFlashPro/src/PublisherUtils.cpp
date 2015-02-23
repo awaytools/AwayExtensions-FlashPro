@@ -26,6 +26,7 @@
 
 #include "FlashFCMPublicIDs.h"
 
+/*
 #include "FrameElement/IClassicText.h"
 #include "FrameElement/IParagraph.h"
 #include "FrameElement/ITextRun.h"
@@ -74,14 +75,13 @@
 #include "Utils/ILinearColorGradient.h"
 #include "Utils/IRadialColorGradient.h"
 
-#include "OutputWriter.h"
-
 #include "Exporter/Service/IResourcePalette.h"
 #include "Exporter/Service/ITimelineBuilder.h"
 #include "Exporter/Service/ITimelineBuilderFactory.h"
 
 #include "Exporter/Service/ISWFExportService.h"
 #include "Application/Service/IOutputConsoleService.h"
+*/
 
 #ifdef _DEBUG
 	#include <stdlib.h>
@@ -97,12 +97,6 @@ namespace AwayJS
 
     FCM::Result CPublisher::ClearCache()
     {
-        if (m_pResourcePalette)
-        {
-            ResourcePalette* pResPalette = static_cast<ResourcePalette*>(m_pResourcePalette.m_Ptr);
-
-            pResPalette->Clear();
-        }
         return FCM_SUCCESS;
     }
 
@@ -185,7 +179,87 @@ namespace AwayJS
 
         return res;
     }
+	
+	AWD::result CPublisher::ExportLibraryItems(bool export_lib_bitmaps, bool export_lib_sounds)
+	{		
+		AWD::result awd_res=result::AWD_SUCCESS;		
+        FCM::Result res;
+		FCM::FCMListPtr pLibraryItems;
+		res = this->fla_document->GetLibraryItems(pLibraryItems.m_Ptr);
+        ASSERT(FCM_SUCCESS_CODE(res));
+        FCM::U_Int32 libCnt;
+        res = pLibraryItems->Count(libCnt);
+        for (FCM::U_Int32 l = 0; l < libCnt; l++)        
+		{		
+			DOM::AutoPtr<DOM::ILibraryItem> plibrary_item = pLibraryItems[l];
+			awd_res = ExportLibraryItem(plibrary_item, export_lib_bitmaps, export_lib_sounds);
+			if(awd_res!=result::AWD_SUCCESS)
+				return awd_res;
+		}
+		return awd_res;
+	}
+	AWD::result CPublisher::ExportLibraryItem(DOM::ILibraryItem* plibrary_item, bool export_lib_bitmaps, bool export_lib_sounds)
+	{
+		FCM::Result res;
+		AWD::result awd_res=result::AWD_SUCCESS;
 
+		DOM::AutoPtr<DOM::LibraryItem::IFontItem> pFontItem = plibrary_item;
+		if(pFontItem){
+			// export a font item from library
+			//AWD::result awd_res = flash_awd_cencoder->ExportFont(pFontItem, awd);
+			//if(awd_res!=result::AWD_SUCCESS)
+			//	return awd_res;
+		}
+
+		DOM::AutoPtr<DOM::LibraryItem::IFolderItem> pFolder_item = plibrary_item;
+		if(pFolder_item){
+			// export a folder item from library. just call this function for all its children.			
+			FCM::FCMListPtr pLibraryItems;
+			res = pFolder_item->GetChildren(pLibraryItems.m_Ptr);
+			ASSERT(FCM_SUCCESS_CODE(res));
+
+			FCM::U_Int32 libCnt;
+			res = pLibraryItems->Count(libCnt);
+			for (FCM::U_Int32 l = 0; l < libCnt; l++)        
+			{		
+				DOM::AutoPtr<DOM::ILibraryItem> plibrary_item = pLibraryItems[l];
+				ExportLibraryItem(plibrary_item, export_lib_bitmaps, export_lib_sounds);
+			}
+			if(awd_res!=result::AWD_SUCCESS)
+				return awd_res;
+		}
+		DOM::AutoPtr<DOM::LibraryItem::ISymbolItem> pSymbol_item = plibrary_item;
+		if(pSymbol_item){	
+			// export a symbol (timeline). If the timeline has already been encoded, nothing will happen. 
+			AutoPtr<DOM::ITimeline> timeline;
+			res = pSymbol_item->GetTimeLine(timeline.m_Ptr);
+			ASSERT(FCM_SUCCESS_CODE(res));
+		/*	TimelineEncoder* newTimeLineEncoder = new TimelineEncoder(GetCallback(), timeline, awd, flash_awd_cencoder, 0);
+			awd_res = newTimeLineEncoder->encode();	
+			if(awd_res!=result::AWD_SUCCESS)
+				return awd_res;
+				*/
+	
+		}
+		DOM::AutoPtr<DOM::LibraryItem::IMediaItem> pMedia_item = plibrary_item;
+		if(pMedia_item){	
+			// export a media item. 
+			FCM::PIFCMUnknown unknownMediaInfo;
+			res = pMedia_item->GetMediaInfo(unknownMediaInfo); 
+			ASSERT(FCM_SUCCESS_CODE(res));
+			AutoPtr<DOM::MediaInfo::IBitmapInfo> bitmapInfo = unknownMediaInfo;
+			if((bitmapInfo)&&(export_lib_bitmaps)){
+				flash_to_awd_encoder->ExportBitmap(pMedia_item, NULL, "");
+				// export a bitmap. 
+			}
+			FCM::AutoPtr<DOM::MediaInfo::ISoundInfo> SoundInfo = unknownMediaInfo;
+			if((SoundInfo)&&(export_lib_sounds)){
+				flash_to_awd_encoder->ExportSound(pMedia_item, NULL, "");
+			}
+		}
+		return awd_res;
+
+	}
 
     bool CPublisher::ReadString(
         const FCM::PIFCMDictionary pDict,
@@ -231,154 +305,7 @@ namespace AwayJS
         return false;
     }
 
-    FCM::Result CPublisher::Init()
-    {
-        FCM::Result res = FCM_SUCCESS;;
-        FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
 
-        if (!m_frameCmdGeneratorService)
-        {
-            // Get the frame command generator service
-            res = GetCallback()->GetService(Exporter::Service::EXPORTER_FRAME_CMD_GENERATOR_SERVICE, pUnk.m_Ptr);
-            m_frameCmdGeneratorService = pUnk;
-        }
-
-        if (!m_pResourcePalette)
-        {
-            // Create a Resource Palette
-            res = GetCallback()->CreateInstance(NULL, CLSID_ResourcePalette, IID_IResourcePalette, (void**)&m_pResourcePalette);
-            ASSERT(FCM_SUCCESS_CODE(res));
-        }
-
-        return res;
-    }
-
-
-    void CPublisher::LaunchBrowser(const std::string& outputFileName)
-    {
-
-#ifdef _WINDOWS
-
-        //std::wstring output = L"http://localhost:8080/";
-        std::wstring tail;
-        tail.assign(outputFileName.begin(), outputFileName.end());
-        //output += tail;
-        ShellExecute(NULL, L"open", tail.c_str(), NULL, NULL, SW_SHOWNORMAL);
-
-#else
-
-        std::string output = outputFileName;
-        std::string str = "/usr/bin/open " + output;
-        system(str.c_str());
-
-#endif // _WINDOWS
-
-    }
-	
-    //
-    // Note: This function is NOT completely implemented but provides guidelines 
-    // on how this can be possibly done.      
-    //
-    FCM::Result CPublisher::ExportLibraryItems(FCM::FCMListPtr pLibraryItemList)
-    {
-        FCM::U_Int32 count = 0;
-        FCM::Result res;
-
-
-        ASSERT(pLibraryItemList);
-
-        res = pLibraryItemList->Count(count);
-        ASSERT(FCM_SUCCESS_CODE(res));
-
-        FCM::AutoPtr<FCM::IFCMUnknown> pUnkCalloc;
-        res = GetCallback()->GetService(SRVCID_Core_Memory, pUnkCalloc.m_Ptr);
-        AutoPtr<FCM::IFCMCalloc> callocService  = pUnkCalloc;
-
-        for (FCM::U_Int32 index = 0; index < count ; index++)
-        {
-            FCM::StringRep16 pLibItemName = NULL;
-            std::string libItemName;
-            AutoPtr<IFCMDictionary> pDict;
-            AutoPtr<DOM::ILibraryItem> pLibItem = pLibraryItemList[index];
-
-            res = pLibItem->GetName(&pLibItemName);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            libItemName = Utils::ToString(pLibItemName, GetCallback());
-
-            AutoPtr<DOM::LibraryItem::IFolderItem> pFolderItem = pLibItem;
-            if (pFolderItem)
-            {
-                FCM::FCMListPtr pChildren;
-
-                res = pFolderItem->GetChildren(pChildren.m_Ptr);
-                ASSERT(FCM_SUCCESS_CODE(res));
-
-                // Export all its children
-                res = ExportLibraryItems(pChildren);
-                ASSERT(FCM_SUCCESS_CODE(res));
-            }
-            else
-            {
-                FCM::FCMDictRecTypeID type;
-                FCM::U_Int32 valLen;
-                AutoPtr<DOM::LibraryItem::IFontItem> pFontItem = pLibItem;
-                AutoPtr<DOM::LibraryItem::ISymbolItem> pSymbolItem = pLibItem;
-                AutoPtr<DOM::LibraryItem::IMediaItem> pMediaItem = pLibItem;
-
-                res = pLibItem->GetProperties(pDict.m_Ptr);
-                ASSERT(FCM_SUCCESS_CODE(res));
-
-                res = pDict->GetInfo(kLibProp_LinkageIdentifier_DictKey, 
-                    type, valLen);
-
-                if (FCM_SUCCESS_CODE(res))
-                {
-                    FCM::Boolean hasResource;
-                    ResourcePalette* pResPalette = static_cast<ResourcePalette*>(m_pResourcePalette.m_Ptr);
-
-                    // Library Item has linkage identifer
-
-                    if (pSymbolItem)
-                    {
-                        //
-                        // Check if it has been exported already by comparing names of resources 
-                        // already exported from the timelines.
-                        //
-                        res = pResPalette->HasResource(libItemName, hasResource);
-                        if (!hasResource)
-                        {
-                            // Resource is not yet exported. Export it using 
-                            // FrameCommandGenerator::GenerateFrameCommands
-                        }
-                    }
-                    else if (pMediaItem)
-                    {
-                        //
-                        // Check if it has been exported already by comparing names of resources 
-                        // already exported from the timelines.
-                        //
-                        res = pResPalette->HasResource(libItemName, hasResource);
-                        if (!hasResource)
-                        {
-                            // Resource is not yet exported. Export it.
-
-                            // Depending on bitmap/sound, export it.
-                        }
-                    }
-                    else if (pFontItem)
-                    {
-                        // Use the font name to check if already exported.
-                        
-                        // Use IFontTableGeneratorService::CreateFontTableForFontItem() to create a font table
-                        // and then export it.
-                    }
-                }
-            }
-
-            callocService->Free((FCM::PVoid)pLibItemName);
-        }
-        return FCM_SUCCESS;
-    }
 
 
 };

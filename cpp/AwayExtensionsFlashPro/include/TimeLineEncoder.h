@@ -1,7 +1,6 @@
 #ifndef TIMELINEENCODER_H_
 #define TIMELINEENCODER_H_
-
-#include "awd.h"
+/*
 #include "Utils.h"
 
 #ifdef _WINDOWS
@@ -10,11 +9,10 @@
 #endif
 #include <vector>
 #include <fstream>
-#include "Publisher.h"
 #include "Utils.h"
+#include "Publisher.h"
 
 #include "FlashFCMPublicIDs.h"
-#include "ILayer.h"
 #include "FrameElement/IClassicText.h"
 #include "FrameElement/IParagraph.h"
 #include "FrameElement/ITextRun.h"
@@ -68,45 +66,54 @@
 #include "Utils/ILinearColorGradient.h"
 #include "Utils/IRadialColorGradient.h"
 
-#include "OutputWriter.h"
-
-#include "Exporter/Service/IResourcePalette.h"
-#include "Exporter/Service/ITimelineBuilder.h"
-#include "Exporter/Service/ITimelineBuilderFactory.h"
-
 #include "Exporter/Service/ISWFExportService.h"
 #include "Application/Service/IOutputConsoleService.h"
-#include "ShapePool.h"
+#include "FCMPluginInterface.h"
+*/
 
-class TimeLineEncoder 
+#include "Utils.h"
+
+#include <vector>
+#include <fstream>
+
+#include "FlashToAWDEncoder.h"
+#include "awd_project.h"
+#include "ILayer.h"
+#include "FCMPluginInterface.h"
+#include "Utils/DOMTypes.h"
+
+using namespace AWD;
+
+class TimelineEncoder 
 {
     private:
-		AWDShape2DTimeline* awd_timeline;
+		BLOCKS::Timeline* awd_timeline;
 		DOM::ITimeline* timeline;
-		AWD* awd;
+		AWDProject* awd;
 		int curDepth;
 		int maskDepth;
 		int clipMask;
+		int mask_range_max;
+		int mask_range_min;
 		int layerIdx;
-		AWDTimeLineFrame* curFrame;
-		ShapePool* shapePool;
-		std::vector<AutoPtr<DOM::FrameElement::IShape> > shapes;
-		std::vector<TimeLineEncoder*> childTimeLines;
+		ANIM::TimelineFrame* curFrame;
+		FlashToAWDEncoder* flash_to_awd;
+		std::vector<FCM::AutoPtr<DOM::FrameElement::IShape> > shapes;
+		std::vector<TimelineEncoder*> childTimeLines;
 		std::vector<AWDBlock*> lastFrame;
 		FCM::PIFCMCallback m_pCallback;
 
     public:
-        TimeLineEncoder(FCM::PIFCMCallback pCallback, DOM::ITimeline* timeline, AWD* awd,ShapePool* shapePool, int sceneID);
-        ~TimeLineEncoder();
+        TimelineEncoder(FCM::PIFCMCallback pCallback, DOM::ITimeline* timeline, AWDProject* awd,FlashToAWDEncoder* flash_to_awd, int sceneID);
+        ~TimelineEncoder();
 		
-		awd_float64 *get_mtx_2x3(const DOM::Utils::MATRIX2D* mtx);
-		awd_float64 *get_color_mtx_4x5(const DOM::Utils::COLOR_MATRIX* mtx);
-		AWDShape2DTimeline* get_awd_timeLine();
-		void encode();
-		void collectFrameCommands(int frameIdx, DOM::ILayer* iLayer, bool isMasked);
-		void collectFrameScripts(int frameIdx, DOM::ILayer* iLayer);
-		void collectFrameDisplayElement(DOM::FrameElement::IFrameDisplayElement* frameDisplayElement, DOM::Utils::MATRIX2D groupMatrix, int layerCnt, int isMask);
+		BLOCKS::Timeline* get_awd_timeLine();
+		AWD::result encode();
+		AWD::result collectFrameCommands(int frameIdx, DOM::ILayer* iLayer, bool isMasked);
+		AWD::result collectFrameScripts(int frameIdx, DOM::ILayer* iLayer);
+		AWD::result collectFrameDisplayElement(DOM::FrameElement::IFrameDisplayElement* frameDisplayElement, DOM::Utils::MATRIX2D groupMatrix, int layerCnt, AWD::TYPES::display_object_mask_type mask_type, bool group_member);
 
 		
 };
+
 #endif

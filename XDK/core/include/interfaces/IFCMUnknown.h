@@ -21,8 +21,8 @@
  *
  * @brief This file contains interface for IFCMUnknown. All FCM interfaces inherit 
  *        from IFCMUnknown. This interface is similar to Microsoft's COM IUnknown. 
- *        Primary purpose of this interface is to facilitate to obtain pointers to other 
- *        interfaces through QueryInterface method.
+ *        Primary purpose of this interface is to facilitate a way to obtain pointers to
+ *        other interfaces through QueryInterface method.
  */
 
 #ifndef IFCM_UNKNOWN_H_
@@ -42,7 +42,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMUnknown.
+     * @brief Defines the universally-unique interface ID for IFCMUnknown.
      *
      * @note  Textual Representation:  {775C253A-376D-4069-8336-C51AFD11163F}
      */
@@ -66,7 +66,7 @@ namespace FCM
      *
      * @brief Defines the interface that represents the IUnknown object.
      */
-	BEGIN_DECLARE_BASE_INTERFACE(IFCMUnknown, FCMIID_IFCMUnknown)
+    BEGIN_DECLARE_BASE_INTERFACE(IFCMUnknown, FCMIID_IFCMUnknown)
         
         /**
          * @brief  Return pointers to supported interfaces on given object.
@@ -77,7 +77,7 @@ namespace FCM
          * @param  ppvObj (OUT)
          *         Upon success, contains the address of the requested interface object.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL QueryInterface(
             ConstRefFCMIID pInterfaceID,
@@ -89,7 +89,7 @@ namespace FCM
          *
          * @return Returns the new reference count.
          */
-		virtual FCM::U_Int32 _FCMCALL AddRef() = 0;
+        virtual FCM::U_Int32 _FCMCALL AddRef() = 0;
 
 
         /**
@@ -97,9 +97,9 @@ namespace FCM
          *
          * @return Returns the new reference count.
          */
-		virtual FCM::U_Int32 _FCMCALL Release() = 0;
+        virtual FCM::U_Int32 _FCMCALL Release() = 0;
 
-	END_DECLARE_INTERFACE
+    END_DECLARE_INTERFACE
 
 };  // namespace FCM
 

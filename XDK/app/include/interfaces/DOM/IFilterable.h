@@ -19,7 +19,8 @@
 /**
  * @file  IFilterable.h
  *
- * @brief This file contains the interface for IFilterable. 
+ * @brief This file contains the interface for IFilterable. This IFilterable
+ *        represents the list of graphical filters.
  */
 
 #ifndef IFILTERABLE_H_
@@ -45,8 +46,8 @@ namespace FCM
 namespace DOM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for 
-     *        IFilterable
+     * @brief Defines the universally-unique interface ID for 
+     *        IFilterable.
      *
      * @note  Textual Representation: {08F582AC-85DD-4653-9DF4-25C9A6C869B7}
      */
@@ -70,13 +71,13 @@ namespace DOM
     BEGIN_DECLARE_INTERFACE(IFilterable, IID_IFILTERABLE)
 
         /**
-         * @brief  This functions gets the list of filters applied to
+         * @brief  This function gets the list of filters applied to
          *         the object in context.
          *
          * @param  pGraphicFilterList (OUT)
          *         List of filters.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL GetGraphicFilters(PIFCMList& pGraphicFilterList) = 0;
 

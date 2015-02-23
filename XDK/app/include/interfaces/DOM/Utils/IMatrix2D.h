@@ -19,8 +19,8 @@
 /**
  * @file  IMatrix2D.h
  *
- * @brief This file contains the interface for IMatrix2D. This interface represents 
- *        a 2-dimensional transformation matrix.
+ * @brief This file contains the interface for IMatrix2D. This interface provides 
+ *        a way to deceompose a 2-dimensional transformation matrix.
  */
 
 #ifndef IMatrix2D_H_
@@ -45,8 +45,7 @@ namespace DOM
     namespace Utils
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IMatrix2D
+         * @brief Defines the universally-unique Interface ID for IMatrix2D.
          *
          * @note  Textual Representation: {0BEBDD0F-ED7A-4410-959D-152DA4EEC2EF}
          */
@@ -68,7 +67,7 @@ namespace DOM
         /**
         * @class IMatrix2D
         *
-        * @brief Defines an interface that decomposes Matrix2D.
+        * @brief Defines an interface that decomposes a Matrix2D.
         */
         BEGIN_DECLARE_INTERFACE(IMatrix2D, IID_IMATRIX2D)
 
@@ -78,7 +77,7 @@ namespace DOM
              * @param  matrix (IN)
              *         Matrix2D object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL SetMatrix(const MATRIX2D& matrix) = 0;
 
@@ -89,7 +88,7 @@ namespace DOM
              * @param  rotation (OUT)
              *         Rotation obtained by decomposing the matrix set.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetRotation(FCM::Float& rotation) = 0;
 
@@ -100,7 +99,7 @@ namespace DOM
              * @param  scale (OUT)
              *         Scale obtained by decomposing the matrix set.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetScale(POINT2D& scale) = 0;
 
@@ -111,7 +110,7 @@ namespace DOM
              * @param  skew (OUT)
              *         Skew obtained by decomposing the matrix set.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetSkew(POINT2D& skew) = 0;
 

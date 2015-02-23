@@ -119,8 +119,8 @@ namespace DOM
     namespace StrokeStyle
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IRaggedStrokeStyle
+         * @brief Defines the universally-unique interface ID for 
+         *        IRaggedStrokeStyle.
          *
          * @note  Textual Representation: {FCAA3162-1C2D-4C2B-91CA-6F64C39D3928}
          */
@@ -152,7 +152,7 @@ namespace DOM
              * @param  thickness (OUT)
              *         Thickness of the stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetThickness(FCM::Double& thickness) = 0;
 
@@ -161,9 +161,16 @@ namespace DOM
              * @brief  This function gets the fill style settings of the stroke.
              *
              * @param  pFillStyle (OUT)
-             *         Fill style of the stroke.
+             *         Fill style of the stroke (ISolidFillStyle or IGradientFillStyle
+             *         or IBitmapFillStyle).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @see    DOM::FillStyle::ISolidFillStyle
+             *
+             * @see    DOM::FillStyle::IGradientFillStyle
+             *
+             * @see    DOM::FillStyle::IBitmapFillStyle
              */
             virtual FCM::Result _FCMCALL GetFillStyle(PIFCMUnknown& pFillStyle) = 0;
 
@@ -174,7 +181,7 @@ namespace DOM
              * @param  strokePattern (OUT)
              *         Stroke pattern of the ragged line.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetPattern(RaggedStrokePattern& strokePattern) = 0;
 
@@ -185,7 +192,7 @@ namespace DOM
              * @param  waveHeight (OUT)
              *         Wave height
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetWaveHeight(RaggedWaveHeight& waveHeight) = 0;
 
@@ -196,7 +203,7 @@ namespace DOM
              * @param  waveLength (OUT)
              *         Wave length
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetWaveLength(RaggedWaveLength& waveLength) = 0;
 

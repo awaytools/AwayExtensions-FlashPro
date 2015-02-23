@@ -19,8 +19,7 @@
 /**
  * @file  IInstance.h
  *
- * @brief This file contains the interface for IInstance. The IInstance
- *        interface is a sub-class of IFrameDisplayElement. IInstance interface 
+ * @brief This file contains the interface for IInstance. IInstance interface 
  *        represents the elements on the stage that are instances of a library
  *        item.
  */
@@ -52,7 +51,7 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IInstance
          *
          * @note  Textual Representation: {FAAAC715-FA2B-43E2-8B33-62A1C4059D1E}
@@ -85,9 +84,18 @@ namespace DOM
              *         instantiate this instance.
              *
              * @param  pLibItem (OUT)
-             *         Library Item
+             *         Library Item. Each library item can be further queried for following
+             *         interfaces: IFolderItem, IFontItem, IMediaItem and ISymbolItem.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @see    DOM::LibraryItem::IFolderItem
+             *
+             * @see    DOM::LibraryItem::IFontItem
+             *
+             * @see    DOM::LibraryItem::IMediaItem
+             *
+             * @see    DOM::LibraryItem::ISymbolItem
              */
             virtual FCM::Result _FCMCALL GetLibraryItem(PILibraryItem& pLibItem) = 0;
 

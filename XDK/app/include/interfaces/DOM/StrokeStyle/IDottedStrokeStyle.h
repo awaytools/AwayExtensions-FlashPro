@@ -43,8 +43,8 @@ namespace DOM
     namespace StrokeStyle
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IDottedStrokeStyle
+         * @brief Defines the universally-unique interface ID for 
+         *        IDottedStrokeStyle.
          *
          * @note  Textual Representation: {B686E0AD-C9B4-43DC-9D0D-73D506A9660E}
          */
@@ -76,7 +76,7 @@ namespace DOM
              * @param  thickness (OUT)
              *         Thickness of the stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetThickness(FCM::Double& thickness) = 0;
 
@@ -85,9 +85,16 @@ namespace DOM
              * @brief  This function gets the fill style settings of the stroke.
              *
              * @param  pFillStyle (OUT)
-             *         Fill style of the stroke.
+             *         Fill style of the stroke (ISolidFillStyle or IGradientFillStyle
+             *         or IBitmapFillStyle).
              *
              * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             *
+             * @see    DOM::FillStyle::ISolidFillStyle
+             *
+             * @see    DOM::FillStyle::IGradientFillStyle
+             *
+             * @see    DOM::FillStyle::IBitmapFillStyle
              */
             virtual FCM::Result _FCMCALL GetFillStyle(PIFCMUnknown& pFillStyle) = 0;
 

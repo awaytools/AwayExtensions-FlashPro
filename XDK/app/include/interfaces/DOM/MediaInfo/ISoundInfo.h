@@ -44,7 +44,7 @@ namespace DOM
     namespace MediaInfo
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        ISoundInfo
          *
          * @note  Textual Representation: {9FA0514D-45F6-462D-B2F4-0C541E54C457}

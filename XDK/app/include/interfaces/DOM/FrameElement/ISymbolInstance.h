@@ -19,8 +19,7 @@
 /**
  * @file  ISymbolInstance.h
  *
- * @brief This file contains the interface for ISymbolInstance. The 
- *        ISymbolInstance interface is a sub-class of IInstance. ISymbolInstance
+ * @brief This file contains the interface for ISymbolInstance. ISymbolInstance
  *        interface represents a symbol on the stage.
  */
 
@@ -46,8 +45,8 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ISymbolInstance
+         * @brief Defines the universally-unique interface ID for 
+         *        ISymbolInstance.
          *
          * @note  Textual Representation: {B1F1A4AA-BB67-4BB7-BBAF-95FF67408E42}
          */
@@ -82,18 +81,18 @@ namespace DOM
              * @param  colorMatrix (OUT)
              *         Color Matrix representing different color effects.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetColorMatrix(Utils::COLOR_MATRIX& colorMatrix) = 0;
 
 
             /**
-             * @brief  This functions is used get the registration point of the symbol.
+             * @brief  This function is used get the registration point of the symbol.
              *
              * @param  registrationPoint (OUT)
-             *         Point which defines X and Y coordinate of the registration point.
+             *         Point that defines the X and Y coordinates of the registration point.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetRegistrationPoint(Utils::POINT2D& registrationPoint) = 0;
             

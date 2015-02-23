@@ -20,7 +20,8 @@
  * @file  IKerningPair.h
  *
  * @brief This file contains interface for IKerningPair. IKerningPair  
- *        contains methods to obtain KerningPair chars and their corresponding kerning amount.
+ *        contains methods to obtain KerningPair chars and their corresponding 
+ *        kerning amount.
  */
 
 #ifndef IKERNING_PAIR_H_
@@ -48,8 +49,8 @@ namespace DOM
         namespace FontTable
         {    
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IKerningPair
+             * @brief Defines the universally-unique interface ID for 
+             *        IKerningPair.
              *
              * @note  Textual Representation: {7B64D242-D838-4BF8-A14A-C0FA2930D911}
              */
@@ -71,7 +72,7 @@ namespace DOM
             /**
              * @struct KERNING_PAIR
              *
-             * @brief  Defines a kerning pair and includes kerning amout for the pair. 
+             * @brief  Defines a kerning pair and includes the kerning amount for the pair. 
              */
             struct KERNING_PAIR
             {
@@ -108,13 +109,13 @@ namespace DOM
             BEGIN_DECLARE_INTERFACE(IKerningPair, IID_IKERNING_PAIR)
                 
                 /**
-                 * @brief  This function returns the kerningPair Object which contains KerningPair 
+                 * @brief  This function returns the kerningPair Object that contains KerningPair 
                  *         char codes and the Kerning amount.
                  *
                  * @param  kerningPair (OUT)
                  *         kerningPair object is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL GetKerningPair(KERNING_PAIR& kerningPair) = 0;
                 

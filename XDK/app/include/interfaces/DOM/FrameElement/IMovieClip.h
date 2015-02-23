@@ -19,8 +19,7 @@
 /**
  * @file  IMovieClip.h
  *
- * @brief This file contains the interface for IMovieClip. The 
- *        IMovieClip interface is a sub-class of ISymbolInstance. 
+ * @brief This file contains the interface for IMovieClip. 
  *        IMovieClip interface represents a "MovieClip" symbol on the 
  *        stage.
  */
@@ -50,7 +49,7 @@ namespace DOM
         /**
          * @enum BlendMode
          *
-         * @brief This defines different Blend modes available in Flash for movieclip instance.
+         * @brief Defines the different Blend modes available in Flash for the movieclip instance.
          */
         enum BlendMode
         {
@@ -107,7 +106,7 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IMovieClip
          *
          * @note  Textual Representation: {80F09FF2-2894-4D72-BCE7-00E7EFEB683F}
@@ -136,37 +135,40 @@ namespace DOM
         BEGIN_DECLARE_INTERFACE(IMovieClip, IID_IMOVIE_CLIP_INSTANCE)
 
             /**
-             * @brief  This functions gets the Blend mode that is applied to
+             * @brief  This function gets the blend mode that is applied to
              *         the movie clip instance.
              *
              * @param  blendMode (OUT)
              *         Blend mode that is applied to the movie clip instance.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetBlendMode(BlendMode& blendMode) = 0;
 
 
             /**
-             * @brief  This function is invoked to check if the visible property of the movie-clip
-             *         enabled or disabled.
+             * @brief  This function is invoked to check whether the visible property of the movie-clip
+             *         is enabled or disabled.
              *
              * @param  isVisible (OUT)
-             *         Boolean variable which is set to true when visible property of movie-clip
-             *         is enabled else set to false.
+             *         Boolean variable is set to "true" when the visible property of movie-clip
+             *         is enabled, else set to false.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL IsVisible(FCM::Boolean& isVisible) = 0;
 
 
             /**
-             * @brief  This function is returns name of the Movie-clip instance.
+             * @brief  Returns the name of the Movie-clip instance.
              *
              * @param  ppName (OUT)
              *         Name pf the instance of movie-clip.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @note   The memory allocated for 'ppName' in this function must be freed 
+             *         by the caller using IFCMCalloc::Free().
              */
             virtual FCM::Result _FCMCALL GetName(FCM::StringRep16* ppName) = 0;
             

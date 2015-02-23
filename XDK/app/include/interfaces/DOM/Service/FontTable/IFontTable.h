@@ -19,10 +19,8 @@
 /**
  * @file  IFontTable.h
  *
- * @brief This file contains interface for IFontTable.IFontTable contains 
- *          list of glyphs (each glyph contains the char code and glyph outline) and 
- *          list of kerningPairs based on orientation(each KerningPair contains left and 
- *          right char and the kerning amount).
+ * @brief This file contains interface for IFontTable. IFontTable represents 
+ *        a font table containing information about a font family.
  */
 
 #ifndef IFONT_TABLE_H_
@@ -49,8 +47,8 @@ namespace DOM
         namespace FontTable
         {        
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IFontTable
+             * @brief Defines the universally-unique interface ID for 
+             *        IFontTable.
              *
              * @note  Textual Representation: {88871CED-E055-4502-BBFD-28784A54FFD8}
              */
@@ -75,10 +73,7 @@ namespace DOM
             /**
             * @class IFontTable
             *
-            * @brief Defines the interface for font table which contains 
-            *         list of glyphs (each glyph contains the char code and glyph outline) and 
-            *         list of kerningPairs (each KerningPair contains left and right char and
-            *         the kerning amount).
+            * @brief Represents a font table containing information about a font family.
             */
             BEGIN_DECLARE_INTERFACE(IFontTable, IID_IFONT_TABLE)
                 
@@ -88,7 +83,7 @@ namespace DOM
                  * @param  emSquare (OUT)
                  *         EM Square unit used while generating glyphs is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */                
                 virtual FCM::Result _FCMCALL GetEMSquare(FCM::U_Int16& emSquare) = 0;
               
@@ -99,7 +94,7 @@ namespace DOM
                  * @param  ppCopyrightInfo (OUT)
                  *         The copy right info for a font is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
                  * @note   The memory allocated for ppCopyrightInfo in this function must be freed 
                  *         by the caller using IFCMCalloc::Free().
@@ -118,7 +113,7 @@ namespace DOM
                  * @param  pGlyphList (OUT)
                  *         The list of glyphs inside the font table is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
                  * @see    IGlyph             
                  */
@@ -136,7 +131,7 @@ namespace DOM
                  * @param  ascent (OUT)
                  *         The ascent is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  *
                  */
                 virtual FCM::Result _FCMCALL GetAscent(
@@ -153,7 +148,7 @@ namespace DOM
                  * @param  descent (OUT)
                  *         The descent is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
                  */
                 virtual FCM::Result _FCMCALL GetDescent(
@@ -162,7 +157,7 @@ namespace DOM
 
 
                 /**
-                 * @brief  This function returns list of KernPairs inside the font table .
+                 * @brief  This function returns list of KernPairs inside the font table.
                  *         Each KernPair contains left and right char and the kerning amount.
                  *
                  * @param  orientationMode (IN)
@@ -171,7 +166,7 @@ namespace DOM
                  * @param  pKerningPairList (OUT)
                  *         The list of KerningPairs inside the font table is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
                  * @see    IGlyph             
                  */                

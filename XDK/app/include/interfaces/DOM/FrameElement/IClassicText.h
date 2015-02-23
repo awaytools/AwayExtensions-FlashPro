@@ -84,7 +84,7 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IClassicText
          *
          * @note  Textual Representation: {5C41008C-3FBD-496D-A3D1-EE752D091DDA}
@@ -120,7 +120,7 @@ namespace DOM
         /**
          * @struct AA_MODE_PROP
          *
-         * @brief  Structure which contitues of Anti alias mode and custom mode.
+         * @brief  Structure that consists of Anti alias mode and custom mode.
          */    
         struct AA_MODE_PROP
         {
@@ -149,12 +149,12 @@ namespace DOM
         /**
          * @class IClassicText
          *
-         * @brief Defines an interface that represents text element present on the stage
+         * @brief Defines an interface that represents the text element present on the stage.
          */
         BEGIN_DECLARE_INTERFACE(IClassicText, IID_ICLASSIC_TEXT_ELEMENT)
 
             /**
-             * @brief  This function gets anti alias mode properties.
+             * @brief  This function gets anti-alias mode properties.
              *
              * @param  aaModeProp (OUT)
              *         Anti alias mode.
@@ -168,12 +168,15 @@ namespace DOM
 
 
             /**
-             * @brief  This function returns the string with all characters in the textrun.
+             * @brief  This function returns the string with all the characters in the textrun.
              *
              * @param  ppText (OUT)
              *         The the string with all characters in the textrun is returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
+             *
+             * @note   The memory allocated for 'ppText' in this function must be freed 
+             *         by the caller using IFCMCalloc::Free().
              */
             virtual FCM::Result _FCMCALL GetText(FCM::StringRep16* ppText) = 0;            
             
@@ -182,9 +185,10 @@ namespace DOM
              * @brief  This function returns the list of paragraphs in the text element.
              *
              * @param  pParagraphList (OUT)
-             *         The list of paragraphs in the text element is returned.
+             *         List of paragraphs in the text element. Each item in the list can
+             *         be queried for IParagraph.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              *
              * @see    IParagraph
              */
@@ -192,14 +196,12 @@ namespace DOM
             
 
             /**
-             * @brief  The function returns the current role of the text element. Role may be thought of as type of text element.
+             * @brief  The function returns the behaviour of a text element. 
              *
              * @param  pTextBehaviour (OUT)
-             *         The current role of the text element is returned.
+             *         The current behaviour of the text element is returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
-             *
-             * @see    ITextRole
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetTextBehaviour(PITextBehaviour& pTextBehaviour) = 0;
             

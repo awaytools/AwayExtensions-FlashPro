@@ -44,8 +44,8 @@ namespace DOM
     namespace GraphicFilter
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IBevelFilter
+         * @brief Defines the universally-unique interface ID for 
+         *        IBevelFilter.
          *
          * @note  Textual Representation:  {B6B6702D-D4BD-4B28-B916-FA713EE10E70}
          */
@@ -78,7 +78,7 @@ namespace DOM
              * @param  blurX (OUT) 
              *         Value of the blur-X property for the object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetBlurX(FCM::Double& blurX) = 0;
 
@@ -90,7 +90,7 @@ namespace DOM
              * @param  blurY (OUT) 
              *         Value of the blur-Y property for the object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */    
             virtual FCM::Result _FCMCALL GetBlurY(FCM::Double& blurY) = 0;
 
@@ -102,7 +102,7 @@ namespace DOM
              * @param  strength (OUT) 
              *         Value of the strength property for the object in context.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetStrength(FCM::S_Int32& strength) = 0;
 
@@ -114,7 +114,7 @@ namespace DOM
              * @param  qualityType (OUT) 
              *         Quality type of the filter(High or Low or Medium).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetQuality(Utils::FilterQualityType& qualityType) = 0;
 
@@ -126,7 +126,7 @@ namespace DOM
              * @param  color (OUT) 
              *         Color of the shadow applied to the object(in RGBA form).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetShadowColor(Utils::COLOR& color) = 0;
 
@@ -137,7 +137,7 @@ namespace DOM
              * @param  color (OUT) 
              *         Highlight color of the filter applied to the object(in RGBA form).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetHighlightColor(Utils::COLOR& color) = 0;
             
@@ -149,7 +149,7 @@ namespace DOM
              * @param  angle (OUT) 
              *         Angle at which the filter effects are applied(in Radians).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetAngle(FCM::Double& angle) = 0;
 
@@ -162,7 +162,7 @@ namespace DOM
              * @param  distance (OUT) 
              *         Distance at which the filter effects are applied.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetDistance(FCM::Double& distance) = 0;
 
@@ -171,9 +171,9 @@ namespace DOM
              * @brief  This function is used to determine if knockout is enabled or disabled.
              *
              * @param  knockOut (OUT) 
-             *         Boolean variable which is set to true when Knock out property is enabled.
+             *         Boolean variable is set to true when Knock out property is enabled.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetKnockout(FCM::Boolean& knockOut) = 0;
             
@@ -184,7 +184,7 @@ namespace DOM
              * @param  filterType (OUT) 
              *         This parameter can any on of the three types - Inner, Outer or Full.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetFilterType(Utils::FilterType& filterType) = 0;
 
@@ -194,10 +194,10 @@ namespace DOM
              *         filter is enabled for the object.
              *
              * @param  enabled (OUT) 
-             *         Boolean value which is set to true when filter is enabled 
+             *         Boolean value is set to true when filter is enabled 
              *         for the object in context else set to false.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL IsEnabled(FCM::Boolean& enabled) = 0;
             

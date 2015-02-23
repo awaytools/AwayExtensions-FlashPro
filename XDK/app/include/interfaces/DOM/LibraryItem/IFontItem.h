@@ -44,7 +44,7 @@ namespace DOM
     namespace LibraryItem
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IFontItem
          *
          * @note  Textual Representation: {731BCB32-50DB-4A6C-9750-9E6CEF8DF1AF}
@@ -75,20 +75,26 @@ namespace DOM
              * @brief  This function determines name of the device font that should be associated with this Font Item.
              *
              * @param  ppFontName (OUT)
-             *         The name of the device font that should be associated with this Font Item is returned.
+             *         The name of the device font that should be associated with this font item is returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @note   The memory allocated for 'ppFontName' in this function must be freed 
+             *         by the caller using IFCMCalloc::Free().
              */
             virtual FCM::Result _FCMCALL GetFontName(FCM::StringRep16* ppFontName) = 0;
         
             
             /**
-             * @brief  This function returns the font style as string.
+             * @brief  This function returns the font style.
              *
              * @param  ppFontStyle (OUT)
-             *         The font style is returned as string.
+             *         The font style is returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @note   The memory allocated for 'ppFontStyle' in this function must be freed 
+             *         by the caller using IFCMCalloc::Free().
              */
             virtual FCM::Result _FCMCALL GetFontStyle(FCM::StringRep8* ppFontStyle) = 0;
             
@@ -99,7 +105,7 @@ namespace DOM
              * @param  size (OUT)
              *         The point size of the font is returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetFontSize(FCM::U_Int16& size) = 0;
             
@@ -110,7 +116,10 @@ namespace DOM
              * @param  ppEmbeddedCharacters (OUT)
              *         The characters embedded in the font symbol are returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
+             *
+             * @note   The memory allocated for 'ppEmbeddedCharacters' in this function must 
+             *         be freed by the caller using IFCMCalloc::Free().
              */
             virtual FCM::Result _FCMCALL GetEmbeddedCharacters(
                 FCM::StringRep16* ppEmbeddedCharacters) = 0;
@@ -118,15 +127,16 @@ namespace DOM
 
             /**
              * @brief  This function returns a series of delimited integers which correspond to 
-             *         the items that are selected in the Font Embedding dialog. 
-             *         NOTE: the range numbers also correspond to the FontEmbedding/UnicodeTables.xml 
-             *               file in the configurations folder .
+             *         the items that are selected in the font embedding dialog. 
              *
              * @param  ppEmbeddedRanges (OUT)
              *         The delimited integers which correspond to the embedded ranges that are selected 
-             *         in the Font Embedding dialog are returned.
+             *         in the font embedding dialog are returned.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @note   The memory allocated for 'ppEmbeddedRanges' in this function must 
+             *         be freed by the caller using IFCMCalloc::Free().
              */            
             virtual FCM::Result _FCMCALL GetEmbeddedRanges(FCM::StringRep16* ppEmbeddedRanges) = 0;
             

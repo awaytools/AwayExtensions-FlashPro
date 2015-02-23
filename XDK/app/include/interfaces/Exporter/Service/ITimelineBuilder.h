@@ -57,8 +57,8 @@ namespace Exporter
     namespace Service
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ITimelineBuilder
+         * @brief Defines the universally-unique interface ID for 
+         *        ITimelineBuilder.
          *
          * @note  Textual Representation:  {E1FA4E28-3A46-4106-BCDB-0F465B1FD462}
          */
@@ -81,7 +81,7 @@ namespace Exporter
          */
         struct SOUND_INFO
         {
-            /** Size of this structure. This will be set to to sizeof(SOUND_INFO) */
+            /** Size of this structure. This will be set to sizeof(SOUND_INFO) */
             size_t                  structSize;
 
             /** Resource Identifier */
@@ -97,7 +97,7 @@ namespace Exporter
          */
         struct DISPLAY_OBJECT_INFO
         {
-            /** Size of this structure. This will be set to to sizeof(DISPLAY_OBJECT_INFO) */
+            /** Size of this structure. This will be set to sizeof(DISPLAY_OBJECT_INFO) */
             size_t                  structSize;
 
             /** Resource Identifier */
@@ -177,16 +177,15 @@ namespace Exporter
         BEGIN_DECLARE_INTERFACE(ITimelineBuilder, IID_ITIMELINE_BUILDER)
 
             /**  
-             * @brief  This function is invoked when add command is generated for a shape 
-             *         by frame command generator
+             * @brief  This function is invoked to add a shape to the timeline.
              *
              * @param  objectId (IN)
-             *         Object Identifier of the shape
+             *         Object Identifier of the shape.
              *
              * @param  pShapeInfo (IN)
-             *         Shape placement information
+             *         Shape placement information.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL AddShape(
                 FCM::U_Int32 objectId, 
@@ -194,8 +193,7 @@ namespace Exporter
 
             
             /**  
-             * @brief  This function is invoked when add command is generated for a text item 
-             *         by frame command generator
+             * @brief  This function is invoked to add a text element to the timeline.
              *
              * @param  objectId (IN)
              *         Object Identifier of the text instance
@@ -203,7 +201,7 @@ namespace Exporter
              * @param  pClassicTextInfo (IN)
              *         Text placement information
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL AddClassicText(
                 FCM::U_Int32 objectId, 
@@ -211,8 +209,7 @@ namespace Exporter
             
             
             /**  
-             * @brief  This function is invoked when add command is generated for a bitmap item 
-             *         by frame command generator
+             * @brief  This function is invoked to add a bitmap element to the timeline.
              *
              * @param  objectId (IN)
              *         Object Identifier of the bitmap
@@ -220,7 +217,7 @@ namespace Exporter
              * @param  pBitmapInfo (IN)
              *         Bitmap placement information
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL AddBitmap(
                 FCM::U_Int32 objectId, 
@@ -228,19 +225,18 @@ namespace Exporter
 
             
             /**  
-             * @brief  This function is invoked when add command is generated for a movie-clip item 
-             *         by frame command generator
+             * @brief  This function is invoked to add a movie-clip element to the timeline.
              *
              * @param  objectId (IN)
-             *         Object Identifier of the movie-clip
+             *         Object Identifier of the movie-clip.
              *
              * @param  pMovieClipInfo (IN)
-             *         Movie-clip placement information
+             *         Movie-clip placement information.
              *
              * @param  pMovieClip (IN)
              *         Movie-clip object
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL AddMovieClip(
                 FCM::U_Int32 objectId, 
@@ -249,16 +245,15 @@ namespace Exporter
             
             
             /**  
-             * @brief  This function is invoked when add command is generated for a graphic item 
-             *         by frame command generator
+             * @brief  This function is invoked to add a graphic element to the timeline.
              *
              * @param  objectId (IN)
-             *         Object Identifier of the graphic
+             *         Object Identifier of the graphic.
              *
              * @param  pGraphicInfo (IN)
-             *         Graphic placement information
+             *         Graphic placement information.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL AddGraphic(
                 FCM::U_Int32 objectId, 
@@ -266,11 +261,10 @@ namespace Exporter
 
 
             /**  
-             * @brief  This function is invoked when add command is generated for a sound item 
-             *         by frame command generator.
+             * @brief  This function is invoked to add a sound element to the timeline.
              *
              * @param  objectId (IN)
-             *         Object Identifier of the sound
+             *         Object Identifier of the sound.
              *
              * @param  pSoundInfo (IN)
              *         Information about the sound item getting added to timeline.
@@ -278,7 +272,7 @@ namespace Exporter
              * @param  pSound (IN)
              *         Sound object
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL AddSound(
                 FCM::U_Int32 objectId, 
@@ -295,9 +289,9 @@ namespace Exporter
              *
              * @param  placeAfterObjectId (IN)
              *         Object Id of the resource after which the current resource in context
-             *         to be added for a frame in the timeline.(Helps in Z ordering of the object)
+             *         to be added for a frame in the timeline. Helps in Z ordering of the object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL UpdateZOrder(
                 FCM::U_Int32 objectId, 
@@ -310,14 +304,14 @@ namespace Exporter
              * @param objectId (IN)
              *        Object Identifier      
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL Remove(FCM::U_Int32 objectId) = 0;
 
 
             /**  
              * @brief This function is invoked when the blend mode of the object changes in
-             *         any frame.
+             *        any frame.
              *
              * @param objectId (IN)
              *        Object Identifier
@@ -325,7 +319,7 @@ namespace Exporter
              * @param blendMode (IN)
              *        Blend mode which needs to be applied to the resource.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL UpdateBlendMode(
                 FCM::U_Int32 objectId, 
@@ -341,7 +335,7 @@ namespace Exporter
              * @param visible (IN)
              *        Boolean variable which determines whether or not the object should be visible.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL UpdateVisibility(
                 FCM::U_Int32 objectId, 
@@ -358,7 +352,7 @@ namespace Exporter
              * @param pFilterable (IN)
              *        List of filter/s which needs to be applied to the resource.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL UpdateGraphicFilter(
                 FCM::U_Int32 objectId, 
@@ -375,7 +369,7 @@ namespace Exporter
              * @param matrix (IN)
              *        A 2D matrix which defines the transform to be applied to the object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL UpdateDisplayTransform(
                 FCM::U_Int32 objectId, 
@@ -392,7 +386,7 @@ namespace Exporter
              * @param colorMatrix (IN)
              *        A matrix which defines the color transform to be applied to the object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL UpdateColorTransform(
                 FCM::U_Int32 objectId, 
@@ -421,7 +415,7 @@ namespace Exporter
              * @param  layerNum (IN)
              *         Layer number in which the frame script resides. This will be passed back in RemoveFrameScript().
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              *
              * @note   Caller of this function owns "pScript" and is responsible for deleting it.
              */

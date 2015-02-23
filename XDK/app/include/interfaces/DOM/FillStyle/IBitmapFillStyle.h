@@ -85,36 +85,40 @@ namespace DOM
              *         used in the fill.
              *
              * @param  pBitmap (OUT)
-             *         Bitmap library item
+             *         Bitmap library item - This can successfully queried for ILibraryItem
+             *         and IMediaItem.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
+             *
+             * @see    LibraryItem::IMediaItem
+             *
+             * @see    LibraryItem::ILibraryItem
              */
             virtual FCM::Result _FCMCALL GetBitmap(LibraryItem::PIMediaItem& pBitmap) = 0;
 
 
             /**
-             * @brief  This function can be used to know if the bitmap is larger than
-             *         the fill area. If the bitmap is larger than the fill area, then 
-             *         the bitmap is clipped; otherwise it is repeated (if it is 
-             *         smaller).
+             * @brief  This function can be used to check if the bitmap is larger than
+             *         the fill area. If the bitmap is larger than the fill area,  
+             *         the bitmap is clipped; else it is repeated.
              *
              * @param  clipped (OUT)
-             *         Set to true if bitmap is larger than the fill area and the 
-             *         bitmap is clipped; otherwise it is set to false.
+             *         Set to true if the bitmap is larger than the fill area and the 
+             *         bitmap is clipped, else it is set to false.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL IsClipped(FCM::Boolean& clipped) = 0;
         
 
             /**
              * @brief  This function gets the transformation matrix that defines the 
-             *         placement, orientation and scales for the bitmap fill.
+             *         placement, orientation, and the scale for the bitmap fill.
              *
              * @param  matrix (OUT)
              *         Transformation matrix
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetMatrix(Utils::MATRIX2D& matrix) = 0;
 

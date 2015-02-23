@@ -39,7 +39,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMDictionary.
+     * @brief Defines the universally-unique interface ID for IFCMDictionary.
      *
      * @note  Textual Representation:  {8BB58643-057E-4158-8876-6FF334E5ECE6}
      */
@@ -132,7 +132,7 @@ namespace FCM
          * @param  valueLen (IN)
          *         The length of the value being stored.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
          virtual FCM::Result _FCMCALL Add(
             CStringRep8 pKey,
@@ -152,7 +152,7 @@ namespace FCM
          * @param  ppDict (OUT)
          *         Set with the new dictionary created.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
          virtual FCM::Result _FCMCALL AddLevel(CStringRep8 pKey, PIFCMDictionary& ppDict) = 0;
 
@@ -164,13 +164,13 @@ namespace FCM
          * @param  pKey (IN)
          *         The key for value being removed.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
          virtual FCM::Result _FCMCALL Remove(CStringRep8    pKey) = 0;
 
 
         /**  
-         * @brief  Returns a value from a dictionary given its key.The param value should be
+         * @brief  Returns a value from a dictionary given its key. The param value should be
          *         allocated and the allocation length should be passed in param valueLen.
          *         If the allocated buffer is less than the value stored in the dictionary then
          *         FCM_DICT_ERR_BUFFERTOOSMALL is returned. If the allocated buffer is greater 
@@ -191,7 +191,7 @@ namespace FCM
          *         The length of buffer allocated for value param.In successful case would conatin
          *         the actual length of value in the dictionary.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
          virtual FCM::Result _FCMCALL Get(
              CStringRep8 pKey,
@@ -214,7 +214,7 @@ namespace FCM
          * @param  count (OUT)
          *         Populated with the number of entries in the dictionary.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
          virtual FCM::Result _FCMCALL Count(FCM::U_Int32& count) = 0;
 
@@ -257,7 +257,7 @@ namespace FCM
          * @param  valueLen (OUT)
          *         The length of the entry with the given key is copied into this parameter.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
          virtual FCM::Result _FCMCALL GetInfo(
              CStringRep8 pKey,

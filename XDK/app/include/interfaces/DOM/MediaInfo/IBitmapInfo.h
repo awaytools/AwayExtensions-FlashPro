@@ -45,8 +45,8 @@ namespace DOM
     {
 
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IBitmapInfo
+         * @brief Defines the universally-unique interface ID for 
+         *        IBitmapInfo.
          *
          * @note  Textual Representation: {20194070-7A5C-4627-ADF1-0A6754D8AC84}
          */
@@ -68,28 +68,28 @@ namespace DOM
         /**
          * @class IBitmapInfo
          *
-         * @brief The interface for finding the bitmap attributes (width, height, format, colors..etc)
+         * @brief This interface represents bitmap attributes.
          */
         BEGIN_DECLARE_INTERFACE(IBitmapInfo, IID_IBITMAP_INFO)
 
             /**
-             * @brief  Returns the bitmap width
+             * @brief  Returns the bitmap width.
              *
              * @param  width (OUT)
              *         The width of the bitmap.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetWidth(FCM::S_Int32& width) = 0;
 
 
             /**
-             * @brief  Returns the bitmap height
+             * @brief  Returns the bitmap height.
              *
              * @param  height (OUT)
              *         The height of the bitmap.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetHeight(FCM::S_Int32& height) = 0;
         

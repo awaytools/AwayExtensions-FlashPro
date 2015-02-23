@@ -49,8 +49,7 @@ namespace Application
     namespace Service
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IFlashApplicationService
+         * @brief Defines the universally-unique Interface ID for IFlashApplicationService.
          *
          * @note  Textual Representation: {CF97A574-E99B-43AB-931A-1C3ABB2A98E6}
          */
@@ -72,7 +71,7 @@ namespace Application
         /**
          * @class IFlashApplicationService
          *
-         * @brief This service provides Flash Application level services.
+         * @brief This service provides Flash application-level services.
          */
         BEGIN_DECLARE_INTERFACE(IFlashApplicationService, IID_IFLASH_APPLICATION_SERVICE)
 
@@ -82,7 +81,7 @@ namespace Application
              * @param  pDocument (OUT)
              *         Active FLA document
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetActiveFLADocument(DOM::PIFLADocument& pDocument) = 0;
 
@@ -93,13 +92,13 @@ namespace Application
              * @param  version (OUT)
              *         FlashPro Version
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetVersion(FCM::U_Int32& version) = 0;
 
 
             /**
-             * @brief  This function returns the locale of the Flash Professional's user interface.
+             * @brief  This function returns the locale of the Flash Professional user interface.
              *
              * @param  ppLanguageCode (OUT)
              *         Five character code identifying the locale/language of the application’s user 
@@ -107,9 +106,9 @@ namespace Application
              *         "en_US", "ja_JP", "zh_CN", "zh_TW", "ko_KR", "nl_NL", "fr_FR", "de_DE",
              *         "it_IT", "es_ES", "sv_SE", "pt_BR", "cs_CZ", "pl_PL", "ru_RU", "tr_TR"
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              *
-             * @note   It is the responsibility of the caller of this function to release the 
+             * @note   The caller of this function must release the 
              *         memory for 'ppLanguageCode' using IFCMCalloc::Free().
              */
             virtual FCM::Result _FCMCALL GetLanguageCode(StringRep8* ppLanguageCode) = 0;

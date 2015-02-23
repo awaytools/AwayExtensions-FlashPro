@@ -41,7 +41,7 @@ namespace DOM
     namespace FillStyle
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IGradientFillStyle
          *
          * @note  Textual Representation: {82567309-5FAD-4948-9B83-CD8F4C0BF77C}
@@ -99,24 +99,30 @@ namespace DOM
 
             /**
              * @brief  This function gets the transformation matrix that defines the 
-             *         placement, orientation and scales for the gradient fill.
+             *         placement, orientation, and scales for the gradient fill.
              *
              * @param  matrix (OUT)
              *         Transformation matrix
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */    
             virtual FCM::Result _FCMCALL GetMatrix(Utils::MATRIX2D& matrix) = 0;
 
 
             /**
-             * @brief  This function gets a color gradient - can be either linear gradient or 
-             *         radial gradient.
+             * @brief  This function gets a color gradient - it can be either linear gradient 
+             *         (ILinearColorGradientor) or a radial gradient(IRadialColorGradient).
              *
              * @param  pColorGradient (OUT)
-             *         Color gradient
+             *         Color gradient (ILinearColorGradientor or IRadialColorGradient)
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
+             *
+             * @see    FCM::IFCMUnknown
+             *
+             * @see    DOM::Utils::ILinearColorGradient
+             *
+             * @see    DOM::Utils::IRadialColorGradient
              */
             virtual FCM::Result _FCMCALL GetColorGradient(FCM::PIFCMUnknown& pColorGradient) = 0;
 
@@ -127,7 +133,7 @@ namespace DOM
              * @param  spread (OUT)
              *         GradientSpread type set for this fill
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetSpread(GradientSpread& spread) = 0;
 

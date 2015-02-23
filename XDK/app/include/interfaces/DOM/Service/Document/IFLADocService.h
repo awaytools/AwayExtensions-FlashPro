@@ -20,7 +20,7 @@
  * @file  IFLADocService.h
  *
  * @brief This file contains the interface for IFLADocService. The IFLADocService 
- *        interface is the starting point for processing a FLA file.
+ *        interface for document related services such as opening or closing of a FLA file.
  */
 
 #ifndef IFLA_DOC_SERVICE_H_
@@ -47,8 +47,8 @@ namespace DOM
         namespace Document 
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IFLADocService
+             * @brief Defines the universally-unique interface ID for 
+             *        IFLADocService.
              *
              * @note  Textual Representation: {B4A3CDFE-FAAB-4566-8045-5B8447E9A23B}
              */
@@ -73,22 +73,20 @@ namespace DOM
             /**
              * @class IFLADocService
              *
-             * @brief Defines the interface to retrieve a FLA document.
+             * @brief Defines the interface to services for FLA document.
              */
             BEGIN_DECLARE_INTERFACE(IFLADocService, IID_IFLA_DOC_SERVICE)
 
                 /**
-                 * @brief  This function is used to open a FLA file and 
-                 *         retrieves its IFLADocument interface
+                 * @brief  This function is used to open a FLA file.
                  *
                  * @param  pFullPath (IN)
-                 *         The absolue path of the file on disk
+                 *         The absolue path of the file on disk.
                  * 
                  * @param  pOutDocument (OUT)
-                 *         IFLADocument interface to process the FLA file. Release this 
-                 *         interface after use.
+                 *         Document
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL OpenDocument(FCM::CStringRep16 pFullPath, 
                     PIFLADocument& pOutDocument) = 0;
@@ -100,7 +98,7 @@ namespace DOM
                  * @param  inDocument (IN)
                  *         IFLADocument interface to close the opened FLA document.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL CloseDocument(IFLADocument* inDocument) = 0;    
 

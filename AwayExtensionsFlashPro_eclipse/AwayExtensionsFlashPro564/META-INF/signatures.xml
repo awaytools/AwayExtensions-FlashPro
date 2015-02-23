@@ -1,0 +1,40 @@
+<signatures>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="PackageSignature">
+<SignedInfo>
+<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+<Reference Type="http://www.w3.org/2000/09/xmldsig#Manifest" URI="#PackageContents">
+<Transforms>
+<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+</Transforms>
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+<DigestValue>PowBBwGT8lSKB/n+cfq2ygeG21M1vr1xpJpQUeahXxI=</DigestValue>
+</Reference>
+</SignedInfo>
+<SignatureValue Id="PackageSignatureValue">uX7n3xBygSceZ7UsiFCB2QiLHEn9/ieBtqQiIPR0BVakC+B8IX6vxR2IydqyEDHe
++d/slitALWF14/E66xhuEJiYIDlJgjPbDzELs9D4eugGOeF2UtY+hsEd7Ta0yYop
+QsEH6edjzpxbfQsrf7K1veL8vvwTeEQsWOtqvp27mfs=</SignatureValue>
+
+<KeyInfo>
+<X509Data>
+<X509Certificate>MIICGzCCAYSgAwIBAgIbLTQwZWY3YTlkOjE0NzE2YmEyNDYyOi04MDAwMA0GCSqG
+SIb3DQEBBQUAMDoxCzAJBgNVBAYTAlVTMQ0wCwYDVQQKEwR0ZXN0MQ0wCwYDVQQL
+EwR0ZXN0MQ0wCwYDVQQDEwR0ZXN0MB4XDTE0MDcwNzE2MDY0M1oXDTE5MDcwODE2
+MDY0M1owOjELMAkGA1UEBhMCVVMxDTALBgNVBAoTBHRlc3QxDTALBgNVBAsTBHRl
+c3QxDTALBgNVBAMTBHRlc3QwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALtZ
+ti7bDB2hWJWt2YMx3N0DocMMATtZ/0pi8fZ6dNk0lMcmiWst9jUaeQvmRDLxOd9O
+Ll/LiYw65dVDogwx9oCrAkGBi5tbzvmlNf/FZSeaS0WQ/etjb6dI7M+SgMJXnyVM
+LsKDCe0WGBOIl2rZf+FfbIjwHjRMd+akIDVacROHAgMBAAGjFzAVMBMGA1UdJQQM
+MAoGCCsGAQUFBwMDMA0GCSqGSIb3DQEBBQUAA4GBAJcQvEogW7srJW8UEA0svIFF
+0uoER6XRiRlOt2tbB5JjPKZmYR21IsvpVQhQkMAUuPVMyA6BrEoNS3roHAajzyM8
+D0R8HuJ5tkWpjSPMwfsGxPflUmWlNNasTM8Zgr6soL0LjIoyIiMxuQVr8QK/5Gry
+73DuQPjl25bDvtFeokTq
+</X509Certificate>
+</X509Data>
+</KeyInfo>
+<Object>
+<Manifest Id="PackageContents">
+<Reference URI="mimetype"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>b07Onu9cTlGK1WpvgtFOlfk+Tl0HscuNIt6GZtesPX8=</DigestValue></Reference><Reference URI="AwayJSFL.jsfl"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>HA3/676XO9ZkVw3u92NhyS9B8L5nsh3U39NiYQ195mo=</DigestValue></Reference><Reference URI="css/mkDroverPanel_D.css"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>j+75U72LvOF4bnEEQ/6NPwhT35cnNhTErfyGCbcZhh4=</DigestValue></Reference><Reference URI="css/mkDroverPanel_L.css"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>GDGNuZ55ysDPnBWTp2YI0fnKskxOQdyp+K/7mme6miY=</DigestValue></Reference><Reference URI="CSXS/manifest.xml"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>wVRcbamOx/0BVu/kOBieLw56jQf6WHLCUkdLGPMWAS4=</DigestValue></Reference><Reference URI="Flash.xml"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>r+ycEWxdvhAorxh1qVUeST9/NHqaqposTi0fONg+vic=</DigestValue></Reference><Reference URI="folderOpen.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>x5zo+2+9qWvwVSJzdZ4aFbAU4KB/fhn58dOHYJsPdd0=</DigestValue></Reference><Reference URI="index.html"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>IwCW+2T8HnzwugbyCxNz0HmsFMyUTtBopFZ7O2KHr9c=</DigestValue></Reference><Reference URI="lib/CSInterface-4.0.0.js"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>fqdz+Yh0CpWwi2MVOHQIzYUglWVeYbBw40gtEt9jEPc=</DigestValue></Reference><Reference URI="metainfo"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>fmuY+ReV680DytWzI1jmYFHZwWYeESTBMB8uhf7hJAI=</DigestValue></Reference><Reference URI="plugin/fcm.xml"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=</DigestValue></Reference><Reference URI="plugin/lib/fcm.xml"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=</DigestValue></Reference><Reference URI="plugin/lib/mac/AwayExtensionsFlashPro.fcm.plugin/Contents/Info.plist"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>zIuHe7A9xvADzxxuIJzntmMgaDjtqPj8Y3m7W/Cqe6A=</DigestValue></Reference><Reference URI="plugin/lib/mac/AwayExtensionsFlashPro.fcm.plugin/Contents/MacOS/AwayExtensionsFlashPro"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>KnYzgoM/uQIx6UnQzZ05chyOoYiQWC1cWa4U8OiKGzo=</DigestValue></Reference><Reference URI="plugin/lib/win/AwayExtensionsFlashPro.fcm"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>LQYLTJfR83RBishKXayGzTqdFITZ6hxxFDkOzlxUxyc=</DigestValue></Reference><Reference URI="ressources/AwayJS_features.xml"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>15d3CqlpUb/+8rh7h7Vmuv8A1kkTq7pQ9TDxR7BNTyQ=</DigestValue></Reference><Reference URI="ressources/awayJS_logo.jpg"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>Nx4h16w3tWn0nymL0iMxfO+G8PbuAQ/qWpjRjwjOXns=</DigestValue></Reference><Reference URI="ressources/preview_awayjs/index.html"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>SEaQoxxcbB+iHzH9xNxM/tGtQmeahavRHCXW26ZGvcE=</DigestValue></Reference><Reference URI="ressources/preview_awayjs/js/awayjs-dist-require.protected_js"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>DIlKSHrcWsts7tpY/L0cy0mOpn+7+aqo3ubcBvlePJo=</DigestValue></Reference><Reference URI="ressources/preview_awayjs/js/AWD3Viewer.protected_js"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>k7rSduBtKwkFPJA4ucv8EX+N0z2cuaoWa9IvPAVKSNU=</DigestValue></Reference></Manifest>
+</Object>
+</Signature>
+</signatures>

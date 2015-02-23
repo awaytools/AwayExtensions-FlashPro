@@ -46,8 +46,8 @@ namespace DOM
 namespace DOM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for 
-     *        ILayer
+     * @brief Defines the universally-unique interface ID for 
+     *        ILayer.
      *
      * @note  Textual Representation: {926CB1E2-CE8A-40EC-84DC-805E117084BC}
      */
@@ -61,8 +61,8 @@ namespace DOM
     namespace Layer
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ILayerFolder
+         * @brief Defines the universally-unique interface ID for 
+         *        ILayerFolder.
          *
          * @note  Textual Representation: {404D03B5-B3A8-4AA6-B496-4669384F3691}
          */
@@ -77,8 +77,8 @@ namespace DOM
     namespace Layer
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ILayerNormal
+         * @brief Defines the universally-unique interface ID for 
+         *        ILayerNormal.
          *
          * @note  Textual Representation: {4254C006-B3A8-4AA6-B496-4669384F3691}
          */
@@ -93,8 +93,8 @@ namespace DOM
     namespace Layer
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ILayerMask
+         * @brief Defines the universally-unique interface ID for  
+         *        ILayerMask.
          *
          * @note  Textual Representation: {55886E53-CBA5-4708-AFA7-60C1398F8E2}
          */
@@ -109,8 +109,8 @@ namespace DOM
     namespace Layer
     {  
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ILayerGuide
+         * @brief Defines the universally-unique interface ID for 
+         *        ILayerGuide.
          *
          * @note  Textual Representation: {D34CE64-23A2-4FF0-BFCA-368EDE7D414C}
          */
@@ -141,7 +141,10 @@ namespace DOM
          * @param  ppName (OUT)
          *         Name of the layer
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @note   The memory allocated for 'ppName' in this function must be freed 
+         *         by the caller using IFCMCalloc::Free().
          */
         virtual FCM::Result _FCMCALL GetName(FCM::StringRep16* ppName) = 0;
 
@@ -153,7 +156,7 @@ namespace DOM
          *         True if all objects in the layer are visible;false if
          *         any is hidden.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */     
         virtual FCM::Result _FCMCALL IsVisible(FCM::Boolean& isVisible) = 0;
 
@@ -164,19 +167,28 @@ namespace DOM
          * @param  pParentLayer (OUT)
          *         Parent Layer for the current layer Otherwise it is set to NULL
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL GetParentLayer(PILayer& pParentLayer) = 0;
         
 
         /**
-         * @brief  Get the type associated with this layer. The type determines whenther
-         *         it is a folder, mask, guide or normal.
+         * @brief  Gets the type associated with this layer. The type determines whether
+         *         it is a folder, mask, guide, or normal.
          *
          * @param  pLayerType (OUT)
-         *         The type of the layer
+         *         The type of the layer. This can be queried for one of the following
+         *         interfaces: ILayerFolder, ILayerNormal, ILayerMask and ILayerGuide.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @see    DOM::Layer::ILayerFolder
+         *
+         * @see    DOM::Layer::ILayerNormal
+         *
+         * @see    DOM::Layer::ILayerMask
+         *
+         * @see    DOM::Layer::ILayerGuide
          */
         virtual FCM::Result _FCMCALL GetLayerType(FCM::PIFCMUnknown& pLayerType) = 0;
 
@@ -199,9 +211,11 @@ namespace DOM
              * @brief  Returns the list of child layers.
              * 
              * @param  pLayerList (OUT)
-             *         List of ILayerBase objects (ILayerBase)
+             *         List of ILayer objects 
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @see    DOM::ILayer
              */    
             virtual FCM::Result _FCMCALL GetChildren(PIFCMList& pLayerList) = 0;
         
@@ -226,33 +240,35 @@ namespace DOM
              * @param  pKeyFrameList (OUT)
              *         List of frames (IFrame)
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @see    DOM::IFrame
              */    
             virtual FCM::Result _FCMCALL GetKeyFrames(PIFCMList& pKeyFrameList) = 0;
 
 
             /**
              * @brief  Return frame at index, index can be any value between 0 to 
-             *         duration returned by GetTotalDuration
+             *         duration returned by GetTotalDuration.
              * 
              * @param  index (IN)
              *         Index at which frame is needed    
              *
              * @param  pFrame (OUT)  
-             *         Frame at index    
+             *         Frame at specified index.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */    
             virtual FCM::Result _FCMCALL GetFrameAtIndex(FCM::U_Int32 index, PIFrame& pFrame) = 0;
 
 
             /**
-             * @brief  Return duration of all the key Frames
+             * @brief  Returns the duration of all the key Frames.
              * 
              * @param  duration (OUT)
              *         Layer duration
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetTotalDuration(FCM::U_Int32& duration) = 0;
         
@@ -273,12 +289,14 @@ namespace DOM
         BEGIN_DECLARE_INTERFACE(ILayerMask, IID_ILAYER_MASK)
 
             /**
-             * @brief  Returns the list of child layers .
+             * @brief  Returns the list of child layers.
              * 
              * @param  pLayerList (OUT)
-             *         List of ILayerBase objects (ILayerBase)
+             *         List of layer objects (ILayer)
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @see    DOM::ILayer
              */    
             virtual FCM::Result _FCMCALL GetChildren(PIFCMList& pLayerList) = 0;
             
@@ -302,9 +320,11 @@ namespace DOM
              * @brief  Returns the list of child layers.
              * 
              * @param  pLayerList (OUT)
-             *         List of ILayerBase objects (ILayerBase)
+             *         List of layer objects (ILayer)
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @see    DOM::ILayer
              */    
             virtual FCM::Result _FCMCALL GetChildren(PIFCMList& pLayerList) = 0;
             

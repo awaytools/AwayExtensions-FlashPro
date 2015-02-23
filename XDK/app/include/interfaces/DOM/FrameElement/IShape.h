@@ -49,7 +49,7 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IShape
          *
          * @note  Textual Representation: {2F540DEF-C6DB-45A2-A254-7128AE2D8A1E}

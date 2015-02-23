@@ -22,7 +22,7 @@
  * @brief This file contains interface for IFCMNotificationService. 
  *        The IFCMNotificationService interface is supported by any FCM Application that wants to
  *        provide system wide notification hooks to plugins.  These notifications are mainly 
- *        provided by the application, but can also be provided by specific Plugins. This Interface
+ *        provided by the application, but can also be provided by specific plugins. This Interface
  *        can be obtained by GetService of the main Application callback Interface.
  */
 
@@ -43,7 +43,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMNotificationService.
+     * @brief Defines the universally-unique interface ID for IFCMNotificationService.
      *
      * @note  Textual Representation:  {4488009E-53CA-43EF-8890-50482CDE31AA}
      */
@@ -65,7 +65,7 @@ namespace FCM
     /**
      * @class IFCMNotificationService
      *
-     * @brief Defines the interface that represents the notification service.
+     * @brief Defines the interface that represents a notification service.
      */
     BEGIN_DECLARE_INTERFACE(IFCMNotificationService, FCMIID_IFCMNotificationService)
 
@@ -77,12 +77,12 @@ namespace FCM
          *         The client to be notified when the event occurs.
          *
          * @param  nid (IN)
-         *         The id for the event you want to be notified for.
+         *         The id for the event for which the the client wants to be notified for.
          *
          * @param  pRefCon (IN)
-         *         A refcon pointer that will be passed back to you when you are notified.
+         *         A refcon pointer that will be passed to the client at the time of notification.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
          virtual FCM::Result _FCMCALL RegisterNotificationClient(
             PIFCMNotificationClient pClient,
@@ -92,16 +92,16 @@ namespace FCM
 
         /**
          * @brief  Unregisters an <tt>IFCMNotificationClient</tt> interface that was previously
-         *         registered by a call to <tt>RegisterNotificationClient</tt>.  The type of event 
-         *         to unregister for is specified by nid.  
+         *         registered by a call to <tt>RegisterNotificationClient</tt>.  The type of the
+         *         event to unregister for is specified by nid.  
          *
          * @param  pClient (IN)
          *         The client to be unregistered.
          *
          * @param  nid (IN)
-         *         The id for the event to unregister for.
+         *         The id of the event to unregister for.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
          virtual FCM::Result _FCMCALL UnregisterNotificationClient(
              PIFCMNotificationClient pClient,
@@ -120,7 +120,7 @@ namespace FCM
          * @param  nid (IN)
          *         The id for the event to be sent to all clients.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
          virtual FCM::Result _FCMCALL SendNotification(
              ConstRefFCMNotifyID nid,

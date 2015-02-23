@@ -41,7 +41,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMStringUtils.
+     * @brief Defines the universally-unique interface ID for IFCMStringUtils.
      *
      * @note  Textual Representation:  {974EFCC9-B1E4-4BFA-8EA3-B9C41F2A450F}
      */
@@ -63,7 +63,7 @@ namespace FCM
     /**
      * @class IFCMStringUtils
      *
-     * @brief Defines the interface that represents the string conversion between StringRep8 and StringRep16.
+     * @brief Defines the interface for string conversions between StringRep8 and StringRep16.
      */
     BEGIN_DECLARE_INTERFACE(IFCMStringUtils, FCMIID_IFCMStringUtils)
 
@@ -74,10 +74,10 @@ namespace FCM
          *         The source string pointer.  
          *
          * @param  pStrDest (OUT)
-         *         The destination string pointer which will be allocated and the content of the
+         *         The destination string pointer, which will be allocated and the content of the
          *         pStrSrc will be copied to it.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL ConvertStringRep8to16(CStringRep8 pStrSrc,FCM::StringRep16& pStrDest)=0;
 
@@ -89,10 +89,10 @@ namespace FCM
          *         The source string pointer.  
          *
          * @param  pStrDest (OUT)
-         *         The destination string pointer which will be allocated and the content of the
+         *         The destination string pointer, which will be allocated and the content of the
          *         pStrSrc will be copied to it.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL ConvertStringRep16to8(CStringRep16 pStrSrc,FCM::StringRep8& pStrDest)=0;
 

@@ -46,8 +46,7 @@ namespace DOM
     {
 
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ILinearColorGradient
+         * @brief Defines the universally-unique Interface ID for ILinearColorGradient.
          *
          * @note  Textual Representation:  {39CE80B7-90A9-479E-A46C-D48FA6CFC923}
          */
@@ -80,7 +79,7 @@ namespace DOM
              * @param  nColors (OUT)
              *         Number of points in the color ramp
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetKeyColorCount(FCM::U_Int8& nColors) = 0;
 
@@ -96,7 +95,7 @@ namespace DOM
              * @param  colorpoint (OUT)
              *         The value of a color and its position in the color ramp;
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetKeyColorAtIndex(
                 FCM::U_Int8 index, 

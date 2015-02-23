@@ -22,7 +22,7 @@
  * @brief This file contains interface for IFCMCalloc. 
  *        The IFCMCalloc interface provides a mechanism for allocating and deallocating memory.
  *        This interface is used when there is shared memory between Plugin and FCM Application and
- *        the memory being allocated by Plugin is freed by FCM Application (or) viceversa.
+ *        the memory being allocated by Plugin is freed by FCM Application (or) vice-versa.
  */
 
 #ifndef IFCM_CALLOC_H_
@@ -41,7 +41,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMCalloc.
+     * @brief Defines the universally unique ID for the interface IFCMCalloc.
      *
      * @note  Textual Representation:  {1920B8DD-6CD8-4D9A-8272-4CBA3F29086F}
      */
@@ -65,28 +65,28 @@ namespace FCM
      *
      * @brief Defines the interface that represents the calloc.
      */
-	BEGIN_DECLARE_INTERFACE(IFCMCalloc , FCMIID_IFCMCalloc )
-	
+    BEGIN_DECLARE_INTERFACE(IFCMCalloc , FCMIID_IFCMCalloc )
+    
     /**  
-	 * @brief  Allocate memory of size requested by param cb
+     * @brief  Allocates memory of the size requested by the parameter cb.
      *
-	 * @param  cb (IN)
-     *         size of memory to be allocated.
+     * @param  cb (IN)
+     *         size of the memory to be allocated.
      *
-	 * @return returns allocated memory pointer.
-	 */
-	virtual FCM::PVoid _FCMCALL Alloc(FCM::U_Int32 cb) = 0;
+     * @return returns a pointer to the allocated memory.
+     */
+    virtual FCM::PVoid _FCMCALL Alloc(FCM::U_Int32 cb) = 0;
 
 
-	/**  
-	* @brief  Free memory pointed by param pv.
+    /**  
+    * @brief  Deallocates the memory pointed by the param pv.
     *
-	* @param  pv (IN)
-    *         pointer to memory to be freed.
-	*/
-	virtual void _FCMCALL Free(FCM::PVoid pv) = 0;
+    * @param  pv (IN)
+    *         pointer to memory to be deallocated.
+    */
+    virtual void _FCMCALL Free(FCM::PVoid pv) = 0;
 
-	END_DECLARE_INTERFACE
+    END_DECLARE_INTERFACE
 
 };  // namespace FCM
 

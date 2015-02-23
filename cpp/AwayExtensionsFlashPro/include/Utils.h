@@ -32,7 +32,6 @@
 #include "FillStyle/IGradientFillStyle.h"
 #include "IFCMStringUtils.h"
 
-
 /* -------------------------------------------------- Forward Decl */
 
 

@@ -177,8 +177,8 @@ namespace DOM
     namespace StrokeStyle
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IHatchedStrokeStyle
+         * @brief Defines the universally-unique interface ID for 
+         *        IHatchedStrokeStyle.
          *
          * @note  Textual Representation: {29964748-A64A-49F7-97DE-3FC19D054FDD}
          */
@@ -210,7 +210,7 @@ namespace DOM
              * @param thickness (OUT)
              *        Thickness of the stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetThickness(FCM::Double& thickness) = 0;
 
@@ -219,9 +219,16 @@ namespace DOM
              * @brief  This function gets the fill style settings of the stroke.
              *
              * @param  pFillStyle (OUT)
-             *         Fill style of the stroke
+             *         Fill style of the stroke (ISolidFillStyle or IGradientFillStyle
+             *         or IBitmapFillStyle).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @see    DOM::FillStyle::ISolidFillStyle
+             *
+             * @see    DOM::FillStyle::IGradientFillStyle
+             *
+             * @see    DOM::FillStyle::IBitmapFillStyle
              */
             virtual FCM::Result _FCMCALL GetFillStyle(PIFCMUnknown& pFillStyle) = 0;
 
@@ -232,7 +239,7 @@ namespace DOM
              * @param  thicknessType (OUT)
              *         Thickness type of a hatched stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetHatchedThicknessType(
                 HatchedThicknessType& thicknessType) = 0;
@@ -244,7 +251,7 @@ namespace DOM
              * @param  spaceType (OUT)
              *         Spacing type of the hatched stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetSpaceType(HatchedSpaceType& spaceType) = 0;
 
@@ -255,7 +262,7 @@ namespace DOM
              * @param  jiggleType (OUT)
              *         Jiggle type of the hatched stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetJiggleType(HatchedJiggleType& jiggleType) = 0;
 
@@ -266,7 +273,7 @@ namespace DOM
              * @param  rotateType (OUT)
              *         Rotation type of the hatched stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetRotateType(HatchedRotateType& rotateType) = 0;
 
@@ -277,7 +284,7 @@ namespace DOM
              * @param  curveType (OUT)
              *         Curve type of the hatched stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetCurveType(HatchedCurveType& curveType) = 0;
 
@@ -288,7 +295,7 @@ namespace DOM
              * @param  lengthType (OUT)
              *         Length type of the hatched stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetLengthType(HatchedLengthType& lengthType) = 0;
 

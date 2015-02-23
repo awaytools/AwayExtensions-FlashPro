@@ -39,7 +39,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMList.
+     * @brief Defines the universally-unique interface ID for IFCMList.
      *
      * @note  Textual Representation:  {FEAF29A0-9A0D-4C4F-9E58-1BA7E279824B}
      */
@@ -66,24 +66,25 @@ namespace FCM
     BEGIN_DECLARE_INTERFACE(IFCMList, FCMIID_IFCMList)
 
         /**
-         * @brief  Fetches the number of pointer to IFCMUnknown objects in the List.
+         * @brief  Fetches the count of pointers to IFCMUnknown objects in the List.
          *
          * @param  count (OUT)
-         *         Populated with the number of pointer to IFCMUnknown objects in the List.
+         *         Populated with the count of pointers to IFCMUnknown objects in the List.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return On success returns the code FCM_SUCCESS, else returns an error code.
          */
          virtual FCM::Result _FCMCALL Count(FCM::U_Int32& count) = 0;
 
 
         /**
-         * @brief  Returns the IFCMUnknown pointer at given index.
+         * @brief  Returns the IFCMUnknown pointer at a given index.
          *
          * @param  index (IN)
-         *         The location of the entry in List for which we need info.
-         *        Index should range from 0 and Count-1.
+         *         The index of an entry in the List.
+         *         Index should range from 0 and Count-1.
          *
-         * @return IFCMUnknown pointer is returned for success. NULL is returned for failure.
+         * @return On success returns the IFCMUnknown pointer corresponding to the index passed, 
+         *         else returns NULL.
          */
          virtual PIFCMUnknown _FCMCALL operator [](FCM::U_Int32 index) = 0;
 

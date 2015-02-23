@@ -59,12 +59,11 @@ namespace DOM
                 {0xf8dfae9, 0x2aa3, 0x49fa, {0x83, 0x25, 0xcb, 0x4e, 0x2, 0xca, 0xe, 0x88}};
 
 
-
-
             /**
              * @brief Defines the property for "geometry".
              */
             #define kDOMGeometricProperty  "com.adobe.geometry"
+
 
             /**
              * @var   GEOMETRIC_PROPERTY_ID

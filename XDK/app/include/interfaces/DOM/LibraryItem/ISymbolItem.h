@@ -45,7 +45,7 @@ namespace DOM
     {
         /**
          * @brief Defines the Interface ID (which is universally unique) for 
-         *        ISymbolItem
+         *        ISymbolItem.
          *
          * @note  Textual Representation: {596975D9-32F0-412D-8332-C5270CAF2CF3}
          */
@@ -77,7 +77,7 @@ namespace DOM
              * @param  pTimeline (OUT)
              *         Timeline object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */    
             virtual FCM::Result _FCMCALL GetTimeLine(PITimeline& pTimeline) = 0;
             

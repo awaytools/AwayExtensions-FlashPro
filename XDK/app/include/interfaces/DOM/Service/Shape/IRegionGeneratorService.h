@@ -59,8 +59,8 @@ namespace DOM
         namespace Shape
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IRegionGeneratorService
+             * @brief Defines the universally-unique interface ID for 
+             *        IRegionGeneratorService.
              *
              * @note  Textual Representation:  {EC97BC1D-0C7F-419E-836C-6997529671A9}
              */
@@ -96,11 +96,12 @@ namespace DOM
                  *         Shape whose filled regions needs to be extracted.
                  *
                  * @param  pFilledRegionList (OUT)
-                 *         List of filled regions (IFilledRegion)
+                 *         List of filled regions (IFilledRegion). Each item in the list can be 
+                 *         queried for IFilledRegion.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
-                 * @see   IFilledRegion
+                 * @see   DOM::Service::Shape::IFilledRegion
                  */
                 virtual FCM::Result _FCMCALL GetFilledRegions(
                     DOM::FrameElement::PIShape pShape, 
@@ -112,15 +113,16 @@ namespace DOM
                  *         The group list is ordered as per their rendering order.
                  *
                  * @param  pShape (IN)
-                 *         Shape whose stroke list needs to be extracted
+                 *         Shape whose stroke list needs to be extracted.
                  *
                  * @param  pStrokeGroupList (OUT)
                  *         List of stroke group (IStrokeGroup). Each stroke group contains 
-                 *         strokes with the same stroke style.
+                 *         strokes with the same stroke style. Each item in the list can be 
+                 *         queried for IStrokeGroup.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
-                 * @see    IStrokeGroup
+                 * @see    DOM::Service::Shape::IStrokeGroup
                  */
                 virtual FCM::Result _FCMCALL GetStrokeGroups(
                     DOM::FrameElement::PIShape pShape, 

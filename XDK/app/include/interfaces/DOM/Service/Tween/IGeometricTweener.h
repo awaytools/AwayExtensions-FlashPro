@@ -46,8 +46,8 @@ namespace DOM
         namespace Tween
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IGeometricTweener
+             * @brief Defines the universally-unique interface ID for 
+             *        IGeometricTweener.
              *
              * @note  Textual Representation: {3D45198B-1ECD-4731-A71C-A8C4897F1B1C}
              */
@@ -79,7 +79,7 @@ namespace DOM
             BEGIN_DECLARE_INTERFACE(IGeometricTweener, IID_IGEOMETRIC_TWEENER)
 
                 /**
-                 * @brief  Returns the geometric transform within the frame span duration
+                 * @brief  Returns the geometric transform within the frame span duration.
                  *
                  * @param  pTween (IN)
                  *         Tween object
@@ -92,7 +92,7 @@ namespace DOM
                  * @param  geomMatrix (OUT)
                  *         Matrix containing the geometric transform at the offset.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */ 
                 virtual FCM::Result _FCMCALL GetGeometricTransform(
                     PITween pTween, 

@@ -54,8 +54,8 @@ namespace DOM
         namespace Tween
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IShapeTweener
+             * @brief Defines the universally-unique interface ID for 
+             *        IShapeTweener.
              *
              * @note  Textual Representation: {7228A823-6A82-4C89-A60C-7CB8C2183EE4}
              */
@@ -87,7 +87,7 @@ namespace DOM
             BEGIN_DECLARE_INTERFACE(IShapeTweener, IID_ISHAPE_TWEENER)
 
                 /**
-                 * @brief  Returns the shape object at a specific point during shape animation
+                 * @brief  Returns the shape object at a specific point during shape animation.
                  *
                  * @param  pTween (IN)
                  *         Tween object
@@ -95,12 +95,12 @@ namespace DOM
                  * @param  offset (IN)
                  *         The point in the frame span for which the shape is required. 
                  *         It can have values from 0 to (FrameDuration - 2). 
-                 *         The value at (FrameDuration - 1) is available the next keyframe.
+                 *         The value at (FrameDuration - 1) is available in the next keyframe.
                  *
                  * @param  pShape (OUT)
                  *         Contains the morphed shape at the specified offset.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */ 
                 virtual FCM::Result _FCMCALL GetShape(
                     PITween pTween, 

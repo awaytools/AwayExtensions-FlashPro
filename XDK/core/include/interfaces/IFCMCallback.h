@@ -20,10 +20,10 @@
  * @file  IFCMCallback.h
  *
  * @brief This file contains interface for IFCMCallback. 
- *        The IFCMCallback interface is a glue for the objects created to access the FCM.Each object
- *        of an interface implementation contains pointer IFCMCallback object which can be used
- *        to create a new object of any classID and interfaceID and also can be used to Register
- *        a service which can be used by FCM Application (or) Plugin. By default the IFCMCalloc
+ *        The IFCMCallback interface is a glue for the objects created to access the FCM. Each object
+ *        of an interface implementation contains pointer IFCMCallback object, which can be used
+ *        to create a new object of any classID and interfaceID and also can be used to register
+ *        a service which can be used by FCM Application or Plugin. By default, the IFCMCalloc
  *        and IFCMNotificationService are registered with IFCMCallback by FCM Application.
  */
 
@@ -43,7 +43,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMCallback.
+     * @brief Defines the universally-unique interface ID for IFCMCallback.
      *
      * @note  Textual Representation:  {DB438EAB-F457-491D-8EF2-A1B867707E3E}
      */
@@ -70,7 +70,7 @@ namespace FCM
     BEGIN_DECLARE_INTERFACE(IFCMCallback, FCMIID_IFCMCallback)
 
         /**
-         * @brief  Creates a single object of the class associated with a specified classID.
+         * @brief  Creates a single object of the class associated with the specified classID.
          *
          * @param  pUnkOuter (IN) 
          *         If NULL, indicates that the object is not being created as part of  
@@ -86,10 +86,11 @@ namespace FCM
          *
          * @param  ppvObj (OUT)
          *         Address of pointer variable that receives the interface pointer 
-         *         requested in interfaceID.Upon successful return, *ppvObj contains
-         *         the requested interface pointer. Upon failure, *ppvObj contains NULL.
+         *         requested in interfaceID.Upon successful return, *ppvObj contains the
+         *         requested interface pointer, which the caller should release after the use.
+         *         Upon failure, *ppvObj contains NULL.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL CreateInstance(
             PIFCMUnknown pUnkOuter,
@@ -105,9 +106,9 @@ namespace FCM
          *         Service ID associated with the service.
          * 
          * @param  serviceRef (OUT)
-         *         The service object.
+         *         The service object, which the caller should release after the use.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL GetService(
             const FCM::SRVCID& serviceId,

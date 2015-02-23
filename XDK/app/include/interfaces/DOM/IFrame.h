@@ -50,7 +50,7 @@ namespace DOM
     /**
      * @enum  KeyFrameLabelType
      *
-     * @brief Defines the types of frames
+     * @brief Defines the types of frames.
      */
     enum KeyFrameLabelType
     {
@@ -74,8 +74,8 @@ namespace DOM
 namespace DOM
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for 
-     *        IFrame
+     * @brief Defines the universally-unique interface ID for 
+     *        IFrame.
      *
      * @note  Textual Representation: {386CB02E-74D0-4114-9E10-CBE8E8D164A7}
      */
@@ -98,48 +98,84 @@ namespace DOM
     BEGIN_DECLARE_INTERFACE(IFrame, IID_IFRAME)
 
         /**
-         * @brief  This function gets the number of frames in a frame sequence. .
+         * @brief  This function gets the number of frames in a frame sequence.
          *
          * @param  duration (OUT)
          *         Number of frames in a frame sequence.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */    
         virtual FCM::Result _FCMCALL GetDuration(FCM::U_Int32& duration) = 0;
 
     
         /**
-         * @brief  This function returns an array of FrameElements.This will contain the Sound, Tween
-         *         and the FrameDisplayElements which are items on stage.The order of 
-         *         FrameDisplayElements is the order is from the topChild to bottomChild
+         * @brief  This function returns an array of FrameElements. This will contain the Sound
+         *         and the FrameDisplayElements, which are items on stage. The order of 
+         *         FrameDisplayElements is the order from the topChild to bottomChild
          *         in the frame. If there are multiple shapes on the Stage, and each is 
          *         ungrouped, they are treated as one FrameDisplayElement. If each shape is 
          *         grouped, so there are multiple groups on the Stage, they are 
          *         treated as separate FrameDisplayElements. In other words, raw, ungrouped 
          *         shapes are treated as a single FrameDisplayElement, regardless of how many 
-         *         separate shapes are on the Stage. If a frame contains three 
-         *         raw, ungrouped shapes, for example, then number of FrameDisplayElements in 
+         *         separate shapes are on the Stage. For example, if a frame contains three 
+         *         raw, ungrouped shapes, then the number of FrameDisplayElements in 
          *         the list will be 1. 
          *
          * @param  pFrameElementsList (OUT)
-         *         List of Frame elements
+         *         List of Frame elements. Each object in the list can be queried depending 
+         *         on its type: 
+         *            Sound - ISound
+         *            Shape - IFrameDisplayElement, IShape
+         *            Group - IFrameDisplayElement, IGroup
+         *            Text  - IFrameDisplayElement, IClassicText
+         *            Bitmap - IFrameDisplayElement, IBitmapInstance
+         *            Graphic - IFrameDisplayElement, IInstance, ISymbolInstance, IGraphic
+         *            Movie Clip - IFrameDisplayElement, IInstance, ISymbolInstance, IMovieClip
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @see    DOM::FrameElement::IFrameDisplayElement
+         *
+         * @see    DOM::FrameElement::ISound
+         *
+         * @see    DOM::FrameElement::IShape
+         *
+         * @see    DOM::FrameElement::IGroup
+         *
+         * @see    DOM::FrameElement::IClassicText
+         *
+         * @see    DOM::FrameElement::IBitmapInstance
+         *
+         * @see    DOM::FrameElement::IInstance
+         *
+         * @see    DOM::FrameElement::ISymbolInstance
+         *
+         * @see    DOM::FrameElement::IGraphic
+         *
+         * @see    DOM::FrameElement::IMovieClip
          */    
         virtual FCM::Result _FCMCALL GetFrameElements(PIFCMList& pFrameElementsList) = 0;
 
 
         /**
-         * @brief  This function returns an array of FrameElements of type IID_ITween, IID_ISound &
-         *         IID_IFrameDisplayElements
+         * @brief  This function returns an array of FrameElements of type IID_ISound, and
+         *         IID_IFrameDisplayElements.
          *
          * @param  iid (IN)
-         *         Interface ID, will work with IID_ITween, IID_ISound & IID_IFrameDisplayElements.
+         *         Interface ID, will work with IID_ISound, and IID_IFrameDisplayElements.
          *
          * @param  pFrameElementsList (OUT)
-         *         List of Frame elements of type IID_ITween, IID_ISound & IID_IFrameDisplayElements.
+         *         List of Frame elements. Each object in the list can be queried depending 
+         *         on its type: 
+         *            Sound - ISound
+         *            Shape - IFrameDisplayElement, IShape
+         *            Group - IFrameDisplayElement, IGroup
+         *            Text  - IFrameDisplayElement, IClassicText
+         *            Bitmap - IFrameDisplayElement, IBitmapInstance
+         *            Graphic - IFrameDisplayElement, IInstance, ISymbolInstance, IGraphic
+         *            Movie Clip - IFrameDisplayElement, IInstance, ISymbolInstance, IMovieClip
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL GetFrameElementsByType(
             ConstFCMIID& iid, 
@@ -152,9 +188,9 @@ namespace DOM
          * @param  frameIndex (OUT)
          *         Start frame index of the frame span.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          *
-         * @note   For example, let a frame span from frame number 6 to 10. Then,
+         * @note   For example, let a frame, span from frame number 6 to 10 and
          *         this function will return 6 for any frame within this span.
          */    
         virtual FCM::Result _FCMCALL GetStartFrameIndex(FCM::U_Int32& frameIndex) = 0;
@@ -166,7 +202,10 @@ namespace DOM
          * @param  ppLabel (OUT)
          *         Label of the frame.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @note   The memory allocated for 'ppLabel' in this function must be freed 
+         *         by the caller using IFCMCalloc::Free().
          */
         virtual FCM::Result _FCMCALL GetLabel(FCM::StringRep16* ppLabel) = 0;
 
@@ -177,19 +216,22 @@ namespace DOM
          * @param  labelType (OUT)
          *         Type of label.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */    
         virtual FCM::Result _FCMCALL GetLabelType(KeyFrameLabelType& labelType) = 0;
         
 
         /**
-         * @brief  This function gets a string that represents the code in the 
-         *         script associated with this frame.
+         * @brief  This function gets a string that represents the frame script 
+         *         associated with this frame.
          *
          * @param  ppScript (OUT)
          *         Frame script
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @note   The memory allocated for 'ppScript' in this function must be freed 
+         *         by the caller using IFCMCalloc::Free().
          */    
         virtual FCM::Result _FCMCALL GetScript(FCM::StringRep16* ppScript) = 0;
     
@@ -200,7 +242,7 @@ namespace DOM
          * @param  pTween (OUT)
          *         ITween object
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL GetTween(PITween& pTween) = 0;
 

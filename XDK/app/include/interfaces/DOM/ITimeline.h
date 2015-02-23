@@ -44,8 +44,8 @@ namespace FCM
 namespace DOM
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for 
-     *        ITimeline
+     * @brief Defines the universally-unique interface ID for 
+     *        ITimeline.
      *
      * @note  Textual Representation: {9AB0D86F-33AC-4185-9787-983B245367E1}
      */
@@ -77,10 +77,13 @@ namespace DOM
          *         the name of the movie-clip is returned.
          *
          * @param  ppName (OUT)
-         *         Name of the current timeline
+         *         Name of the current timeline.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error 
+         * @return On success, FCM_SUCCESS is returned, else an error 
          *         code is returned and "ppName" is set to NULL.
+         *
+         * @note   The memory allocated for 'ppName' in this function must be freed 
+         *         by the caller using IFCMCalloc::Free().
          */        
         virtual FCM::Result _FCMCALL GetName(FCM::StringRep16* ppName) = 0;
 
@@ -90,9 +93,21 @@ namespace DOM
          *         timeline. 
          *
          * @param  pLayerList (OUT)
-         *         List of layers
+         *         List of layers. The objects in the layer lists can be queried
+         *         for ILayer along with one of the following interfaces: 
+         *         ILayerFolder, ILayerNormal, ILayerMask and ILayerGuide.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @see    DOM::ILayer
+         *
+         * @see    DOM::Layer::ILayerFolder
+         *
+         * @see    DOM::Layer::ILayerNormal
+         *
+         * @see    DOM::Layer::ILayerMask
+         *
+         * @see    DOM::Layer::ILayerGuide
          */
         virtual FCM::Result _FCMCALL GetLayers(FCM::PIFCMList& pLayerList) = 0;
 
@@ -104,7 +119,7 @@ namespace DOM
          * @param  frameCount (OUT)
          *         Number of frames in the timeline’s longest layer
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
          */    
         virtual FCM::Result _FCMCALL GetMaxFrameCount(FCM::U_Int32& frameCount) = 0;
 

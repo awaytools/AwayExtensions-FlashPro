@@ -102,7 +102,7 @@ namespace AwayJS
         if(foundIndex>0){
             featureXMLPath = featureXMLPath.substr(0, foundIndex);
         }
-        featureXMLPath += "AwayJS_Features.xml";
+        featureXMLPath += "/../../../ressources/AwayJS_Features.xml";
         
         // trace
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk;

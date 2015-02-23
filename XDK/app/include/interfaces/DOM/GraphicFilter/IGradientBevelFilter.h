@@ -45,7 +45,7 @@ namespace DOM
     namespace GraphicFilter
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IGradientBevelFilter
          *
          * @note  Textual Representation:  {09BF0D5C-78ED-4D0F-9BF5-75F81B2DE0AB}
@@ -70,7 +70,6 @@ namespace DOM
          * @class IGradientBevelFilter
          *
          * @brief This interface defines the Gradient Bevel filter applied to the object.
-         *
          */
         BEGIN_DECLARE_INTERFACE(IGradientBevelFilter, IID_IGRADIENT_BEVEL_FILTER)
 
@@ -81,7 +80,7 @@ namespace DOM
              * @param  blurX (OUT) 
              *         Value of the blur-X property for the object.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetBlurX(FCM::Double& blurX) = 0;
 
@@ -93,7 +92,7 @@ namespace DOM
               * @param  blurY (OUT) 
               *         Value of the blur-Y property for the object.
               *
-              * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+              * @return On success, FCM_SUCCESS is returned, else an error code is returned.
               */ 
             virtual FCM::Result _FCMCALL GetBlurY(FCM::Double& blurY) = 0;
 
@@ -104,7 +103,7 @@ namespace DOM
              * @param  strength (OUT) 
              *         Value of the strength property for the object in context.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetStrength(FCM::S_Int32& strength) = 0;
             
@@ -115,7 +114,7 @@ namespace DOM
              * @param  qualityType (OUT) 
              *         Quality type of the filter(High or Low or Medium).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetQuality(Utils::FilterQualityType& qualityType) = 0;
 
@@ -127,7 +126,7 @@ namespace DOM
              * @param  angle (OUT) 
              *         Angle at which the filter effects are applied(in Radians).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetAngle(FCM::Double& angle) = 0;
 
@@ -139,7 +138,7 @@ namespace DOM
              * @param  distance (OUT) 
              *         Distance at which the filter effects are applied.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetDistance(FCM::Double& distance) = 0;
 
@@ -150,7 +149,7 @@ namespace DOM
              * @param  knockOut (OUT) 
              *         Boolean variable which is set to true when Knock out property is enabled.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetKnockout(FCM::Boolean& knockOut) = 0;
 
@@ -161,7 +160,7 @@ namespace DOM
              * @param  filterType (OUT) 
              *         This parameter can any on of the three types - Inner, Outer or Full.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetFilterType(Utils::FilterType& filterType) = 0;
             
@@ -171,9 +170,10 @@ namespace DOM
              *
              * @param  pGradient (OUT) 
              *         This parameter used to get key color count and color at index 
-             *         required to make up gradient.
+             *         required to make up gradient. Depending on type of gradient, this 
+             *         can be either queried for ILinearColorGradient or IRadialColorGradient.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetGradient(FCM::PIFCMUnknown& pGradient) = 0;
 
@@ -186,7 +186,7 @@ namespace DOM
              *         Boolean value which is set to true when filter is enabled 
              *         for the object in context else set to false.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL IsEnabled(FCM::Boolean& enabled) = 0;
 

@@ -20,7 +20,7 @@
  * @file  IGlyph.h
  *
  * @brief This file contains interface for IGlyph. IGlyph  
- *        contains methods to obtain character code and its corresponding shape outline.
+ *        contains methods to obtain information about a glyph.
  */
 
 #ifndef IGLYPH_H_
@@ -55,8 +55,8 @@ namespace DOM
         namespace FontTable
         {        
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IGlyph
+             * @brief Defines the universally-unique interface ID for 
+             *        IGlyph.
              *
              * @note  Textual Representation: {CC4BCE73-F455-4010-AE92-17CF8B6E1205}
              */
@@ -81,8 +81,7 @@ namespace DOM
             /**
             * @class IGlyph
             *
-            * @brief Defines the interface to obtain character code and its 
-            *        corresponding shape outline.
+            * @brief Defines the interface that defines a glyph.
             */    
             BEGIN_DECLARE_INTERFACE(IGlyph, IID_IGLYPH)
                 
@@ -92,7 +91,7 @@ namespace DOM
                  * @param  charCode (OUT)
                  *         the char code for the Glyph is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */                
                 virtual FCM::Result _FCMCALL GetCharCode(FCM::U_Int16& charCode) = 0;
                 
@@ -103,7 +102,7 @@ namespace DOM
                  * @param  advance (OUT)
                  *         The advance value for the Glyph is returned.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  */
                 virtual FCM::Result _FCMCALL GetAdvance(FCM::Double& advance) = 0;
             
@@ -114,9 +113,7 @@ namespace DOM
                  * @param  pShape (OUT)
                  *         Outline of the Glyph is returned as a IShape object.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned. 
-                 *
-                 * @see    IFontLicensingInfo             
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned. 
                  */
                 virtual FCM::Result _FCMCALL GetOutline(FrameElement::PIShape& pShape) = 0;
                 

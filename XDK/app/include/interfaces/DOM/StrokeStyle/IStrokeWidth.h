@@ -45,8 +45,8 @@ namespace DOM
     namespace StrokeStyle
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IStrokeWidth
+         * @brief Defines the universally-unique interface ID for 
+         *        IStrokeWidth.
          *
          * @note  Textual Representation: {7F877445-E2B3-4E39-A25F-294A22ED98D3}
          */

@@ -20,6 +20,7 @@
  * @file  ILibraryItem.h
  *
  * @brief This file contains the interface for ILibraryItem. 
+ *        Each Library item is a reusable resource residing in the library. 
  */
 
 #ifndef ILIBRARY_ITEM_H_
@@ -42,37 +43,139 @@ namespace FCM
 
 /* -------------------------------------------------- Macros / Constants */
 
-// LibraryItem prop Key and type
+/**
+ * @def   kLibProp_LinkageClass_DictKey
+ *
+ * @brief Dictionary key for linkage class name. 
+ */
 #define kLibProp_LinkageClass_DictKey                   "LinkageClass"
+
+
+/**
+ * @def   kLibProp_LinkageClass_DictType
+ *
+ * @brief Type of value for linkage class.
+ */
 #define kLibProp_LinkageClass_DictType                  FCM::kFCMDictType_StringRep8
 
+
+/**
+ * @def   kLibProp_LinkageBaseClass_DictKey
+ *
+ * @brief Dictionary key for linkage class base name. 
+ */
 #define kLibProp_LinkageBaseClass_DictKey               "LinkageBaseClass"
+
+
+/**
+ * @def   kLibProp_LinkageBaseClass_DictType
+ *
+ * @brief Type of value for linkage base class.
+ */
 #define kLibProp_LinkageBaseClass_DictType              FCM::kFCMDictType_StringRep8
 
+
+/**
+ * @def   kLibProp_LinkageIdentifier_DictKey
+ *
+ * @brief Dictionary key for linkage identifier. 
+ */
 #define kLibProp_LinkageIdentifier_DictKey              "LinkageIdentifier"
+
+
+/**
+ * @def   kLibProp_LinkageIdentifier_DictType
+ *
+ * @brief Type of value for linkage identifer.
+ */
 #define kLibProp_LinkageIdentifier_DictType             FCM::kFCMDictType_StringRep8
 
+
+/**
+ * @def   kLibProp_LinkageURL_DictKey
+ *
+ * @brief Dictionary key for linkage URL. 
+ */
 #define kLibProp_LinkageURL_DictKey                     "LinkageURL"
+
+
+/**
+ * @def   kLibProp_LinkageURL_DictType
+ *
+ * @brief Type of value for linkage URL.
+ */
 #define kLibProp_LinkageURL_DictType                    FCM::kFCMDictType_StringRep8
 
+
+/**
+ * @def   kLibProp_LinkageExportForRS_DictKey
+ *
+ * @brief Dictionary key for 'Linkage Export For Runtime Sharing'.
+ */
 #define kLibProp_LinkageExportForRS_DictKey             "LinkageExportForRS"
+
+
+/**
+ * @def   kLibProp_LinkageExportForRS_DictType
+ *
+ * @brief Type of value for 'Linkage Export For Runtime Sharing'.
+ */
 #define kLibProp_LinkageExportForRS_DictType            FCM::kFCMDictType_Bool
 
+
+/**
+ * @def   kLibProp_LinkageImportForRS_DictKey
+ *
+ * @brief Dictionary key for 'Import For Runtime Sharing'.
+ */
 #define kLibProp_LinkageImportForRS_DictKey             "LinkageImportForRS"
+
+
+/**
+ * @def   kLibProp_LinkageImportForRS_DictType
+ *
+ * @brief Type of value for 'Import For Runtime Sharing'.
+ */
 #define kLibProp_LinkageImportForRS_DictType            FCM::kFCMDictType_Bool
 
+
+/**
+ * @def   kLibProp_LinkageExportInFirstFrame_DictKey
+ *
+ * @brief Dictionary key for 'Export In First Frame'.
+ */
 #define kLibProp_LinkageExportInFirstFrame_DictKey      "LinkageExportInFirstFrame"
+
+
+/**
+ * @def   kLibProp_LinkageExportInFirstFrame_DictType
+ *
+ * @brief Type of value for 'Export In First Frame'.
+ */
 #define kLibProp_LinkageExportInFirstFrame_DictType     FCM::kFCMDictType_Bool
 
+
+/**
+ * @def   kLibProp_LinkageExportForAS_DictKey
+ *
+ * @brief Dictionary key for 'Export For Actionscript'.
+ */
 #define kLibProp_LinkageExportForAS_DictKey             "LinkageExportForAS"
+
+
+/**
+ * @def   kLibProp_LinkageExportForAS_DictType
+ *
+ * @brief Type of value for 'Export For Actionscript'.
+ */
 #define kLibProp_LinkageExportForAS_DictType            FCM::kFCMDictType_Bool
 
 
 namespace DOM
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for 
-     *        ILibraryItem
+     * @brief Defines the universally-unique interface ID for 
+     *        ILibraryItem.
      *
      * @note  Textual Representation: {2EA5B91D-26C8-45A4-8BDC-41AD1F2C7B73}
      */
@@ -91,8 +194,7 @@ namespace DOM
     /**
     * @class ILibraryItem
     *
-    * @brief Each Library item is a reusable resource residing in the library. 
-    *        The frame contains instances of this resource.
+    * @brief Defines the interface that represents a library item in the library. 
     */
     BEGIN_DECLARE_INTERFACE(ILibraryItem, IID_ILIBRARY_ITEM)
         
@@ -102,18 +204,30 @@ namespace DOM
          * @param  ppName (OUT)
          *         Name of the library item with the full path in Library.
          *
-         * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+         * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+         *
+         * @note   The memory allocated for 'ppName' in this function must be freed 
+         *         by the caller using IFCMCalloc::Free().
          */
         virtual FCM::Result _FCMCALL GetName(FCM::StringRep16* ppName) = 0;
 
 
        /**
-        * @brief  GetProperties returns a set of property names and their values
+        * @brief  GetProperties returns a set of property names and their values.
         *
         * @param  pPropDict (OUT)
-        *         IFCMDictionary object
+        *         Dictionary containing the preperties and their values. The possible properties 
+        *         int the dictionary are as follows:
+        *           kLibProp_LinkageClass_DictKey,
+        *           kLibProp_LinkageBaseClass_DictKey,
+        *           kLibProp_LinkageIdentifier_DictKey,
+        *           kLibProp_LinkageURL_DictKey,
+        *           kLibProp_LinkageExportForRS_DictKey,
+        *           kLibProp_LinkageImportForRS_DictKey,
+        *           kLibProp_LinkageExportInFirstFrame_DictKey,
+        *           kLibProp_LinkageExportForAS_DictKey
         *
-        * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+        * @return On success, FCM_SUCCESS is returned, else an error code is returned.
         */    
         virtual FCM::Result _FCMCALL GetProperties(PIFCMDictionary& pPropDict) = 0;
     

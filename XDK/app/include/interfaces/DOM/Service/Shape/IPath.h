@@ -51,8 +51,8 @@ namespace DOM
         namespace Shape
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IPath
+             * @brief Defines the universally-unique interface ID for 
+             *        IPath.
              *
              * @note  Textual Representation: {FE5B89A9-9A9C-41E4-8818-E9A73B57D0DB}
              */
@@ -85,11 +85,11 @@ namespace DOM
                  * @brief  This function gets all the edges that defines a connected path. 
                  *
                  * @param  pEdgeList (OUT)
-                 *         List of edges (IEdge) that define a connected path
+                 *         List of edges (IEdge) that define a connected path.
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  *
-                 * @see    IEdge
+                 * @see    DOM::Service::Shape::IEdge
                  */
                 virtual FCM::Result _FCMCALL GetEdges(PIFCMList& pEdgeList) = 0;
 

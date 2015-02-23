@@ -68,8 +68,8 @@ namespace Exporter
     namespace Service
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IResourcePalette
+         * @brief Defines the universally-unique interface ID for 
+         *        IResourcePalette.
          *
          * @note  Textual Representation:  {BC49188C-B9F7-4BCA-AA58-ED3CD9BCFCC7}
          */
@@ -92,7 +92,7 @@ namespace Exporter
          * @class IResourcePalette
          *
          * @brief An interface that defines a resource palette to hold all the resources 
-         *        encountered in the DOM traversal
+         *        encountered in the DOM traversal.
          */
         BEGIN_DECLARE_INTERFACE(IResourcePalette, IID_IRESOURCE_PALETTE)
 
@@ -110,7 +110,7 @@ namespace Exporter
              * @param  pTimelineBuilder (IN)
              *         TimelineBuilder object for the symbol. Contains all the timeline commands.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL AddSymbol(
                 FCM::U_Int32 resourceId, 
@@ -122,17 +122,18 @@ namespace Exporter
              * @brief  This function is invoked to add a shape to the resource palette.
              *
              * @param  resourceId (IN)
-             *         Resource Id associated with the shape which is getting 
+             *         Resource Id associated with the shape, which is getting 
              *         added to the palette.
              *
              * @param  pShape (IN) 
              *         Shape object associated with resourceId via which shape information
-             *         is extracted
+             *         is extracted.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              *
-             * @note   Shape services can be used to extract the geometry information (such as 
-             *         the boundary and holes) along with fill and stroke style information.
+             * @note   Shape services (FLA_REGION_GENERATOR_SERVICE) can be used to extract 
+             *         the geometry information (such as the boundary and holes) along with 
+             *         fill and stroke style information.
              */
             virtual FCM::Result _FCMCALL AddShape(
                 FCM::U_Int32 resourceId, 
@@ -148,11 +149,15 @@ namespace Exporter
              *
              * @param  pMediaItem (IN) 
              *         Library object associated with sound via which sound information
-             *         is extracted.
+             *         is extracted. This parameter can also be successfully queried for 
+             *         DOM::ILibraryItem.
              *
              * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
              *
-             * @note   Sound service can be used to export the media item to a known sound format.
+             * @note   Sound service (FLA_SOUND_SERVICE) can be used to export the media item to a 
+             *         known sound format.
+             *
+             * @see    ILibraryItem
              */
             virtual FCM::Result _FCMCALL AddSound(
                 FCM::U_Int32 resourceId, 
@@ -168,11 +173,13 @@ namespace Exporter
              *
              * @param  pMediaItem (IN) 
              *         Library object associated with bitmap via which bitmap information
-             *         is extracted.
+             *         is extracted. This parameter can also be successfully queried for 
+             *         DOM::ILibraryItem.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              *
-             * @note   Bitmap service can be used to export the media item to a known bitmap format.
+             * @note   Bitmap service (FLA_BITMAP_SERVICE) can be used to export the media item 
+             *         to a known bitmap format.
              */
             virtual FCM::Result _FCMCALL AddBitmap(
                 FCM::U_Int32 resourceId, 
@@ -204,11 +211,11 @@ namespace Exporter
              * @param  resourceId (IN)
              *         Resource Id .
              *
-             * @param  hasResource (IN) 
+             * @param  hasResource (OUT) 
              *         This param must be updated to true if the resource is already added to the
              *         the resource palette.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL HasResource(
                 FCM::U_Int32 resourceId, 

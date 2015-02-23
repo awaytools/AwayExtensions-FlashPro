@@ -40,7 +40,7 @@
 namespace FCM 
 {
     /**
-     * @brief Defines the Interface ID (which is universally unique) for IFCMClassFactory.
+     * @brief Defines the universally-unique interface ID for IFCMClassFactory.
      *
      * @note  Textual Representation:  {B249192E-D262-43BA-8652-C41FCB3420F5}
      */
@@ -64,7 +64,7 @@ namespace FCM
      *
      * @brief Defines the interface that represents the ClassFactory.
      */
-	BEGIN_DECLARE_INTERFACE( IFCMClassFactory,FCMIID_IFCMClassFactory )
+    BEGIN_DECLARE_INTERFACE( IFCMClassFactory,FCMIID_IFCMClassFactory )
         
         /**
          * @brief  Creates an uninitialized object.
@@ -83,7 +83,7 @@ namespace FCM
          *         Upon success, contains address of requested interface object.
          *         On failure, set to NULL.
          *
-         * @return FCM_SUCCESS is returned for success. Otherwise an error code is returned.
+         * @return FCM_SUCCESS is returned for success, else an error code is returned.
          */
         virtual FCM::Result _FCMCALL CreateInstance(
             PIFCMUnknown pUnkOuter,
@@ -91,7 +91,7 @@ namespace FCM
             ConstRefFCMIID iid,
             FCM::PPVoid pAny) = 0;
 
-	END_DECLARE_INTERFACE
+    END_DECLARE_INTERFACE
 
 };  // namespace FCM
 

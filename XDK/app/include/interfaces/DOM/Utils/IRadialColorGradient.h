@@ -20,7 +20,7 @@
  * @file  IRadialColorGradient.h
  *
  * @brief This file contains the interface for IRadialColorGradient. This interface
- *         represents a radial color gradient.
+ *        represents a radial color gradient.
  */
 
 #ifndef IRADIAL_COLOR_GRADIENT_H_
@@ -46,8 +46,7 @@ namespace DOM
     {
 
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IRadialColorGradient
+         * @brief Defines the universally-unique Interface ID for IRadialColorGradient.
          *
          * @note  Textual Representation:  {28DC1E66-066F-4ABA-92A0-AA9DB74B9853}
          */
@@ -70,7 +69,6 @@ namespace DOM
          * @class IRadialColorGradient
          *
          * @brief This interface represents the radial color gradient.
-         *
          */
         BEGIN_DECLARE_INTERFACE(IRadialColorGradient, IID_IRADIAL_COLOR_GRADIENT)
      
@@ -81,7 +79,7 @@ namespace DOM
              * @param  nColors (OUT)
              *         Number of points in the color ramp
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetKeyColorCount(FCM::U_Int8& nColors) = 0;
 
@@ -97,7 +95,7 @@ namespace DOM
              * @param  colorpoint (OUT)
              *         The value of a color and its position in the color ramp;
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetKeyColorAtIndex(
                 FCM::U_Int8 index, 
@@ -113,7 +111,7 @@ namespace DOM
              *         Horizontal offset of the focal point from the transformation
              *         point.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual Result _FCMCALL GetFocalPoint(FCM::S_Int32& focalPoint) = 0;
             

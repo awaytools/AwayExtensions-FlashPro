@@ -19,8 +19,7 @@
 /**
  * @file  IBitmapInstance.h
  *
- * @brief This file contains the interface for IBitmapInstance. The 
- *        IBitmapInstance interface is a sub-class of IInstance. IBitmapInstance
+ * @brief This file contains the interface for IBitmapInstance. IBitmapInstance
  *        interface represents a bitmap on the stage.
  */
 
@@ -45,7 +44,7 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IBitmapInstance
          *
          * @note  Textual Representation: {E45B963E-A428-4D20-B91A-E8910684D8AB}

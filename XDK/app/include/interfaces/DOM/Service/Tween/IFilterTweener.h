@@ -51,8 +51,8 @@ namespace DOM
         namespace Tween
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IFilterTweener
+             * @brief Defines the universally-unique interface ID for 
+             *        IFilterTweener.
              *
              * @note  Textual Representation: {2B1CB09E-F507-4BD2-A1EF-1A61E583608F}
              */
@@ -85,7 +85,7 @@ namespace DOM
 
                 /**
                  * @brief  Returns a set of filters at a specific point within the frame span 
-                 *         duration
+                 *         duration.
                  *
                  * @param  pTween (IN)
                  *         Tween object
@@ -93,12 +93,12 @@ namespace DOM
                  * @param  offset (IN)
                  *         The point in the frame span for which filter values are required. 
                  *         It can have values from 0 to (FrameDuration - 2). 
-                 *         The value at (FrameDuration - 1) is available the next keyframe.
+                 *         The value at (FrameDuration - 1) is available in the next keyframe.
                  *
                  * @param  pFilterList (OUT)
                  *         This contains an ordered set of graphic filters(IGraphicFilter).
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is 
+                 * @return On success, FCM_SUCCESS is returned, else an error code is 
                  *         returned.
                  */
                 virtual FCM::Result _FCMCALL GetFilters(

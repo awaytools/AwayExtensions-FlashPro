@@ -44,8 +44,8 @@ namespace Exporter
     namespace Service
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ITimelineBuilderFactory
+         * @brief Defines the universally-unique interface ID for 
+         *        ITimelineBuilderFactory.
          *
          * @note  Textual Representation:  {19C111B8-283E-4CE5-A82F-DFB28E177397}
          */
@@ -77,7 +77,7 @@ namespace Exporter
              * @param  pTimelineBuilder (OUT)
              *         Timeline builder
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL CreateTimelineBuilder(PITimelineBuilder& pTimelineBuilder) = 0;
 

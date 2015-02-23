@@ -20,7 +20,7 @@
  * @file  ISolidStrokeStyle.h
  *
  * @brief This file contains the interface for ISolidStrokeStyle. This interface 
- *        represents a solid stroke of an edge.
+ *        represents a solid stroke style of an edge.
  */
 
 #ifndef ISOLID_STROKE_STYLE_H_
@@ -51,8 +51,8 @@ namespace DOM
     namespace StrokeStyle
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ISolidStrokeStyle
+         * @brief Defines the universally-unique interface ID for 
+         *        ISolidStrokeStyle.
          *
          * @note  Textual Representation: {6A896201-FD1D-46DB-8AE2-BE5B9AB25529}
          */
@@ -93,7 +93,7 @@ namespace DOM
         {
             /** 
              * Caller must ensure that this member is set to the sizeof this 
-             * structure ie it must be set to sizeof(CAP_STYLE).
+             * structure. That is, it must be set to sizeof(CAP_STYLE).
              */
             size_t structSize;
 
@@ -111,8 +111,8 @@ namespace DOM
         struct JOIN_STYLE
         {
             /** 
-             * Caller must ensure that this member is set to the sizeof this 
-             * structure ie it must be set to sizeof(JOIN_STYLE).
+             * Caller must ensure that this member is set to the size of this 
+             * structure. That is, it must be set to sizeof(JOIN_STYLE).
              */
             size_t structSize;
 
@@ -150,7 +150,7 @@ namespace DOM
              * @param  thickness (OUT)
              *         Thickness of the stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetThickness(FCM::Double& thickness) = 0;
 
@@ -159,9 +159,16 @@ namespace DOM
              * @brief  This function gets the fill style settings of the stroke.
              *
              * @param  pFillStyle (OUT)
-             *         Fill style of the stroke.
+             *         Fill style of the stroke (ISolidFillStyle or IGradientFillStyle
+             *         or IBitmapFillStyle).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
+             *
+             * @see    DOM::FillStyle::ISolidFillStyle
+             *
+             * @see    DOM::FillStyle::IGradientFillStyle
+             *
+             * @see    DOM::FillStyle::IBitmapFillStyle
              */
             virtual FCM::Result _FCMCALL GetFillStyle(PIFCMUnknown& pFillStyle) = 0;
 
@@ -174,7 +181,7 @@ namespace DOM
              * @param  joinStyle (OUT)
              *         Join style
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              *
              * @note   Caller of this function must set joinStyle.structSize to 
              *         sizeof(JOIN_STYLE).
@@ -190,7 +197,7 @@ namespace DOM
              * @param  capStyle (OUT)
              *         Cap style
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              *
              * @note   Caller of this function must set capStyle.structSize to 
              *         sizeof(CAP_STYLE).
@@ -206,20 +213,20 @@ namespace DOM
              * @param  scaleType (OUT)
              *         Type of scale
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned; else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetScaleType(Utils::ScaleType& scaleType) = 0;
 
 
             /**
              * @brief  This function should be used to find whether stroke hinting 
-             *         is set on the stroke.false will be returned for variable 
+             *         is set on the stroke. Stroke hinting will be returned 'false' for variable 
              *         width stroke.
              *
              * @param  strokeHinting (OUT)
-             *         Set to true if Stroke Hinting is on; otherwise false is set.
+             *         Set to true if stroke hinting is on; otherwise false is set.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetStrokeHinting(FCM::Boolean& strokeHinting) = 0;
 
@@ -232,7 +239,7 @@ namespace DOM
              * @param  pStrokeWidth (OUT)
              *         Stroke width associated with the stroke.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetStrokeWidth(DOM::StrokeStyle::PIStrokeWidth& pStrokeWidth) = 0;
 

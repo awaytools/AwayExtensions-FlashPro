@@ -19,95 +19,211 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\attr.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\audio.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\awd.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\awd_types.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\block.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\FileWriter.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\fonts.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\libawd.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\lodepng.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\message.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\meta.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\name.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\ns.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\primitive.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\settings.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2D.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2Dfill.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\shape2Dtimeline.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\stream.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\texture.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\texturepacker.h" />
-    <ClInclude Include="..\..\..\ThirdParty\cpp-libawd\include\util.h" />
-    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Include\tesselator.h" />
-    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\bucketalloc.h" />
-    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\dict.h" />
-    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\geom.h" />
-    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\mesh.h" />
-    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\priorityq.h" />
-    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\sweep.h" />
-    <ClInclude Include="..\..\..\ThirdParty\libtess2-master\Source\tess.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\awd.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\awd_project.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\base\anim_clip.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\base\anim_frame.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\base\attr.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\base\block.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\base\datablock.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\base\scene_base.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\base\state_element_base.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\animator.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\anim_set.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\audio.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\bitmap_texture.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\camera.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\command.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\cube_texture.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\effect_method.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\font.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\geometry.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\light.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\light_picker.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\material.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\mesh_inst.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\meta.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\namespace.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\objectcontainer.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\primitive.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\scene.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\shadows.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\skeleton.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\skeleton_anim_clip.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\skeleton_pose.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\skybox.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\texture_projector.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\text_element.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\text_format.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\timeline.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\uv_anim_clip.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\uv_pose.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\vertex_anim_clip.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\vertex_pose.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\block_instance.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\fonts.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\frame_commands.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\geom_elements.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\shading.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\skeleton_joint.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\stream.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\stream_attributes.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\subgeometry.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\timeline_frame.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\files\awd_file.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\files\awd_lzma.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\files\awd_zlib.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\files\file_reader.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\files\file_writer.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\utils\awd_globals.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\utils\awd_properties.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\utils\awd_types.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\utils\dirent_win.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\utils\platform.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\utils\settings.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\utils\util.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Include\tesselator.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\bucketalloc.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\dict.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\geom.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\mesh.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\priorityq.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\sweep.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\tess.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png\lodepng.h" />
     <ClInclude Include="..\..\include\DocType.h" />
-    <ClInclude Include="..\..\include\FontPathShape.h" />
-    <ClInclude Include="..\..\include\IOutputWriter.h" />
+    <ClInclude Include="..\..\include\FlashToAWDEncoder.h" />
+    <ClInclude Include="..\..\include\ITimelineWriter.h" />
     <ClInclude Include="..\..\include\MyXmlParser.h" />
-    <ClInclude Include="..\..\include\OutputWriter.h" />
+    <ClInclude Include="..\..\include\AWDTimelineWriter.h" />
     <ClInclude Include="..\..\include\Publisher.h" />
-    <ClInclude Include="..\..\include\ShapeEncoder.h" />
-    <ClInclude Include="..\..\include\ShapePool.h" />
-    <ClInclude Include="..\..\include\TimeLineEncoder.h" />
+    <ClInclude Include="..\..\include\RessourcePalette.h" />
+    <ClInclude Include="..\..\include\TimelineBuilder.h" />
+    <ClInclude Include="..\..\include\TimelineEncoder.h" />
     <ClInclude Include="..\..\include\Utils.h" />
-    <ClInclude Include="..\..\include\Version.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\attr.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\audio.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\awd.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\block.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\FileWriter.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\fonts.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\lodepng.cpp" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\message.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\meta.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\name.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\ns.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\settings.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2D.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2Dfill.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\shape2Dtimeline.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\stream.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\texture.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\texturepacker.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\cpp-libawd\src\util.cc" />
-    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\bucketalloc.c" />
-    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\dict.c" />
-    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\geom.c" />
-    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\mesh.c" />
-    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\priorityq.c" />
-    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\sweep.c" />
-    <ClCompile Include="..\..\..\ThirdParty\libtess2-master\Source\tess.c" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\bucketalloc.c" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\dict.c" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\geom.c" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\mesh.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\priorityq.c" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\sweep.c" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\tess.c" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png\lodepng.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix\IceRadix3Passes.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix\IceRevisitedRadix.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix\StdAfx.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\awd_project.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\base\AnimationClipBase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\base\AnimationFrameBase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\base\AttrElementBase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\base\BlockBase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\base\DataBlockBase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\base\SceneBlockBase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\base\StateElementbase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\AnimationSet.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Animator.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Audio.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\BitmapTexture.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Camera.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Command.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\CubeTexture.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\EffectMethod.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Font.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Geometry.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Light.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\LightPicker.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Material.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\MeshInst.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\MetaData.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Namespace.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\ObjectContainer3D.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Primitive.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Scene.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\ShadowMethod.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Skeleton.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\SkeletonAnimationClip.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\SkeletonPose.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\SkyBox.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\TextElement.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\TextFormat.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\TextureProjector.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Timeline.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\UVAnimationClip.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\UVPose.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\VertexAnimationClip.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\VertexPose.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\attributes\AttrBase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\attributes\NumAttr.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\attributes\NumAttrList.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\attributes\UserAttr.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\attributes\UserAttrList.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\BlockInstance.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FontElements.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommands.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\DataStream.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\DataStreamAttrBase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\geom_types.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\Path.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\PathSegment.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\FilledRegion.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\SharedVertex.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\SubGeom.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\SubGeomInternal.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\Triangle.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\Vertex.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\ShadingMethod.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\SkeletonJoint.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\TimeLineFrame.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\AWDFile.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\awdlzma.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\awdzlib.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\FileReader.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\FileWriter.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\DirentWin.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\geomutil\geomutil.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\geomutil\geomutil_helper.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\Settings.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\texture_atlas_util.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\util.cc" />
+    <ClCompile Include="..\..\src\adobe_frame_commands\AWDTimelineWriter.cpp" />
+    <ClCompile Include="..\..\src\adobe_frame_commands\RessourcePalette.cpp" />
+    <ClCompile Include="..\..\src\adobe_frame_commands\TimeLineBuilder.cpp" />
     <ClCompile Include="..\..\src\DocType.cpp" />
-    <ClCompile Include="..\..\src\FontGenerator.cpp" />
-    <ClCompile Include="..\..\src\FontPathShape.cpp" />
+    <ClCompile Include="..\..\src\FlashToAWDEncoder.cpp" />
+    <ClCompile Include="..\..\src\FlashToAWDEncoder_mediaItems.cpp" />
+    <ClCompile Include="..\..\src\FlashToAWDEncoder_fills.cpp" />
+    <ClCompile Include="..\..\src\FlashToAWDEncoder_fonts.cpp" />
+    <ClCompile Include="..\..\src\FlashToAWDEncoder_shapes.cpp" />
+    <ClCompile Include="..\..\src\FlashToAWDEncoder_text.cpp" />
     <ClCompile Include="..\..\src\Main.cpp" />
     <ClCompile Include="..\..\src\MyXmlParser.cpp" />
-    <ClCompile Include="..\..\src\OutputWriter.cpp" />
     <ClCompile Include="..\..\src\Publisher.cpp" />
     <ClCompile Include="..\..\src\PublisherUtils.cpp" />
-    <ClCompile Include="..\..\src\RessourcePalette.cpp" />
-    <ClCompile Include="..\..\src\ShapeEncoder.cpp" />
-    <ClCompile Include="..\..\src\ShapeEncoderEncode.cpp" />
-    <ClCompile Include="..\..\src\ShapeEncoderUtils.cpp" />
-    <ClCompile Include="..\..\src\ShapePool.cpp" />
-    <ClCompile Include="..\..\src\TimeLineBuilder.cpp" />
-    <ClCompile Include="..\..\src\TimeLineEncoder.cpp" />
+    <ClCompile Include="..\..\src\TimelineEncoder.cpp" />
     <ClCompile Include="..\..\src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AwayExtensionsFlashPro.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\awd_specs.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\awd_specs_introduction.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\awd_specs_part_1.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\awd_specs_part_2.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\awd_specs_part_3.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_coding_conventions.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_exporter_example.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_features.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_general_usage.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_importer_example.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_introduction.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_main.dox" />
+    <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_usage.dox" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{52D2400F-94F1-46C1-B14B-3BBD0ACA744D}</ProjectGuid>
@@ -197,9 +313,9 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\ThirdParty\libtess2-master\Source;..\..\..\ThirdParty\libtess2-master\Include;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\ThirdParty\cpp-libawd\src;..\..\..\ThirdParty\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Include;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_SYSTEM_NO_DEPRECATED;FLASHPRO_DVA_CUSTOM;BOOST_ALL_DYN_LINK;_WINDOWS;MSWindows;_WIN32_WINNT=0x600;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;PRERELEASE;DVA_MAJOR_DISPLAY_VERSION=2014;DVA_MINOR_DISPLAY_VERSION=0;DVA_PATCH_DISPLAY_VERSION=0;DVA_SUITE_VERSION=14;DVA_MAJOR_VERSION=14;DVA_MINOR_VERSION=1;DVA_PATCH_VERSION=0;DVA_BUILD_YEAR=2014;WIN_ENV;__EXCEPTION_TRACER__;USE_DVA_WORKSPACE=1;USE_EXO_MESSAGING=1;DEBUG=1;_DEBUG;_ITERATOR_DEBUG_LEVEL=2;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
@@ -211,13 +327,13 @@
       <DisableSpecificWarnings>4355;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalOptions>/Zm300 %(AdditionalOptions)</AdditionalOptions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>"..\..\..\ThirdParty\xerces-c-3.1.1\Build\Win64\VC10\Release\xerces-c_3.lib";%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>
       </SubSystem>
-      <AdditionalOptions>/Zi %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -262,7 +378,7 @@
       <BrowseInformation />
       <DisableSpecificWarnings>4355;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\ThirdParty\libtess2-master\Source;..\..\..\ThirdParty\libtess2-master\Include;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\ThirdParty\cpp-libawd\src;..\..\..\ThirdParty\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Include;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm300 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeaderOutputFile />
     </ClCompile>

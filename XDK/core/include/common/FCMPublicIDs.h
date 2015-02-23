@@ -43,7 +43,7 @@ namespace FCM
      * @def   kFCMDictKey_ServiceDict
      *
      * @brief Service Dictionary Key. The value for this key should be a dictionary
-     *        that defines a service.
+     *        that defines services the plugin provides.
      */
     #define kFCMDictKey_ServiceDict                "FCM.Service.Dictionary"
 
@@ -60,14 +60,14 @@ namespace FCM
      * @def   kFCMComponent
      *
      * @brief FCM component key. The value for this key should be a dictionary
-     *        that defines a dictionary of components in the plugin.
+     *        that defines the components in the plugin.
      */
     #define kFCMComponent                    "FCM.Component"
 
 
     /**
-     * @brief Defines the service ID (which is universally unique) for 
-     *        memory
+     * @brief Defines the universally-unique ID for
+     *        the memory service.
      *
      * @note  Textual Representation: {3E3AC427-4F7F-4AA4-B7BB-E13D45DB73DB}
      */
@@ -76,8 +76,8 @@ namespace FCM
 
 
      /**
-      * @brief Defines the service ID (which is universally unique) for 
-      *        Notification
+      * @brief Defines the universally-unique ID for 
+      *        the Notification service.
       *
       * @note  Textual Representation: {F30EA34-403B-4112-99ED-C5A87FF1B163}
       */
@@ -86,8 +86,8 @@ namespace FCM
     
 
     /**
-      * @brief Defines the service ID (which is universally unique) for 
-      *        string conversions between StringRep8 and StringRep16.
+      * @brief Defines the universally-unique ID for 
+      *        a service to convert strings between StringRep8 and StringRep16.
       *
       * @note  Textual Representation: {A04640CB-9148-4C4D-826E-E5BAEA88EFDE}
       */
@@ -96,8 +96,8 @@ namespace FCM
     
 
     /**
-     * @brief Defines the class ID (which is universally unique) for 
-     *        Dictionary interface
+     * @brief Defines the universally-unique class ID to
+     *        create object that implements IFCMDictionary dictionary interface.
      *
      * @note  Textual Representation: {01E262C7-886C-4F8C-872C-A0FD70672180}
      */
@@ -106,8 +106,8 @@ namespace FCM
 
 
      /**
-     * @brief Defines the notification ID (which is universally unique) for 
-     *        shutdown
+     * @brief Defines the universally-unique ID for 
+     *        the shutdown notification.
      *
      * @note  Textual Representation: {E6FE94C6-6184-4859-91A6-5729CE4465E6}
      */

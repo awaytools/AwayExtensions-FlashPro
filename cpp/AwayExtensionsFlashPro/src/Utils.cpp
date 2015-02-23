@@ -30,19 +30,19 @@
 #include <iomanip>
 #include <algorithm>
 #include <sstream>
-
-#include "IFCMStringUtils.h"
-
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
 #include <string>
 #include <cstring>
 #include <stdlib.h>
+
+#include "IFCMStringUtils.h"
+
 #include "Application/Service/IOutputConsoleService.h"
 #include "Application/Service/IFlashApplicationService.h"
 #include "FlashFCMPublicIDs.h"
 
-#include <fstream>
-#include <stdio.h>
-#include <iostream>
 //#include <crtdbg.h>
 
 /* -------------------------------------------------- Constants */
@@ -451,36 +451,7 @@ namespace AwayJS
         //printf(buffer);
     }
 	
-//CopyFile is a simple function that copies a file from arg1 to arg2
-int Utils::CopyOneFile(std::string initialFilePath, std::string outputFilePath, FCM::PIFCMCallback pCallback)
-{
-    std::ifstream inFile(initialFilePath.c_str(), std::ifstream::in | std::ifstream::binary);
-    std::ofstream outFile(outputFilePath.c_str(), std::ofstream::out | std::ofstream::binary);
-    
-    char *buffer = NULL;
-    long length = 0;
-    if(!inFile){
-		Utils::Trace(pCallback, "\ninFile not found = !\n\n");
-    }
-    if(!outFile){
-		Utils::Trace(pCallback, "\noutFile not created = !\n\n");
-    }
-    if ((inFile)&&(outFile))
-    {
-        inFile.seekg (0, inFile.end);
-        length = (long)inFile.tellg();
-        
-        inFile.seekg (0, inFile.beg);
-        buffer = new char [length + 1];
-        inFile.read (buffer, length);
-        buffer[length] = 0;
-		outFile.write((char*)buffer, length);
-    }
-    inFile.close();
-    outFile.close();
 
-	return 1;
-}
 
 }
 

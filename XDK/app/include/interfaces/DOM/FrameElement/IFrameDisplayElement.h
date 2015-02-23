@@ -44,7 +44,7 @@ namespace DOM
     namespace FrameElement
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
+         * @brief Defines the universally-unique interface ID for 
          *        IFrameDisplayElement
          *
          * @note  Textual Representation: {800F6FF6-59C5-4FE3-ABBB-CEE26261A6B8}
@@ -75,9 +75,9 @@ namespace DOM
              * @brief  This function returns the depth of Display item in the frame.
              *
              * @param  depth (OUT)
-             *         depth of Display item.
+             *         Depth of Display item.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */    
             virtual FCM::Result _FCMCALL GetDepth(FCM::U_Int32& depth) = 0;
         
@@ -89,7 +89,7 @@ namespace DOM
              * @param  rect (OUT)
              *         Object space bounding rect of Display item.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetObjectSpaceBounds(Utils::RECT& rect) = 0;
 
@@ -101,7 +101,7 @@ namespace DOM
              * @param  rect (OUT)
              *         Bounding rect of Display item.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetBounds(Utils::RECT& rect) = 0;
 
@@ -112,7 +112,7 @@ namespace DOM
              * @param  matrix (OUT)
              *         geometric matrix of Display item.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetMatrix(Utils::MATRIX2D& matrix) = 0;
 
@@ -124,7 +124,7 @@ namespace DOM
              * @param  pivot (OUT)
              *         Pivot/Transformation Point of Display item.
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              */
             virtual FCM::Result _FCMCALL GetPivot(Utils::POINT2D& pivot) = 0;
         

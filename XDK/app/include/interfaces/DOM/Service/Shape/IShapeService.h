@@ -62,8 +62,8 @@ namespace DOM
         namespace Shape
         {
             /**
-             * @brief Defines the Interface ID (which is universally unique) for 
-             *        IShapeService
+             * @brief Defines the universally-unique interface ID for 
+             *        IShapeService.
              *
              * @note  Textual Representation:  {8365E61D-558D-4540-A7A4-F4F98E6AF09B}
              */
@@ -100,14 +100,14 @@ namespace DOM
                  *         The source shape object is not modified.
                  *
                  * @param  pSrcShape (IN)
-                 *         Shape whose strokes need to be converted
+                 *         Shape whose strokes need to be converted.
                  *
                  * @param  pDstShape (OUT)
                  *         A new shape with only the strokes of pSrcShape converted to fills. If 
                  *         "pShape" contains "fills" along with "strokes", only the strokes 
                  *         will be converted and placed in the resultant shape "pConvertedShape".
                  *
-                 * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+                 * @return On success, FCM_SUCCESS is returned, else an error code is returned.
                  */
                 virtual FCM::Result _FCMCALL ConvertStrokeToFill(
                     DOM::FrameElement::PIShape pSrcShape,  
@@ -119,16 +119,19 @@ namespace DOM
                  *         to check if they are similar.
                  *
                  * @param  pShapeA (IN)
-                 *         First shape to be compared.
+                 *         ShapeA - First shape to be compared.
                  *        
                  * @param  pShapeB (IN)
-                 *         Second shape to be compared with first shapeA.
+                 *         ShapeB - Second shape to be compared.
                  *
-                 * @param similar (OUT)
-                 *        Boolean variable set to true when shapes are similar.
+                 * @param  similar (OUT)
+                 *         Boolean variable set to true when shapes are similar.
                  *
-                 * @param mapAtoB (OUT)
-                 *        Transformation matrix that when applied on shape A will result in shape B.
+                 * @param  mapAtoB (OUT)
+                 *         Similarity matrix. This is valid only if 'similar' is true. When the 
+                 *         transformation matrix of shapeB is concatenated with mapAtoB, it 
+                 *         results in a transformation matrix that when applied on shapeA will 
+                 *         result in shapeB.
                  *
                  * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
                  */

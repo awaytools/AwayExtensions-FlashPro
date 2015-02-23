@@ -20,7 +20,7 @@
  * @file  ISWFExportService.h
  *
  * @brief This file contains interface for ISWFExportService. 
- *        ISWFExportService provides service to export a FLA to a SWF format.
+ *        ISWFExportService provides service to export an FLA file to SWF format.
  */
 
 #ifndef ISWF_EXPORT_SERVICE_H_
@@ -51,8 +51,8 @@ namespace Exporter
     namespace Service
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        ISWFExportService
+         * @brief Defines the universally-unique interface ID for 
+         *        ISWFExportService.
          *
          * @note  Textual Representation:  {B4C11F4F-982A-4D24-A5C4-BF9CA0437BF5}
          */
@@ -74,12 +74,12 @@ namespace Exporter
         /**
          * @class ISWFExportService
          *
-         * @brief Defines an interface that exports a FLA document to SWF format.
+         * @brief Defines an interface that exports an FLA document to SWF format.
          */
         BEGIN_DECLARE_INTERFACE(ISWFExportService, IID_ISWF_EXPORT_SERVICE)
 
             /**
-             * @brief  This function exports a FLA document to a SWF format.
+             * @brief  This function exports a FLA document to SWF format.
              *
              * @param  pFlaDocument (IN)
              *         FLA Document

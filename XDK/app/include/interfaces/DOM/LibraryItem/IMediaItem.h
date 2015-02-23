@@ -43,8 +43,8 @@ namespace DOM
     namespace LibraryItem
     {
         /**
-         * @brief Defines the Interface ID (which is universally unique) for 
-         *        IMediaItem
+         * @brief Defines the universally-unique interface ID for 
+         *        IMediaItem.
          *
          * @note  Textual Representation: {2AD8BEF2-C2B5-4417-9967-8D95B33AC5CD}
          */
@@ -66,7 +66,7 @@ namespace DOM
         /**
          * @class IMediaItem
          *
-         * @brief Defines the interface for a media resource in library (Bitmap, Audio, Video).
+         * @brief Defines the interface for a media resource in library (Bitmap or Audio).
          */
         BEGIN_DECLARE_INTERFACE(IMediaItem, IID_IMEDIA_ITEM)
         
@@ -74,11 +74,13 @@ namespace DOM
              * @brief  Returns the media specific information
              *
              * @param  pMediaInfo (OUT)
-             *         Interface containing the media (bitmap/sound) attributes
+             *         Media information for bitmap (IBitmapInfo) or sound(ISoundInfo).
              *
-             * @return On success, FCM_SUCCESS is returned; otherwise an error code is returned.
+             * @return On success, FCM_SUCCESS is returned, else an error code is returned.
              *
-             * @see    IBitmapInfo, ISoundInfo
+             * @see    DOM::MediaInfo::IBitmapInfo 
+             *
+             * @see    DOM::MediaInfo::ISoundInfo
              */
             virtual FCM::Result _FCMCALL GetMediaInfo(FCM::PIFCMUnknown& pMediaInfo) = 0;
             
