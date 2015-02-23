@@ -594,14 +594,14 @@
         //Light and dark theme change
 
 
-        document.getElementById("curve_treshold").defaultValue = "0.02"
+        document.getElementById("curve_treshold").defaultValue = "0.1"
         document.getElementById("minimize_exterior_treshold").defaultValue = "0.1";
-        document.getElementById("max_itereations").defaultValue = "3";
+        document.getElementById("max_itereations").defaultValue = "6";
         document.getElementById("includeVisiblelayers").checked=true;
         document.getElementById("usePreview").checked=true;
         document.getElementById("exportShapesInDebugMode").checked=false;
-        document.getElementById("flipXaxis").checked=true;
-        document.getElementById("flipYaxis").checked=true;
+        document.getElementById("flipXaxis").checked=false;
+        document.getElementById("flipYaxis").checked=false;
         document.getElementById("keeppathorder").checked=true;
 
         document.getElementById("distinglishExteriorAndinterior").checked=false;
@@ -615,8 +615,8 @@
         document.getElementById("exportLibSounds").checked=true;
 
 
-        document.getElementById("curve_treshold_label").innerHTML  = "Curve Treshold = 0.04";
-        document.getElementById("max_itereations_label").innerHTML  = "Maximal Iterations = 3";
+        document.getElementById("curve_treshold_label").innerHTML  = "Curve Treshold = 0.1";
+        document.getElementById("max_itereations_label").innerHTML  = "Maximal Iterations = 6";
         document.getElementById("minimize_exterior_label").innerHTML  = "Exterior Treshold = 0.1";
 
         var skinInfo = JSON.parse(window.__adobe_cep__.getHostEnvironment()).appSkinInfo;
@@ -795,7 +795,7 @@
 </div>
 
 <div class="clearer">
-    <!--    <button id="advanced" onclick="open_advanced()">Advanced</button>-->
+    <!---<button id="advanced" onclick="open_advanced()">Advanced</button>-->
     <button id="publish" onclick="onPublish()">Publish</button>
     <button id="ok" onclick="onOK()">OK</button>
     <button id="cancel" onclick="onCancel()">Cancel</button>
