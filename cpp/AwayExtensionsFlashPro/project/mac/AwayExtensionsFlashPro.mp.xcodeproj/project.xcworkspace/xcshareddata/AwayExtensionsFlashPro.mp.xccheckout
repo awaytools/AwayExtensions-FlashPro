@@ -12,6 +12,8 @@
 	<dict>
 		<key>1AF003D0C5FA82152659457A86914B3CE82E49F0</key>
 		<string>https://github.com/awaytools/AwayExtensions-FlashPro.git</string>
+		<key>8E28D3EFAD150407007820D01B78E1859844DA14</key>
+		<string>https://github.com/awaytools/awd-sdk.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>cpp/AwayExtensionsFlashPro/project/mac/AwayExtensionsFlashPro.mp.xcodeproj</string>
@@ -19,6 +21,8 @@
 	<dict>
 		<key>1AF003D0C5FA82152659457A86914B3CE82E49F0</key>
 		<string>../../../../../..</string>
+		<key>8E28D3EFAD150407007820D01B78E1859844DA14</key>
+		<string>../../../../../../../awd-sdk</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/awaytools/AwayExtensions-FlashPro.git</string>
@@ -35,6 +39,14 @@
 			<string>1AF003D0C5FA82152659457A86914B3CE82E49F0</string>
 			<key>IDESourceControlWCCName</key>
 			<string>AwayExtensions-FlashPro</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8E28D3EFAD150407007820D01B78E1859844DA14</string>
+			<key>IDESourceControlWCCName</key>
+			<string>awd-sdk</string>
 		</dict>
 	</array>
 </dict>

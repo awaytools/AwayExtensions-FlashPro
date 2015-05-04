@@ -167,8 +167,8 @@ namespace AwayJS
 		BLOCKS::TextElement* thistext_block = reinterpret_cast<BLOCKS::TextElement*>(this->awd->get_project()->get_block_by_external_id_and_type(resID, BLOCK::block_type::TEXT_ELEMENT, true));
 		thistext_block->add_res_id(resID);		
 		//thistext_block->set_bounds(GEOM::BOUNDS2D(rect.topLeft.x, rect.bottomRight.x, rect.topLeft.y,rect.bottomRight.y));
-		thistext_block->text_width=abs(rect.topLeft.x - rect.bottomRight.x);
-		thistext_block->text_height=abs(rect.topLeft.y - rect.bottomRight.y);
+        thistext_block->text_width=(rect.topLeft.x - rect.bottomRight.x);
+        thistext_block->text_height=(rect.topLeft.y - rect.bottomRight.y);
         if (pMatrix)
         {
 			TYPES::F64* new_mesh_mtx=(TYPES::F64*)malloc(6*8);

@@ -495,8 +495,8 @@ TimelineEncoder::get_layer_skeleton(DOM::ILayer* iLayer, int isMasked)
 	res = iLayer->GetLayerType(pLayerType);
 	if(res==FCM_SUCCESS){		
 		
-		layer_mask_skeleton;
-		layer_object_ids;
+		//layer_mask_skeleton;
+		//layer_object_ids;
 		pLayerFolder=pLayerType;
 		if(pLayerFolder){
 			
