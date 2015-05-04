@@ -95,14 +95,28 @@ namespace AwayJS
         {
             return;
         }
-
         Utils::GetModuleFilePath(featureXMLPath, pCallback);
-        std::string findThis="AwayExtensionsFlashPro.fcm.plugin/Contents/MacOS/";
+
+#ifdef _WINDOWS
+        std::string immParent;
+        Utils::GetParent(featureXMLPath, immParent);
+        Utils::GetParent(immParent, featureXMLPath);
+        Utils::GetParent(featureXMLPath, immParent);
+        Utils::GetParent(immParent, featureXMLPath);
+        Utils::GetParent(featureXMLPath, immParent);
+        Utils::GetParent(immParent, featureXMLPath);
+        Utils::GetParent(featureXMLPath, immParent);
+        featureXMLPath = immParent+"\\ressources\\AwayJS_Features.xml";
+#endif
+        
+#ifdef __APPLE__
+        std::string findThis="plugin/lib/mac/AwayExtensionsFlashPro.fcm.plugin/Contents";
         int foundIndex=featureXMLPath.find(findThis);
         if(foundIndex>0){
             featureXMLPath = featureXMLPath.substr(0, foundIndex);
         }
-        featureXMLPath += "/../../../ressources/AwayJS_Features.xml";
+        featureXMLPath = featureXMLPath+"ressources/AwayJS_Features.xml";
+#endif
         
         // trace
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk;

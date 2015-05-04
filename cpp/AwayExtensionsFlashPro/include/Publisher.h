@@ -46,6 +46,9 @@
 #include "Exporter/Service/IFrameCommandGenerator.h"
 
 #include "ILibraryItem.h"
+#include "RessourcePalette.h"
+#include "TimelineEncoder.h"
+#include "PluginConfiguration.h"
 
 
 
@@ -77,29 +80,6 @@ namespace DOM
 
 /* -------------------------------------------------- Macros / Constants */
 
-namespace AwayJS
-{
-    
-	// the ids have been generated specific for this plugin.
-
-	// {D6863765-2532-47E6-83DA-BA7B575EAD27}
-    const FCMCLSID CLSID_Publisher =
-		{ 0xd6863765, 0x2532, 0x47e6, { 0x83, 0xda, 0xba, 0x7b, 0x57, 0x5e, 0xad, 0x27 } };
-	
-
-	// {1D69F2D7-4CAA-4B17-81D6-6CACF09BBE2C}
-    const FCM::FCMCLSID CLSID_ResourcePalette =
-		{ 0x1d69f2d7, 0x4caa, 0x4b17, { 0x81, 0xd6, 0x6c, 0xac, 0xf0, 0x9b, 0xbe, 0x2c } };
-
-	// {E07B04A6-435E-4113-B902-B42A88A80AC4}
-    const FCMCLSID CLSID_TimelineBuilder =
-		{ 0xe07b04a6, 0x435e, 0x4113, { 0xb9, 0x2, 0xb4, 0x2a, 0x88, 0xa8, 0xa, 0xc4 } };
-
-	// {0AA1EBCE-E6EA-4138-B45A-3EB58594A9CC}
-    const FCMCLSID CLSID_TimelineBuilderFactory =
-		{ 0xaa1ebce, 0xe6ea, 0x4138, { 0xb4, 0x5a, 0x3e, 0xb5, 0x85, 0x94, 0xa9, 0xcc } };
-		
-}
 
 
 /* -------------------------------------------------- Structs / Unions */
@@ -136,11 +116,12 @@ namespace AwayJS
 
         ~CPublisher();
 
-    private:
-		
+	private:
 		FlashToAWDEncoder* flash_to_awd_encoder;
 		AWDProject* awd_project;
 		DOM::PIFLADocument fla_document;
+
+		FCM::PIFCMDictionary _pDict;
 
         bool ReadString(
             const FCM::PIFCMDictionary pDict, 
@@ -162,8 +143,7 @@ namespace AwayJS
 
         FCM::Boolean IsPreviewNeeded(const PIFCMDictionary pDictConfig);
 
-		AWD::result ExportLibraryItems(bool, bool);
-		AWD::result ExportLibraryItem(DOM::ILibraryItem* pFlaDocument, bool, bool);
+		AWD::result ExportLibraryItems(FCM::FCMListPtr pLibraryItemList, bool, bool, bool, bool, TimelineEncoder*);
 		
     };
 	

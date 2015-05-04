@@ -50,6 +50,7 @@
 #include "FrameElement/ITextStyle.h"
 #include "FrameElement/IShape.h"
 #include "FrameElement/ISound.h"
+#include "FrameElement/IGraphic.h"
 #include "StrokeStyle/IDashedStrokeStyle.h"
 #include "StrokeStyle/IDottedStrokeStyle.h"
 #include "StrokeStyle/IHatchedStrokeStyle.h"
@@ -104,7 +105,6 @@ namespace AwayJS
 	
    /* -------------------------------------------------- AWDTimelineWriter */
 		
-
     FCM::Result AWDTimelineWriter::PlaceObject(
         FCM::U_Int32 resId,
         FCM::U_Int32 objectId,
@@ -114,7 +114,7 @@ namespace AwayJS
     {
 		
 		
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_ADD_LOCAL_RESSOURCE);
+		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_ADD_CHILD);
 		string resID=AwayJS::Utils::ToString(resId);
 
 		frameCommand->set_resID(resID);
@@ -126,8 +126,11 @@ namespace AwayJS
 			// if this is a movieclip, we check instance name
 			FCM::StringRep16 newName;
 			pMovieClip->GetName(&newName);
+			//pMovieClip->GetBlendMode();
+			//pMovieClip->IsVisible();
 			newString=AwayJS::Utils::ToString(newName, m_pCallback);
 			frameCommand->set_instanceName(newString);
+
             FCM::AutoPtr<FCM::IFCMCalloc> pCalloc;
 			pCalloc = AwayJS::Utils::GetCallocService(m_pCallback);
 			ASSERT(pCalloc.m_Ptr != NULL);
@@ -140,11 +143,47 @@ namespace AwayJS
 		}
 
         if (pMatrix)
-        {			
-			if((pMatrix->a!=1.0)||(pMatrix->b!=0.0)||(pMatrix->c!=0.0)||(pMatrix->d!=1.0)||(pMatrix->tx!=0.0)||(pMatrix->ty!=0.0))
-				frameCommand->set_display_matrix(awd->convert_matrix2x3(*pMatrix));
+        {
+            // only apply export matrix if it is not the identity matrix
+			//if((pMatrix->a!=1.0)||(pMatrix->b!=0.0)||(pMatrix->c!=0.0)||(pMatrix->d!=1.0)||(pMatrix->tx!=0.0)||(pMatrix->ty!=0.0))
+			frameCommand->set_display_matrix(awd->convert_matrix2x3(*pMatrix));
         }
+        return FCM_SUCCESS;
+    }
+
+    FCM::Result AWDTimelineWriter::PlaceText(
+        FCM::U_Int32 resId,
+        FCM::U_Int32 objectId,
+        FCM::U_Int32 placeAfterObjectId,
+        const DOM::Utils::MATRIX2D* pMatrix,
+        DOM::Utils::RECT rect /* = NULL*/)
+    {
+		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_ADD_CHILD);
+		string resID=AwayJS::Utils::ToString(resId);
+
+		frameCommand->set_resID(resID);
+		frameCommand->set_depth(placeAfterObjectId);
 		
+		BLOCKS::TextElement* thistext_block = reinterpret_cast<BLOCKS::TextElement*>(this->awd->get_project()->get_block_by_external_id_and_type(resID, BLOCK::block_type::TEXT_ELEMENT, true));
+		thistext_block->add_res_id(resID);		
+		//thistext_block->set_bounds(GEOM::BOUNDS2D(rect.topLeft.x, rect.bottomRight.x, rect.topLeft.y,rect.bottomRight.y));
+		thistext_block->text_width=abs(rect.topLeft.x - rect.bottomRight.x);
+		thistext_block->text_height=abs(rect.topLeft.y - rect.bottomRight.y);
+        if (pMatrix)
+        {
+			TYPES::F64* new_mesh_mtx=(TYPES::F64*)malloc(6*8);
+			new_mesh_mtx[0]= pMatrix->a;
+			new_mesh_mtx[1]= pMatrix->b;
+			new_mesh_mtx[2]= pMatrix->c;
+			new_mesh_mtx[3]= pMatrix->d;
+			new_mesh_mtx[4]= (rect.topLeft.x * pMatrix->a + rect.topLeft.y * pMatrix->c + pMatrix->tx);
+			new_mesh_mtx[5]= (rect.topLeft.x * pMatrix->b + rect.topLeft.y * pMatrix->d + pMatrix->ty);
+			double test2x = (rect.bottomRight.x * pMatrix->a + rect.bottomRight.y * pMatrix->c + pMatrix->tx);
+			double test2y= (rect.bottomRight.x * pMatrix->b + rect.bottomRight.y * pMatrix->d + pMatrix->ty);
+			double testx = new_mesh_mtx[4];
+			double testy = new_mesh_mtx[5];
+			frameCommand->set_display_matrix(new_mesh_mtx);
+        }
         return FCM_SUCCESS;
     }
 	
@@ -154,19 +193,14 @@ namespace AwayJS
         FCM::PIFCMUnknown pUnknown /* = NULL*/)
     {
         FCM::Result res=FCM_SUCCESS;
-		
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_SOUND);
+		/*
+		AWD::ANIM::FrameCommandSoundObject* frameCommand=(AWD::ANIM::FrameCommandSoundObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_SOUND);
         string resID=AwayJS::Utils::ToString(resId);
 		frameCommand->set_resID(resID);
 		//Utils::Trace(m_pCallback, "		-> Placing a SoundObject into the timeline.\n");
 		
-		/*
-        JSONNode commandElement(JSON_NODE);
         FCM::AutoPtr<DOM::FrameElement::ISound> pSound;
 
-        commandElement.push_back(JSONNode("cmdType", "Place"));
-        commandElement.push_back(JSONNode("charid", CreateJS::Utils::ToString(resId)));
-        commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
 
         pSound = pUnknown;
         if (pSound)
@@ -180,43 +214,44 @@ namespace AwayJS
 
             res = pSound->GetLoopMode(lMode);
             ASSERT(FCM_SUCCESS_CODE(res));
-
-            commandElement.push_back(JSONNode("loopMode", 
-                CreateJS::Utils::ToString(lMode.loopMode)));
-            commandElement.push_back(JSONNode("repeatCount", 
-                CreateJS::Utils::ToString(lMode.repeatCount)));
-
+            
+            // set the loop mode for the sound.
+            // can either be infitiv for endless palying
+            // or a finitve with a number of repeats
+            // default for awd is infitive.
+            if (lMode.loopMode != DOM::FrameElement::SoundRepeatMode::SOUND_REPEAT_INFINITE){
+                frameCommand->set_loop_mode(TYPES::UINT32(lMode.repeatCount));
+            }
+            
             res = pSound->GetSyncMode(syncMode);
             ASSERT(FCM_SUCCESS_CODE(res));
-
-            commandElement.push_back(JSONNode("syncMode", 
-                CreateJS::Utils::ToString(syncMode)));
-
+            
             // We should not get SOUND_SYNC_STOP as for stop, "RemoveObject" command will
             // be generated by Exporter Service.
-            ASSERT(syncMode != DOM::FrameElement::SOUND_SYNC_STOP); 
-
+            ASSERT(syncMode != DOM::FrameElement::SOUND_SYNC_STOP);
+            if (syncMode == DOM::FrameElement::SOUND_SYNC_EVENT){
+                // do nothing but create a start sound command
+            }
+            else if (syncMode == DOM::FrameElement::SOUND_SYNC_START){
+                // add another remove command in front of this command, so that sound is stopped if it already plays (the exporterservice does this already ?)
+            }
+            else if (syncMode == DOM::FrameElement::SOUND_SYNC_STREAM){
+                // do nothing
+            }
             res = pSound->GetSoundLimit(soundLimit);
             ASSERT(FCM_SUCCESS_CODE(res));
+            frameCommand->set_sound_limit(TYPES::UINT32 (soundLimit.inPos44), TYPES::UINT32(soundLimit.outPos44));
 
-            commandElement.push_back(JSONNode("LimitInPos44", 
-                CreateJS::Utils::ToString(soundLimit.inPos44)));
-            commandElement.push_back(JSONNode("LimitOutPos44", 
-                CreateJS::Utils::ToString(soundLimit.outPos44)));
-
-            // TODO: Dump sound effect
         }
-
-        m_pCommandArray->push_back(commandElement);*/
-
+		*/
         return res;
     }
     FCM::Result AWDTimelineWriter::RemoveObject(
         FCM::U_Int32 objectId)
     {	
 		
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_REMOVE_OBJECT);
-		frameCommand->set_command_type(ANIM::frame_command_type::AWD_FRAME_COMMAND_REMOVE_OBJECT);		
+		AWD::ANIM::FrameCommandRemoveObject* frameCommand=(AWD::ANIM::FrameCommandRemoveObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_REMOVE);
+		frameCommand->set_command_type(ANIM::frame_command_type::FRAME_COMMAND_REMOVE);
         return FCM_SUCCESS;    
 	}	
 
@@ -225,10 +260,10 @@ namespace AwayJS
         FCM::U_Int32 objectId,
         FCM::U_Int32 placeAfterObjectId)
     {
-		
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_UPDATE);
+		// we dont need the updateZorder commands for our depth managment. (this is to validate)
+		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_UPDATE);
 		frameCommand->set_depth(placeAfterObjectId);
-		
+		frameCommand->adobe_depth_change=true;
 		//TODO: test if the updateZOrder works...
         // Goutam: Commenting out the code for demo as fix is necessary in the Exporter service for it work properly.
 #if 0
@@ -248,7 +283,7 @@ namespace AwayJS
         FCM::U_Int32 objectId,
         FCM::U_Int32 maskTillObjectId)
     {
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_UPDATE);
+		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_UPDATE);
 		frameCommand->set_clipDepth(maskTillObjectId);
         
         return FCM_SUCCESS;
@@ -259,7 +294,7 @@ namespace AwayJS
         DOM::FrameElement::BlendMode blendMode)
     {
 	
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_UPDATE);
+		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_UPDATE);
 		
 		// convert blendmode to away3d blenmode
         if(blendMode == 0)  //Normal
@@ -301,7 +336,7 @@ namespace AwayJS
         FCM::Boolean visible)
     {
 		
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_UPDATE);
+		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_UPDATE);
 		frameCommand->set_visible(visible);
         return FCM_SUCCESS;
     }
@@ -892,7 +927,7 @@ namespace AwayJS
         const DOM::Utils::MATRIX2D& matrix)
     {
 		
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_UPDATE);
+		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_UPDATE);
 		frameCommand->set_display_matrix(awd->convert_matrix2x3(matrix));		
         return FCM_SUCCESS;
     }
@@ -902,8 +937,7 @@ namespace AwayJS
         FCM::U_Int32 objectId,
         const DOM::Utils::COLOR_MATRIX& colorMatrix)
     {
-		
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_UPDATE);
+		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_UPDATE);
 		frameCommand->set_color_matrix(awd->convert_matrix4x5(colorMatrix));
         // Not tested yet		
         return FCM_SUCCESS;
@@ -914,7 +948,7 @@ namespace AwayJS
     {
 		ANIM::TimelineFrame* newFrame=new ANIM::TimelineFrame();
 		newFrame->set_frame_duration(1);//TYPES::UINT32(1000/awd->get_project()->get_settings()->get_fps()));
-		thisTimeLine->add_frame(newFrame, false);	
+		thisTimeLine->add_frame(newFrame);	
         return FCM_SUCCESS;
     }
 
@@ -925,24 +959,22 @@ namespace AwayJS
 
         std::string scriptWithLayerNumber = "script Layer" +  Utils::ToString(layerNum);
 
+		/*
         std::string find = "\n";
-        std::string replace = "\\n";
+        std::string replace = "";
         std::string::size_type i =0;
 
         while (true) {
-            /* Locate the substring to replace. */
             i = script.find(find, i);
            
             if (i == std::string::npos) break;
-            /* Make the replacement. */
             script.replace(i, find.length(), replace);
 
-            /* Advance index forward so the next iteration doesn't pick it up as well. */
             i += replace.length();
         }
-        
+        */
         //Utils::Trace(m_pCallback, "[AddFrameScript] (Layer: %d): %s\n", layerNum, script.c_str());
-		
+
 		thisTimeLine->get_frame()->set_frame_code(script);
 
         return FCM_SUCCESS;
@@ -982,10 +1014,11 @@ namespace AwayJS
 	
 		this->awd=awd;
 		this->thisTimeLine=new BLOCKS::Timeline();		
+		thisTimeLine->add_scene_name(awd->current_scene_name);
 		m_pCallback = pcallback;
 		ANIM::TimelineFrame* newFrame=new ANIM::TimelineFrame();
 		newFrame->set_frame_duration(1);
-		thisTimeLine->add_frame(newFrame, false);
+		thisTimeLine->add_frame(newFrame);
     }
 
 
@@ -1004,17 +1037,16 @@ namespace AwayJS
     void AWDTimelineWriter::Finish(FCM::U_Int32 resId, FCM::StringRep16 pName)
     {
 		
-		string timelineName("Scene");
-        string objID_string=AwayJS::Utils::ToString(resId);
-		thisTimeLine->set_external_id(objID_string);
-
-		if(pName!=NULL){			
-            timelineName=AwayJS::Utils::ToString(pName, m_pCallback);
+        string resID_string=AwayJS::Utils::ToString(resId);
+		thisTimeLine->add_res_id(resID_string);
+		if(pName!=NULL){		
+			thisTimeLine->set_symbol_name(AwayJS::Utils::ToString(pName, m_pCallback));
+			// set the name as fallback, if we cannot connect this instance to any library-symbol
+			thisTimeLine->set_name(AwayJS::Utils::ToString(pName, m_pCallback));
 			//Utils::Trace(m_pCallback, "ADDED A CHILD TIMELINE NAME = %s\n", timelineName.c_str());
 		}
-		thisTimeLine->set_name(timelineName);
-		
-		// no need to cache timelines, because we already cache in Ressourcepallete
+		thisTimeLine->get_frames().pop_back();		
+		// we cache timelines by function awd_project->get_timeline_by_symbol_name
 		awd->get_project()->add_block(thisTimeLine);
 		
     }

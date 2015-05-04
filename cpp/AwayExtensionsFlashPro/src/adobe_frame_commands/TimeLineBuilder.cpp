@@ -26,6 +26,7 @@
 
 #include "FlashFCMPublicIDs.h"
 
+#include "FrameElement/IButton.h"
 #include "FrameElement/IClassicText.h"
 #include "FrameElement/IParagraph.h"
 #include "FrameElement/ITextRun.h"
@@ -99,29 +100,58 @@ namespace AwayJS
 
     FCM::Result TimelineBuilder::AddShape(FCM::U_Int32 objectId, SHAPE_INFO* pShapeInfo)
     {
-        FCM::Result res;
-        res = m_pTimelineWriter->PlaceObject(pShapeInfo->resourceId, objectId, pShapeInfo->placeAfterObjectId, &pShapeInfo->matrix);
-        return res;
+        return m_pTimelineWriter->PlaceObject(pShapeInfo->resourceId, objectId, pShapeInfo->placeAfterObjectId, &pShapeInfo->matrix);
     }
 
     FCM::Result TimelineBuilder::AddClassicText(FCM::U_Int32 objectId, CLASSIC_TEXT_INFO* pClassicTextInfo)
-    {
-        FCM::Result res;		
-		res = m_pTimelineWriter->PlaceObject(pClassicTextInfo->resourceId, objectId, pClassicTextInfo->placeAfterObjectId, &pClassicTextInfo->matrix);      
-		return res;
+    {	
+        ASSERT(pClassicTextInfo);
+        ASSERT(pClassicTextInfo->structSize >= sizeof(CLASSIC_TEXT_INFO));
+
+        LOG(("[AddClassicText] ObjId: %d ResId: %d PlaceAfter: %d\n", 
+            objectId, pClassicTextInfo->resourceId, pClassicTextInfo->placeAfterObjectId));
+        
+        //To get the bounding rect of the text
+        DOM::Utils::RECT rect;
+        if(pClassicTextInfo->structSize >= sizeof(DISPLAY_OBJECT_INFO_2))
+        {
+            DISPLAY_OBJECT_INFO_2 *ptr = static_cast<DISPLAY_OBJECT_INFO_2*>(pClassicTextInfo);
+            if(ptr)
+            {
+                rect = ptr->bounds;
+                // This rect object gives the bound of the text filed.
+                // This will have to be transformed using the pClassicTextInfo->matrix
+                // to map it to its parent's co-orinate space to render it.
+            }
+			// todo: set the bound for the textfield_block
+        }
+		return m_pTimelineWriter->PlaceText(pClassicTextInfo->resourceId, objectId, pClassicTextInfo->placeAfterObjectId, &pClassicTextInfo->matrix, rect);     
     }
 
     FCM::Result TimelineBuilder::AddBitmap(FCM::U_Int32 objectId, BITMAP_INFO* pBitmapInfo)
     {
-        FCM::Result res;		
-        res = m_pTimelineWriter->PlaceObject(pBitmapInfo->resourceId, objectId, pBitmapInfo->placeAfterObjectId, &pBitmapInfo->matrix);
-        return res;
+        return m_pTimelineWriter->PlaceObject(pBitmapInfo->resourceId, objectId, pBitmapInfo->placeAfterObjectId, &pBitmapInfo->matrix);
     }
 
     FCM::Result TimelineBuilder::AddMovieClip(FCM::U_Int32 objectId, MOVIE_CLIP_INFO* pMovieClipInfo, DOM::FrameElement::PIMovieClip pMovieClip)
     {
         FCM::Result res;
         FCM::AutoPtr<FCM::IFCMUnknown> pUnknown = pMovieClip;
+		
+        AutoPtr<DOM::FrameElement::IButton> pButton = pMovieClip;
+        if(pButton.m_Ptr)
+        {
+            DOM::FrameElement::ButtonTrackMode trackMode;
+            pButton->GetTrackingMode(trackMode);
+            if(trackMode == DOM::FrameElement::TRACK_AS_BUTTON)
+            {
+                LOG(("[AddMovieClip] ObjId: %d, is a button with TrackingMode set to TRACK_AS_BUTTON\n", objectId));
+                
+            }else
+            {
+                LOG(("[AddMovieClip] ObjId: %d, is a button with TrackingMode set to TRACK_AS_MENU_ITEM\n", objectId));
+            }
+        }
         res = m_pTimelineWriter->PlaceObject(pMovieClipInfo->resourceId, objectId, pMovieClipInfo->placeAfterObjectId, &pMovieClipInfo->matrix, pUnknown);
         return res;
     }
@@ -133,7 +163,7 @@ namespace AwayJS
         return res;
     }
 
-    FCM::Result TimelineBuilder::AddSound( FCM::U_Int32 objectId,     SOUND_INFO* pSoundInfo, DOM::FrameElement::PISound pSound)
+    FCM::Result TimelineBuilder::AddSound( FCM::U_Int32 objectId, SOUND_INFO* pSoundInfo, DOM::FrameElement::PISound pSound)
     {
         FCM::AutoPtr<FCM::IFCMUnknown> pUnknown = pSound;
         FCM::Result res;		

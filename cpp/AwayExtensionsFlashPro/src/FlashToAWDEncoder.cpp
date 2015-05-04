@@ -83,7 +83,12 @@
 
 FlashToAWDEncoder::FlashToAWDEncoder(FCM::PIFCMCallback pCallback, AWDProject* awd_project)
 {
-	
+	this->text_field_cnt=0;
+	this->text_fomat_cnt=0;
+	this->shape_instance_cnt=0;
+	this->grafik_cnt=0;
+	this->mat_cnt=0;
+	this->geom_cnt=0;
     this->m_pCallback=pCallback;
 	this->awd_project=awd_project;
 	this->current_geom=NULL;
@@ -100,24 +105,6 @@ FlashToAWDEncoder::~FlashToAWDEncoder()
 {
 }
 
-
-void FlashToAWDEncoder::prepare_new_scene(){
-	this->scene_geoms.push_back(std::vector<std::vector<std::vector<BLOCKS::Geometry*> > >());
-}
-
-void FlashToAWDEncoder::prepare_new_timeline(){
-	if(this->scene_geoms.empty())
-		this->prepare_new_scene();
-	this->scene_geoms.back().push_back(std::vector<std::vector<BLOCKS::Geometry*> >());
-}
-
-void FlashToAWDEncoder::prepare_new_frame(){
-	if(this->scene_geoms.empty())
-		this->prepare_new_scene();
-	if(this->scene_geoms.back().empty())
-		this->prepare_new_timeline();
-	this->scene_geoms.back().back().push_back(std::vector<BLOCKS::Geometry*>());
-}
 AWDProject*
 FlashToAWDEncoder::get_project(){
 	return this->awd_project;
@@ -125,8 +112,7 @@ FlashToAWDEncoder::get_project(){
 
 TYPES::F64* 
 FlashToAWDEncoder::convert_matrix2x3(DOM::Utils::MATRIX2D matrix2x3)
-{
-	
+{	
 	int flipx=1;
 	if(this->awd_project->get_settings()->get_flipXaxis())
 		flipx=-1;
@@ -140,14 +126,23 @@ FlashToAWDEncoder::convert_matrix2x3(DOM::Utils::MATRIX2D matrix2x3)
 	output[3]=matrix2x3.d;
 	output[4]=matrix2x3.tx*flipx;
 	output[5]=matrix2x3.ty*flipy;
-
 	return output;
 }
 
 TYPES::F64* 
 FlashToAWDEncoder::convert_matrix4x5(DOM::Utils::COLOR_MATRIX color_mtx)
 {
-	TYPES::F64* output = (TYPES::F64* )malloc(20*sizeof(TYPES::F64));
-	output=reinterpret_cast<TYPES::F64*>(color_mtx.colorArray);
+	TYPES::F64* output = (TYPES::F64* )malloc(8*sizeof(TYPES::F64));
+	int i = 0;
+	//for(i = 0; i < 20; i++)
+	//	output[i]=(TYPES::F64)color_mtx.colorArray[i];
+	output[0]=color_mtx.colorArray[0];// red multiply
+	output[1]=color_mtx.colorArray[4];// red off
+	output[2]=color_mtx.colorArray[6];// green multiply
+	output[3]=color_mtx.colorArray[9];// green off
+	output[4]=color_mtx.colorArray[12];// blue multiply
+	output[5]=color_mtx.colorArray[14];// blue off
+	output[6]=color_mtx.colorArray[18];// alpha multiply
+	output[7]=color_mtx.colorArray[19];// alpha multiy
 	return output;
 }

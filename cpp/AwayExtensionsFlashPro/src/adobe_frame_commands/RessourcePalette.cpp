@@ -111,6 +111,7 @@ namespace AwayJS
 
     void ResourcePalette::Init(FlashToAWDEncoder* awd_converter)
     {
+		this->test_shape=NULL;
 		this->awd_converter = awd_converter;
     }
 
@@ -127,23 +128,43 @@ namespace AwayJS
         Exporter::Service::PITimelineBuilder pTimelineBuilder)
     {	
         m_resourceList.push_back(resourceId);
+		if(pName!=NULL){
+			std::string symbol_name = AwayJS::Utils::ToString(pName, this->GetCallback());
+			BLOCKS::Timeline* thisTimeline = this->awd_converter->get_project()->get_timeline_by_symbol_name(symbol_name);
+			
+			if(thisTimeline!=NULL){
+				//Utils::Trace(GetCallback(), "Allready-exists: %s\n", symbol_name.c_str());
+				thisTimeline->add_res_id(std::to_string(resourceId));
+				thisTimeline->add_scene_name(this->awd_converter->current_scene_name);
+				return FCM_SUCCESS;
+			}
+			//Utils::Trace(GetCallback(), "Start exporting name %s\n", symbol_name.c_str());
 
-        TimelineBuilder* pTimeline = static_cast<TimelineBuilder*>(pTimelineBuilder);		
-        ITimelineWriter* pTimelineWriter;
-        return pTimeline->Build(resourceId, pName, &pTimelineWriter);
+		}
+		else{
+			this->awd_converter->grafik_cnt++;
+			std::string symbol_name = "grafik_"+std::to_string(this->awd_converter->grafik_cnt);
+			//Utils::Trace(GetCallback(), "Start exporting name %s\n", symbol_name.c_str());
+			pName = AwayJS::Utils::ToString16(symbol_name, this->GetCallback());			
+		}
+		TimelineBuilder* pTimeline = static_cast<TimelineBuilder*>(pTimelineBuilder);		
+		ITimelineWriter* pTimelineWriter;
+		return pTimeline->Build(resourceId, pName, &pTimelineWriter);
     }
-
-
+	
     FCM::Result ResourcePalette::AddShape(
         FCM::U_Int32 resourceId, 
         DOM::FrameElement::PIShape pShape)
     {
+		//Utils::Trace(GetCallback(), "Start adding shape\n");
         m_resourceList.push_back(resourceId);
 		//	this will create a new geom for this shape, add it to the AWDProject, and fill it with the path-data.
 		//	the geometries will be processed later.
 		//	we do not check for errors here. the created geometry_blocks can be queried for warning / error messages.
 		std::string geom_res_id = std::to_string(resourceId);
-		this->awd_converter->get_geom_for_shape(pShape, geom_res_id, true);
+		BLOCKS::Geometry* this_geom=this->awd_converter->get_geom_for_shape(reinterpret_cast< DOM::FrameElement::IShape*>(pShape), geom_res_id, true);
+		this_geom->get_mesh_instance()->add_scene_name(this->awd_converter->current_scene_name);
+		this_geom->add_scene_name(this->awd_converter->current_scene_name);
         return FCM_SUCCESS;
     }
 
@@ -158,66 +179,34 @@ namespace AwayJS
     FCM::Result ResourcePalette::AddBitmap(FCM::U_Int32 resourceId, DOM::LibraryItem::PIMediaItem pMediaItem)
     {		
         m_resourceList.push_back(resourceId);
-		this->awd_converter->ExportBitmap(pMediaItem, NULL, std::to_string(resourceId));
-        return FCM_SUCCESS;
-    }
-
-    FCM::Result ResourcePalette::CreateImageFileName(DOM::ILibraryItem* pLibItem, std::string& name)
-    {
-        return FCM_SUCCESS;
-    }
-
-    FCM::Result ResourcePalette::CreateSoundFileName(DOM::ILibraryItem* pLibItem, std::string& name)
-    {
-        return FCM_SUCCESS;
-    }
-	
-	FCM::Result ResourcePalette::GetFontInfo(DOM::FrameElement::ITextStyle* pTextStyleItem, std::string& name, FCM::U_Int16 fontSize)
-    {
-        FCM::StringRep16 pFontName;
-        FCM::StringRep8 pFontStyle;
-        FCM::Result res;
-        std::string str;
-        std::string sizeStr;
-        std::string styleStr;
-
-        res = pTextStyleItem->GetFontName(&pFontName);
-        ASSERT(FCM_SUCCESS_CODE(res));
 		
-        res = pTextStyleItem->GetFontStyle(&pFontStyle);
-        ASSERT(FCM_SUCCESS_CODE(res));
-
-        styleStr = pFontStyle;
-        if(styleStr == "BoldItalicStyle")
-            styleStr = "italic bold";
-        else if(styleStr == "BoldStyle")
-            styleStr = "bold";
-        else if(styleStr == "ItalicStyle")
-            styleStr = "italic";
-        else if(styleStr == "RegularStyle")
-            styleStr = "";
-
-        sizeStr = Utils::ToString(fontSize);
-        str = Utils::ToString(pFontName,GetCallback());
-        //name = styleStr+" "+sizeStr + "px" + " " + "'" + str + "'" ;
-        name = styleStr+"-'" + str + "'" ;
-
-        // Free the name
-        FCM::AutoPtr<FCM::IFCMUnknown> pUnkCalloc;
-        res = GetCallback()->GetService(SRVCID_Core_Memory, pUnkCalloc.m_Ptr);
-        AutoPtr<FCM::IFCMCalloc> callocService  = pUnkCalloc;
-
-        callocService->Free((FCM::PVoid)pFontName);
-
-        return res;
-    }
+		AWDBlock* new_texture = NULL;
+		this->awd_converter->ExportBitmap(pMediaItem, &new_texture);
+		if(new_texture==NULL)
+			return FCM_SUCCESS;
+		BLOCKS::BitmapTexture* new_bitmaptexture = reinterpret_cast<BLOCKS::BitmapTexture*>(new_texture);
+		if(new_bitmaptexture==NULL)
+			return FCM_SUCCESS;  
+		new_bitmaptexture->add_scene_name(this->awd_converter->current_scene_name);
+		// get the material-block for this color (create if does not exist)
+		std::string matname = "mat_"+new_bitmaptexture->get_name();
+		BLOCKS::Material* new_fill_material=reinterpret_cast<BLOCKS::Material*>(this->awd_converter->get_project()->get_block_by_name_and_type(matname,  BLOCK::SIMPLE_MATERIAL, true));
+		new_fill_material->add_res_id(std::to_string(resourceId));
+		new_fill_material->add_scene_name(this->awd_converter->current_scene_name);
+		new_fill_material->set_name(matname);
+		new_fill_material->set_material_type(MATERIAL::type::TEXTURE_MATERIAL);
+	//	new_fill_material->set_uv_transform_mtx(this->convert_matrix2x3(matrix));
+		new_fill_material->set_texture(reinterpret_cast<BLOCKS::BitmapTexture*>(new_texture));
+		return FCM_SUCCESS;
+	}
 
 	FCM::Result ResourcePalette::AddClassicText(FCM::U_Int32 resourceId, DOM::FrameElement::PIClassicText pClassicText)
     {
-		BASE::AWDBlock* newTextBlock;
-		this->awd_converter->ExportText(pClassicText, &newTextBlock);
+        m_resourceList.push_back(resourceId);
+		AWDBlock* new_text = NULL;
+		this->awd_converter->ExportText(pClassicText, &new_text, std::to_string(resourceId));
+		new_text->add_scene_name(this->awd_converter->current_scene_name);
 		return FCM_SUCCESS;
-		
     }
 	
     FCM::Result ResourcePalette::HasResource(FCM::U_Int32 resourceId, FCM::Boolean& hasResource)
@@ -253,156 +242,31 @@ namespace AwayJS
 
         return FCM_SUCCESS;
     }
-	
+		
 
 
 
-	/*
-    FCM::Result ResourcePalette::ExportStrokeForFont(DOM::FrameElement::PIShape pIShape, AWD::FONT::FontShape* fontShape)
-    {
-		
-        AutoPtr<FCM::IFCMUnknown> pGrad;
-		
-		
-        FCM::FCMListPtr pStrokeGroupList;
-        FCM::U_Int32 strokeStyleCount;
-        FCM::Result res;
-		
-        FCM::AutoPtr<FCM::IFCMUnknown> pUnkSRVReg;
-        GetCallback()->GetService(DOM::FLA_REGION_GENERATOR_SERVICE,pUnkSRVReg.m_Ptr);
-        AutoPtr<DOM::Service::Shape::IRegionGeneratorService> pIRegionGeneratorService(pUnkSRVReg);
-        ASSERT(pIRegionGeneratorService);
-		
-		
-        res = pIRegionGeneratorService->GetStrokeGroups(pIShape, pStrokeGroupList.m_Ptr);
-        ASSERT(FCM_SUCCESS_CODE(res));
-		
-        res = pStrokeGroupList->Count(strokeStyleCount);
-        ASSERT(FCM_SUCCESS_CODE(res));
-		//Utils::Trace(GetCallback(), "Export Stroke-groups count = %d.\n", strokeStyleCount);
-		
-        for (FCM::U_Int32 j = 0; j < strokeStyleCount; j++)
-        {
-            AutoPtr<DOM::Service::Shape::IStrokeGroup> pStrokeGroup = pStrokeGroupList[j];
-            ASSERT(pStrokeGroup);
-
-            FCMListPtr pPathList;
-            FCM::U_Int32 pathCount;
-
-            res = pStrokeGroup->GetPaths(pPathList.m_Ptr);
-            ASSERT(FCM_SUCCESS_CODE(res));
-
-            res = pPathList->Count(pathCount);
-            ASSERT(FCM_SUCCESS_CODE(res));
-			
-			m_pOutputWriter->StartDefineShape();
-			std::vector<FontPathShape*> newFontPathes;
-			
-			for (FCM::U_Int32 k = 0; k < pathCount; k++)
-			{
-				DOM::Service::Shape::IPath* pPath = ( DOM::Service::Shape::IPath*)pPathList[k];
-				ASSERT(pPath);			
-				FCM::U_Int32 edgeCount;
-				FCM::FCMListPtr pEdgeList;
-
-				res = pPath->GetEdges(pEdgeList.m_Ptr);
-				ASSERT(FCM_SUCCESS_CODE(res));
-				if(k>0){
-					m_pOutputWriter->StartDefineHole();}
-				res = pEdgeList->Count(edgeCount);
-				ExportPath(pPath);
-				//Utils::Trace(GetCallback(), "Export edgeCount-pathCount count = %d.\n", edgeCount);
-				ASSERT(FCM_SUCCESS_CODE(res));	
-			}
-			m_pOutputWriter->EndDefineFontStroke(fontShape);
-			
-		}
-
-		return FCM_SUCCESS;//res;
-		
-	}
-	*/
 
     FCM::Result ResourcePalette::ExportStrokeStyle(FCM::PIFCMUnknown pStrokeStyle)
     {
-        FCM::Result res = FCM_SUCCESS;
-        AutoPtr<DOM::StrokeStyle::ISolidStrokeStyle> pSolidStrokeStyle;
-
-        pSolidStrokeStyle = pStrokeStyle;
-
-        if (pSolidStrokeStyle)
-        {
-            res = ExportSolidStrokeStyle(pSolidStrokeStyle);
-        }
-        else
-        {
-            // Other stroke styles are not tested yet.
-        }
-
-        return res;
-    }
-	
+        return FCM_SUCCESS;// strokes are exported as fills
+    }	
     FCM::Result ResourcePalette::ExportSolidStrokeStyle(DOM::StrokeStyle::ISolidStrokeStyle* pSolidStrokeStyle)
     {
-		/*
-        FCM::Result res;
-        FCM::Double thickness;
-        AutoPtr<DOM::IFCMUnknown> pFillStyle;
-        DOM::StrokeStyle::CAP_STYLE capStyle;
-        DOM::StrokeStyle::JOIN_STYLE joinStyle;
-        DOM::Utils::ScaleType scaleType;
-        FCM::Boolean strokeHinting;
-		
-        res = pSolidStrokeStyle->GetCapStyle(capStyle);
-        ASSERT(FCM_SUCCESS_CODE(res));
-
-        res = pSolidStrokeStyle->GetJoinStyle(joinStyle);
-        ASSERT(FCM_SUCCESS_CODE(res));
-		*/
-		/*
-        res = pSolidStrokeStyle->GetThickness(thickness);
-        ASSERT(FCM_SUCCESS_CODE(res));
-
-        if (thickness < 0.1)
-        {
-			//AwayJS::Utils::Trace(GetCallback(),"Thickness is smaller 0.1 !\n");
-            thickness = 0.1;
-        }
-        res = pSolidStrokeStyle->GetScaleType(scaleType);
-        ASSERT(FCM_SUCCESS_CODE(res));
-		//AwayJS::Utils::Trace(GetCallback(),AwayJS::Utils::ToString(scaleType).c_str());
-
-        res = pSolidStrokeStyle->GetStrokeHinting(strokeHinting);
-        ASSERT(FCM_SUCCESS_CODE(res));
-
-        res = m_pOutputWriter->StartDefineSolidStrokeStyle(
-            thickness, 
-            joinStyle, 
-            capStyle, 
-            scaleType, 
-            strokeHinting);
-        ASSERT(FCM_SUCCESS_CODE(res));
-
-        // Stroke fill styles
-        res = pSolidStrokeStyle->GetFillStyle(pFillStyle.m_Ptr);
-        ASSERT(FCM_SUCCESS_CODE(res));
-		
-        AutoPtr<DOM::FillStyle::ISolidFillStyle> pSolidFillStyle=pFillStyle;
-		if(pSolidFillStyle){
-			DOM::Utils::COLOR color;
-			pSolidFillStyle->GetColor(color);
-			//AwayJS::Utils::Trace(GetCallback(),AwayJS::Utils::ToString(color).c_str());
-			//AwayJS::Utils::Trace(GetCallback(),"newFIll\n");
-		}
-       // res = ExportFillStyle(pFillStyle);
-       // ASSERT(FCM_SUCCESS_CODE(res));
-
-        res = m_pOutputWriter->EndDefineSolidStrokeStyle();
-        ASSERT(FCM_SUCCESS_CODE(res));
-		*/
+        return FCM_SUCCESS;// strokes are exported as fills
+    }
+    FCM::Result ResourcePalette::CreateImageFileName(DOM::ILibraryItem* pLibItem, std::string& name)
+    {
         return FCM_SUCCESS;
     }
-	
+	FCM::Result ResourcePalette::CreateSoundFileName(DOM::ILibraryItem* pLibItem, std::string& name)
+    {
+        return FCM_SUCCESS;
+    }	
+	FCM::Result ResourcePalette::GetFontInfo(DOM::FrameElement::ITextStyle* pTextStyleItem, std::string& name, FCM::U_Int16 fontSize)
+    {
+       return FCM_SUCCESS;
+    }
 
 
 

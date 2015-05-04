@@ -48,11 +48,8 @@ class FlashToAWDEncoder
 
     private:
 		
-		// awd-geometry-blocks ordered by scenes timelines and frames
-		// each awd-geometry stores a pointer to the Flash DOM::FrameElement::IShape
-		// this way, we can compare Geometries by their IShape object.
-		std::vector< std::vector<std::vector< std::vector<BLOCKS::Geometry*> > > >	scene_geoms;
 		
+		std::map<std::string, std::vector<BLOCKS::Geometry*> >	geom_cache;
 		// pointer to awd-project needed to add blocks to awd-project
 		AWDProject* awd_project;
 		
@@ -61,31 +58,29 @@ class FlashToAWDEncoder
 		
 		// needed when converting shapes to geometry
 		FCM::AutoPtr<DOM::Service::Shape::IRegionGeneratorService> pIRegionGeneratorService;
-		FCM::AutoPtr<DOM::Service::Shape::IShapeService>  pIShapeService;
 		BLOCKS::Geometry*  current_geom;
-		GEOM::FilledRegion* current_path_shape;
+		GEOM::FilledRegion* current_filled_region;
 		
 // FlashToAWDEncoder_geometry.cpp:
-		void convert_shape_to_geometry(DOM::FrameElement::IShape* thisShape, BLOCKS::Geometry* shapeBlock);
+		void convert_shape_to_geometry(std::string& this_lookup_str, DOM::FrameElement::IShape* thisShape, BLOCKS::Geometry* shapeBlock);
+		FCM::AutoPtr<DOM::Service::Shape::IShapeService>  pIShapeService;
 		
-    public:
-
+	public:
+		
+		std::string current_scene_name;
+		int grafik_cnt;
+		int mat_cnt;
+		int geom_cnt;
+		int text_fomat_cnt;
+		int text_field_cnt;
+		int shape_instance_cnt;
 // FlashToAWDEncoder.cpp:
+
+		std::vector<DOM::FrameElement::IShape> all_shapes;
 
         FlashToAWDEncoder(FCM::PIFCMCallback pCallback, AWDProject* awd_project);
         ~FlashToAWDEncoder();		 
 
-		/** \brief start converting a new scene - not needed when using adobe frame commands
-		*/
-		void prepare_new_scene();
-
-		/** \brief start converting a new timeline - not needed when using adobe frame commands
-		*/
-        void prepare_new_timeline();
-		
-		/** \brief start converting a new Frame - not needed when using adobe frame commands
-		*/
-        void prepare_new_frame();
 				
 		/** \brief Convert a DOM::Utils::MATRIX2D to TYPES::F64*
 		*/
@@ -103,39 +98,40 @@ class FlashToAWDEncoder
 		
 		BLOCKS::Geometry* get_geom_for_shape(DOM::FrameElement::IShape* thisShape, const std::string& timeline_name, bool adobeFrameCommands);
 		
-        FCM::Result ExportFilledShape(DOM::FrameElement::PIShape pIShape, TYPES::filled_region_type from_stroke);
-        FCM::Result ExportStroke(DOM::FrameElement::PIShape pIShape);
+        FCM::Result ExportFilledShape(std::string& this_lookup_str, DOM::FrameElement::PIShape pIShape, TYPES::filled_region_type from_stroke);
+        FCM::Result ExportStroke(std::string& this_lookup_str, DOM::FrameElement::PIShape pIShape);
 		
-        FCM::Result ExportPath(DOM::Service::Shape::PIPath pPath);
+        FCM::Result ExportPath_font(DOM::Service::Shape::PIPath pPath);
+        FCM::Result ExportPath(std::string& this_lookup_str, DOM::Service::Shape::PIPath pPath);
         FCM::Result SetSegment(const DOM::Utils::SEGMENT& segment);
         FCM::Result ExportStrokeForFont(DOM::FrameElement::PIShape pIShape, AWD::FONT::FontShape*);
 
-		FCM::Result ExportFillStyle(FCM::PIFCMUnknown pFillStyle);
 		
 		
 // FlashToAWDEncoder_fills.cpp:	
+		FCM::Result ExportFillStyle(std::string& this_lookup_str, FCM::PIFCMUnknown pFillStyle);
 
-        FCM::Result ExportSolidFillStyle(DOM::FillStyle::ISolidFillStyle* pSolidFillStyle);
+        FCM::Result ExportSolidFillStyle(std::string& this_lookup_str, DOM::FillStyle::ISolidFillStyle* pSolidFillStyle);
 
-        FCM::Result ExportRadialGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle);
+        FCM::Result ExportRadialGradientFillStyle(std::string& this_lookup_str, DOM::FillStyle::IGradientFillStyle* pGradientFillStyle);
 
-        FCM::Result ExportLinearGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle);
+        FCM::Result ExportLinearGradientFillStyle(std::string& this_lookup_str, DOM::FillStyle::IGradientFillStyle* pGradientFillStyle);
 
-        FCM::Result ExportBitmapFillStyle(DOM::FillStyle::IBitmapFillStyle* pBitmapFillStyle);
+        FCM::Result ExportBitmapFillStyle(std::string& this_lookup_str, DOM::FillStyle::IBitmapFillStyle* pBitmapFillStyle);
 		
 		
 // FlashToAWDEncoder_fonts.cpp:	
 		
-		AWD::result ExportText(DOM::FrameElement::IClassicText*, AWDBlock** awd_block);
+		AWD::result ExportText(DOM::FrameElement::IClassicText*, AWDBlock** awd_block, const std::string);
 
-		AWD::result ExportFont(DOM::LibraryItem::IFontItem* font);
+		AWD::BASE::AWDBlock* ExportFont(DOM::LibraryItem::IFontItem* font);
 
 		AWD::result FinalizeFonts(DOM::PIFLADocument pFlaDocument);
 		
 // FlashToAWDEncoder_mediaItems.cpp:	
 		
-		FCM::Result ExportBitmap(DOM::LibraryItem::IMediaItem* , BASE::AWDBlock** output_block, const std::string res_id);
-		FCM::Result ExportSound(DOM::LibraryItem::IMediaItem* , BASE::AWDBlock** output_block, const std::string res_id);
+		FCM::Result ExportBitmap(DOM::LibraryItem::IMediaItem* , BASE::AWDBlock** output_block);
+		AWD::BASE::AWDBlock* ExportSound(DOM::LibraryItem::IMediaItem* , BASE::AWDBlock** output_block, const std::string res_id);
 };
 
 #endif

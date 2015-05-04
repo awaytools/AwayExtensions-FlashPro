@@ -87,6 +87,8 @@
 #include "AWDTimelineWriter.h"
 #include "RessourcePalette.h"
 #include "TimelineBuilder.h"
+#include "blocks/mesh_library.h"
+#include "blocks/billboard.h"
 
 namespace AwayJS
 {
@@ -131,7 +133,7 @@ namespace AwayJS
         const PIFCMDictionary pDictPublishSettings, 
         const PIFCMDictionary pDictConfig)
     {
-
+		_pDict=pDictPublishSettings;
 		
         std::string outFile;
         FCM::Result res;
@@ -143,7 +145,7 @@ namespace AwayJS
         pCalloc = AwayJS::Utils::GetCallocService(GetCallback());
         ASSERT(pCalloc.m_Ptr != NULL);
 		
-        Utils::Trace(GetCallback(), "Publishing begins for AwayJS-document (AWD export)\n");
+        Utils::Trace(GetCallback(), "Publishing AwayJS-document (AWD export)\n");
 
 			
         res = GetOutputFileName(pFlaDocument, pTimeline, pDictPublishSettings, outFile);
@@ -151,7 +153,7 @@ namespace AwayJS
         {
             // FLA is untitled. Ideally, we should use a temporary location for output generation.
             // However, for now, we report an error.
-            Utils::Trace(GetCallback(), "Failed to publish. Either save the AwayJS-Document or provide a output path in publish settings.\n");
+            Utils::Trace(GetCallback(), "\nFailed to publish. Either save the AwayJS-Document or provide a output path in publish settings.\n");
             return res;
         }	
 		
@@ -195,25 +197,26 @@ namespace AwayJS
 			export_shapes_in_debug_mode=true;
 		
 		// defines if the adobe-frame-generator should be used (true) or not (false) 
-		bool useADobeFramegenerator=false;
+		bool useADobeFramegenerator=true;
 		std::string useADobeFramegenerator_str;
         ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.UseAdobeFrameCommands", useADobeFramegenerator_str);
-		if(useADobeFramegenerator_str=="true")
-			useADobeFramegenerator=true;
+		if(useADobeFramegenerator_str=="false")
+			useADobeFramegenerator=false;
+			
 
 		// defines if the adobe-frame-generator should be used (true) or not (false) 
 		bool distinglishexteriorandinterior_tris=false;
-		std::string distinglishexteriorandinterior_tris_str;
+		/*std::string distinglishexteriorandinterior_tris_str;
         ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.DistinglishExteriorAndinterior", distinglishexteriorandinterior_tris_str);
 		if(distinglishexteriorandinterior_tris_str=="true")
-			distinglishexteriorandinterior_tris=true;
+			distinglishexteriorandinterior_tris=true;*/
 
 		// defines if curve-intersections should be resolved when generating the geometry-data
-		bool resolveIntersects=false;
-		std::string resolveIntersects_s;
+		bool resolveIntersects=true;
+		/*std::string resolveIntersects_s;
 		ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.ResolvCurveIntersections", resolveIntersects_s);
 		if(resolveIntersects_s=="true")
-			resolveIntersects=true;
+			resolveIntersects=true;*/
 
 		std::string preview_source_path;
 		ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.PreviewPathSource", preview_source_path);
@@ -232,9 +235,9 @@ namespace AwayJS
 
 			
 		// get the settings for resolve_intersections, or set them to default, if resolve_intersections is false
-		double curveThreshold=0.02;
-		int maxIterations=0;
-		if(resolveIntersects){
+		double curveThreshold=0.1;
+		int maxIterations=4;
+		/*if(resolveIntersects){
 			// defines the max threshold of "curviness" before subdividing of curves should be stopped
 			std::string curveThreshold_s;
 			ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.CurveTreshold", curveThreshold_s);
@@ -246,8 +249,13 @@ namespace AwayJS
 			ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.MaximalIterations", max_itereations_s);
 			if(!max_itereations_s.empty())
 				maxIterations=int(std::stod(max_itereations_s));
-		}
+		}*/
 		
+		bool export_framescripts=true;
+		std::string export_framescripts_s;
+		ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.ExportFrameScript", export_framescripts_s);
+		if(export_framescripts_s=="false")
+			export_framescripts=false;
 		// defines the max threshold of "curviness" before subdividing of curves should be stopped
 		double exterior_threshold=0.0;
 		std::string exterior_threshold_s;
@@ -255,7 +263,12 @@ namespace AwayJS
 		if(!exterior_threshold_s.empty())
 			exterior_threshold=std::stod(exterior_threshold_s);
 
-		
+		bool export_invisible_timeline_layer=false;
+		std::string export_invisible_timeline_layer_s;
+		ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.IncludeInvisibleLayer", export_invisible_timeline_layer_s);
+		if(export_invisible_timeline_layer_s=="true")
+			export_invisible_timeline_layer=true;
+
 		bool exterior_threshold_font=false;
 		std::string exterior_threshold_font_str;
         ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.MinimizeExteriorTresholdFonts", exterior_threshold_font_str);
@@ -268,11 +281,26 @@ namespace AwayJS
 		if(exterior_threshold_strokes_str=="true")
 			exterior_threshold_strokes=true;
 
-		bool keep_vert_in_path_order=false;
-		std::string keep_vert_in_path_order_str;
+		bool keep_vert_in_path_order=true;
+		/*std::string keep_vert_in_path_order_str;
         ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.KeepPathOrder", keep_vert_in_path_order_str);
 		if(keep_vert_in_path_order_str=="true")
 			keep_vert_in_path_order=true;
+		*/
+		
+		
+		bool embbed_textures=true;
+		std::string embbed_textures_str;
+        ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.EmbbedTextures", embbed_textures_str);
+		if(embbed_textures_str=="false")
+			embbed_textures=false;
+
+		bool embbed_sounds=true;
+		std::string embbed_sounds_str;
+        ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.EmbbedSounds", embbed_sounds_str);
+		if(embbed_sounds_str=="false")
+			embbed_sounds=false;
+
 		
 		bool export_lib_bitmaps=false;
 		std::string export_lib_bitmaps_str;
@@ -285,17 +313,69 @@ namespace AwayJS
         ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.ExportLibSounds", export_lib_sounds_str);
 		if(export_lib_sounds_str=="true")
 			export_lib_sounds=true;
+        
+		bool export_lib_fonts=false;
+		std::string export_lib_fonts_str;
+        ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.ExportLibFonts", export_lib_fonts_str);
+		if(export_lib_fonts_str=="true")
+			export_lib_fonts=true;
+
+		std::string sound_file_type_str;
+        ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.SaveSoundsAs", sound_file_type_str);
+		if(sound_file_type_str=="0"){
+			sound_file_type_str="keep";}
+		else if(sound_file_type_str=="1"){
+			sound_file_type_str="wav";}
+		else if(sound_file_type_str=="2"){
+			sound_file_type_str="mp3";}
+		
+		std::string geom_data_str;
+        ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.GeometryData", geom_data_str);
+		if(geom_data_str=="0"){
+			geom_data_str="7f";}
+		else if(geom_data_str=="1"){
+			geom_data_str="pos";}
+		else if(geom_data_str=="2"){
+			geom_data_str="posuv";}
+		
+		std::string font_data_str;
+        ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.FontData", font_data_str);
+		if(font_data_str=="0"){
+			font_data_str="7f";}
+		else if(font_data_str=="1"){
+			font_data_str="pos";}
+		
+		std::string timeline_depth_str;
+        ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.TimelineDepth", timeline_depth_str);
+		if(timeline_depth_str=="0"){
+			timeline_depth_str="AS2";}
+		else if(timeline_depth_str=="1"){
+			timeline_depth_str="AS3";}
+
+		std::string radial_gradient_size_str;
+		TYPES::UINT32 radial_gradient_size=512;
+        ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.RadialGradientSize", radial_gradient_size_str);
+		if(radial_gradient_size_str=="0"){
+			radial_gradient_size=128;}
+		else if(radial_gradient_size_str=="1"){
+			radial_gradient_size=256;}
+		else if(radial_gradient_size_str=="2"){
+			radial_gradient_size=512;}
+		else if(radial_gradient_size_str=="3"){
+			radial_gradient_size=1024;}
+		else if(radial_gradient_size_str=="4"){
+			radial_gradient_size=2048;}
 
 		bool flipXaxis=false;
-		std::string flipXaxis_str;
+		/*std::string flipXaxis_str;
         ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.FlipXaxis", flipXaxis_str);
 		if(flipXaxis_str=="true")
-			flipXaxis=true;
+			flipXaxis=true;*/
 		bool flipYaxis=false;
-		std::string flipYaxis_str;
+		/*std::string flipYaxis_str;
         ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.FlipYaxis", flipYaxis_str);
 		if(flipYaxis_str=="true")
-			flipYaxis=true;
+			flipYaxis=true;*/
 		
 	// get some properties from the AwayJS Document (color, framerate etc)		
 		
@@ -333,23 +413,30 @@ namespace AwayJS
 
 		SETTINGS::Settings* awd_settings = this->awd_project->get_settings();
 		
+		awd_settings->set_export_framescripts(export_framescripts);
+		awd_settings->set_radial_gradient_size(radial_gradient_size);
 		awd_settings->set_fps(fps);
+		awd_settings->set_sound_file_extension(sound_file_type_str);
 		awd_settings->set_keep_verticles_in_path_order(keep_vert_in_path_order);
 		awd_settings->set_max_iterations(maxIterations);
 		awd_settings->set_curve_threshold(curveThreshold);
 		awd_settings->set_resolve_intersections(resolveIntersects);
 		awd_settings->set_flipXaxis(flipXaxis);
 		awd_settings->set_flipYaxis(flipYaxis);
-		
+		awd_settings->set_export_invisible_timeline_layer(export_invisible_timeline_layer);
 		awd_settings->set_export_shapes_in_debug_mode(export_shapes_in_debug_mode);
 		awd_settings->set_export_curves(true);
 		awd_settings->set_distinglish_interior_exterior_triangles_2d(distinglishexteriorandinterior_tris);
 		awd_settings->set_exterior_threshold(exterior_threshold, TYPES::filled_region_type::STANDART_FILL);
+
 		if(exterior_threshold_strokes)
 			awd_settings->set_exterior_threshold(exterior_threshold, TYPES::filled_region_type::FILL_CONVERTED_FROM_STROKE);
 		if(exterior_threshold_font)
 			awd_settings->set_exterior_threshold(exterior_threshold, TYPES::filled_region_type::GENERATED_FONT_OUTLINES);
 		
+		awd_settings->set_embbed_audio(embbed_sounds);
+		awd_settings->set_embbed_textures(embbed_textures);
+         
 	// Check if only active timeline should be exported. if yes, we set timelinecount to 1
 
 		if(pTimeline!=NULL){
@@ -360,41 +447,51 @@ namespace AwayJS
 		
 	// fill the awd-project with data:
 
-		// Here the code splits into using Adobe-Frame-Generator or own implementation:
-
-        Utils::Trace(GetCallback(), "Encoding data....\n");
+		FCM::U_Int32 i=0;
 		
-		double      thisTime=0;
-		long        startTime=0;
-    
-        //startTime=(double)AWD::GetTimeMs64();
-
+		std::vector<BASE::AWDBlock*> all_timelines;	
+		std::vector<BASE::AWDBlock*> all_bitmaps;	
+		std::vector<BASE::AWDBlock*> all_audios;
+		std::vector<BASE::AWDBlock*> all_fonts;	
+		std::vector<BASE::AWDBlock*> all_tf;	
+		std::vector<BASE::AWDBlock*> all_textformats;	
+		std::vector<BASE::AWDBlock*> all_shapes;
+		std::vector<BASE::AWDBlock*> all_billboards;
+		std::vector<BASE::AWDBlock*> all_materials;
+		std::vector<BASE::AWDBlock*> all_meshes;
+		
+		int cnt_before=0;
+		int grafics_cnt_start=0;
+		int cnt_blocks=0;
+		
+		TimelineEncoder* newTimeLineEncoder = NULL;
 		if(useADobeFramegenerator){
+			Utils::Trace(GetCallback(), "\nStart encoding Scenes:\n");
 			Utils::Trace(GetCallback(), "Encoding Using Adobe-Frame-Generator.\n");
 			
-			AutoPtr<IFrameCommandGenerator> m_frameCmdGeneratorService;
-					
+			// Here the code splits into using Adobe-Frame-Generator or own implementation:
+		
+			AutoPtr<IFrameCommandGenerator> m_frameCmdGeneratorService;		
+			AutoPtr<IResourcePalette> m_pResourcePalette;		
+			AwayJS::ResourcePalette* pResPalette;
+			Utils::Trace(GetCallback(), "Encoding data....\n");
 			res = GetCallback()->GetService(Exporter::Service::EXPORTER_FRAME_CMD_GENERATOR_SERVICE, pUnk.m_Ptr);
 			ASSERT(FCM_SUCCESS_CODE(res));
 			m_frameCmdGeneratorService = pUnk;
-						
-			AutoPtr<IResourcePalette> m_pResourcePalette;
+					
 			res = GetCallback()->CreateInstance(NULL, CLSID_ResourcePalette, IID_IResourcePalette, (void**)&m_pResourcePalette);
 			ASSERT(FCM_SUCCESS_CODE(res));
 			
-			ResourcePalette* pResPalette = static_cast<ResourcePalette*>(m_pResourcePalette.m_Ptr);
-			pResPalette->Clear();
+			pResPalette = static_cast<ResourcePalette*>(m_pResourcePalette.m_Ptr);
 			pResPalette->Init(this->flash_to_awd_encoder);	
-			
-			// Create a Timeline Builder Factory for the root timelines of the document
 			AutoPtr<ITimelineBuilderFactory> pTimelineBuilderFactory;
 			res = GetCallback()->CreateInstance(NULL, CLSID_TimelineBuilderFactory, IID_ITimelineBuilderFactory, (void**)&pTimelineBuilderFactory);
 			ASSERT(FCM_SUCCESS_CODE(res));
 			(static_cast<TimelineBuilderFactory*>(pTimelineBuilderFactory.m_Ptr))->Init(this->flash_to_awd_encoder);
-
-			// encode the timelines
+			
 			// if we have a input-timeline (pTimeline), we only export this (timelineCount is already 1 in this case)
-			for (FCM::U_Int32 i = 0; i < timelineCount; i++)
+			int cntAllressources=0;
+			for (i = 0; i < timelineCount; i++)
 			{			
 				AutoPtr<DOM::ITimeline> timeline = pTimelineList[i];
 				if(pTimeline!=NULL)
@@ -406,114 +503,337 @@ namespace AwayJS
 				range.min = 0;
 				res = timeline->GetMaxFrameCount(range.max);
 				range.max--;
+				
 
+				FCM::StringRep16 scene_name_str;
+				timeline->GetName(&scene_name_str);
+				std::string scene_name=AwayJS::Utils::ToString(scene_name_str, GetCallback());
+				this->flash_to_awd_encoder->current_scene_name=scene_name;
 				// Generate frame commands		
 				res = m_frameCmdGeneratorService->GenerateFrameCommands(timeline, range, pDictPublishSettings,	m_pResourcePalette, pTimelineBuilderFactory, pTimelineBuilder.m_Ptr);
 				ASSERT(FCM_SUCCESS_CODE(res));
-				((TimelineBuilder*)pTimelineBuilder.m_Ptr)->Build(0, NULL, &pTimelineWriter);
 
-				BLOCKS::Timeline* scene_timeline_block = reinterpret_cast<BLOCKS::Timeline* >(this->awd_project->get_block_by_external_id_and_type(std::to_string(0), BLOCK::block_type::TIMELINE, false));
+				
+				((TimelineBuilder*)pTimelineBuilder.m_Ptr)->Build(0, scene_name_str, &pTimelineWriter);
+				
+				BLOCKS::Timeline* scene_timeline_block = reinterpret_cast<BLOCKS::Timeline* >(this->awd_project->get_block_by_external_id_and_type_shared(std::to_string(0), BLOCK::block_type::TIMELINE, false));
 				if(scene_timeline_block!=NULL){
 					scene_timeline_block->set_scene_id(i+1);
-					scene_timeline_block->set_name("Scene " + std::to_string(i+1));
 				}
 				if(this->awd_project->get_blocks_for_external_ids()!=result::AWD_SUCCESS)
 					Utils::Trace(GetCallback(), "PROBLEM IN CONVERTING RESSOURCE_ID TO AWDBLOCKS FOR FRAMECOMMANDS!!!\nEXPORT STILL CONTINUES !!!\n");
 
 				pResPalette->Clear();
-			}
+
+					
+				// print out results for this scene:
+				Utils::Trace(GetCallback(), "->	Encoded '%s'\n", scene_name.c_str());
+
+				cnt_before=all_timelines.size();
+				this->awd_project->get_blocks_by_type(all_timelines, BLOCK::block_type::TIMELINE);
+				
+				if(((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start))>0)
+					Utils::Trace(GetCallback(), "->		MovieClips:		%d\n", ((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)));
+						
+				if((this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)>0)
+					Utils::Trace(GetCallback(), "->		Graphics:		%d\n", (this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start));
+					
+				grafics_cnt_start = this->flash_to_awd_encoder->grafik_cnt;	
+
+				cnt_before=all_bitmaps.size();
+				this->awd_project->get_blocks_by_type(all_bitmaps, BLOCK::block_type::BITMAP_TEXTURE);
+				if((all_bitmaps.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Bitmaps:		%d\n", (all_bitmaps.size()-cnt_before));				
+				
+				cnt_before=all_billboards.size();
+				this->awd_project->get_blocks_by_type(all_billboards, BLOCK::block_type::BILLBOARD);
+				if((all_billboards.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Billboards:		%d\n", (all_billboards.size()-cnt_before));
+				
+				cnt_before=all_audios.size();
+				this->awd_project->get_blocks_by_type(all_audios, BLOCK::block_type::SOUND_SOURCE);
+				if((all_audios.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Sounds:			%d\n", (all_audios.size()-cnt_before));				
+	
+				cnt_before=all_fonts.size();
+				this->awd_project->get_blocks_by_type(all_fonts, BLOCK::block_type::FONT);
+				if((all_fonts.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Fonts:			%d\n", (all_fonts.size()-cnt_before));				
 			
-			
-		}
+				cnt_before=all_textformats.size();
+				this->awd_project->get_blocks_by_type(all_textformats, BLOCK::block_type::FORMAT);
+				if((all_textformats.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Text-formats:	%d\n", (all_textformats.size()-cnt_before));
+				
+
+				cnt_before=all_tf.size();
+				this->awd_project->get_blocks_by_type(all_tf, BLOCK::block_type::TEXT_ELEMENT);
+				if((all_tf.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Text-fields:	%d\n", (all_tf.size()-cnt_before));
+				
+					
+				cnt_before=all_shapes.size();
+				this->awd_project->get_blocks_by_type(all_shapes, BLOCK::block_type::TRI_GEOM);
+				if((all_shapes.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Shapes/Meshes:	%d\n", (all_shapes.size()-cnt_before));
+				
+				cnt_before=all_meshes.size();
+				this->awd_project->get_blocks_by_type(all_meshes, BLOCK::block_type::MESH_INSTANCE_2);
+
+				cnt_before=all_materials.size();
+				this->awd_project->get_blocks_by_type(all_materials, BLOCK::block_type::SIMPLE_MATERIAL);
+				if((all_materials.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Materials:		%d\n", (all_materials.size()-cnt_before));
+			}			
+
+			// now all timelines should have been filled with data (Timelineframes)
+			// for all encountered frame-objects (display-objects / sounds) a AWDBlock should have been created.
+
+			// we might want to include assets that are not part of any timeline, and hence not added to the awd_project yet.
+
+			Utils::Trace(GetCallback(), "\nScenes encoded\n");
+		
+		}	
 		else{
+			newTimeLineEncoder = new TimelineEncoder(GetCallback(), this->awd_project, this->flash_to_awd_encoder);
+		}
+
+		Utils::Trace(GetCallback(), "\nStart encoding library\n");
+		
+		FCM::FCMListPtr pLibraryItemList;
+		res = pFlaDocument->GetLibraryItems(pLibraryItemList.m_Ptr);
+		if (FCM_FAILURE_CODE(res)){
+			Utils::Trace(GetCallback(), "FAILED TO GET LIBRARY ITEMS FROM FLASH \n");
+			return FCM_EXPORT_FAILED;
+		}
+		this->flash_to_awd_encoder->current_scene_name="Library";
+		if(this->ExportLibraryItems(pLibraryItemList, export_lib_bitmaps, export_lib_sounds, export_lib_fonts, useADobeFramegenerator, newTimeLineEncoder)!=result::AWD_SUCCESS){
+			Utils::Trace(GetCallback(), "FAILED TO COLLECT LIBRARY ITEMS \n");
+			return FCM_EXPORT_FAILED;
+		}		
+		Utils::Trace(GetCallback(), "Library encoded.\n");
+			
+		cnt_before=all_timelines.size();
+		this->awd_project->get_blocks_by_type(all_timelines, BLOCK::block_type::TIMELINE);
+		for(cnt_blocks=cnt_before; cnt_blocks<all_timelines.size(); cnt_blocks++){
+			all_timelines[cnt_blocks]->set_encountered_at("Library");
+		}
+		if(((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start))>0){
+			Utils::Trace(GetCallback(), "->		MovieClips:		%d\n", ((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)));
+		}
+		
+		if((this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)>0){
+			Utils::Trace(GetCallback(), "->		Graphics:		%d\n", (this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start));
+		}
+		
+		cnt_before=all_bitmaps.size();
+		this->awd_project->get_blocks_by_type(all_bitmaps, BLOCK::block_type::BITMAP_TEXTURE);
+		if((all_bitmaps.size()-cnt_before)>0)
+			Utils::Trace(GetCallback(), "->		Bitmaps:		%d\n", (all_bitmaps.size()-cnt_before));
+		
+		cnt_before=all_billboards.size();
+		this->awd_project->get_blocks_by_type(all_billboards, BLOCK::block_type::BILLBOARD);
+		if((all_billboards.size()-cnt_before)>0)
+			Utils::Trace(GetCallback(), "->		Billboards:			%d\n", (all_billboards.size()-cnt_before));
+		
+		for(AWDBlock* one_block : all_billboards){
+			BLOCKS::Billboard* this_lib_mesh = reinterpret_cast<BLOCKS::Billboard*>(one_block);
+			for(std::string one_name:this_lib_mesh->get_material()->scene_names){
+				one_block->add_scene_name(one_name); 
+			}
+		}
+		cnt_before=all_audios.size();
+		this->awd_project->get_blocks_by_type(all_audios, BLOCK::block_type::SOUND_SOURCE);
+		if((all_audios.size()-cnt_before)>0)
+			Utils::Trace(GetCallback(), "->		Sounds:			%d\n", (all_audios.size()-cnt_before));
+	
+		cnt_before=all_fonts.size();
+		this->awd_project->get_blocks_by_type(all_fonts, BLOCK::block_type::FONT);
+		if((all_fonts.size()-cnt_before)>0)
+			Utils::Trace(GetCallback(), "->		Fonts:			%d\n", (all_fonts.size()-cnt_before));
+			
+		cnt_before=all_textformats.size();
+		this->awd_project->get_blocks_by_type(all_textformats, BLOCK::block_type::FORMAT);
+		if((all_textformats.size()-cnt_before)>0)
+			Utils::Trace(GetCallback(), "->		Text-formats:	%d\n", (all_textformats.size()-cnt_before));
+
+		cnt_before=all_tf.size();
+		this->awd_project->get_blocks_by_type(all_tf, BLOCK::block_type::TEXT_ELEMENT);
+		if((all_tf.size()-cnt_before)>0)
+			Utils::Trace(GetCallback(), "->		Text-fields:	%d\n", (all_tf.size()-cnt_before));
+					
+		cnt_before=all_shapes.size();
+		this->awd_project->get_blocks_by_type(all_shapes, BLOCK::block_type::TRI_GEOM);
+		if((all_shapes.size()-cnt_before)>0)
+			Utils::Trace(GetCallback(), "->		Shapes/Meshes:	%d\n", (all_shapes.size()-cnt_before));
+
+		cnt_before=all_meshes.size();
+		this->awd_project->get_blocks_by_type(all_meshes, BLOCK::block_type::MESH_INSTANCE_2);
+		if((all_meshes.size()-cnt_before)>0){
+			for(cnt_blocks=cnt_before; cnt_blocks<all_meshes.size(); cnt_blocks++){
+				all_meshes[cnt_blocks]->set_encountered_at("Library");
+			}
+		}
+		for(AWDBlock* one_block : all_meshes){
+			BLOCKS::MeshLibrary* this_lib_mesh = reinterpret_cast<BLOCKS::MeshLibrary*>(one_block);
+			for(std::string one_name:this_lib_mesh->get_geom()->scene_names){
+				one_block->add_scene_name(one_name); 
+			}
+		}
+		
+		cnt_before=all_materials.size();
+		this->awd_project->get_blocks_by_type(all_materials, BLOCK::block_type::SIMPLE_MATERIAL);
+		if((all_materials.size()-cnt_before)>0)
+			Utils::Trace(GetCallback(), "->		Materials:	%d\n", (all_materials.size()-cnt_before));
+				
+		if(!useADobeFramegenerator){
 			Utils::Trace(GetCallback(), "Encoding Using AwayJS-Frame-Generator.\n");				
 		
+			
 			// encode the timelines
 			// if we have a input-timeline (pTimeline), we only export this (timelineCount is already 1 in this case)
-			for (FCM::U_Int32 i = 0; i < timelineCount; i++){						
+			for (i = 0; i < timelineCount; i++){						
 				AutoPtr<DOM::ITimeline> timeline = pTimelineList[i];
 				if(pTimeline!=NULL)
 					timeline = pTimeline;
-				TimelineEncoder* newTimeLineEncoder = new TimelineEncoder(GetCallback(), timeline, this->awd_project, this->flash_to_awd_encoder, i);
-				newTimeLineEncoder->encode();	
+				FCM::StringRep16 scene_name_str;
+				timeline->GetName(&scene_name_str);
+				std::string scene_name=AwayJS::Utils::ToString(scene_name_str, GetCallback());
+				BLOCKS::Timeline* new_scene_timeline=new BLOCKS::Timeline();
+				new_scene_timeline->set_name(scene_name);
+				new_scene_timeline->set_fps(this->awd_project->get_settings()->get_fps());
+				new_scene_timeline->set_scene_id(i+1);
+				this->awd_project->add_block(new_scene_timeline);
+				newTimeLineEncoder->encode(timeline, new_scene_timeline);	
+									
+				Utils::Trace(GetCallback(), "Encoded %s.\n", scene_name.c_str());
+			
+				cnt_before=all_timelines.size();
+				this->awd_project->get_blocks_by_type(all_timelines, BLOCK::block_type::TIMELINE);
+				for(cnt_blocks=cnt_before; cnt_blocks<all_timelines.size(); cnt_blocks++){
+					all_timelines[cnt_blocks]->set_encountered_at(scene_name);
+				}
+				if(((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start))>0){
+					Utils::Trace(GetCallback(), "->		MovieClips:		%d\n", ((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)));
+				}
+		
+				if((this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)>0){
+					Utils::Trace(GetCallback(), "->		Graphics:		%d\n", (this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start));
+				}
+		
+				cnt_before=all_bitmaps.size();
+				this->awd_project->get_blocks_by_type(all_bitmaps, BLOCK::block_type::BITMAP_TEXTURE);
+				if((all_bitmaps.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Bitmaps:		%d\n", (all_bitmaps.size()-cnt_before));
+		
+				cnt_before=all_billboards.size();
+				this->awd_project->get_blocks_by_type(all_billboards, BLOCK::block_type::BILLBOARD);
+				if((all_billboards.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Billboards:			%d\n", (all_billboards.size()-cnt_before));
+		
+				for(AWDBlock* one_block : all_billboards){
+					BLOCKS::Billboard* this_lib_mesh = reinterpret_cast<BLOCKS::Billboard*>(one_block);
+					for(std::string one_name:this_lib_mesh->get_material()->scene_names){
+						one_block->add_scene_name(one_name); 
+					}
+				}
+				cnt_before=all_audios.size();
+				this->awd_project->get_blocks_by_type(all_audios, BLOCK::block_type::SOUND_SOURCE);
+				if((all_audios.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Sounds:			%d\n", (all_audios.size()-cnt_before));
+	
+				cnt_before=all_fonts.size();
+				this->awd_project->get_blocks_by_type(all_fonts, BLOCK::block_type::FONT);
+				if((all_fonts.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Fonts:			%d\n", (all_fonts.size()-cnt_before));
+			
+				cnt_before=all_textformats.size();
+				this->awd_project->get_blocks_by_type(all_textformats, BLOCK::block_type::FORMAT);
+				if((all_textformats.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Text-formats:	%d\n", (all_textformats.size()-cnt_before));
+
+				cnt_before=all_tf.size();
+				this->awd_project->get_blocks_by_type(all_tf, BLOCK::block_type::TEXT_ELEMENT);
+				if((all_tf.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Text-fields:	%d\n", (all_tf.size()-cnt_before));
+					
+				cnt_before=all_shapes.size();
+				this->awd_project->get_blocks_by_type(all_shapes, BLOCK::block_type::TRI_GEOM);
+				if((all_shapes.size()-cnt_before)>0)
+					Utils::Trace(GetCallback(), "->		Shapes/Meshes:	%d\n", (all_shapes.size()-cnt_before));
+
+				cnt_before=all_meshes.size();
+				this->awd_project->get_blocks_by_type(all_meshes, BLOCK::block_type::MESH_INSTANCE_2);
+				if((all_meshes.size()-cnt_before)>0){
+					for(cnt_blocks=cnt_before; cnt_blocks<all_meshes.size(); cnt_blocks++){
+						all_meshes[cnt_blocks]->set_encountered_at(scene_name);
+					}
+				}
+				for(AWDBlock* one_block : all_meshes){
+					BLOCKS::MeshLibrary* this_lib_mesh = reinterpret_cast<BLOCKS::MeshLibrary*>(one_block);
+					for(std::string one_name:this_lib_mesh->get_geom()->scene_names){
+						one_block->add_scene_name(one_name); 
+					}
+				}
+
 			}
 			
 		}
-		
-		// now all timelines should have been filled with data (Timelineframes)
-		// for all encountered frame-objects (display-objects / sounds) a AWDBlock should have been created.
-
-		// we might want to include assets that are not part of any timeline, and hence not added to the awd_project yet.
-		/*
-        thisTime=(double)AWD::GetTimeMs64();
-		Utils::Trace(GetCallback(), "Creating Frame-Commands took %f ms\n", (thisTime-startTime));
-		startTime=thisTime;
-		*/
-		Utils::Trace(GetCallback(), "All timeline Data Collected\n");
-		
-		if((export_lib_bitmaps)||(export_lib_sounds)){
-			if(this->ExportLibraryItems(export_lib_bitmaps, export_lib_sounds)!=result::AWD_SUCCESS){
-				Utils::Trace(GetCallback(), "FAILED TO COLLECT LIBRARY ITEMS \n");
-				return FCM_EXPORT_FAILED;
-			}
-		}
-
-		
-
-		// now we tell the AWDProject, that it should process everything.
-		// at this step, Geometrys are getting processed, and FrameCommands are getting finalized.
-		//
-		
-		/*
-		BLOCKS::ObjectContainer3D* new_container = new BLOCKS::ObjectContainer3D("test");
-		BLOCKS::ObjectContainer3D* new_container3 = new BLOCKS::ObjectContainer3D("test3");
-		BLOCKS::ObjectContainer3D* new_container5 = new BLOCKS::ObjectContainer3D("test5");
-		new_container->add_child(new_container3);
-		new_container->add_child(new_container5);
-
-		if(this->awd_project->add_block(new_container)!=result::AWD_SUCCESS){
-			Utils::Trace(GetCallback(), "Problem when adding Block to file : %s\n", new_container->get_name().c_str());
-			return FCM_EXPORT_FAILED;
-		}
-		*/
-			/*	
-		std::vector<std::string> statistic_str2;
-		this->awd_project->get_statistics(statistic_str2);
-		for(std::string message : statistic_str2)
-			Utils::Trace(GetCallback(), "%s\n", message.c_str());
-		*/
-		Utils::Trace(GetCallback(), "All Data Collected\n");
-
-		
-		AWD::result awd_res;
-		
-		std::vector<BASE::AWDBlock*> allgeos;		
-		awd_res = this->awd_project->get_blocks_by_type(allgeos, BLOCK::block_type::TRI_GEOM);
-		if(awd_res==result::NO_BLOCKS_FOUND)
-			Utils::Trace(GetCallback(), "No Geometries to process (no valide shapes converted)\n");
 		else{
-			std::string geom_count = std::to_string(allgeos.size());
-			Utils::Trace(GetCallback(), "GEOMETRIES TO PROCESS: %s\n", geom_count.c_str());
+			// if we used adobe_frame_generator, we want to calculate the final mask-values now.
+			this->awd_project->get_blocks_by_type(all_timelines, BLOCK::block_type::TIMELINE);
+			for(BASE::AWDBlock* one_block:all_timelines ){
+				BLOCKS::Timeline* one_timeline = reinterpret_cast<BLOCKS::Timeline*>(one_block);
+				//one_timeline->calc_mask_ids();
+			}
+		}	
 
-			for(AWDBlock* awd_block : allgeos){
+		Utils::Trace(GetCallback(), "\nAll enountered object:\n");
+			
+		Utils::Trace(GetCallback(), "->		MovieClips:		%d\n", (all_timelines.size()-this->flash_to_awd_encoder->grafik_cnt));
+		Utils::Trace(GetCallback(), "->		Graphics:		%d\n", this->flash_to_awd_encoder->grafik_cnt);
+		Utils::Trace(GetCallback(), "->		Bitmaps:		%d\n", all_bitmaps.size());
+		Utils::Trace(GetCallback(), "->		BillBoards:		%d\n", all_billboards.size());
+		Utils::Trace(GetCallback(), "->		Sounds:			%d\n", all_audios.size());
+		Utils::Trace(GetCallback(), "->		Fonts:			%d\n", all_fonts.size());
+		Utils::Trace(GetCallback(), "->		Text-fields:	%d\n", all_tf.size());
+		Utils::Trace(GetCallback(), "->		Encountered Shape-instances:			%d\n", this->flash_to_awd_encoder->shape_instance_cnt);
+		Utils::Trace(GetCallback(), "->		Cached Shapes:			%d\n", all_shapes.size());
+		Utils::Trace(GetCallback(), "->		Meshes:			%d\n", all_meshes.size());
+		Utils::Trace(GetCallback(), "->		Materials:		%d\n", all_materials.size());
+
+		
+		Utils::Trace(GetCallback(), "\nAll Data Collected\n");
+		
+		// process fonts
+		if(all_fonts.size()>0){
+			Utils::Trace(GetCallback(), "\nStart finalize Fonts\n");
+			this->flash_to_awd_encoder->FinalizeFonts(this->fla_document);
+			Utils::Trace(GetCallback(), "All Fonts processed succesfully.\n");
+		}
+		
+		// process geometries
+		AWD::result awd_res;		
+		if(all_shapes.size()>0){
+			Utils::Trace(GetCallback(), "\nStart processing Geometry-Data\n");
+			for(AWDBlock* awd_block : all_shapes){
 				BLOCKS::Geometry* geom = reinterpret_cast<BLOCKS::Geometry*>(awd_block);
 				if(geom==NULL){
 					Utils::Trace(GetCallback(), "FAILED TO GET GEOMETRY FROM BASEBLOCK\n");
 					return FCM_EXPORT_FAILED;
 				}
                 
-                //startTime=(double)AWD::GetTimeMs64();
-                
-				awd_res = GEOM::ProcessShapeGeometry(geom, awd_project);
+				DOM::FrameElement::IShape* testshape = reinterpret_cast<DOM::FrameElement::IShape*>(geom->get_external_object());
+				if(testshape!=NULL){
+					testshape->Release();
+				}
+                // create stream settings for normal shapes
+				awd_res = GEOM::ProcessShapeGeometry(geom, awd_project, this->awd_project->get_settings());
 				if(awd_res!=result::AWD_SUCCESS){
 					Utils::Trace(GetCallback(), "ERROR WHILE PROCESSING GEOMETRY name %s\n", awd_block->get_name().c_str());
 					return FCM_EXPORT_FAILED;
 				}
                 /*
-                thisTime=(double)AWD::GetTimeMs64();
-                Utils::Trace(GetCallback(), "Processing Geometry '%s' took %f ms\n", (thisTime-startTime));
-                startTime=thisTime;
-                */
 				std::vector<std::string> messages;
 				geom->get_messages(messages, " -> ");
 				Utils::Trace(GetCallback(), "Geometry process report: name %s\n", geom->get_name().c_str());
@@ -521,74 +841,92 @@ namespace AwayJS
 					if(one_message.size()<1024)
 						Utils::Trace(GetCallback(), "%s\n", one_message.c_str());
 				}
-				/*
-				std::string warnings;
-				geom->get_warnings(warnings, "   ->   ");
-				if(warnings.size()>0){
-					Utils::Trace(GetCallback(), "Geometry warnings: %s = %s\n", awd_block->get_name().c_str(), warnings.c_str());
-				}
 				*/
-
 			}
+			Utils::Trace(GetCallback(), "Succesfully converted %d Shapes into AWD-Geometry\n", all_shapes.size());
 		}
 		
-		// export textureatlas 
-		std::string filepath_no_extension2;
-		if(AWD::FILES::extract_path_without_file_extension(outFile, filepath_no_extension2)!=result::AWD_SUCCESS){
-			Utils::Trace(GetCallback(), "FAILED TO GET FILENAME FROM PATH \n");
-			return FCM_EXPORT_FAILED;
+		// create textuzre-atlas, create uvs-for shapes, merge and apply materials 
+		if((all_shapes.size()>0)||(all_fonts.size())){
+			Utils::Trace(GetCallback(), "\nStart creating Textureatlas\n");
+			std::string filepath_no_extension2;
+			if(AWD::FILES::extract_path_without_file_extension(outFile, filepath_no_extension2)!=result::AWD_SUCCESS){
+				Utils::Trace(GetCallback(), "FAILED TO GET FILENAME FROM PATH \n");
+				return FCM_EXPORT_FAILED;
+			}
+			std::string fileName2;
+			if(AWD::FILES::extract_name_from_path(filepath_no_extension2, fileName2)!=result::AWD_SUCCESS){
+				Utils::Trace(GetCallback(), "FAILED TO GET FILENAME FROM PATH \n");
+				return FCM_EXPORT_FAILED;
+			}		
+			AWD::create_TextureAtlasfor_timelines(this->awd_project, fileName2);
+			
+			cnt_before=all_materials.size();
+			this->awd_project->get_blocks_by_type(all_materials, BLOCK::block_type::SIMPLE_MATERIAL);
+			int matcnt = 0;
+			for(cnt_blocks=0; cnt_blocks<all_materials.size(); cnt_blocks++){
+				if(all_materials[cnt_blocks]->get_state()==TYPES::state::VALID)
+					matcnt++;
+			}
+			if(matcnt!=cnt_before){
+				Utils::Trace(GetCallback(), "	Merged %d materials into %d materials\n", cnt_before, matcnt);
+			}
+			Utils::Trace(GetCallback(), "Succesfully created Textureatlas\n", all_shapes.size());
+
 		}
-		std::string fileName2;
-		if(AWD::FILES::extract_name_from_path(filepath_no_extension2, fileName2)!=result::AWD_SUCCESS){
-			Utils::Trace(GetCallback(), "FAILED TO GET FILENAME FROM PATH \n");
-			return FCM_EXPORT_FAILED;
-		}
-		
-		AWD::create_TextureAtlasfor_timelines(this->awd_project, fileName2+"_textureAtlas");
 		
 		// export the awd-file.
+		Utils::Trace(GetCallback(), "\nStart exporting into awd-file\n");
 		awd_res = this->awd_project->export_file();
 		if(awd_res!=result::AWD_SUCCESS){
 			Utils::Trace(GetCallback(), "FAILED TO EXPORT %d\n", awd_res);
 			return FCM_EXPORT_FAILED;
-		}
-		
+		}		
 		Utils::Trace(GetCallback(), "The AWD-file: '%s' should have been created.\n", outFile.c_str());
+
 			
-		
-		std::vector<BASE::AWDBlock*> all_timelines;		
-		awd_res = this->awd_project->get_blocks_by_type(all_timelines, BLOCK::block_type::TIMELINE);
-		if(awd_res==result::NO_BLOCKS_FOUND)
-			Utils::Trace(GetCallback(), "No Timelines was exported\n");
-		else{
-			std::string tlcount = std::to_string(all_timelines.size());
-			Utils::Trace(GetCallback(), "Timelines exported: %s\n", tlcount.c_str());
+		bool trace_timeline_content=true;
+		if((trace_timeline_content)&&(all_timelines.size()>0)){
+			Utils::Trace(GetCallback(), "\nTimelines exported: %d\n", all_timelines.size());
 
 			for(AWDBlock* awd_block : all_timelines){
 				BLOCKS::Timeline* timeline = reinterpret_cast<BLOCKS::Timeline*>(awd_block);
 				if(timeline==NULL){
 					Utils::Trace(GetCallback(), "FAILED TO GET TIMELINE FROM BASEBLOCK\n");
 					return FCM_EXPORT_FAILED;
-				}
-               
+				}               
                 //startTime=(double)AWD::GetTimeMs64();
+				Utils::Trace(GetCallback(), "	Timeline: '%s' framecount: %d\n", timeline->get_name().c_str(), timeline->get_frames().size());
                 std::vector<std::string> messages;
-				messages.push_back("\ntimeline: '"+timeline->get_name()+"' framecount: "+std::to_string(timeline->get_frames().size()));
 				timeline->get_frames_info(messages);
 				for(std::string one_message : messages){
-					Utils::Trace(GetCallback(), "	-> %s\n", one_message.c_str());
+					if(one_message.size()<1024)
+						Utils::Trace(GetCallback(), "		%s\n", one_message.c_str());
 				}
-				/*
-				std::string warnings;
-				geom->get_warnings(warnings, "   ->   ");
-				if(warnings.size()>0){
-					Utils::Trace(GetCallback(), "Geometry warnings: %s = %s\n", awd_block->get_name().c_str(), warnings.c_str());
-				}
-				*/
-
 			}
 		}
+		
 
+		// make sure all textfields have a name. if they do not have a name already, give them a incremental ("tf_"+cnt)
+		if(all_tf.size()>0){
+			int cnt_tf=0;
+			for(AWDBlock* awd_block: all_tf){
+				BLOCKS::TextElement* this_text = reinterpret_cast<BLOCKS::TextElement*>(awd_block);
+				if(this_text->get_tf_type()!=FONT::Textfield_type::STATIC){
+					std::string tf_type="";
+					if(this_text->get_tf_type()==FONT::Textfield_type::DYNAMIC){tf_type="DYNAMIC";}
+					else if(this_text->get_tf_type()==FONT::Textfield_type::INPUT){tf_type="INPUT";}
+					else if(this_text->get_tf_type()==FONT::Textfield_type::INPUT_PSW){tf_type="INPUT_PSW";}
+					Utils::Trace(GetCallback(), "Textfield - name: '%s' type: '%s' text: '%s'\n", this_text->get_name().c_str(), tf_type.c_str(), this_text->get_text().c_str());
+				}
+				/*
+				if(awd_block->get_name().size()==0){
+					cnt_tf++;
+					awd_block->set_name("tf"+std::to_string(cnt_tf));
+				}
+				*/
+			}
+		}
 
 		// return statistics of the awd-project.
 		std::vector<std::string> statistic_str;
@@ -596,6 +934,99 @@ namespace AwayJS
 		for(std::string message : statistic_str)
 			Utils::Trace(GetCallback(), "%s\n", message.c_str());
 		
+
+
+		int all_bytes=0;
+		int this_bytes=0;
+		for(AWDBlock* awd_block : all_timelines){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "Timelines:	%d kb\n", (this_bytes/1024));
+		}
+
+		this_bytes=0;
+		for(AWDBlock* awd_block : all_shapes){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "Shapes:	%d kb\n", (this_bytes/1024));
+		}
+		this_bytes=0;
+		for(AWDBlock* awd_block : all_meshes){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "Meshes:	%d kb\n", (this_bytes/1024));
+		}
+
+		this_bytes=0;
+		for(AWDBlock* awd_block : all_audios){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "Sounds:	%d kb\n", (this_bytes/1024));
+		}
+		this_bytes=0;
+		for(AWDBlock* awd_block : all_materials){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "Materials:	%d kb\n", (this_bytes/1024));
+		}
+		this_bytes=0;
+		for(AWDBlock* awd_block : all_bitmaps){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "Bitmaps:	%d kb\n", (this_bytes/1024));
+		}
+		this_bytes=0;
+		for(AWDBlock* awd_block : all_billboards){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "Billboards:	%d kb\n", (this_bytes/1024));
+		}
+		this_bytes=0;
+		for(AWDBlock* awd_block : all_fonts){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "Fonts:	%d kb\n", (this_bytes/1024));
+		}
+		this_bytes=0;
+		for(AWDBlock* awd_block : all_textformats){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "TextFormats:	%d kb\n", (this_bytes/1024));
+		}
+		this_bytes=0;
+		for(AWDBlock* awd_block : all_tf){
+			this_bytes += awd_block->byte_cnt;
+			all_bytes += awd_block->byte_cnt;
+		}
+		if(this_bytes>0){
+			Utils::Trace(GetCallback(), "TextFields:	%d kb\n", (this_bytes/1024));
+		}
+		if(all_bytes>0){
+			Utils::Trace(GetCallback(), "\nAll:	%d kb\n", (all_bytes/1024));
+		}
+
+
+
+
+
 		// copy the Preview files to output directory
 		 
 		if(openPreview){
@@ -605,15 +1036,25 @@ namespace AwayJS
 				std::string plugin_directory;
 				Utils::GetModuleFilePath(plugin_directory, GetCallback());
         
-				std::string findThisjs="AwayExtensionsFlashPro.fcm.plugin/Contents/MacOS/";
-				int foundIndexjs=plugin_directory.find(findThisjs);
-				if(foundIndexjs>0)
-					plugin_directory = plugin_directory.substr(0, foundIndexjs);
-		
-
-				// a file to modify, and copy to output-directory with file-name for preview
-
-				preview_file = plugin_directory+"/../../../ressources/preview_awayjs/index.html";			
+#ifdef _WINDOWS
+                std::string immParent;
+                Utils::GetParent(plugin_directory, immParent);
+                Utils::GetParent(immParent, plugin_directory);
+                Utils::GetParent(plugin_directory, immParent);
+                Utils::GetParent(immParent, plugin_directory);
+                Utils::GetParent(plugin_directory, immParent);
+                Utils::GetParent(immParent, plugin_directory);
+                preview_file = plugin_directory+"ressources/preview_awayjs/index.html";
+#endif
+                
+#ifdef __APPLE__
+                std::string findThis="plugin/lib/mac/AwayExtensionsFlashPro.fcm.plugin/Contents";
+                int foundIndex=plugin_directory.find(findThis);
+                if(foundIndex>0){
+                    plugin_directory = plugin_directory.substr(0, foundIndex);
+                }
+                preview_file = plugin_directory+"ressources/preview_awayjs/index.html";
+#endif
 			}
 			else{
 				preview_file=preview_source_path;
@@ -645,7 +1086,7 @@ namespace AwayJS
 		
 
 			if(this->awd_project->open_preview(preview_file, preview_ids, preview_values, preview_output_path, append_file_name)!=result::AWD_SUCCESS){
-				Utils::Trace(GetCallback(), "FAILED TO OPEN REVIEW FILE \n");
+				Utils::Trace(GetCallback(), "FAILED TO OPEN PREVIEW FILE \n");
 				return FCM_EXPORT_FAILED;
 			}
 

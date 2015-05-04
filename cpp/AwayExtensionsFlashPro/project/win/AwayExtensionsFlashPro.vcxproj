@@ -31,6 +31,7 @@
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\animator.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\anim_set.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\audio.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\billboard.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\bitmap_texture.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\camera.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\command.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\light_picker.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\material.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\mesh_inst.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\mesh_library.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\meta.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\namespace.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\objectcontainer.h" />
@@ -69,6 +71,7 @@
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\stream.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\stream_attributes.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\subgeometry.h" />
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\timeline_depth_manager.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\timeline_frame.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\files\awd_file.h" />
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\files\awd_lzma.h" />
@@ -96,6 +99,7 @@
     <ClInclude Include="..\..\include\ITimelineWriter.h" />
     <ClInclude Include="..\..\include\MyXmlParser.h" />
     <ClInclude Include="..\..\include\AWDTimelineWriter.h" />
+    <ClInclude Include="..\..\include\PluginConfiguration.h" />
     <ClInclude Include="..\..\include\Publisher.h" />
     <ClInclude Include="..\..\include\RessourcePalette.h" />
     <ClInclude Include="..\..\include\TimelineBuilder.h" />
@@ -128,6 +132,7 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\AnimationSet.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Animator.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Audio.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Billboard.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\BitmapTexture.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Camera.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Command.cc" />
@@ -139,6 +144,7 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\LightPicker.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Material.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\MeshInst.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\MeshLibrary.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\MetaData.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Namespace.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\ObjectContainer3D.cc" />
@@ -164,7 +170,10 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\attributes\UserAttrList.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\BlockInstance.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FontElements.cc" />
-    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommands.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommandBase.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommandDisplayObject.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommandRemoveObject.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommandSoundObject.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\DataStream.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\DataStreamAttrBase.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\geom_types.cc" />
@@ -178,6 +187,7 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\Vertex.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\ShadingMethod.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\SkeletonJoint.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\TimelineDepthManager.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\TimeLineFrame.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\AWDFile.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\awdlzma.cc" />
@@ -199,7 +209,6 @@
     <ClCompile Include="..\..\src\FlashToAWDEncoder_fills.cpp" />
     <ClCompile Include="..\..\src\FlashToAWDEncoder_fonts.cpp" />
     <ClCompile Include="..\..\src\FlashToAWDEncoder_shapes.cpp" />
-    <ClCompile Include="..\..\src\FlashToAWDEncoder_text.cpp" />
     <ClCompile Include="..\..\src\Main.cpp" />
     <ClCompile Include="..\..\src\MyXmlParser.cpp" />
     <ClCompile Include="..\..\src\Publisher.cpp" />
@@ -224,6 +233,7 @@
     <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_introduction.dox" />
     <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_main.dox" />
     <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_usage.dox" />
+    <None Include="..\..\..\..\..\..\_awayjs\AWDParser.ts" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{52D2400F-94F1-46C1-B14B-3BBD0ACA744D}</ProjectGuid>
@@ -315,7 +325,7 @@
     <ClCompile>
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Include;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png;..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source;..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Include;..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\..\..\awd-sdk\cpp-libawd\src;..\..\..\..\..\awd-sdk\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_SYSTEM_NO_DEPRECATED;FLASHPRO_DVA_CUSTOM;BOOST_ALL_DYN_LINK;_WINDOWS;MSWindows;_WIN32_WINNT=0x600;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;PRERELEASE;DVA_MAJOR_DISPLAY_VERSION=2014;DVA_MINOR_DISPLAY_VERSION=0;DVA_PATCH_DISPLAY_VERSION=0;DVA_SUITE_VERSION=14;DVA_MAJOR_VERSION=14;DVA_MINOR_VERSION=1;DVA_PATCH_VERSION=0;DVA_BUILD_YEAR=2014;WIN_ENV;__EXCEPTION_TRACER__;USE_DVA_WORKSPACE=1;USE_EXO_MESSAGING=1;DEBUG=1;_DEBUG;_ITERATOR_DEBUG_LEVEL=2;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
@@ -357,11 +367,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -409,7 +419,7 @@
       <Culture>0x0000</Culture>
     </ResourceCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\..\..\..\..\..\ext\adobe;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\..\ext\adobe;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

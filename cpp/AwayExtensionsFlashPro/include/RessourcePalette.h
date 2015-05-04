@@ -86,6 +86,8 @@ namespace AwayJS
             INTERFACE_ENTRY(IResourcePalette)            
         END_INTERFACE_MAP    
 		
+		void* test_shape;
+
         virtual FCM::Result _FCMCALL AddSymbol(
             FCM::U_Int32 resourceId, 
             FCM::StringRep16 pName, 

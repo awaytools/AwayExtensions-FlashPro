@@ -36,6 +36,7 @@
 #include "DocType/IDocType.h"
 #include "DocType/IFeatureMatrix.h"
 #include <string>
+#include "PluginConfiguration.h"
 
 /* -------------------------------------------------- Forward Decl */
 
@@ -58,21 +59,6 @@ namespace AwayJS
 
 /* -------------------------------------------------- Macros / Constants */
 
-namespace AwayJS
-{
-    // {835B2A74-9646-43AD-AA86-A35F4E0ECD1B}//original from adobe
-	// {2D999492-5132-4C5C-8066-3ABA1DF6DB6C}
-    const FCM::FCMCLSID CLSID_DocType =
-		{ 0x2d999492, 0x5132, 0x4c5c, { 0x80, 0x66, 0x3a, 0xba, 0x1d, 0xf6, 0xdb, 0x6c } };
-       // {0x835b2a74, 0x9646, 0x43ad, {0xaa, 0x86, 0xa3, 0x5f, 0x4e, 0xe, 0xcd, 0x1b}};//original from adobe
-
-    // {50705258-F3B8-4CFF-929B-E10EC7DA8816}//original from adobe
-	// {C37D8A04-CECD-4BBD-9A14-34A9E0D82B29}
-    const FCM::FCMCLSID CLSID_FeatureMatrix =
-		{ 0xc37d8a04, 0xcecd, 0x4bbd, { 0x9a, 0x14, 0x34, 0xa9, 0xe0, 0xd8, 0x2b, 0x29 } };
-
-        //{0x50705258, 0xf3b8, 0x4cff, {0x92, 0x9b, 0xe1, 0xe, 0xc7, 0xda, 0x88, 0x16}};//original from adobe
-}
 
 
 /* -------------------------------------------------- Structs / Unions */

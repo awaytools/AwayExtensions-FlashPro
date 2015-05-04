@@ -46,12 +46,15 @@
 #endif  // _DEBUG
 
 
-FCM::Result 
-FlashToAWDEncoder::ExportBitmap(DOM::LibraryItem::IMediaItem* media_item,  BASE::AWDBlock** output_block, const std::string res_id)
+FCM::Result
+FlashToAWDEncoder::ExportBitmap(DOM::LibraryItem::IMediaItem* media_item,  BASE::AWDBlock** output_block)
 {
 	FCM::Result fcm_result;
 	
     DOM::AutoPtr<DOM::ILibraryItem> pLibItem = media_item;
+	
+	FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AwayJS::Utils::GetCallocService(this->m_pCallback);
+    ASSERT(pCalloc.m_Ptr != NULL);
 
 	FCM::StringRep16 libName;
 	fcm_result=pLibItem->GetName(&libName);
@@ -61,8 +64,10 @@ FlashToAWDEncoder::ExportBitmap(DOM::LibraryItem::IMediaItem* media_item,  BASE:
 	media_item->GetMediaInfo(unknownMediaInfo); 
 
 	FCM::AutoPtr<DOM::MediaInfo::IBitmapInfo> bitmapInfo = unknownMediaInfo;
-
+	//AwayJS::Utils::Trace(this->m_pCallback, "	ENCODe BITMAP 1\n");
+	BLOCKS::BitmapTexture* bitmap_tex = NULL;
 	if(bitmapInfo){
+		//AwayJS::Utils::Trace(this->m_pCallback, "	ENCODe BITMAP 2\n");
 
 		FCM::S_Int32 bmWidth;
 		bitmapInfo->GetWidth(bmWidth);
@@ -112,17 +117,22 @@ FlashToAWDEncoder::ExportBitmap(DOM::LibraryItem::IMediaItem* media_item,  BASE:
 		FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
 		std::string bitmapRelPath;
 		std::string bitmapExportPath = this->awd_project->get_settings()->get_texture_directory();
-		BLOCKS::BitmapTexture* bitmap_tex =  reinterpret_cast<BLOCKS::BitmapTexture*>(this->awd_project->get_block_by_name_and_type(bitmapName, BLOCK::block_type::BITMAP_TEXTURE, false));
+		bitmap_tex =  reinterpret_cast<BLOCKS::BitmapTexture*>(this->awd_project->get_block_by_name_and_type(bitmapName, BLOCK::block_type::BITMAP_TEXTURE, false));
 		if(bitmap_tex!=NULL){
-			bitmap_tex->set_external_id(res_id);
-			return FCM_SUCCESS;
+			*output_block = bitmap_tex;
+			return FCM_GENERAL_ERROR_BASE;
 		}
 
 		// add the validated filename to the export-path.
-		bitmapExportPath += bitmapName;       
-
-		// also create the relative-path that should be saved into AWD (in case it is set to external-data)
-		bitmapRelPath = "./" + this->awd_project->get_settings()->get_texture_directory_name() + bitmapName;
+		bitmapExportPath += bitmapName; 
+#ifdef _WINDOWS
+        // also create the relative-path that should be saved into AWD (in case it is set to external-data)
+        bitmapRelPath = "./" + this->awd_project->get_settings()->get_texture_directory_name() + bitmapName;
+#endif
+#ifdef __APPLE__
+        // also create the relative-path that should be saved into AWD (in case it is set to external-data)
+        bitmapRelPath = "./" + this->awd_project->get_settings()->get_texture_directory_name() + bitmapName;
+#endif
 
 		// export the image using the IBitmapExportService
 
@@ -138,24 +148,36 @@ FlashToAWDEncoder::ExportBitmap(DOM::LibraryItem::IMediaItem* media_item,  BASE:
 		bitmap_tex =  reinterpret_cast<BLOCKS::BitmapTexture*>(this->awd_project->get_block_by_name_and_type(bitmapName, BLOCK::block_type::BITMAP_TEXTURE, true));
 		if(bitmap_tex==NULL)
 			return FCM_GENERAL_ERROR_BASE;
-		bitmap_tex->set_external_id(res_id);
+		if(this->awd_project->get_settings()->get_embbed_textures())
+			bitmap_tex->set_storage_type(BLOCK::storage_type::EMBEDDED);
+		else{
+			bitmap_tex->set_storage_type(BLOCK::storage_type::EXTERNAL);
+		}
+		bitmap_tex->set_name(bitmapName);		
 		bitmap_tex->set_width(bmWidth);				
 		bitmap_tex->set_height(bmheight);		
 		bitmap_tex->set_url(bitmapRelPath);
 		bitmap_tex->set_input_url(bitmapExportPath);
+		AwayJS::Utils::Trace(this->m_pCallback, "	ENCODe BITMAP 3\n");
 		if(output_block)
 			*output_block = bitmap_tex;
 		
 	}
 	
+	if(libName)
+		pCalloc->Free((FCM::PVoid)libName);
+	
 	return FCM_SUCCESS;
 }
 
-FCM::Result 
+AWD::BASE::AWDBlock*
 FlashToAWDEncoder::ExportSound(DOM::LibraryItem::IMediaItem* media_item,  BASE::AWDBlock** output_block, const std::string res_id)
 {
 	FCM::Result fcm_result;	
     DOM::AutoPtr<DOM::ILibraryItem> pLibItem = media_item;
+	
+	FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AwayJS::Utils::GetCallocService(this->m_pCallback);
+    ASSERT(pCalloc.m_Ptr != NULL);
 
 	FCM::StringRep16 libName;
 	fcm_result=pLibItem->GetName(&libName);
@@ -194,14 +216,17 @@ FlashToAWDEncoder::ExportSound(DOM::LibraryItem::IMediaItem* media_item,  BASE::
         {
 			soundName = soundName.substr(0, pos) + ".wav";
         }
+		if(this->awd_project->get_settings()->get_sound_file_extension()!="keep")
+			soundName = soundName.substr(0, pos) + "."+this->awd_project->get_settings()->get_sound_file_extension();
     }
         
 	BLOCKS::Audio* audio_block = reinterpret_cast<BLOCKS::Audio*>(this->awd_project->get_block_by_name_and_type(soundName, BLOCK::block_type::SOUND_SOURCE, false));
 	if(audio_block!=NULL){
-		audio_block->set_external_id(res_id);
+		audio_block->add_res_id(res_id);
+		return audio_block;
 	}
 	std::string soundExportPath = this->awd_project->get_settings()->get_audio_directory() + soundName;
-	std::string soundRelPath = "./" + this->awd_project->get_settings()->get_audio_directory_name() + soundName;
+	std::string soundRelPath = ".\\" + this->awd_project->get_settings()->get_audio_directory_name() + soundName;
 
     fcm_result = m_pCallback->GetService(DOM::FLA_SOUND_SERVICE, pUnk.m_Ptr);
     ASSERT(FCM_SUCCESS_CODE(fcm_result));
@@ -209,32 +234,38 @@ FlashToAWDEncoder::ExportSound(DOM::LibraryItem::IMediaItem* media_item,  BASE::
     if (soundExportService)
     {
         FCM::AutoPtr<FCM::IFCMCalloc> pCalloc;
-        FCM::StringRep16 pFilePath = AwayJS::Utils::ToString16(soundExportPath, m_pCallback);
+        FCM::StringRep16 pFilePath = NULL;
+		pFilePath = AwayJS::Utils::ToString16(soundExportPath, m_pCallback);
         fcm_result = soundExportService->ExportToFile(media_item, pFilePath);
         ASSERT(FCM_SUCCESS_CODE(fcm_result));
 		pCalloc = AwayJS::Utils::GetCallocService(m_pCallback);
         ASSERT(pCalloc.m_Ptr != NULL);
         pCalloc->Free(pFilePath);
 		//Utils::Trace(m_pCallback, "The Sound-file: '%s' should have been created in this folder.\n", soundExportPath.c_str());
-		audio_block = reinterpret_cast<BLOCKS::Audio*>(this->awd_project->get_block_by_name_and_type(soundRelPath, BLOCK::block_type::SOUND_SOURCE, true));
-		if(audio_block==NULL)
-			return FCM_GENERAL_ERROR_BASE;	
+		audio_block = reinterpret_cast<BLOCKS::Audio*>(this->awd_project->get_block_by_name_and_type(soundName, BLOCK::block_type::SOUND_SOURCE, true));
+		if(audio_block==NULL){
+			if(pFilePath)
+				pCalloc->Free((FCM::PVoid)pFilePath);
+			return NULL;	
+		}
+		if(this->awd_project->get_settings()->get_embbed_audio())
+			audio_block->set_storage_type(BLOCK::storage_type::EMBEDDED);
+		else{
+			audio_block->set_storage_type(BLOCK::storage_type::EXTERNAL);
+		}
+		audio_block->set_name(soundName);
 		audio_block->set_external_id(res_id);
 		audio_block->set_url(soundRelPath);
 		audio_block->set_input_url(soundExportPath);
 		if(output_block)
 			*output_block = audio_block;
+		//if(pFilePath!=NULL)
+			//pCalloc->Free((FCM::PVoid)pFilePath);
     }
-
+	
+	if(libName)
+		pCalloc->Free((FCM::PVoid)libName);
         
-	/*
-    // Free the name
-	FCM::AutoPtr<FCM::IFCMUnknown> pUnkCalloc;
-    fcm_result = m_pCallback->GetService(SRVCID_Core_Memory, pUnkCalloc.m_Ptr);
-    FCM::AutoPtr<FCM::IFCMCalloc> callocService  = pUnkCalloc;
-    callocService->Free((FCM::PVoid)pName);
 	
-	*/
-	
-	return FCM_SUCCESS;
+	return audio_block;
 }

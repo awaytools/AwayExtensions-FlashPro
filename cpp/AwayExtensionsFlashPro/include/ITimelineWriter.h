@@ -195,6 +195,13 @@ namespace AwayJS
             const DOM::Utils::MATRIX2D* pMatrix,
             FCM::PIFCMUnknown pUnknown = NULL) = 0;
 		
+        virtual FCM::Result PlaceText(
+            FCM::U_Int32 resId,
+            FCM::U_Int32 objectId,
+            FCM::U_Int32 placeAfterObjectId,
+            const DOM::Utils::MATRIX2D* pMatrix,
+            DOM::Utils::RECT rect) = 0;
+
         virtual FCM::Result PlaceObject(
             FCM::U_Int32 resId,
             FCM::U_Int32 objectId,

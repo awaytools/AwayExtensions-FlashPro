@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./src/AWD3Viewer.ts":[function(require,module,exports){
 /*
 
  AWD3 file loading example in AwayJS
@@ -35,7 +35,6 @@
 
  */
 var AssetLibrary = require("awayjs-core/lib/library/AssetLibrary");
-var AssetType = require("awayjs-core/lib/library/AssetType");
 var AssetEvent = require("awayjs-core/lib/events/AssetEvent");
 var URLRequest = require("awayjs-core/lib/net/URLRequest");
 var LoaderEvent = require("awayjs-core/lib/events/LoaderEvent");
@@ -44,12 +43,14 @@ var RequestAnimationFrame = require("awayjs-core/lib/utils/RequestAnimationFrame
 var View = require("awayjs-display/lib/containers/View");
 var HoverController = require("awayjs-display/lib/controllers/HoverController");
 var Loader = require("awayjs-display/lib/containers/Loader");
-var DefaultRenderer = require("awayjs-renderergl/lib/DefaultRenderer");
+var Renderer2D = require("awayjs-player/lib/renderer/Renderer2D");
 var AWDParser = require("awayjs-parsers/lib/AWDParser");
-var Partition2D = require("awayjs-player/lib/fl/partition/Partition2D");
+var Partition2D = require("awayjs-player/lib/partition/Partition2D");
+var MovieClip = require("awayjs-player/lib/display/MovieClip");
 var CoordinateSystem = require("awayjs-core/lib/projections/CoordinateSystem");
 var PerspectiveProjection = require("awayjs-core/lib/projections/PerspectiveProjection");
 var Camera = require("awayjs-display/lib/entities/Camera");
+var TextField = require("awayjs-display/lib/entities/TextField");
 var AWD3Viewer = (function () {
     /**
      * Constructor
@@ -71,9 +72,9 @@ var AWD3Viewer = (function () {
      */
     AWD3Viewer.prototype.initEngine = function () {
         //create the view
-        this._view = new View(new DefaultRenderer());
-        //this._view.renderer.renderableSorter = new RenderableNullSort();
+        this._view = new View(new Renderer2D());
         this._view.backgroundColor = 0xffffff;
+        //for plugin preview-runtime:
         this._view.backgroundColor = parseInt(document.getElementById("bgColor").innerHTML.replace("#", "0x"));
         this._stage_width = parseInt(document.getElementById("awdWidth").innerHTML);
         this._stage_height = parseInt(document.getElementById("awdHeight").innerHTML);
@@ -112,12 +113,20 @@ var AWD3Viewer = (function () {
         var loader = new Loader();
         loader.addEventListener(AssetEvent.ASSET_COMPLETE, function (event) { return _this.onAssetComplete(event); });
         loader.addEventListener(LoaderEvent.RESOURCE_COMPLETE, function (event) { return _this.onRessourceComplete(event); });
+        //for plugin preview-runtime:
         loader.load(new URLRequest(document.getElementById("awdPath").innerHTML));
-        //loader.load(new URLRequest("assets/AWD3/ScareCrow.awd"));
-        //loader.load(new URLRequest("assets/AWD3/NestedTween.awd"));
-        //loader.load(new URLRequest("assets/AWD3/SimpleShape.awd"));
+        //loader.load(new URLRequest("assets/AWD3/AwayJEscher.awd"));
+        //loader.load(new URLRequest("assets/AWD3/Simple_text_test.awd"));
+        //loader.load(new URLRequest("assets/AWD3/AwayJS_Ninja.awd"));
         //loader.load(new URLRequest("assets/AWD3/ComplexShape.awd"));
+        //loader.load(new URLRequest("assets/AWD3/NestedTween.awd"));
+        //loader.load(new URLRequest("assets/AWD3/Rectancle_blink_test.awd"));
+        //loader.load(new URLRequest("assets/AWD3/ScareCrow.awd"));
+        //loader.load(new URLRequest("assets/AWD3/ScareCrow_shape_debug.awd"));
+        //loader.load(new URLRequest("assets/AWD3/simple_bitmap_test.awd"));
         //loader.load(new URLRequest("assets/AWD3/Simple_mask_test.awd"));
+        //loader.load(new URLRequest("assets/AWD3/mask_test.awd"));
+        //loader.load(new URLRequest("assets/AWD3/text_test_2.awd"));
     };
     /**
      * Initialise the listeners
@@ -138,7 +147,9 @@ var AWD3Viewer = (function () {
      * loader listener for asset complete events
      */
     AWD3Viewer.prototype.onAssetComplete = function (event) {
-        if (event.asset.assetType == AssetType.TIMELINE) {
+        if (event.asset.isAsset(TextField)) {
+        }
+        if (event.asset.isAsset(MovieClip)) {
             this._rootTimeLine = event.asset;
             this._rootTimeLine.partition = new Partition2D(this._rootTimeLine);
         }
@@ -277,8 +288,7 @@ window.onload = function () {
     new AWD3Viewer();
 };
 
-
-},{"awayjs-core/lib/events/AssetEvent":undefined,"awayjs-core/lib/events/LoaderEvent":undefined,"awayjs-core/lib/library/AssetLibrary":undefined,"awayjs-core/lib/library/AssetType":undefined,"awayjs-core/lib/net/URLRequest":undefined,"awayjs-core/lib/projections/CoordinateSystem":undefined,"awayjs-core/lib/projections/OrthographicProjection":undefined,"awayjs-core/lib/projections/PerspectiveProjection":undefined,"awayjs-core/lib/utils/RequestAnimationFrame":undefined,"awayjs-display/lib/containers/Loader":undefined,"awayjs-display/lib/containers/View":undefined,"awayjs-display/lib/controllers/HoverController":undefined,"awayjs-display/lib/entities/Camera":undefined,"awayjs-parsers/lib/AWDParser":undefined,"awayjs-player/lib/fl/partition/Partition2D":undefined,"awayjs-renderergl/lib/DefaultRenderer":undefined}]},{},[1])
+},{"awayjs-core/lib/events/AssetEvent":undefined,"awayjs-core/lib/events/LoaderEvent":undefined,"awayjs-core/lib/library/AssetLibrary":undefined,"awayjs-core/lib/net/URLRequest":undefined,"awayjs-core/lib/projections/CoordinateSystem":undefined,"awayjs-core/lib/projections/OrthographicProjection":undefined,"awayjs-core/lib/projections/PerspectiveProjection":undefined,"awayjs-core/lib/utils/RequestAnimationFrame":undefined,"awayjs-display/lib/containers/Loader":undefined,"awayjs-display/lib/containers/View":undefined,"awayjs-display/lib/controllers/HoverController":undefined,"awayjs-display/lib/entities/Camera":undefined,"awayjs-display/lib/entities/TextField":undefined,"awayjs-parsers/lib/AWDParser":undefined,"awayjs-player/lib/display/MovieClip":undefined,"awayjs-player/lib/partition/Partition2D":undefined,"awayjs-player/lib/renderer/Renderer2D":undefined}]},{},["./src/AWD3Viewer.ts"])
 
 
 //# sourceMappingURL=AWD3Viewer.js.map

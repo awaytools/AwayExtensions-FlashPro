@@ -49,7 +49,7 @@
                     (charCode < 37 || charCode > 40) &&
                     (charCode < 188 || charCode > 190) &&
                     charCode != 110 && charCode != 8 && charCode != 46 )
-                return false;
+                return false
         }
         return true;
     }
@@ -169,6 +169,33 @@
             }
         }
 
+        if(uiState.data["PublishSettings.SaveSoundsAs"] != null && uiState.data["PublishSettings.SaveSoundsAs"] != "undefined")
+        {
+            document.getElementById("sound_type").selectedIndex = uiState.data["PublishSettings.SaveSoundsAs"];
+        }
+        if (uiState.data["PublishSettings.RadialGradientSize"] != null && uiState.data["PublishSettings.RadialGradientSize"] != "undefined") {
+            document.getElementById("radialGradientSize").selectedIndex = uiState.data["PublishSettings.RadialGradientSize"];
+        }
+        if (uiState.data["PublishSettings.GeometryData"] != null && uiState.data["PublishSettings.GeometryData"] != "undefined") {
+            document.getElementById("geometryData").selectedIndex = uiState.data["PublishSettings.GeometryData"];
+        }
+        if (uiState.data["PublishSettings.FontData"] != null && uiState.data["PublishSettings.FontData"] != "undefined") {
+            document.getElementById("fontData").selectedIndex = uiState.data["PublishSettings.FontData"];
+        }
+        if (uiState.data["PublishSettings.TimelineDepth"] != null && uiState.data["PublishSettings.TimelineDepth"] != "undefined") {
+            document.getElementById("timelineDepth").selectedIndex = uiState.data["PublishSettings.TimelineDepth"];
+        }
+
+        if(uiState.data["PublishSettings.UseAdobeFrameCommands"] != null && uiState.data["PublishSettings.UseAdobeFrameCommands"] != "undefined")
+        {
+            if(uiState.data["PublishSettings.UseAdobeFrameCommands"] == "true")
+            {
+                document.getElementById("useAdobeFrameCommands").checked = true;
+            }else
+            {
+                document.getElementById("useAdobeFrameCommands").checked = false;
+            }
+        }
         if(uiState.data["PublishSettings.OpenPreview"] != null && uiState.data["PublishSettings.OpenPreview"] != "undefined")
         {
             if(uiState.data["PublishSettings.OpenPreview"] == "true")
@@ -192,36 +219,6 @@
             }
         }
 
-        if(uiState.data["PublishSettings.KeepPathOrder"] != null && uiState.data["PublishSettings.KeepPathOrder"] != "undefined")
-        {
-            if(uiState.data["PublishSettings.KeepPathOrder"] == "true")
-            {
-                document.getElementById("keeppathorder").checked = true;
-            }else
-            {
-                document.getElementById("keeppathorder").checked = false;
-            }
-        }
-        if(uiState.data["PublishSettings.FlipXaxis"] != null && uiState.data["PublishSettings.FlipXaxis"] != "undefined")
-        {
-            if(uiState.data["PublishSettings.FlipXaxis"] == "true")
-            {
-                document.getElementById("flipXaxis").checked = true;
-            }else
-            {
-                document.getElementById("flipXaxis").checked = false;
-            }
-        }
-        if(uiState.data["PublishSettings.FlipYaxis"] != null && uiState.data["PublishSettings.FlipYaxis"] != "undefined")
-        {
-            if(uiState.data["PublishSettings.FlipYaxis"] == "true")
-            {
-                document.getElementById("flipYaxis").checked = true;
-            }else
-            {
-                document.getElementById("flipYaxis").checked = false;
-            }
-        }
         if(uiState.data["PublishSettings.ExportShapesInDebugMode"] != null && uiState.data["PublishSettings.ExportShapesInDebugMode"] != "undefined")
         {
             if(uiState.data["PublishSettings.ExportShapesInDebugMode"] == "true")
@@ -264,24 +261,34 @@
                 document.getElementById("exportLibBitmaps").checked = false;
             }
         }
-        if(uiState.data["PublishSettings.UseAdobeFrameCommands"] != null && uiState.data["PublishSettings.UseAdobeFrameCommands"] != "undefined")
+        if(uiState.data["PublishSettings.EmbbedSounds"] != null && uiState.data["PublishSettings.EmbbedSounds"] != "undefined")
         {
-            if(uiState.data["PublishSettings.UseAdobeFrameCommands"] == "true")
+            if(uiState.data["PublishSettings.EmbbedSounds"] == "true")
             {
-                document.getElementById("useAdobeFrameCommands").checked = true;
+                document.getElementById("embbed_sounds").checked = true;
             }else
             {
-                document.getElementById("useAdobeFrameCommands").checked = false;
+                document.getElementById("embbed_sounds").checked = false;
             }
         }
-        if(uiState.data["PublishSettings.ResolvCurveIntersections"] != null && uiState.data["PublishSettings.ResolvCurveIntersections"] != "undefined")
+        if(uiState.data["PublishSettings.ExportFrameScript"] != null && uiState.data["PublishSettings.ExportFrameScript"] != "undefined")
         {
-            if(uiState.data["PublishSettings.ResolvCurveIntersections"] == "true")
+            if(uiState.data["PublishSettings.ExportFrameScript"] == "true")
             {
-                document.getElementById("resolvCurveIntersections").checked = true;
+                document.getElementById("exportFrameScript").checked = true;
             }else
             {
-                document.getElementById("resolvCurveIntersections").checked = false;
+                document.getElementById("exportFrameScript").checked = false;
+            }
+        }
+        if(uiState.data["PublishSettings.EmbbedTextures"] != null && uiState.data["PublishSettings.EmbbedTextures"] != "undefined")
+        {
+            if(uiState.data["PublishSettings.EmbbedTextures"] == "true")
+            {
+                document.getElementById("embbed_textures").checked = true;
+            }else
+            {
+                document.getElementById("embbed_textures").checked = false;
             }
         }
         if(uiState.data["PublishSettings.MinimizeExteriorTresholdStrokes"] != null && uiState.data["PublishSettings.MinimizeExteriorTresholdStrokes"] != "undefined")
@@ -310,17 +317,6 @@
         {
             document.getElementById("minimize_exterior_treshold").value = uiState.data["PublishSettings.MinimizeExteriorTreshold"];
             document.getElementById("minimize_exterior_label").innerHTML  = "Exterior Treshold = "+uiState.data["PublishSettings.MinimizeExteriorTreshold"];
-        }
-        changedReolveCurves(document.getElementById("resolvCurveIntersections").checked);
-        if(uiState.data["PublishSettings.CurveTreshold"] !=null && uiState.data["PublishSettings.CurveTreshold"] != undefined)
-        {
-            document.getElementById("curve_treshold").value = uiState.data["PublishSettings.CurveTreshold"];
-            document.getElementById("curve_treshold_label").innerHTML  = "Curve Treshold = "+uiState.data["PublishSettings.CurveTreshold"];
-        }
-        if(uiState.data["PublishSettings.MaximalIterations"] !=null && uiState.data["PublishSettings.MaximalIterations"] != undefined)
-        {
-            document.getElementById("max_itereations").value = uiState.data["PublishSettings.MaximalIterations"];
-            document.getElementById("max_itereations_label").innerHTML  = "Maximal Iterations = "+uiState.data["PublishSettings.MaximalIterations"];
         }
 
         //var test = csInterface.closeExtension();
@@ -466,10 +462,6 @@
         var e2 = document.getElementById("minimize_exterior_treshold").value.toString();
         pubSettings["PublishSettings.MinimizeExteriorTreshold"] = e2;
 
-        var e2 = document.getElementById("curve_treshold").value.toString();
-        pubSettings["PublishSettings.CurveTreshold"] = e2;
-        var e8 = document.getElementById("max_itereations").value.toString();
-        pubSettings["PublishSettings.MaximalIterations"] = e8;
 
         if(document.getElementById("includeVisiblelayers").checked == true)
         {
@@ -478,14 +470,6 @@
         else
         {
             pubSettings["PublishSettings.IncludeInvisibleLayer"] = "false";
-        }
-        if(document.getElementById("resolvCurveIntersections").checked == true)
-        {
-            pubSettings["PublishSettings.ResolvCurveIntersections"] = "true";
-        }
-        else
-        {
-            pubSettings["PublishSettings.ResolvCurveIntersections"] = "false";
         }
 
         if(document.getElementById("appendFilename").checked == true)
@@ -515,6 +499,7 @@
             pubSettings["PublishSettings.ExportLibBitmaps"] = "false";
         }
 
+
         if(document.getElementById("useAdobeFrameCommands").checked == true)
         {
             pubSettings["PublishSettings.UseAdobeFrameCommands"] = "true";
@@ -523,40 +508,42 @@
         {
             pubSettings["PublishSettings.UseAdobeFrameCommands"] = "false";
         }
+        if(document.getElementById("embbed_sounds").checked == true)
+        {
+            pubSettings["PublishSettings.EmbbedSounds"] = "true";
+        }
+        else
+        {
+            pubSettings["PublishSettings.EmbbedSounds"] = "false";
+        }
 
-        if(document.getElementById("distinglishExteriorAndinterior").checked == true)
+
+        if(document.getElementById("exportFrameScript").checked == true)
         {
-            pubSettings["PublishSettings.DistinglishExteriorAndinterior"] = "true";
+            pubSettings["PublishSettings.ExportFrameScript"] = "true";
         }
         else
         {
-            pubSettings["PublishSettings.DistinglishExteriorAndinterior"] = "false";
+            pubSettings["PublishSettings.ExportFrameScript"] = "false";
+        }
+        if(document.getElementById("embbed_textures").checked == true)
+        {
+            pubSettings["PublishSettings.EmbbedTextures"] = "true";
+        }
+        else
+        {
+            pubSettings["PublishSettings.EmbbedTextures"] = "false";
+        }
+        if(document.getElementById("exportLibFonts").checked == true)
+        {
+            pubSettings["PublishSettings.ExportLibFonts"] = "true";
+        }
+        else
+        {
+            pubSettings["PublishSettings.ExportLibFonts"] = "false";
         }
 
-        if(document.getElementById("keeppathorder").checked == true)
-        {
-            pubSettings["PublishSettings.KeepPathOrder"] = "true";
-        }
-        else
-        {
-            pubSettings["PublishSettings.KeepPathOrder"] = "false";
-        }
-        if(document.getElementById("flipXaxis").checked == true)
-        {
-            pubSettings["PublishSettings.FlipXaxis"] = "true";
-        }
-        else
-        {
-            pubSettings["PublishSettings.FlipXaxis"] = "false";
-        }
-        if(document.getElementById("flipYaxis").checked == true)
-        {
-            pubSettings["PublishSettings.FlipYaxis"] = "true";
-        }
-        else
-        {
-            pubSettings["PublishSettings.FlipYaxis"] = "false";
-        }
+
         if(document.getElementById("exportShapesInDebugMode").checked == true)
         {
             pubSettings["PublishSettings.ExportShapesInDebugMode"] = "true";
@@ -574,6 +561,11 @@
             pubSettings["PublishSettings.OpenPreview"] = "false";
         }
 
+        pubSettings["PublishSettings.SaveSoundsAs"] = document.getElementById("sound_type").selectedIndex;
+        pubSettings["PublishSettings.RadialGradientSize"] = document.getElementById("radialGradientSize").selectedIndex;
+        pubSettings["PublishSettings.TimelineDepth"] = document.getElementById("timelineDepth").selectedIndex;
+        pubSettings["PublishSettings.FontData"] = document.getElementById("fontData").selectedIndex;
+        pubSettings["PublishSettings.GeometryData"] = document.getElementById("geometryData").selectedIndex;
 
         event.scope = "APPLICATION";
         event.type = "com.adobe.events.flash.extension.savestate";
@@ -594,29 +586,29 @@
         //Light and dark theme change
 
 
-        document.getElementById("curve_treshold").defaultValue = "0.1"
         document.getElementById("minimize_exterior_treshold").defaultValue = "0.1";
-        document.getElementById("max_itereations").defaultValue = "6";
         document.getElementById("includeVisiblelayers").checked=true;
         document.getElementById("usePreview").checked=true;
         document.getElementById("exportShapesInDebugMode").checked=false;
-        document.getElementById("flipXaxis").checked=false;
-        document.getElementById("flipYaxis").checked=false;
-        document.getElementById("keeppathorder").checked=true;
 
-        document.getElementById("distinglishExteriorAndinterior").checked=false;
 
         document.getElementById("minimize_exterior_treshold_fonts").checked=false;
         document.getElementById("minimize_exterior_treshold_strokes").checked=false;
-        document.getElementById("useAdobeFrameCommands").checked=true
+        document.getElementById("exportLibFonts").checked=true;
+        document.getElementById("embbed_sounds").checked=true;
+        document.getElementById("embbed_textures").checked=true;
+        document.getElementById("exportFrameScript").checked=true;
         document.getElementById("appendFilename").checked=false;
-        document.getElementById("resolvCurveIntersections").checked=true;
         document.getElementById("exportLibBitmaps").checked=true;
-        document.getElementById("exportLibSounds").checked=true;
+        document.getElementById("exportLibSounds").checked=true
+        document.getElementById("useAdobeFrameCommands").checked=true;
+        document.getElementById("sound_type").selectedIndex = "2";
+        document.getElementById("radialGradientSize").selectedIndex = "2";
+        document.getElementById("timelineDepth").selectedIndex = "0";
+        document.getElementById("fontData").selectedIndex = "0";
+        document.getElementById("geometryData").selectedIndex = "0";
+          
 
-
-        document.getElementById("curve_treshold_label").innerHTML  = "Curve Treshold = 0.1";
-        document.getElementById("max_itereations_label").innerHTML  = "Maximal Iterations = 6";
         document.getElementById("minimize_exterior_label").innerHTML  = "Exterior Treshold = 0.1";
 
         var skinInfo = JSON.parse(window.__adobe_cep__.getHostEnvironment()).appSkinInfo;
@@ -721,6 +713,60 @@
             <p>
                 <input type="checkbox" id="includeVisiblelayers" >Include hidden layers<br>
             </p>
+            <p>
+                <input type="checkbox" id="exportLibFonts">Export Library Fonts   <input type="checkbox" id="exportLibBitmaps">Export library bitmaps   <input type="checkbox" id="exportLibSounds">Export library sounds
+            </p>
+            <div class="clearer">
+                <p>
+                    <input type="checkbox"  id="embbed_sounds">Embbed sounds   <input type="checkbox" id="embbed_textures">Embbed textures  <input type="checkbox" id="exportFrameScript">Export Frame-Scripts
+                </p>
+            </div>
+            <div class="clearer">
+                <p style="margin-left: 5px;">
+                    Save soundfiles as
+                    <select id="sound_type">
+                        <option value="0">UNCHANGED</option>
+                        <option value="1">WAV</option>
+                        <option value="2">MP3</option>
+                    </select>
+                </p>
+            </div>
+            <div class="clearer">
+                <p style="margin-left: 5px;">
+                    Radial Gradient Size
+                    <select id="radialGradientSize">
+                        <option value="0">128</option>
+                        <option value="1">256</option>
+                        <option value="2">512</option>
+                        <option value="3">1024</option>
+                        <option value="4">2048</option>
+                    </select>
+                </p>
+            </div>
+            <div class="clearer">
+                <p style="margin-left: 5px;">
+                    Geometry data
+                    <select disabled="true" id="geometryData">
+                        <option value="0">Pos + UV + Curvedata</option>
+                        <option value="1">Pos</option>
+                        <option value="1">Pos + UV</option>
+                    </select>
+                    Font data
+                    <select disabled="true" id="fontData">
+                        <option value="0">Pos + UV + Curvedata</option>
+                        <option value="1">Pos</option>
+                    </select>
+                </p>
+            </div>
+            <div class="clearer">
+                <p style="margin-left: 5px;">
+                    Timeline Depth
+                    <select disabled="true" id="timelineDepth">
+                        <option value="0">AS2 like</option>
+                        <option value="1">AS3 like</option>
+                    </select>
+                </p>
+            </div>
             <div class="clearer">
                 <p>
                     <input type="checkbox" id="usePreview" onchange="switchPreviewOnOff(this)">Open Preview
@@ -744,41 +790,10 @@
     <p>
         <details open>
             <summary>DEV OPTIONS</summary>
-            <p>
-                <input type="checkbox" id="useAdobeFrameCommands">Use Adobe Frame Commands   <input type="checkbox" id="exportLibBitmaps">Export library bitmaps   <input type="checkbox" id="exportLibSounds">Export library sounds
-            </p>
+
             <div class="clearer">
                 <p>
                     <input type="checkbox" id="exportShapesInDebugMode">Export shapes in debug mode (split triangles into subgeos based on curve-type)
-                </p>
-            </div>
-            <div class="clearer">
-                <p>
-                    <input type="checkbox" id="flipXaxis">Flip X axis<input type="checkbox" id="flipYaxis">Flip Y axis
-                </p>
-            </div>
-            <div class="clearer">
-                <p>
-                    <input type="checkbox" id="distinglishExteriorAndinterior">Export exterior and interior triangles into different subgeos
-                </p>
-            </div>
-
-            <div class="clearer">
-                <p>
-                    <input type="checkbox" id="resolvCurveIntersections" onchange="changedReolveCurves(this.checked)">Resolve Curve Interesetions<input type="checkbox" id="keeppathorder" >Keep verts in order of path
-                </p>
-            </div>
-            <div class="clearer">
-                <p>
-                    <label id="curve_treshold_label" class="myLabel3">Curve Threshold</label>
-                    <input type="range" id="curve_treshold" min="0.01" max="0.5" step="0.01"  onchange="onSliderChange(this.value)">
-
-                </p>
-            </div>
-            <div class="clearer">
-                <p>
-                    <label id="max_itereations_label" class="myLabel3" >Maximal Iterations</label>
-                    <input type="range" id="max_itereations" min="1" max="10" step="1"  onchange="onSliderChange2(this.value)">
                 </p>
             </div>
             <div class="clearer">
@@ -787,6 +802,11 @@
                     <input type="range" id="minimize_exterior_treshold" min="0.00" max="0.5" step="0.01"  onchange="onSliderChange_exterior(this.value)">
                     <input type="checkbox" id="minimize_exterior_treshold_strokes">on strokes
                     <input type="checkbox" id="minimize_exterior_treshold_fonts">on fonts
+                </p>
+            </div>
+            <div class="clearer">
+                <p>
+                    <input type="checkbox" disabled="true" id="useAdobeFrameCommands">Use Adobe Frame Generator
                 </p>
             </div>
     </p>

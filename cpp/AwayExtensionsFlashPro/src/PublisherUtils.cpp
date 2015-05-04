@@ -83,6 +83,11 @@
 #include "Application/Service/IOutputConsoleService.h"
 */
 
+#include "AWDTimelineWriter.h"
+#include "RessourcePalette.h"
+#include "TimelineBuilder.h"
+#include "TimelineEncoder.h"
+
 #ifdef _DEBUG
 	#include <stdlib.h>
 	#include <crtdbg.h>
@@ -180,85 +185,196 @@ namespace AwayJS
         return res;
     }
 	
-	AWD::result CPublisher::ExportLibraryItems(bool export_lib_bitmaps, bool export_lib_sounds)
-	{		
-		AWD::result awd_res=result::AWD_SUCCESS;		
-        FCM::Result res;
-		FCM::FCMListPtr pLibraryItems;
-		res = this->fla_document->GetLibraryItems(pLibraryItems.m_Ptr);
-        ASSERT(FCM_SUCCESS_CODE(res));
-        FCM::U_Int32 libCnt;
-        res = pLibraryItems->Count(libCnt);
-        for (FCM::U_Int32 l = 0; l < libCnt; l++)        
-		{		
-			DOM::AutoPtr<DOM::ILibraryItem> plibrary_item = pLibraryItems[l];
-			awd_res = ExportLibraryItem(plibrary_item, export_lib_bitmaps, export_lib_sounds);
-			if(awd_res!=result::AWD_SUCCESS)
-				return awd_res;
-		}
-		return awd_res;
-	}
-	AWD::result CPublisher::ExportLibraryItem(DOM::ILibraryItem* plibrary_item, bool export_lib_bitmaps, bool export_lib_sounds)
+	AWD::result CPublisher::ExportLibraryItems(FCM::FCMListPtr pLibraryItemList, bool export_lib_bitmaps, bool export_lib_sounds, bool export_fonts, bool use_adobe_frame_cmds, TimelineEncoder* timelineEncoder)
 	{
-		FCM::Result res;
+        FCM::U_Int32 count = 0;
+        FCM::Result res;
+
+        ASSERT(pLibraryItemList);
+        res = pLibraryItemList->Count(count);
+        ASSERT(FCM_SUCCESS_CODE(res));
+		
+		Utils::Trace(GetCallback(), "Encountered %d library items\n", count);
+        FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AwayJS::Utils::GetCallocService(GetCallback());
+        ASSERT(pCalloc.m_Ptr != NULL);
+
 		AWD::result awd_res=result::AWD_SUCCESS;
-
-		DOM::AutoPtr<DOM::LibraryItem::IFontItem> pFontItem = plibrary_item;
-		if(pFontItem){
-			// export a font item from library
-			//AWD::result awd_res = flash_awd_cencoder->ExportFont(pFontItem, awd);
-			//if(awd_res!=result::AWD_SUCCESS)
-			//	return awd_res;
-		}
-
-		DOM::AutoPtr<DOM::LibraryItem::IFolderItem> pFolder_item = plibrary_item;
-		if(pFolder_item){
-			// export a folder item from library. just call this function for all its children.			
-			FCM::FCMListPtr pLibraryItems;
-			res = pFolder_item->GetChildren(pLibraryItems.m_Ptr);
-			ASSERT(FCM_SUCCESS_CODE(res));
-
-			FCM::U_Int32 libCnt;
-			res = pLibraryItems->Count(libCnt);
-			for (FCM::U_Int32 l = 0; l < libCnt; l++)        
-			{		
-				DOM::AutoPtr<DOM::ILibraryItem> plibrary_item = pLibraryItems[l];
-				ExportLibraryItem(plibrary_item, export_lib_bitmaps, export_lib_sounds);
+		
+        for (FCM::U_Int32 index = 0; index < count ; index++)
+        {
+            AutoPtr<DOM::ILibraryItem> plibrary_item = pLibraryItemList[index];
+		
+			DOM::AutoPtr<DOM::LibraryItem::IFolderItem> pFolder_item = plibrary_item;
+			if(pFolder_item){
+				//Utils::Trace(GetCallback(), "\n	->	Found Folder");
+				// export a folder item from library. just call this function for all its children.			
+				FCM::FCMListPtr pLibraryItems;
+				res = pFolder_item->GetChildren(pLibraryItems.m_Ptr);
+				ASSERT(FCM_SUCCESS_CODE(res));
+				awd_res=ExportLibraryItems(pLibraryItems, export_lib_bitmaps, export_lib_sounds, export_fonts, use_adobe_frame_cmds, timelineEncoder);
+				if(awd_res!=result::AWD_SUCCESS)
+					return awd_res;
+				continue;
 			}
-			if(awd_res!=result::AWD_SUCCESS)
-				return awd_res;
-		}
-		DOM::AutoPtr<DOM::LibraryItem::ISymbolItem> pSymbol_item = plibrary_item;
-		if(pSymbol_item){	
-			// export a symbol (timeline). If the timeline has already been encoded, nothing will happen. 
-			AutoPtr<DOM::ITimeline> timeline;
-			res = pSymbol_item->GetTimeLine(timeline.m_Ptr);
+			
+			AutoPtr<IFCMDictionary> pDict;
+			FCM::FCMDictRecTypeID link_type;
+			FCM::U_Int32 valLen;
+			std::string script_name="";
+
+			res = plibrary_item->GetProperties(pDict.m_Ptr);
 			ASSERT(FCM_SUCCESS_CODE(res));
-		/*	TimelineEncoder* newTimeLineEncoder = new TimelineEncoder(GetCallback(), timeline, awd, flash_awd_cencoder, 0);
-			awd_res = newTimeLineEncoder->encode();	
-			if(awd_res!=result::AWD_SUCCESS)
-				return awd_res;
-				*/
-	
-		}
-		DOM::AutoPtr<DOM::LibraryItem::IMediaItem> pMedia_item = plibrary_item;
-		if(pMedia_item){	
-			// export a media item. 
-			FCM::PIFCMUnknown unknownMediaInfo;
-			res = pMedia_item->GetMediaInfo(unknownMediaInfo); 
-			ASSERT(FCM_SUCCESS_CODE(res));
-			AutoPtr<DOM::MediaInfo::IBitmapInfo> bitmapInfo = unknownMediaInfo;
-			if((bitmapInfo)&&(export_lib_bitmaps)){
-				flash_to_awd_encoder->ExportBitmap(pMedia_item, NULL, "");
-				// export a bitmap. 
+			res = pDict->GetInfo(kLibProp_LinkageClass_DictKey, link_type, valLen);
+			if (FCM_SUCCESS_CODE(res))
+			{
+				FCM::StringRep8 script_name_8 = new char[valLen];
+				res = pDict->Get(kLibProp_LinkageClass_DictKey, link_type, script_name_8, valLen);
+				ASSERT(FCM_SUCCESS_CODE(res));
+				script_name+=script_name_8;
+				delete []script_name_8;
 			}
-			FCM::AutoPtr<DOM::MediaInfo::ISoundInfo> SoundInfo = unknownMediaInfo;
-			if((SoundInfo)&&(export_lib_sounds)){
-				flash_to_awd_encoder->ExportSound(pMedia_item, NULL, "");
+			if(export_fonts){
+				DOM::AutoPtr<DOM::LibraryItem::IFontItem> pFontItem = plibrary_item;
+				if(pFontItem){
+					//Utils::Trace(GetCallback(), "\n	->	Found Font");
+					// export a font item from library
+					AWDBlock* new_font = this->flash_to_awd_encoder->ExportFont(pFontItem);
+					if(new_font==NULL)
+                		return awd_res;
+					if(script_name.size()>0){
+						new_font->set_name(script_name);
+						new_font->add_scene_name("script-linkage");
+					}
+					continue;
+				}
+			}
+			DOM::AutoPtr<DOM::LibraryItem::ISymbolItem> pSymbol_item = plibrary_item;
+			if(pSymbol_item){	
+				if((script_name.size()>0)||(!use_adobe_frame_cmds)){
+					FCM::StringRep16 symbol_name=NULL;
+					plibrary_item->GetName(&symbol_name);
+					std::string symbol_name_str=AwayJS::Utils::ToString(symbol_name, GetCallback());
+					// export a symbol (timeline). If the timeline has already been encoded, nothing will happen. 
+					//Utils::Trace(GetCallback(), "\n	->	Found Symbol %s | %s", symbol_name_str.c_str(), timeline_name_str.c_str());
+					if(use_adobe_frame_cmds){
+						BLOCKS::Timeline* this_timeline = this->awd_project->get_timeline_by_symbol_name(symbol_name_str);
+						if(this_timeline!=NULL){
+							this_timeline->add_scene_name("script-linkage");
+							continue;
+						}
+						else{				
+							// Generate frame commands				
+							FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
+							AutoPtr<IFrameCommandGenerator> m_frameCmdGeneratorService;		
+							AutoPtr<IResourcePalette> m_pResourcePalette;		
+							AwayJS::ResourcePalette* pResPalette;
+
+							res = GetCallback()->GetService(Exporter::Service::EXPORTER_FRAME_CMD_GENERATOR_SERVICE, pUnk.m_Ptr);
+							ASSERT(FCM_SUCCESS_CODE(res));
+							m_frameCmdGeneratorService = pUnk;
+					
+							res = GetCallback()->CreateInstance(NULL, CLSID_ResourcePalette, IID_IResourcePalette, (void**)&m_pResourcePalette);
+							ASSERT(FCM_SUCCESS_CODE(res));
+			
+							pResPalette = static_cast<ResourcePalette*>(m_pResourcePalette.m_Ptr);
+							pResPalette->Init(this->flash_to_awd_encoder);	
+							// Create a Timeline Builder Factory for the root timelines of the document
+							AutoPtr<ITimelineBuilderFactory> pTimelineBuilderFactory;
+							res = GetCallback()->CreateInstance(NULL, CLSID_TimelineBuilderFactory, IID_ITimelineBuilderFactory, (void**)&pTimelineBuilderFactory);
+							ASSERT(FCM_SUCCESS_CODE(res));
+							(static_cast<TimelineBuilderFactory*>(pTimelineBuilderFactory.m_Ptr))->Init(this->flash_to_awd_encoder);
+				
+							AutoPtr<DOM::ITimeline> timeline;
+							res = pSymbol_item->GetTimeLine(timeline.m_Ptr);
+
+							AutoPtr<ITimelineBuilder> pTimelineBuilder;
+							ITimelineWriter* pTimelineWriter;
+							Exporter::Service::RANGE range;		
+							range.min = 0;
+							res = timeline->GetMaxFrameCount(range.max);
+							range.max--;
+				
+							FCM::StringRep16 scene_name_str = NULL;
+							timeline->GetName(&scene_name_str);
+							std::string scene_name=AwayJS::Utils::ToString(scene_name_str, GetCallback());
+
+							// Generate frame commands		
+							res = m_frameCmdGeneratorService->GenerateFrameCommands(timeline, range, _pDict,	m_pResourcePalette, pTimelineBuilderFactory, pTimelineBuilder.m_Ptr);
+							ASSERT(FCM_SUCCESS_CODE(res));
+							((TimelineBuilder*)pTimelineBuilder.m_Ptr)->Build(0, scene_name_str, &pTimelineWriter);
+				
+							this_timeline = this->awd_project->get_timeline_by_symbol_name(scene_name);
+							this_timeline->set_script_name(script_name);
+							this_timeline->add_scene_name("script-linkage");
+
+							if(this->awd_project->get_blocks_for_external_ids()!=result::AWD_SUCCESS)
+								Utils::Trace(GetCallback(), "PROBLEM IN CONVERTING RESSOURCE_ID TO AWDBLOCKS FOR FRAMECOMMANDS!!!\nEXPORT STILL CONTINUES !!!\n");
+							pResPalette->Clear();
+							if(scene_name_str){
+								pCalloc->Free((FCM::PVoid)scene_name_str);
+							}
+						}
+					}
+					else{
+						BLOCKS::Timeline* this_timeline = this->awd_project->get_timeline_by_symbol_name(symbol_name_str);
+						if(this_timeline==NULL){
+							this_timeline=new BLOCKS::Timeline();
+							this_timeline->set_fps(this->awd_project->get_settings()->get_fps());
+							this->awd_project->add_block(this_timeline);
+						}
+						this_timeline->set_name(symbol_name_str);
+						this_timeline->set_symbol_name(symbol_name_str);
+						if(script_name.size()>0){
+							this_timeline->add_scene_name("script-linkage");
+							this_timeline->set_name(script_name);
+							this_timeline->set_script_name(script_name);
+						}	
+						AutoPtr<DOM::ITimeline> timeline;
+						res = pSymbol_item->GetTimeLine(timeline.m_Ptr);
+						timelineEncoder->encode(timeline, this_timeline);
+
+					}
+					if(symbol_name)
+						pCalloc->Free((FCM::PVoid)symbol_name);
+					continue;
+				}	
+			}
+			if((export_lib_sounds)||(export_lib_bitmaps)){
+				DOM::AutoPtr<DOM::LibraryItem::IMediaItem> pMedia_item = plibrary_item;
+				if(pMedia_item){	
+					//Utils::Trace(GetCallback(), "\n	->	Found Media");
+					// export a media item. 
+					FCM::PIFCMUnknown unknownMediaInfo;
+					res = pMedia_item->GetMediaInfo(unknownMediaInfo); 
+					ASSERT(FCM_SUCCESS_CODE(res));
+					FCM::AutoPtr<DOM::MediaInfo::IBitmapInfo> bitmapInfo = unknownMediaInfo;
+					FCM::AutoPtr<DOM::MediaInfo::ISoundInfo> SoundInfo = unknownMediaInfo;
+					if((bitmapInfo)&&(export_lib_bitmaps)){
+						//AwayJS::Utils::Trace(GetCallback(), "	ENCOUNTERED LIB BITMAP 1!!");
+						if(script_name.size()>0){
+							AWDBlock* new_bitmap=NULL; 
+							flash_to_awd_encoder->ExportBitmap(pMedia_item, &new_bitmap);
+							if(new_bitmap==NULL)
+								continue;
+							//AwayJS::Utils::Trace(GetCallback(), "	ENCOUNTERED LIB BITMAP 2!!");
+							new_bitmap->set_name(script_name);
+							new_bitmap->add_scene_name("script-linkage");
+						}
+					}
+					else if((SoundInfo)&&(export_lib_sounds)){
+						if(script_name.size()>0){
+							AWDBlock* new_sound = flash_to_awd_encoder->ExportSound(pMedia_item, NULL, "");
+							if(new_sound==NULL)
+								continue;
+							new_sound->set_name(script_name);
+							new_sound->add_scene_name("script-linkage");
+						}
+					}
+					continue;
+				}
 			}
 		}
 		return awd_res;
-
 	}
 
     bool CPublisher::ReadString(

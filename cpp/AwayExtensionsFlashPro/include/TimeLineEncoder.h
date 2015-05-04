@@ -83,7 +83,28 @@
 #include "Utils/DOMTypes.h"
 
 using namespace AWD;
+struct FrameCommandGroup
+		{
+			std::vector<ANIM::FrameCommandDisplayObject*> pre_frame;
+			std::vector<ANIM::FrameCommandDisplayObject*> cur_frame;
 
+			FrameCommandGroup()
+			{
+			}
+		};
+struct LayerData
+		{
+			std::vector<ANIM::FrameCommandDisplayObject*> display_commands;
+			std::vector<ANIM::FrameCommandSoundObject*> audio_commands;
+			std::string frame_script;
+			std::string frame_label;
+			bool isDirty;
+
+			LayerData()
+			{
+				isDirty=false;
+			}
+		};
 class TimelineEncoder 
 {
     private:
@@ -93,27 +114,32 @@ class TimelineEncoder
 		int curDepth;
 		int maskDepth;
 		int clipMask;
-		int mask_range_max;
-		int mask_range_min;
+		int mask_group;
 		int layerIdx;
 		ANIM::TimelineFrame* curFrame;
 		FlashToAWDEncoder* flash_to_awd;
-		std::vector<FCM::AutoPtr<DOM::FrameElement::IShape> > shapes;
-		std::vector<TimelineEncoder*> childTimeLines;
-		std::vector<AWDBlock*> lastFrame;
+		std::vector<LayerData*> cur_layer_data;
+		std::vector<int> layer_mask_skeleton;
+		std::vector<int> layer_object_ids;
+		std::vector<std::vector<LayerData*>> all_timeline_data;
+		std::vector<int> all_durations;
+		bool is_dirty;
+
+
+
 		FCM::PIFCMCallback m_pCallback;
 
     public:
-        TimelineEncoder(FCM::PIFCMCallback pCallback, DOM::ITimeline* timeline, AWDProject* awd,FlashToAWDEncoder* flash_to_awd, int sceneID);
+        TimelineEncoder(FCM::PIFCMCallback pCallback,  AWDProject* awd,FlashToAWDEncoder* flash_to_awd);
         ~TimelineEncoder();
 		
 		BLOCKS::Timeline* get_awd_timeLine();
-		AWD::result encode();
-		AWD::result collectFrameCommands(int frameIdx, DOM::ILayer* iLayer, bool isMasked);
-		AWD::result collectFrameScripts(int frameIdx, DOM::ILayer* iLayer);
-		AWD::result collectFrameDisplayElement(DOM::FrameElement::IFrameDisplayElement* frameDisplayElement, DOM::Utils::MATRIX2D groupMatrix, int layerCnt, AWD::TYPES::display_object_mask_type mask_type, bool group_member);
+		AWD::result encode(DOM::ITimeline* timeline, BLOCKS::Timeline*);
+		int layer_obj_id_cnt;
+		void get_layer_skeleton(DOM::ILayer* iLayer, int mask_layer_id);
+		AWD::result collectFrameCommands(int frameIdx, DOM::ILayer* iLayer);
+		AWD::result collectFrameDisplayElement(DOM::FrameElement::IFrameDisplayElement* frameDisplayElement, DOM::Utils::MATRIX2D groupMatrix, bool group_member, int);
 
-		
 };
 
 #endif

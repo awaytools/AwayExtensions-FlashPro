@@ -71,6 +71,8 @@
 #include "FlashToAWDEncoder.h"
 #include "FCMPluginInterface.h"
 
+#include "blocks/mesh_library.h"
+
 #ifdef _DEBUG
 	#include <stdlib.h>
 	#include <crtdbg.h>
@@ -89,195 +91,66 @@ If no Geometry exists for this shape, it will create one, and fill it with the s
 */
 
 BLOCKS::Geometry*
-FlashToAWDEncoder::get_geom_for_shape(DOM::FrameElement::IShape* thisShape, const std::string& timeline_name, bool adobeFrameCommands)
+FlashToAWDEncoder::get_geom_for_shape(DOM::FrameElement::IShape* thisShape, const std::string& ressourceID, bool adobeFrameCommands)
 {
-	if(this->scene_geoms.size()==0)
-		this->prepare_new_scene();
-	if(this->scene_geoms.back().size()==0)
-		this->prepare_new_timeline();
-	if(this->scene_geoms.back().back().size()==0)
-		this->prepare_new_frame();
-	// if called with adobeFrameCommands = true, this will not contain the name, but the object_id
-	std::string shape_name = timeline_name;	
-	shape_name = "_frame_" + std::to_string(this->scene_geoms.back().back().size()) + "_shape_" + std::to_string(this->scene_geoms.back().back().back().size());
-	BLOCKS::Geometry* newGeometry = NULL;
-
-	if(!adobeFrameCommands){
-		FCM::FCMListPtr pFilledRegionList;
-		FCM::U_Int32 regionCount;
-		FCM::Result res;	
-		res = this->pIRegionGeneratorService->GetFilledRegions(thisShape, pFilledRegionList.m_Ptr);
-		ASSERT(FCM_SUCCESS_CODE(res));
+	BLOCKS::Geometry* newGeometry=new BLOCKS::Geometry();
+	newGeometry->add_res_id_geom(ressourceID, NULL);
 	
-		pFilledRegionList->Count(regionCount);
-		//AwayJS::Utils::Trace(this->m_pCallback, "						Fill_regions = %d\n", regionCount);
-	
-		/*
-		std::vector<BLOCKS::Geometry*> same_frame_geos = this->scene_geoms.back().back().back();
+	// We collect the data for this shape, 
+	// At the same time we collect a string that is build from the basic-shape-properties (type, regionCnt, mat, segcnt, mat, segcnt...)
+	std::string geom_lookup_str="";
+	this->current_geom=newGeometry;
+	this->convert_shape_to_geometry(geom_lookup_str, thisShape, newGeometry);
 
-		// check if the same shape can be found on same frame.
-		for(BLOCKS::Geometry* this_geom : same_frame_geos){		
-			DOM::FrameElement::IShape* thisTestShape=reinterpret_cast<DOM::FrameElement::IShape*>(this_geom->get_external_object());
-			if(thisTestShape==NULL)
-				AwayJS::Utils::Trace(this->m_pCallback, "ERROR!!! could not get IShape* from awd_geom!");
-			FCM::U_Int32 regionCount_test;
-			FCM::Boolean issame;
-			DOM::Utils::MATRIX2D matrix;
-			res = this->pIRegionGeneratorService->GetFilledRegions(thisTestShape, pFilledRegionList.m_Ptr);
-			ASSERT(FCM_SUCCESS_CODE(res));
-			pFilledRegionList->Count(regionCount_test);
-			// if they have different regions, the shapes to not match
-			if(regionCount_test==regionCount){
-				res=this->pIShapeService->TestShapeSimilarity(thisTestShape, thisShape, issame, matrix);
-				if(res==FCM_SUCCESS){
-					if(issame){
-						return this_geom;
-					}
-				}
-			}
+	if(true){
+		// We have a map<string, vector<Geometry> > that is using this string as lookup to group to group shapes(Geometry-object store pointer to shape) on their basic properties
+		if(this->geom_cache.find(geom_lookup_str)==this->geom_cache.end()){
+			this->geom_cache[geom_lookup_str]=std::vector<BLOCKS::Geometry*>();
 		}
-
-		// check if the same shape can be found on previous frame (if any previous frame exists)
-		if(this->scene_geoms.back().back().size()>1){
-			std::vector<BLOCKS::Geometry*> last_frame_geoms = this->scene_geoms.back().back()[this->scene_geoms.back().back().size()-2];
-			for(BLOCKS::Geometry* this_geom : last_frame_geoms){			
-				DOM::FrameElement::IShape* thisTestShape=reinterpret_cast<DOM::FrameElement::IShape*>(this_geom->get_external_object());					
-				FCM::U_Int32 regionCount_test;
+		else{
+			// To optimize further, we use the TestShapeSimilarity to check if the shape already has been exported.
+			// If the shape has not been exported yet, we delete the Geometry that has been build, and retarget the ressourceID, to the existing Geometry.
+			FCM::Result res = FCM_SUCCESS;
+			for(BLOCKS::Geometry* one_geom : this->geom_cache[geom_lookup_str]){
+				DOM::FrameElement::IShape* testshape = reinterpret_cast<DOM::FrameElement::IShape*>(one_geom->get_external_object());
 				FCM::Boolean issame;
 				DOM::Utils::MATRIX2D matrix;
-				res = this->pIRegionGeneratorService->GetFilledRegions(thisTestShape, pFilledRegionList.m_Ptr);
-				ASSERT(FCM_SUCCESS_CODE(res));
-				pFilledRegionList->Count(regionCount_test);
-				// if they have different regions, the shapes to not match
-				if(regionCount_test==regionCount){
-					res=this->pIShapeService->TestShapeSimilarity(thisTestShape, thisShape, issame, matrix);
-					if(res==FCM_SUCCESS){
-						if(issame){
-							return this_geom;
-						}
-					}
+				res=this->pIShapeService->TestShapeSimilarity(thisShape, testshape, issame, matrix);
+				if(issame==1){
+					delete newGeometry;
+					one_geom->add_res_id_geom(ressourceID, new GEOM::MATRIX2x3(this->convert_matrix2x3(matrix)));
+					return one_geom;
 				}
 			}
 		}
-		if(false){ //todo: add option for checking against all geometries/shapes of current timeline.
-			std::vector<std::vector<BLOCKS::Geometry*> > timline_geoms = this->scene_geoms.back().back();
-			// we already checked against all geos within the last two frames of this timeline
-			if(timline_geoms.size()>2){
-				for(int i = 0; i< timline_geoms.size()-2; i++){
-					std::vector<BLOCKS::Geometry*> last_frame_geoms = timline_geoms[i];
-					for(BLOCKS::Geometry* this_geom : last_frame_geoms){			
-						DOM::FrameElement::IShape* thisTestShape=reinterpret_cast<DOM::FrameElement::IShape*>(this_geom->get_external_object());					
-						FCM::U_Int32 regionCount_test;
-						FCM::Boolean issame;
-						DOM::Utils::MATRIX2D matrix;
-						res = this->pIRegionGeneratorService->GetFilledRegions(thisTestShape, pFilledRegionList.m_Ptr);
-						ASSERT(FCM_SUCCESS_CODE(res));
-						pFilledRegionList->Count(regionCount_test);
-						// if they have different regions, the shapes to not match
-						if(regionCount_test==regionCount){
-							res=this->pIShapeService->TestShapeSimilarity(thisTestShape, thisShape, issame, matrix);
-							if(res==FCM_SUCCESS){
-								if(issame){
-									return this_geom;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if(false){ //todo: add option for checking against all timelines within this scene.		
-			std::vector<std::vector<std::vector<BLOCKS::Geometry*> > > all_timelines = this->scene_geoms.back();
-			if(all_timelines.size()>1){
-				for(int i = 0; i< all_timelines.size()-1; i++){
-					std::vector<std::vector<BLOCKS::Geometry*> > timline_geoms = all_timelines[i];
-					for(std::vector<BLOCKS::Geometry*> frame_geoms : timline_geoms){		
-						for(BLOCKS::Geometry* this_geom : frame_geoms){			
-							DOM::FrameElement::IShape* thisTestShape=reinterpret_cast<DOM::FrameElement::IShape*>(this_geom->get_external_object());					
-							FCM::U_Int32 regionCount_test;
-							FCM::Boolean issame;
-							DOM::Utils::MATRIX2D matrix;
-							res = this->pIRegionGeneratorService->GetFilledRegions(thisTestShape, pFilledRegionList.m_Ptr);
-							ASSERT(FCM_SUCCESS_CODE(res));
-							pFilledRegionList->Count(regionCount_test);
-							// if they have different regions, the shapes to not match
-							if(regionCount_test==regionCount){
-								res=this->pIShapeService->TestShapeSimilarity(thisTestShape, thisShape, issame, matrix);
-								if(res==FCM_SUCCESS){
-									if(issame){
-										return this_geom;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if(false){ //todo: add option for checking against all scenes within this document.		
-			std::vector<std::vector<std::vector<BLOCKS::Geometry*> > > all_timelines = this->scene_geoms.back();
-			if(this->scene_geoms.size()>1){
-				for(int i = 0; i< this->scene_geoms.size()-1; i++){
-					std::vector<std::vector<std::vector<BLOCKS::Geometry*> > > scene_geoms = this->scene_geoms[i];
-					for(std::vector<std::vector<BLOCKS::Geometry*> > timline_geoms : scene_geoms){	
-						for(std::vector<BLOCKS::Geometry*> frame_geoms : timline_geoms){		
-							for(BLOCKS::Geometry* this_geom : frame_geoms){			
-								DOM::FrameElement::IShape* thisTestShape=reinterpret_cast<DOM::FrameElement::IShape*>(this_geom->get_external_object());					
-								FCM::U_Int32 regionCount_test;
-								FCM::Boolean issame;
-								DOM::Utils::MATRIX2D matrix;
-								res = this->pIRegionGeneratorService->GetFilledRegions(thisTestShape, pFilledRegionList.m_Ptr);
-								ASSERT(FCM_SUCCESS_CODE(res));
-								pFilledRegionList->Count(regionCount_test);
-								// if they have different regions, the shapes to not match
-								if(regionCount_test==regionCount){
-									res=this->pIShapeService->TestShapeSimilarity(thisTestShape, thisShape, issame, matrix);
-									if(res==FCM_SUCCESS){
-										if(issame){
-											return this_geom;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		*/
-		//	if the shape made it here, no matching shape was found.
-		//	so we create a geometry for it.
-		shape_name = timeline_name + shape_name;
-		newGeometry = reinterpret_cast<BLOCKS::Geometry*>(this->awd_project->get_block_by_name_and_type(shape_name, BLOCK::block_type::TRI_GEOM, true));
-	
-		this->scene_geoms.back().back().back().push_back(newGeometry);
-		// set the IShape as external object on geomtry
-		newGeometry->set_external_object(thisShape);
+		this->geom_cache[geom_lookup_str].push_back(newGeometry);
 	}
 
-	else{
-		// if we use adobe-frame-commands, shape_name will be the geometry_object_id
-		newGeometry = reinterpret_cast<BLOCKS::Geometry*>(this->awd_project->get_block_by_external_id_and_type(timeline_name, BLOCK::block_type::TRI_GEOM, true));
-		newGeometry->set_name(shape_name);
-	}
-
-
-	this->current_geom=newGeometry;
-
-	// if we come to here, we need to fill the geometry with data:
-	this->convert_shape_to_geometry(thisShape, newGeometry);
-
+	this->geom_cnt++;
+	std::string geom_name="g"+std::to_string(this->geom_cnt);//+geom_lookup_str;
+	newGeometry->set_name(geom_name);
+	thisShape->AddRef();
+	newGeometry->set_external_object(thisShape);
+	this->awd_project->add_block(newGeometry);
+	BLOCKS::MeshLibrary* thisMesh = new BLOCKS::MeshLibrary();
+	std::string mesh_name="m"+std::to_string(this->geom_cnt);
+	thisMesh->set_name(mesh_name);
+	thisMesh->set_geom(newGeometry);
+	newGeometry->set_mesh_instance(thisMesh);
+	this->awd_project->add_block(thisMesh);
+								
 	return newGeometry;
 }
 
 void
-FlashToAWDEncoder::convert_shape_to_geometry(DOM::FrameElement::IShape* thisShape, BLOCKS::Geometry* shapeBlock)
+FlashToAWDEncoder::convert_shape_to_geometry(std::string& output_str, DOM::FrameElement::IShape* thisShape, BLOCKS::Geometry* shapeBlock)
 {	
-	ExportFilledShape(thisShape, TYPES::filled_region_type::STANDART_FILL);
-    ExportStroke(thisShape);
+	ExportFilledShape(output_str, thisShape, TYPES::filled_region_type::STANDART_FILL);
+    ExportStroke(output_str, thisShape);
 }
 
-FCM::Result FlashToAWDEncoder::ExportFilledShape(DOM::FrameElement::PIShape pIShape, TYPES::filled_region_type path_type)
+FCM::Result 
+FlashToAWDEncoder::ExportFilledShape(std::string& output_str, DOM::FrameElement::PIShape pIShape, TYPES::filled_region_type path_type)
 {
     FCM::Result res;
     FCM::FCMListPtr pFilledRegionList;
@@ -287,17 +160,18 @@ FCM::Result FlashToAWDEncoder::ExportFilledShape(DOM::FrameElement::PIShape pISh
     res = this->pIRegionGeneratorService->GetFilledRegions(pIShape, pFilledRegionList.m_Ptr);
 	//Utils::Trace(GetCallback(), "Fill2\n");
     ASSERT(FCM_SUCCESS_CODE(res));
-
     pFilledRegionList->Count(regionCount);
 	//Utils::Trace(GetCallback(), "Fill_regions = %d\n", regionCount);
 		
+	output_str+="type:"+std::to_string(int(path_type))+"-";
+	output_str+="regs:"+std::to_string(int(regionCount))+"-";
     for (FCM::U_Int32 j = 0; j < regionCount; j++)
     {
         FCM::AutoPtr<DOM::Service::Shape::IFilledRegion> pFilledRegion = pFilledRegionList[j];
         FCM::AutoPtr<DOM::Service::Shape::IPath> pPath;
 
-		this->current_path_shape=new GEOM::FilledRegion(path_type);
-		this->current_geom->add_path_shape(this->current_path_shape);
+		this->current_filled_region=new GEOM::FilledRegion(path_type);
+		this->current_geom->add_filled_region(this->current_filled_region);
 
         // Fill Style
         FCM::AutoPtr<DOM::IFCMUnknown> fillStyle;
@@ -305,14 +179,14 @@ FCM::Result FlashToAWDEncoder::ExportFilledShape(DOM::FrameElement::PIShape pISh
         res = pFilledRegion->GetFillStyle(fillStyle.m_Ptr);
         ASSERT(FCM_SUCCESS_CODE(res));
 
-        res = ExportFillStyle(fillStyle);
+        res = ExportFillStyle(output_str, fillStyle);
         ASSERT(FCM_SUCCESS_CODE(res));
 
         // Boundary
         res = pFilledRegion->GetBoundary(pPath.m_Ptr);
         ASSERT(FCM_SUCCESS_CODE(res));
 
-        res = ExportPath(pPath);
+        res = ExportPath(output_str, pPath);
         ASSERT(FCM_SUCCESS_CODE(res));
 
         // Hole List
@@ -329,16 +203,16 @@ FCM::Result FlashToAWDEncoder::ExportFilledShape(DOM::FrameElement::PIShape pISh
         for (FCM::U_Int32 k = 0; k < holeCount; k++)
         {
             FCM::AutoPtr<DOM::Service::Shape::IPath> pPath = pHoleList[k];
-            res = ExportPath(pPath);
+            res = ExportPath(output_str, pPath);
 			ASSERT(FCM_SUCCESS_CODE(res));
         }
     }				
 	return res;
 }
 
-FCM::Result FlashToAWDEncoder::ExportPath(DOM::Service::Shape::PIPath pPath)
+FCM::Result FlashToAWDEncoder::ExportPath(std::string& output_str,DOM::Service::Shape::PIPath pPath)
 {
-	this->current_path_shape->add_path();
+	this->current_filled_region->add_path();
 
     FCM::Result res;
     FCM::U_Int32 edgeCount;
@@ -350,7 +224,36 @@ FCM::Result FlashToAWDEncoder::ExportPath(DOM::Service::Shape::PIPath pPath)
     res = pEdgeList->Count(edgeCount);
     ASSERT(FCM_SUCCESS_CODE(res));
 		
-	int oneLine=0;
+	output_str+="segs:"+std::to_string(edgeCount)+"#";
+	//AwayJS::Utils::Trace(m_pCallback, "edgeCount = %d\n", edgeCount);
+    for (FCM::U_Int32 l = 0; l < edgeCount; l++)
+    {
+        DOM::Utils::SEGMENT segment;
+
+        segment.structSize = sizeof(DOM::Utils::SEGMENT);
+
+        FCM::AutoPtr<DOM::Service::Shape::IEdge> pEdge = pEdgeList[l];
+
+        res = pEdge->GetSegment(segment);
+        this->SetSegment(segment);
+    }
+    return res;
+}// Sets a segment of a path (Used for boundary, holes)
+FCM::Result FlashToAWDEncoder::ExportPath_font(DOM::Service::Shape::PIPath pPath)
+{
+	this->current_filled_region->add_path();
+
+    FCM::Result res;
+    FCM::U_Int32 edgeCount;
+    FCM::FCMListPtr pEdgeList;
+
+    res = pPath->GetEdges(pEdgeList.m_Ptr);
+    ASSERT(FCM_SUCCESS_CODE(res));
+
+    res = pEdgeList->Count(edgeCount);
+    ASSERT(FCM_SUCCESS_CODE(res));
+		
+	//AwayJS::Utils::Trace(m_pCallback, "edgeCount = %d\n", edgeCount);
     for (FCM::U_Int32 l = 0; l < edgeCount; l++)
     {
         DOM::Utils::SEGMENT segment;
@@ -376,29 +279,26 @@ FCM::Result FlashToAWDEncoder::SetSegment(const DOM::Utils::SEGMENT& segment)
 	GEOM::PathSegment*	awdPathSeg	= new GEOM::PathSegment();
     if (segment.segmentType == DOM::Utils::LINE_SEGMENT)
     {			
-		//AwayJS::Utils::Trace(m_pCallback, "Line\n");
 		awdPathSeg->set_startPoint(GEOM::VECTOR2D(segment.line.endPoint1.x*flipx , segment.line.endPoint1.y*flipy));
 		awdPathSeg->set_endPoint(GEOM::VECTOR2D(segment.line.endPoint2.x*flipx, segment.line.endPoint2.y*flipy));
 	}
     else{
 		//AwayJS::Utils::Trace(m_pCallback, "Curve\n");
 		awdPathSeg->set_startPoint(GEOM::VECTOR2D(segment.quadBezierCurve.anchor1.x*flipx, segment.quadBezierCurve.anchor1.y*flipy));
-		awdPathSeg->set_endPoint(GEOM::VECTOR2D(segment.quadBezierCurve.anchor2.x*flipx, segment.quadBezierCurve.anchor2.y*flipy));		
+		awdPathSeg->set_endPoint(GEOM::VECTOR2D(segment.quadBezierCurve.anchor2.x*flipx, segment.quadBezierCurve.anchor2.y*flipy));
 
 		awdPathSeg->set_controlPoint(GEOM::VECTOR2D(segment.quadBezierCurve.control.x*flipx, segment.quadBezierCurve.control.y*flipy));
 
 		awdPathSeg->set_edgeType(GEOM::edge_type::CURVED_EDGE);
 	}	
-
-	this->current_path_shape->add_segment(awdPathSeg);
+	
+	this->current_filled_region->add_segment(awdPathSeg);
 	
     return FCM_SUCCESS;
 }
 
 FCM::Result FlashToAWDEncoder::ExportStrokeForFont(DOM::FrameElement::PIShape pIShape, AWD::FONT::FontShape* fontShape)
 {
-	this->current_path_shape=new GEOM::FilledRegion(TYPES::filled_region_type::GENERATED_FONT_OUTLINES);
-	fontShape->set_subShape(this->current_path_shape);
 
     FCM::AutoPtr<FCM::IFCMUnknown> pGrad;
 		
@@ -420,6 +320,7 @@ FCM::Result FlashToAWDEncoder::ExportStrokeForFont(DOM::FrameElement::PIShape pI
     ASSERT(FCM_SUCCESS_CODE(res));
 	//Utils::Trace(GetCallback(), "Export Stroke-groups count = %d.\n", strokeStyleCount);
 		
+	this->current_geom=new BLOCKS::Geometry(false);// this is a mem leak. todo
     for (FCM::U_Int32 j = 0; j < strokeStyleCount; j++)
     {
         FCM::AutoPtr<DOM::Service::Shape::IStrokeGroup> pStrokeGroup = pStrokeGroupList[j];
@@ -438,19 +339,32 @@ FCM::Result FlashToAWDEncoder::ExportStrokeForFont(DOM::FrameElement::PIShape pI
 		{
 			DOM::Service::Shape::IPath* pPath = ( DOM::Service::Shape::IPath*)pPathList[k];
 			ASSERT(pPath);			
-
-			res=ExportPath(pPath);
+			
+			this->current_filled_region=new GEOM::FilledRegion(TYPES::filled_region_type::GENERATED_FONT_OUTLINES);
+			this->current_geom->add_filled_region(this->current_filled_region);
+			res=ExportPath_font(pPath);
 			ASSERT(FCM_SUCCESS_CODE(res));	
 
-		}
-			
+		}			
 	}
 
+	// todo: add new Settings that define streamdata specific for fonts
+	GEOM::ProcessShapeGeometry(this->current_geom, this->awd_project, this->awd_project->get_settings());
+	
+	this->current_geom->merge_subgeos();
+	std::vector<std::string> messages;
+	this->current_geom->get_messages(messages, " -> ");
+	for(std::string one_message : messages){
+		if(one_message.size()<1024)
+			AwayJS::Utils::Trace(this->m_pCallback, "%s\n", one_message.c_str());
+	}
+	fontShape->set_subShape(this->current_geom->get_sub_at(0));
+	delete this->current_geom;
 	return FCM_SUCCESS;
 		
 }
-	
-FCM::Result FlashToAWDEncoder::ExportStroke(DOM::FrameElement::PIShape pIShape)
+
+FCM::Result FlashToAWDEncoder::ExportStroke(std::string& output_str, DOM::FrameElement::PIShape pIShape)
 {
 		
     FCM::FCMListPtr pStrokeGroupList;
@@ -476,7 +390,7 @@ FCM::Result FlashToAWDEncoder::ExportStroke(DOM::FrameElement::PIShape pIShape)
 	//Utils::Trace(GetCallback(), "Export Stroke count = %d .\n", res);
 	if(res==FCM_SUCCESS){	
 		//Utils::Trace(GetCallback(), "Export STROKE.\n");			
-		ExportFilledShape(outShape, TYPES::filled_region_type::FILL_CONVERTED_FROM_STROKE);
+		ExportFilledShape(output_str, outShape, TYPES::filled_region_type::FILL_CONVERTED_FROM_STROKE);
 	}
 	
     return res;

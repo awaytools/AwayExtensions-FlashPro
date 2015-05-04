@@ -319,6 +319,18 @@
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png\lodepng.h">
       <Filter>Header\lib_awd\utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\billboard.h">
+      <Filter>Header\lib_awd\blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\blocks\mesh_library.h">
+      <Filter>Header\lib_awd\blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\PluginConfiguration.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\timeline_depth_manager.h">
+      <Filter>Header\lib_awd\elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\DocType.cpp">
@@ -453,9 +465,6 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Camera.cc">
       <Filter>Source\lib_awd\blocks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommands.cc">
-      <Filter>Source\lib_awd\elements</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\ShadingMethod.cc">
       <Filter>Source\lib_awd\elements</Filter>
     </ClCompile>
@@ -546,9 +555,6 @@
     <ClCompile Include="..\..\src\FlashToAWDEncoder_shapes.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\FlashToAWDEncoder_text.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\FlashToAWDEncoder_fills.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -621,6 +627,27 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\texture_atlas_util.cc">
       <Filter>Source\lib_awd\utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\Billboard.cc">
+      <Filter>Source\lib_awd\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\MeshLibrary.cc">
+      <Filter>Source\lib_awd\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommandDisplayObject.cc">
+      <Filter>Source\lib_awd\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommandSoundObject.cc">
+      <Filter>Source\lib_awd\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommandBase.cc">
+      <Filter>Source\lib_awd\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\FrameCommandRemoveObject.cc">
+      <Filter>Source\lib_awd\elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\TimelineDepthManager.cc">
+      <Filter>Source\lib_awd\elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AwayExtensionsFlashPro.rc" />
@@ -664,6 +691,9 @@
     </None>
     <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\awd_specs_part_3.dox">
       <Filter>doxygen_pages</Filter>
+    </None>
+    <None Include="..\..\..\..\..\..\_awayjs\AWDParser.ts">
+      <Filter>Header</Filter>
     </None>
   </ItemGroup>
 </Project>

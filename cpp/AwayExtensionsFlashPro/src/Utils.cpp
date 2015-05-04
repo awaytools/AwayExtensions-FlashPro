@@ -351,7 +351,12 @@ namespace AwayJS
     void Utils::GetParent(const std::string& path, std::string& parent)
     {
         size_t index = path.find_last_of("/\\");
-        parent = path.substr(0, index + 1);
+		if((index+1)==path.length()){
+			parent = path.substr(0, index);
+		}
+		else{
+			parent = path.substr(0, index + 1);
+		}
     }
     void Utils::GetFileName(const std::string& path, std::string& fileName)
     {
