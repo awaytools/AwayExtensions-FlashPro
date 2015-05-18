@@ -130,7 +130,7 @@ FlashToAWDEncoder::convert_matrix2x3(DOM::Utils::MATRIX2D matrix2x3)
 }
 
 TYPES::F64* 
-FlashToAWDEncoder::convert_matrix4x5(DOM::Utils::COLOR_MATRIX color_mtx)
+FlashToAWDEncoder::convert_matrix4x5_to_colortransform(DOM::Utils::COLOR_MATRIX color_mtx)
 {
 	TYPES::F64* output = (TYPES::F64* )malloc(8*sizeof(TYPES::F64));
 	int i = 0;

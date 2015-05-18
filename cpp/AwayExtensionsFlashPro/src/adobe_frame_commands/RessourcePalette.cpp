@@ -141,13 +141,7 @@ namespace AwayJS
 			//Utils::Trace(GetCallback(), "Start exporting name %s\n", symbol_name.c_str());
 
 		}
-		else{
-			this->awd_converter->grafik_cnt++;
-			std::string symbol_name = "grafik_"+std::to_string(this->awd_converter->grafik_cnt);
-			//Utils::Trace(GetCallback(), "Start exporting name %s\n", symbol_name.c_str());
-			pName = AwayJS::Utils::ToString16(symbol_name, this->GetCallback());			
-		}
-		TimelineBuilder* pTimeline = static_cast<TimelineBuilder*>(pTimelineBuilder);		
+		TimelineBuilder* pTimeline = static_cast<TimelineBuilder*>(pTimelineBuilder);
 		ITimelineWriter* pTimelineWriter;
 		return pTimeline->Build(resourceId, pName, &pTimelineWriter);
     }

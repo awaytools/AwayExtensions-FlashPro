@@ -88,7 +88,7 @@ class FlashToAWDEncoder
 
 		/** \brief Convert a DOM::Utils::COLOR_MATRIX to TYPES::F64*
 		*/
-		TYPES::F64* convert_matrix4x5(DOM::Utils::COLOR_MATRIX);
+		TYPES::F64* convert_matrix4x5_to_colortransform(DOM::Utils::COLOR_MATRIX);
 		
 		/** \brief Get Pointer to the AWD_project
 		*/

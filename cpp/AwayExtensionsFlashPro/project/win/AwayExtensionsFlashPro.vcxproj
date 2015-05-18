@@ -118,6 +118,8 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\sweep.c" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source\tess.c" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png\lodepng.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\mongoose\main.c" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\mongoose\mongoose.c" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix\IceRadix3Passes.cpp" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix\IceRevisitedRadix.cpp" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix\StdAfx.cpp" />
@@ -194,6 +196,7 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\awdzlib.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\FileReader.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\files\FileWriter.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\HTTPServer.cpp" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\DirentWin.cpp" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\geomutil\geomutil.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\utils\geomutil\geomutil_helper.cc" />
@@ -325,7 +328,7 @@
     <ClCompile>
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png;..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source;..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Include;..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\..\..\awd-sdk\cpp-libawd\src;..\..\..\..\..\awd-sdk\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Include;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\mongoose;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_SYSTEM_NO_DEPRECATED;FLASHPRO_DVA_CUSTOM;BOOST_ALL_DYN_LINK;_WINDOWS;MSWindows;_WIN32_WINNT=0x600;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;PRERELEASE;DVA_MAJOR_DISPLAY_VERSION=2014;DVA_MINOR_DISPLAY_VERSION=0;DVA_PATCH_DISPLAY_VERSION=0;DVA_SUITE_VERSION=14;DVA_MAJOR_VERSION=14;DVA_MINOR_VERSION=1;DVA_PATCH_VERSION=0;DVA_BUILD_YEAR=2014;WIN_ENV;__EXCEPTION_TRACER__;USE_DVA_WORKSPACE=1;USE_EXO_MESSAGING=1;DEBUG=1;_DEBUG;_ITERATOR_DEBUG_LEVEL=2;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
@@ -388,7 +391,7 @@
       <BrowseInformation />
       <DisableSpecificWarnings>4355;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Include;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\..\..\XDK\core\include\common;..\..\..\..\XDK\core\include\interfaces;..\..\..\..\XDK\app\include\common;..\..\..\..\XDK\app\include\interfaces;..\..\..\..\XDK\app\include\interfaces\DOM;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\lode_png;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Source;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\libtess2_master\Include;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\mongoose;..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\radix;..\..\..\ThirdParty\xerces-c-3.1.1\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\src;..\..\..\..\..\..\awd-sdk\cpp-libawd\include;..\..\..\..\XDK\app\include\interfaces\Exporter;..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm300 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeaderOutputFile />
     </ClCompile>

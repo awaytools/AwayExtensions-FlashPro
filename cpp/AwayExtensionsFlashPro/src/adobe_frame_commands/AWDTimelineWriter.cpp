@@ -325,7 +325,7 @@ namespace AwayJS
         else if(blendMode == 12)//Alpha
 			frameCommand->set_blendmode(2);
         else if(blendMode == 13)//Erase
-			frameCommand->set_blendmode(5);		
+			frameCommand->set_blendmode(5);
 		
         return FCM_SUCCESS;
     }
@@ -928,7 +928,7 @@ namespace AwayJS
     {
 		
 		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_UPDATE);
-		frameCommand->set_display_matrix(awd->convert_matrix2x3(matrix));		
+		frameCommand->set_display_matrix(awd->convert_matrix2x3(matrix));
         return FCM_SUCCESS;
     }
 
@@ -938,8 +938,7 @@ namespace AwayJS
         const DOM::Utils::COLOR_MATRIX& colorMatrix)
     {
 		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::FRAME_COMMAND_UPDATE);
-		frameCommand->set_color_matrix(awd->convert_matrix4x5(colorMatrix));
-        // Not tested yet		
+		frameCommand->set_color_matrix(awd->convert_matrix4x5_to_colortransform(colorMatrix));
         return FCM_SUCCESS;
     }
 
@@ -1013,8 +1012,7 @@ namespace AwayJS
     {
 	
 		this->awd=awd;
-		this->thisTimeLine=new BLOCKS::Timeline();		
-		thisTimeLine->add_scene_name(awd->current_scene_name);
+		this->thisTimeLine=new BLOCKS::Timeline();
 		m_pCallback = pcallback;
 		ANIM::TimelineFrame* newFrame=new ANIM::TimelineFrame();
 		newFrame->set_frame_duration(1);
@@ -1039,7 +1037,8 @@ namespace AwayJS
 		
         string resID_string=AwayJS::Utils::ToString(resId);
 		thisTimeLine->add_res_id(resID_string);
-		if(pName!=NULL){		
+		if(pName!=NULL){
+			thisTimeLine->is_grafic_instance=false;
 			thisTimeLine->set_symbol_name(AwayJS::Utils::ToString(pName, m_pCallback));
 			// set the name as fallback, if we cannot connect this instance to any library-symbol
 			thisTimeLine->set_name(AwayJS::Utils::ToString(pName, m_pCallback));

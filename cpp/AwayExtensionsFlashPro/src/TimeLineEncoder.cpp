@@ -938,7 +938,7 @@ TimelineEncoder::collectFrameDisplayElement(DOM::FrameElement::IFrameDisplayElem
 					//AwayJS::Utils::Trace(this->m_pCallback, "	ENCOUNTERED symbolInstance\n");
 					DOM::Utils::COLOR_MATRIX colorMatrix;
 					symbolInstance->GetColorMatrix(colorMatrix);
-					newFrameCommand->set_color_matrix(this->flash_to_awd->convert_matrix4x5(colorMatrix));
+					newFrameCommand->set_color_matrix(this->flash_to_awd->convert_matrix4x5_to_colortransform(colorMatrix));
 					DOM::Utils::POINT2D registrationPoint;
 					symbolInstance->GetRegistrationPoint(registrationPoint);
 					

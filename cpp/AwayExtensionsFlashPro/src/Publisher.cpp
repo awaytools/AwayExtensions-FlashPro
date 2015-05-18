@@ -141,13 +141,12 @@ namespace AwayJS
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk2;
         FCM::AutoPtr<FCM::IFCMCalloc> pCalloc;
 
-		
+
         pCalloc = AwayJS::Utils::GetCallocService(GetCallback());
         ASSERT(pCalloc.m_Ptr != NULL);
-		
+
         Utils::Trace(GetCallback(), "Publishing AwayJS-document (AWD export)\n");
 
-			
         res = GetOutputFileName(pFlaDocument, pTimeline, pDictPublishSettings, outFile);
         if (FCM_FAILURE_CODE(res))
         {
@@ -155,14 +154,19 @@ namespace AwayJS
             // However, for now, we report an error.
             Utils::Trace(GetCallback(), "\nFailed to publish. Either save the AwayJS-Document or provide a output path in publish settings.\n");
             return res;
-        }	
-		
-	// create minimum information needed for AWDProject (output-path and generator-name and version-nr)
-		
+        }
+
+// create minimum information needed for AWDProject (output-path and generator-name and version-nr)
+
         const std::string	generator_name		= "Adobe Flash Professional";
 		FCM::U_Int32 app_version=0;
 		AwayJS::Utils::GetAppVersion(GetCallback(), app_version );
-		const std::string	generator_version = std::to_string(app_version);
+		int majorversion = ((app_version >> 24) & 0xff);
+		int minorversion = ((app_version >> 16) & 0xff);
+		int patchversion = ((app_version >> 8) & 0xff);
+		int buildversion = ((app_version) & 0xff);
+
+		const std::string	generator_version = std::to_string(majorversion)+"."+std::to_string(minorversion)+"."+std::to_string(patchversion)+"."+std::to_string(buildversion);
 		
 	// create a AWDProject
 

@@ -320,7 +320,7 @@ FCM::Result FlashToAWDEncoder::ExportStrokeForFont(DOM::FrameElement::PIShape pI
     ASSERT(FCM_SUCCESS_CODE(res));
 	//Utils::Trace(GetCallback(), "Export Stroke-groups count = %d.\n", strokeStyleCount);
 		
-	this->current_geom=new BLOCKS::Geometry(false);// this is a mem leak. todo
+	this->current_geom=new BLOCKS::Geometry(false);
     for (FCM::U_Int32 j = 0; j < strokeStyleCount; j++)
     {
         FCM::AutoPtr<DOM::Service::Shape::IStrokeGroup> pStrokeGroup = pStrokeGroupList[j];

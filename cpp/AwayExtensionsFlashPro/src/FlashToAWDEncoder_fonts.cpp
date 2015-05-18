@@ -568,6 +568,8 @@ AWD::result FlashToAWDEncoder::FinalizeFonts(DOM::PIFLADocument pFlaDocument)
 				{
 					
                     FCM::AutoPtr<DOM::Service::FontTable::IGlyph> thisGlyph = pGlyphs[g];
+					FCM::Double advanced_value;
+					thisGlyph->GetAdvance(advanced_value);
 					DOM::FrameElement::PIShape glyphShape;
 					thisGlyph->GetOutline(glyphShape);
 					FCM::U_Int16 charCode;

@@ -648,6 +648,15 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\TimelineDepthManager.cc">
       <Filter>Source\lib_awd\elements</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\HTTPServer.cpp">
+      <Filter>Source\lib_awd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\mongoose\mongoose.c">
+      <Filter>Source\lib_awd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\lib\mongoose\main.c">
+      <Filter>Source\lib_awd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AwayExtensionsFlashPro.rc" />
