@@ -227,8 +227,6 @@ namespace AwayJS
 
 		std::string preview_output_path;
 		ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.PreviewPath", preview_output_path);
-		if(preview_output_path.size()>0)
-			preview_output_path+="/index.html";
 		
 		// defines if the preview should be opened (js) 
 		bool append_file_name=false;
