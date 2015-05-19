@@ -34,6 +34,7 @@
  THE SOFTWARE.
 
  */
+var AssetLibrary = require("awayjs-core/lib/library/AssetLibrary");
 var AssetEvent = require("awayjs-core/lib/events/AssetEvent");
 var URLRequest = require("awayjs-core/lib/net/URLRequest");
 var LoaderEvent = require("awayjs-core/lib/events/LoaderEvent");
@@ -45,7 +46,7 @@ var Billboard = require("awayjs-display/lib/entities/Billboard");
 var HoverController = require("awayjs-display/lib/controllers/HoverController");
 var Loader = require("awayjs-display/lib/containers/Loader");
 var Renderer2D = require("awayjs-player/lib/renderer/Renderer2D");
-var AWDParser = require("awayjs-parsers/lib/AWD3Parser");
+var AWDParser = require("awayjs-parsers/lib/AWDParser");
 var Partition2D = require("awayjs-player/lib/partition/Partition2D");
 var MovieClip = require("awayjs-player/lib/display/MovieClip");
 var CoordinateSystem = require("awayjs-core/lib/projections/CoordinateSystem");
@@ -226,15 +227,15 @@ var AWD3Viewer = (function () {
      * Initialise the scene objects
      */
     AWD3Viewer.prototype.initObjects = function () {
-        //AssetLibrary.enableParser(AWDParser);
         var _this = this;
+        AssetLibrary.enableParser(AWDParser);
         //kickoff asset loading
         var loader = new Loader();
         loader.addEventListener(AssetEvent.ASSET_COMPLETE, function (event) { return _this.onAssetComplete(event); });
         loader.addEventListener(LoaderEvent.RESOURCE_COMPLETE, function (event) { return _this.onRessourceComplete(event); });
         //for plugin preview-runtime:
-        loader.load(new URLRequest(document.getElementById("awdPath").innerHTML), null, null, new AWDParser());
-        //loader.load(new URLRequest("assets/AWD3/AwayJEscher.awd"), null, null, new AWDParser());
+        loader.load(new URLRequest(document.getElementById("awdPath").innerHTML));
+        //loader.load(new URLRequest("assets/AWD3/AwayJEscher.awd"));
         //loader.load(new URLRequest("assets/AWD3/Simple_text_test.awd"));
         //loader.load(new URLRequest("assets/AWD3/AwayJS_Ninja.awd"));
         //loader.load(new URLRequest("assets/AWD3/ComplexShape.awd"));
@@ -417,7 +418,7 @@ window.onload = function () {
     new AWD3Viewer();
 };
 
-},{"awayjs-core/lib/events/AssetEvent":undefined,"awayjs-core/lib/events/LoaderEvent":undefined,"awayjs-core/lib/net/URLRequest":undefined,"awayjs-core/lib/projections/CoordinateSystem":undefined,"awayjs-core/lib/projections/OrthographicProjection":undefined,"awayjs-core/lib/projections/PerspectiveProjection":undefined,"awayjs-core/lib/utils/RequestAnimationFrame":undefined,"awayjs-display/lib/containers/Loader":undefined,"awayjs-display/lib/containers/View":undefined,"awayjs-display/lib/controllers/HoverController":undefined,"awayjs-display/lib/entities/Billboard":undefined,"awayjs-display/lib/entities/Camera":undefined,"awayjs-display/lib/entities/Mesh":undefined,"awayjs-display/lib/entities/TextField":undefined,"awayjs-parsers/lib/AWD3Parser":undefined,"awayjs-player/lib/display/MovieClip":undefined,"awayjs-player/lib/partition/Partition2D":undefined,"awayjs-player/lib/renderer/Renderer2D":undefined}]},{},["./src/AWD3Viewer.ts"])
+},{"awayjs-core/lib/events/AssetEvent":undefined,"awayjs-core/lib/events/LoaderEvent":undefined,"awayjs-core/lib/library/AssetLibrary":undefined,"awayjs-core/lib/net/URLRequest":undefined,"awayjs-core/lib/projections/CoordinateSystem":undefined,"awayjs-core/lib/projections/OrthographicProjection":undefined,"awayjs-core/lib/projections/PerspectiveProjection":undefined,"awayjs-core/lib/utils/RequestAnimationFrame":undefined,"awayjs-display/lib/containers/Loader":undefined,"awayjs-display/lib/containers/View":undefined,"awayjs-display/lib/controllers/HoverController":undefined,"awayjs-display/lib/entities/Billboard":undefined,"awayjs-display/lib/entities/Camera":undefined,"awayjs-display/lib/entities/Mesh":undefined,"awayjs-display/lib/entities/TextField":undefined,"awayjs-parsers/lib/AWDParser":undefined,"awayjs-player/lib/display/MovieClip":undefined,"awayjs-player/lib/partition/Partition2D":undefined,"awayjs-player/lib/renderer/Renderer2D":undefined}]},{},["./src/AWD3Viewer.ts"])
 
 
 //# sourceMappingURL=AWD3Viewer.js.map

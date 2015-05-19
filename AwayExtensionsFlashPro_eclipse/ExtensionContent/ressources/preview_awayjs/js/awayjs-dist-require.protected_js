@@ -6051,7 +6051,15 @@ var Box = (function () {
 module.exports = Box;
 
 },{"awayjs-core/lib/geom/Vector3D":"awayjs-core/lib/geom/Vector3D"}],"awayjs-core/lib/geom/ColorTransform":[function(require,module,exports){
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var ColorUtils = require("awayjs-core/lib/utils/ColorUtils");
+var EventDispatcher = require("awayjs-core/lib/events/EventDispatcher");
+var Event = require("awayjs-core/lib/events/Event");
 /**
  * The ColorTransform class lets you adjust the color values in a display
  * object. The color adjustment or <i>color transformation</i> can be applied
@@ -6092,7 +6100,8 @@ var ColorUtils = require("awayjs-core/lib/utils/ColorUtils");
  * clip(such as a loaded SWF object). They apply only to graphics and symbols
  * that are attached to the movie clip.</p>
  */
-var ColorTransform = (function () {
+var ColorTransform = (function (_super) {
+    __extends(ColorTransform, _super);
     /**
      * Creates a ColorTransform object for a display object with the specified
      * color channel values and alpha values.
@@ -6123,15 +6132,105 @@ var ColorTransform = (function () {
         if (greenOffset === void 0) { greenOffset = 0; }
         if (blueOffset === void 0) { blueOffset = 0; }
         if (alphaOffset === void 0) { alphaOffset = 0; }
-        this.redMultiplier = redMultiplier;
-        this.greenMultiplier = greenMultiplier;
-        this.blueMultiplier = blueMultiplier;
-        this.alphaMultiplier = alphaMultiplier;
-        this.redOffset = redOffset;
-        this.greenOffset = greenOffset;
-        this.blueOffset = blueOffset;
-        this.alphaOffset = alphaOffset;
+        _super.call(this);
+        this._changeEvent = new Event(Event.CHANGE);
+        this._redMultiplier = redMultiplier;
+        this._greenMultiplier = greenMultiplier;
+        this._blueMultiplier = blueMultiplier;
+        this._alphaMultiplier = alphaMultiplier;
+        this._redOffset = redOffset;
+        this._greenOffset = greenOffset;
+        this._blueOffset = blueOffset;
+        this._alphaOffset = alphaOffset;
     }
+    Object.defineProperty(ColorTransform.prototype, "alphaMultiplier", {
+        get: function () {
+            return this._alphaMultiplier;
+        },
+        set: function (value) {
+            this._alphaMultiplier = value;
+            this._invalidate();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ColorTransform.prototype, "alphaOffset", {
+        get: function () {
+            return this._alphaOffset;
+        },
+        set: function (value) {
+            this._alphaOffset = value;
+            this._invalidate();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ColorTransform.prototype, "redMultiplier", {
+        get: function () {
+            return this._redMultiplier;
+        },
+        set: function (value) {
+            this._redMultiplier = value;
+            this._invalidate();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ColorTransform.prototype, "redOffset", {
+        get: function () {
+            return this._redOffset;
+        },
+        set: function (value) {
+            this._redOffset = value;
+            this._invalidate();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ColorTransform.prototype, "greenMultiplier", {
+        get: function () {
+            return this._greenMultiplier;
+        },
+        set: function (value) {
+            this._greenMultiplier = value;
+            this._invalidate();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ColorTransform.prototype, "greenOffset", {
+        get: function () {
+            return this._greenOffset;
+        },
+        set: function (value) {
+            this._greenOffset = value;
+            this._invalidate();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ColorTransform.prototype, "blueMultiplier", {
+        get: function () {
+            return this._blueMultiplier;
+        },
+        set: function (value) {
+            this._blueMultiplier = value;
+            this._invalidate();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ColorTransform.prototype, "blueOffset", {
+        get: function () {
+            return this._blueOffset;
+        },
+        set: function (value) {
+            this._blueOffset = value;
+            this._invalidate();
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(ColorTransform.prototype, "color", {
         /**
          * The RGB color value for a ColorTransform object.
@@ -6150,42 +6249,60 @@ var ColorTransform = (function () {
          * value.</p>
          */
         get: function () {
-            return ((this.redOffset << 16) | (this.greenOffset << 8) | this.blueOffset);
+            return ((this._redOffset << 16) | (this._greenOffset << 8) | this._blueOffset);
         },
         set: function (value) {
             var argb = ColorUtils.float32ColorToARGB(value);
-            this.redOffset = argb[1]; //(value >> 16) & 0xFF;
-            this.greenOffset = argb[2]; //(value >> 8) & 0xFF;
-            this.blueOffset = argb[3]; //value & 0xFF;
-            this.redMultiplier = 0;
-            this.greenMultiplier = 0;
-            this.blueMultiplier = 0;
+            this._redOffset = argb[1]; //(value >> 16) & 0xFF;
+            this._greenOffset = argb[2]; //(value >> 8) & 0xFF;
+            this._blueOffset = argb[3]; //value & 0xFF;
+            this._redMultiplier = 0;
+            this._greenMultiplier = 0;
+            this._blueMultiplier = 0;
+            this._invalidate();
         },
         enumerable: true,
         configurable: true
     });
-    /**
-     * Concatenates the ColorTranform object specified by the <code>second</code>
-     * parameter with the current ColorTransform object and sets the current
-     * object as the result, which is an additive combination of the two color
-     * transformations. When you apply the concatenated ColorTransform object,
-     * the effect is the same as applying the <code>second</code> color
-     * transformation after the <i>original</i> color transformation.
-     *
-     * @param second The ColorTransform object to be combined with the current
-     *               ColorTransform object.
-     */
-    ColorTransform.prototype.concat = function (second) {
-        this.redMultiplier += second.redMultiplier;
-        this.greenMultiplier += second.greenMultiplier;
-        this.blueMultiplier += second.blueMultiplier;
-        this.alphaMultiplier += second.alphaMultiplier;
+    ColorTransform.prototype.clear = function () {
+        this._redMultiplier = 1;
+        this._greenMultiplier = 1;
+        this._blueMultiplier = 1;
+        this._alphaMultiplier = 1;
+        this._redOffset = 0;
+        this._greenOffset = 0;
+        this._blueOffset = 0;
+        this._alphaOffset = 0;
+    };
+    ColorTransform.prototype.copyFrom = function (source) {
+        this._redMultiplier = source.redMultiplier;
+        this._greenMultiplier = source.greenMultiplier;
+        this._blueMultiplier = source.blueMultiplier;
+        this._alphaMultiplier = source.alphaMultiplier;
+        this._redOffset = source.redOffset;
+        this._greenOffset = source.greenOffset;
+        this._blueOffset = source.blueOffset;
+        this._alphaOffset = source.alphaOffset;
+    };
+    ColorTransform.prototype._invalidate = function () {
+        this.dispatchEvent(this._changeEvent);
+    };
+    ColorTransform.prototype.prepend = function (ct) {
+        this._redOffset += ct.redOffset * this._redMultiplier;
+        this._greenOffset += ct.greenOffset * this._greenMultiplier;
+        this._blueOffset += ct.blueOffset * this._blueMultiplier;
+        this._alphaOffset += ct.alphaOffset * this._alphaMultiplier;
+        this._redMultiplier *= ct.redMultiplier;
+        this._greenMultiplier *= ct.greenMultiplier;
+        this._blueMultiplier *= ct.blueMultiplier;
+        this._alphaMultiplier *= ct.alphaMultiplier;
+        this._invalidate();
     };
     return ColorTransform;
-})();
+})(EventDispatcher);
 module.exports = ColorTransform;
 
-},{"awayjs-core/lib/utils/ColorUtils":"awayjs-core/lib/utils/ColorUtils"}],"awayjs-core/lib/geom/MathConsts":[function(require,module,exports){
+},{"awayjs-core/lib/events/Event":"awayjs-core/lib/events/Event","awayjs-core/lib/events/EventDispatcher":"awayjs-core/lib/events/EventDispatcher","awayjs-core/lib/utils/ColorUtils":"awayjs-core/lib/utils/ColorUtils"}],"awayjs-core/lib/geom/MathConsts":[function(require,module,exports){
 /**
 * MathConsts provides some commonly used mathematical constants
 */
@@ -15814,6 +15931,7 @@ var __extends = this.__extends || function (d, b) {
     d.prototype = new __();
 };
 var Box = require("awayjs-core/lib/geom/Box");
+var ColorTransform = require("awayjs-core/lib/geom/ColorTransform");
 var Sphere = require("awayjs-core/lib/geom/Sphere");
 var MathConsts = require("awayjs-core/lib/geom/MathConsts");
 var Matrix3D = require("awayjs-core/lib/geom/Matrix3D");
@@ -15963,6 +16081,7 @@ var DisplayObject = (function (_super) {
      * Creates a new <code>DisplayObject</code> instance.
      */
     function DisplayObject() {
+        var _this = this;
         _super.call(this);
         this._boxBoundsInvalid = true;
         this._sphereBoundsInvalid = true;
@@ -16006,6 +16125,9 @@ var DisplayObject = (function (_super) {
         this._pIgnoreTransform = false;
         this._pRenderables = new Array();
         this._entityNodes = new Array();
+        this._globalColorTransformDirty = false;
+        this._globalColorTransform = new ColorTransform();
+        this._inheritColorTransform = false;
         /**
          *
          */
@@ -16020,6 +16142,8 @@ var DisplayObject = (function (_super) {
         this.orientationMode = OrientationMode.DEFAULT;
         // Cached vector of transformation components used when
         // recomposing the transform matrix in updateTransform()
+        this._onGlobalColorTransformChangedDelegate = function (event) { return _this.onGlobalColorTransformChanged(event); };
+        this._onColorTransformChangedDelegate = function (event) { return _this.onColorTransformChanged(event); };
         this._transformComponents = new Array(3);
         this._transformComponents[0] = this._pos;
         this._transformComponents[1] = this._rot;
@@ -16029,6 +16153,57 @@ var DisplayObject = (function (_super) {
         this._matrix3D.identity();
         this._flipY.appendScale(1, -1, 1);
     }
+    Object.defineProperty(DisplayObject.prototype, "inheritColorTransform", {
+        get: function () {
+            return this._inheritColorTransform;
+        },
+        set: function (value) {
+            this._inheritColorTransform = value;
+            this._invalidateGlobalColorTransform();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DisplayObject.prototype, "globalColorTransform", {
+        get: function () {
+            if (this._globalColorTransformDirty)
+                this._updateGlobalColorTransform();
+            return this._globalColorTransform;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DisplayObject.prototype, "alpha", {
+        /**
+         * Indicates the alpha transparency value of the object specified. Valid
+         * values are 0(fully transparent) to 1(fully opaque). The default value is
+         * 1. Display objects with <code>alpha</code> set to 0 <i>are</i> active,
+         * even though they are invisible.
+         */
+        get: function () {
+            return this._pColorTransform.alphaMultiplier;
+        },
+        set: function (value) {
+            this._pColorTransform.alphaMultiplier = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DisplayObject.prototype, "colorTransform", {
+        get: function () {
+            return this._pColorTransform;
+        },
+        set: function (value) {
+            // TS compiler freaking out over Event.CHANGE, using literal strings for now
+            if (this._pColorTransform)
+                this._pColorTransform.removeEventListener("change", this._onColorTransformChangedDelegate);
+            this._pSetColorTransform(value);
+            if (value)
+                value.addEventListener("change", this._onColorTransformChangedDelegate);
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(DisplayObject.prototype, "boundsType", {
         /**
          *
@@ -17356,17 +17531,22 @@ var DisplayObject = (function (_super) {
      * @internal
      */
     DisplayObject.prototype.iSetParent = function (value) {
+        if (this._pParent) {
+            this._pParent.removeEventListener(DisplayObjectEvent.GLOBAL_COLOR_TRANSFORM_CHANGED, this._onGlobalColorTransformChangedDelegate);
+        }
         this._pParent = value;
         if (value) {
             this._pUpdateImplicitMouseEnabled(value.mouseChildren);
             this._pUpdateImplicitVisibility(value._iIsVisible());
             this._pUpdateImplicitPartition(value._iAssignedPartition, value._pScene);
+            value.addEventListener(DisplayObjectEvent.GLOBAL_COLOR_TRANSFORM_CHANGED, this._onGlobalColorTransformChangedDelegate);
         }
         else {
             this._pUpdateImplicitMouseEnabled(true);
             this._pUpdateImplicitVisibility(true);
             this._pUpdateImplicitPartition(null, null);
         }
+        this._invalidateGlobalColorTransform();
     };
     /**
      * @protected
@@ -17653,11 +17833,42 @@ var DisplayObject = (function (_super) {
         if (this._pSphereBounds == null)
             this._pSphereBounds = new Sphere();
     };
+    DisplayObject.prototype._updateGlobalColorTransform = function () {
+        if (this._inheritColorTransform && this._pParent) {
+            this._globalColorTransform.copyFrom(this._pParent.globalColorTransform);
+            if (this._pColorTransform)
+                this._globalColorTransform.prepend(this._pColorTransform);
+        }
+        else {
+            if (this._pColorTransform)
+                this._globalColorTransform.copyFrom(this._pColorTransform);
+            else
+                this._globalColorTransform.clear();
+        }
+        this._globalColorTransformDirty = false;
+    };
+    // this method is to bypass that TypeScript can't call super setters.
+    DisplayObject.prototype._pSetColorTransform = function (value) {
+        this._pColorTransform = value;
+        this._invalidateGlobalColorTransform();
+    };
+    DisplayObject.prototype._invalidateGlobalColorTransform = function () {
+        this._globalColorTransformDirty = true;
+        if (!this._globalColorTransformChanged)
+            this._globalColorTransformChanged = new DisplayObjectEvent(DisplayObjectEvent.GLOBAL_COLOR_TRANSFORM_CHANGED, this);
+        this.dispatchEvent(this._globalColorTransformChanged);
+    };
+    DisplayObject.prototype.onGlobalColorTransformChanged = function (event) {
+        this._invalidateGlobalColorTransform();
+    };
+    DisplayObject.prototype.onColorTransformChanged = function (event) {
+        this._invalidateGlobalColorTransform();
+    };
     return DisplayObject;
 })(AssetBase);
 module.exports = DisplayObject;
 
-},{"awayjs-core/lib/errors/AbstractMethodError":undefined,"awayjs-core/lib/geom/Box":undefined,"awayjs-core/lib/geom/MathConsts":undefined,"awayjs-core/lib/geom/Matrix3D":undefined,"awayjs-core/lib/geom/Matrix3DUtils":undefined,"awayjs-core/lib/geom/Point":undefined,"awayjs-core/lib/geom/Sphere":undefined,"awayjs-core/lib/geom/Vector3D":undefined,"awayjs-core/lib/library/AssetBase":undefined,"awayjs-display/lib/base/AlignmentMode":"awayjs-display/lib/base/AlignmentMode","awayjs-display/lib/base/OrientationMode":"awayjs-display/lib/base/OrientationMode","awayjs-display/lib/base/Transform":"awayjs-display/lib/base/Transform","awayjs-display/lib/events/DisplayObjectEvent":"awayjs-display/lib/events/DisplayObjectEvent","awayjs-display/lib/events/SceneEvent":"awayjs-display/lib/events/SceneEvent","awayjs-display/lib/pick/PickingCollisionVO":"awayjs-display/lib/pick/PickingCollisionVO"}],"awayjs-display/lib/base/IBitmapDrawable":[function(require,module,exports){
+},{"awayjs-core/lib/errors/AbstractMethodError":undefined,"awayjs-core/lib/geom/Box":undefined,"awayjs-core/lib/geom/ColorTransform":undefined,"awayjs-core/lib/geom/MathConsts":undefined,"awayjs-core/lib/geom/Matrix3D":undefined,"awayjs-core/lib/geom/Matrix3DUtils":undefined,"awayjs-core/lib/geom/Point":undefined,"awayjs-core/lib/geom/Sphere":undefined,"awayjs-core/lib/geom/Vector3D":undefined,"awayjs-core/lib/library/AssetBase":undefined,"awayjs-display/lib/base/AlignmentMode":"awayjs-display/lib/base/AlignmentMode","awayjs-display/lib/base/OrientationMode":"awayjs-display/lib/base/OrientationMode","awayjs-display/lib/base/Transform":"awayjs-display/lib/base/Transform","awayjs-display/lib/events/DisplayObjectEvent":"awayjs-display/lib/events/DisplayObjectEvent","awayjs-display/lib/events/SceneEvent":"awayjs-display/lib/events/SceneEvent","awayjs-display/lib/pick/PickingCollisionVO":"awayjs-display/lib/pick/PickingCollisionVO"}],"awayjs-display/lib/base/IBitmapDrawable":[function(require,module,exports){
 
 },{}],"awayjs-display/lib/base/IRenderOwner":[function(require,module,exports){
 
@@ -18262,6 +18473,19 @@ var SubMeshBase = (function (_super) {
         },
         set: function (value) {
             this._uvTransform = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SubMeshBase.prototype, "colorTransform", {
+        /**
+         *
+         */
+        get: function () {
+            return this._colorTransform || this._pParentMesh.globalColorTransform;
+        },
+        set: function (value) {
+            this._colorTransform = value;
         },
         enumerable: true,
         configurable: true
@@ -22534,6 +22758,7 @@ var __extends = this.__extends || function (d, b) {
     d.prototype = new __();
 };
 var Rectangle = require("awayjs-core/lib/geom/Rectangle");
+var ColorTransform = require("awayjs-core/lib/geom/ColorTransform");
 var DisplayObject = require("awayjs-display/lib/base/DisplayObject");
 var BoundsType = require("awayjs-display/lib/bounds/BoundsType");
 var MaterialEvent = require("awayjs-display/lib/events/MaterialEvent");
@@ -22674,6 +22899,69 @@ var Billboard = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Billboard.prototype, "colorTransform", {
+        /**
+         *
+         */
+        get: function () {
+            // outputs the concaneted color-transform
+            return this._colorTransform; // || this._pParentMesh._colorTransform;
+        },
+        set: function (value) {
+            // set this on the inheritet colorTransform
+            this.transform.colorTransform = value;
+            // new calculate the concaneted transform
+            this._applyColorTransform();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Billboard.prototype, "parentColorTransform", {
+        get: function () {
+            return this._parentColorTransform;
+        },
+        set: function (value) {
+            // we will never modify the parentColorTransform directly, so save to set as reference (?)
+            this._parentColorTransform = value;
+            this._applyColorTransform();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Billboard.prototype._applyColorTransform = function () {
+        this._colorTransform = new ColorTransform();
+        if ((this._parentColorTransform) && (this.transform.colorTransform)) {
+            // if this mc has a parent-colortransform applied, we need to concanete the transforms.
+            this._colorTransform.alphaMultiplier = this.transform.colorTransform.alphaMultiplier * this._parentColorTransform.alphaMultiplier;
+            this._colorTransform.redMultiplier = this.transform.colorTransform.redMultiplier * this._parentColorTransform.redMultiplier;
+            this._colorTransform.blueMultiplier = this.transform.colorTransform.blueMultiplier * this._parentColorTransform.blueMultiplier;
+            this._colorTransform.greenMultiplier = this.transform.colorTransform.greenMultiplier * this._parentColorTransform.greenMultiplier;
+            this._colorTransform.alphaOffset = this.transform.colorTransform.alphaOffset + this._parentColorTransform.alphaOffset;
+            this._colorTransform.redOffset = this.transform.colorTransform.redOffset + this._parentColorTransform.redOffset;
+            this._colorTransform.blueOffset = this.transform.colorTransform.blueOffset + this._parentColorTransform.blueOffset;
+            this._colorTransform.greenOffset = this.transform.colorTransform.greenOffset + this._parentColorTransform.greenOffset;
+        }
+        else if (this.transform.colorTransform) {
+            this._colorTransform.alphaMultiplier = this.transform.colorTransform.alphaMultiplier;
+            this._colorTransform.redMultiplier = this.transform.colorTransform.redMultiplier;
+            this._colorTransform.blueMultiplier = this.transform.colorTransform.blueMultiplier;
+            this._colorTransform.greenMultiplier = this.transform.colorTransform.greenMultiplier;
+            this._colorTransform.alphaOffset = this.transform.colorTransform.alphaOffset;
+            this._colorTransform.redOffset = this.transform.colorTransform.redOffset;
+            this._colorTransform.blueOffset = this.transform.colorTransform.blueOffset;
+            this._colorTransform.greenOffset = this.transform.colorTransform.greenOffset;
+        }
+        else if (this._parentColorTransform) {
+            this._colorTransform.alphaMultiplier = this._parentColorTransform.alphaMultiplier;
+            this._colorTransform.redMultiplier = this._parentColorTransform.redMultiplier;
+            this._colorTransform.blueMultiplier = this._parentColorTransform.blueMultiplier;
+            this._colorTransform.greenMultiplier = this._parentColorTransform.greenMultiplier;
+            this._colorTransform.alphaOffset = this._parentColorTransform.alphaOffset;
+            this._colorTransform.redOffset = this._parentColorTransform.redOffset;
+            this._colorTransform.blueOffset = this._parentColorTransform.blueOffset;
+            this._colorTransform.greenOffset = this._parentColorTransform.greenOffset;
+        }
+    };
     /**
      * @protected
      */
@@ -22729,7 +23017,7 @@ var Billboard = (function (_super) {
 })(DisplayObject);
 module.exports = Billboard;
 
-},{"awayjs-core/lib/geom/Rectangle":undefined,"awayjs-display/lib/base/DisplayObject":"awayjs-display/lib/base/DisplayObject","awayjs-display/lib/bounds/BoundsType":"awayjs-display/lib/bounds/BoundsType","awayjs-display/lib/events/MaterialEvent":"awayjs-display/lib/events/MaterialEvent"}],"awayjs-display/lib/entities/Camera":[function(require,module,exports){
+},{"awayjs-core/lib/geom/ColorTransform":undefined,"awayjs-core/lib/geom/Rectangle":undefined,"awayjs-display/lib/base/DisplayObject":"awayjs-display/lib/base/DisplayObject","awayjs-display/lib/bounds/BoundsType":"awayjs-display/lib/bounds/BoundsType","awayjs-display/lib/events/MaterialEvent":"awayjs-display/lib/events/MaterialEvent"}],"awayjs-display/lib/entities/Camera":[function(require,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -23324,6 +23612,19 @@ var LineSegment = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(LineSegment.prototype, "colorTransform", {
+        /**
+         *
+         */
+        get: function () {
+            return this._colorTransform; // || this._pParentMesh._colorTransform;
+        },
+        set: function (value) {
+            this._colorTransform = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     LineSegment.prototype.dispose = function () {
         this._startPosition = null;
         this._endPosition = null;
@@ -23566,6 +23867,19 @@ var Mesh = (function (_super) {
         },
         set: function (value) {
             this._uvTransform = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Mesh.prototype, "colorTransform", {
+        /**
+         *
+         */
+        get: function () {
+            return this._pColorTransform;
+        },
+        set: function (value) {
+            _super.prototype._pSetColorTransform.call(this, value);
         },
         enumerable: true,
         configurable: true
@@ -24175,6 +24489,19 @@ var Skybox = (function (_super) {
         },
         set: function (value) {
             this._uvTransform = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Skybox.prototype, "colorTransform", {
+        /**
+         *
+         */
+        get: function () {
+            return this._colorTransform; // || this._pParentMesh._colorTransform;
+        },
+        set: function (value) {
+            this._colorTransform = value;
         },
         enumerable: true,
         configurable: true
@@ -25013,6 +25340,7 @@ var DisplayObjectEvent = (function (_super) {
     DisplayObjectEvent.POSITION_CHANGED = "positionChanged";
     DisplayObjectEvent.ROTATION_CHANGED = "rotationChanged";
     DisplayObjectEvent.SCALE_CHANGED = "scaleChanged";
+    DisplayObjectEvent.GLOBAL_COLOR_TRANSFORM_CHANGED = "globalColorTransformChanged";
     return DisplayObjectEvent;
 })(Event);
 module.exports = DisplayObjectEvent;
@@ -25753,6 +26081,7 @@ var MaterialBase = (function (_super) {
     function MaterialBase() {
         var _this = this;
         _super.call(this);
+        this._pUseColorTransform = false;
         this._alphaBlending = false;
         this._alpha = 1;
         this._renders = new Array();
@@ -25989,6 +26318,22 @@ var MaterialBase = (function (_super) {
             if (this._pAnimateUVs == value)
                 return;
             this._pAnimateUVs = value;
+            this._pInvalidatePasses();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MaterialBase.prototype, "useColorTransform", {
+        /**
+         * Specifies whether or not the UV coordinates should be animated using a transformation matrix.
+         */
+        get: function () {
+            return this._pUseColorTransform;
+        },
+        set: function (value) {
+            if (this._pUseColorTransform == value)
+                return;
+            this._pUseColorTransform = value;
             this._pInvalidatePasses();
         },
         enumerable: true,
@@ -47103,6 +47448,7 @@ var RenderBase = (function (_super) {
             shader.useBothSides = material.bothSides;
             shader.repeatTextures = material.repeat;
             shader.usesUVTransform = material.animateUVs;
+            shader.usesColorTransform = material.useColorTransform;
             if (material.texture)
                 shader.texture = shader.getTextureVO(material.texture);
             shader.color = material.color;
@@ -47913,6 +48259,7 @@ var CurveSubMeshRenderable = (function (_super) {
         var fixa = free1 + ".y";
         var fixb = free1 + ".z";
         var _aa = "fc7.z";
+        var _0 = "fc7.x";
         var _1 = "fc7.y";
         var nl = "\n";
         var code = new Array();
@@ -47920,7 +48267,7 @@ var CurveSubMeshRenderable = (function (_super) {
         code.push("mul", d, curvex, curvex, nl);
         code.push("sub", d, d, curvey, nl);
         code.push("mul", d, d, curvez, nl); //flipper
-        code.push("kil", d, nl);
+        //code.push("kil" ,d, nl);
         if (sd) {
             //derivatives
             code.push("ddx", dx, d, nl);
@@ -47932,25 +48279,17 @@ var CurveSubMeshRenderable = (function (_super) {
             code.push("sqt", t, t, nl);
             code.push("mul", t, t, _aa, nl);
             code.push("div", d, d, t, nl);
-            /*LINE*/
-            code.push("mov", d2, curvey, nl);
-            code.push("ddx", dx, curvey, nl);
-            code.push("ddy", dy, curvey, nl);
-            code.push("mul", dx, dx, dx, nl);
-            code.push("mul", dy, dy, dy, nl);
-            code.push("add", t, dx, dy, nl);
-            code.push("sqt", t, t, nl);
-            code.push("mul", t, t, _aa, nl);
-            code.push("div", d2, d2, t, nl);
-            /**/
-            //code.push("sge", fixa, curvex, _1, nl);
-            code.push("slt", fixb, curvex, _1, nl);
-            code.push("sub", fixa, _1, fixb, nl);
-            //code.push("sub", fixb, _1, fixa, nl);
-            code.push("mul", d2, d2, fixa, nl);
-            code.push("mul", d, d, fixb, nl);
-            code.push("add", d, d, d2, nl);
-            code.push("abs", d, d, nl);
+            /*
+                        //code.push("sge", fixa, curvex, _1, nl);
+                        code.push("slt", fixb, curvex, _1, nl);
+                        code.push("sub", fixa, _1, fixb, nl);
+                        //code.push("sub", fixb, _1, fixa, nl);
+            
+                        code.push("mul", d, d, fixb, nl);
+            
+            */
+            //			code.push("abs", d, d, nl);
+            code.push("max", d, d, _0, nl);
             code.push("min", d, d, _1, nl);
             code.push("mov", out + ".w", d, nl);
         }
@@ -49344,6 +49683,7 @@ var ShaderBase = (function () {
         this.cameraPositionIndex = -1;
         this.uvBufferIndex = -1;
         this.uvTransformIndex = -1;
+        this.colorTransformIndex = -1;
         this.secondaryUVBufferIndex = -1;
         this.normalBufferIndex = -1;
         this.colorBufferIndex = -1;
@@ -49383,6 +49723,17 @@ var ShaderBase = (function () {
             this.vertexConstantData[this.uvTransformIndex + 5] = 1;
             this.vertexConstantData[this.uvTransformIndex + 6] = 0;
             this.vertexConstantData[this.uvTransformIndex + 7] = 0;
+        }
+        //Initializes the default colorTransform.
+        if (this.colorTransformIndex >= 0) {
+            this.fragmentConstantData[this.colorTransformIndex] = 1;
+            this.fragmentConstantData[this.colorTransformIndex + 1] = 1;
+            this.fragmentConstantData[this.colorTransformIndex + 2] = 1;
+            this.fragmentConstantData[this.colorTransformIndex + 3] = 1;
+            this.fragmentConstantData[this.colorTransformIndex + 4] = 0;
+            this.fragmentConstantData[this.colorTransformIndex + 5] = 0;
+            this.fragmentConstantData[this.colorTransformIndex + 6] = 0;
+            this.fragmentConstantData[this.colorTransformIndex + 7] = 0;
         }
         if (this.cameraPositionIndex >= 0)
             this.vertexConstantData[this.cameraPositionIndex + 3] = 1;
@@ -49491,6 +49842,29 @@ var ShaderBase = (function () {
                 this.vertexConstantData[this.uvTransformIndex + 4] = 0;
                 this.vertexConstantData[this.uvTransformIndex + 5] = 1;
                 this.vertexConstantData[this.uvTransformIndex + 7] = 0;
+            }
+        }
+        if (this.usesColorTransform) {
+            var colorTransform = renderable.renderableOwner.colorTransform;
+            if (colorTransform) {
+                this.fragmentConstantData[this.colorTransformIndex] = colorTransform.redMultiplier;
+                this.fragmentConstantData[this.colorTransformIndex + 1] = colorTransform.greenMultiplier;
+                this.fragmentConstantData[this.colorTransformIndex + 2] = colorTransform.blueMultiplier;
+                this.fragmentConstantData[this.colorTransformIndex + 3] = colorTransform.alphaMultiplier;
+                this.fragmentConstantData[this.colorTransformIndex + 4] = colorTransform.redOffset / 255;
+                this.fragmentConstantData[this.colorTransformIndex + 5] = colorTransform.greenOffset / 255;
+                this.fragmentConstantData[this.colorTransformIndex + 6] = colorTransform.blueOffset / 255;
+                this.fragmentConstantData[this.colorTransformIndex + 7] = colorTransform.alphaOffset / 255;
+            }
+            else {
+                this.fragmentConstantData[this.colorTransformIndex] = 1;
+                this.fragmentConstantData[this.colorTransformIndex + 1] = 1;
+                this.fragmentConstantData[this.colorTransformIndex + 2] = 1;
+                this.fragmentConstantData[this.colorTransformIndex + 3] = 1;
+                this.fragmentConstantData[this.colorTransformIndex + 4] = 0;
+                this.fragmentConstantData[this.colorTransformIndex + 5] = 0;
+                this.fragmentConstantData[this.colorTransformIndex + 6] = 0;
+                this.fragmentConstantData[this.colorTransformIndex + 7] = 0;
             }
         }
         if (this.sceneNormalMatrixIndex >= 0)
@@ -49938,12 +50312,31 @@ var CompilerBase = (function () {
         //compile custom vertex & fragment codes
         this._pVertexCode += this._pRenderPass._iGetVertexCode(this._pShader, this._pRegisterCache, this._pSharedRegisters);
         this._pPostAnimationFragmentCode += this._pRenderPass._iGetFragmentCode(this._pShader, this._pRegisterCache, this._pSharedRegisters);
+        console.log("uses ct:", this._pShader.usesColorTransform);
+        if (this._pShader.usesColorTransform) {
+            this.compileColorTransformCode();
+        }
+        else {
+            this._pShader.colorTransformIndex = -1;
+        }
         //assign the final output color to the output register
         this._pPostAnimationFragmentCode += "mov " + this._pRegisterCache.fragmentOutputRegister + ", " + this._pSharedRegisters.shadedTarget + "\n";
         this._pRegisterCache.removeFragmentTempUsage(this._pSharedRegisters.shadedTarget);
         //initialise the required shader constants
         this._pShader.initConstantData(this._pRegisterCache, this._pAnimatableAttributes, this._pAnimationTargetRegisters, this._uvSource, this._uvTarget);
         this._pRenderPass._iInitConstantData(this._pShader);
+    };
+    /**
+     * Calculate the transformed colours
+     */
+    CompilerBase.prototype.compileColorTransformCode = function () {
+        // rm, gm, bm, am - multiplier
+        // ro, go, bo, ao - offset
+        var ct1 = this._pRegisterCache.getFreeFragmentConstant();
+        var ct2 = this._pRegisterCache.getFreeFragmentConstant();
+        this._pShader.colorTransformIndex = ct1.index * 4;
+        this._pPostAnimationFragmentCode += "mul " + this._pSharedRegisters.shadedTarget + ", " + this._pSharedRegisters.shadedTarget + ", " + ct1 + "\n";
+        this._pPostAnimationFragmentCode += "add " + this._pSharedRegisters.shadedTarget + ", " + this._pSharedRegisters.shadedTarget + ", " + ct2 + "\n";
     };
     /**
      * Compile the code for the methods.
@@ -58141,7 +58534,6 @@ var AS2MovieClipAdapter = (function (_super) {
     function AS2MovieClipAdapter(adaptee) {
         // create an empty MovieClip if none is passed
         _super.call(this, adaptee || new MovieClip());
-        this.currentFrameIndex = -1;
         var self = this;
         adaptee.addEventListener(MovieClipEvent.CHILD_ADDED, function (event) {
             self._pOnChildAdded.call(self, event);
@@ -58160,7 +58552,7 @@ var AS2MovieClipAdapter = (function (_super) {
     });
     Object.defineProperty(AS2MovieClipAdapter.prototype, "_currentframe", {
         get: function () {
-            return this.adaptee.currentFrameIndex - 1;
+            return this.adaptee.currentFrameIndex + 1;
         },
         enumerable: true,
         configurable: true
@@ -58251,6 +58643,12 @@ var AS2MovieClipAdapter = (function (_super) {
         this.stop();
         this._gotoFrame(frame);
     };
+    AS2MovieClipAdapter.prototype.play = function () {
+        this.adaptee.play();
+    };
+    AS2MovieClipAdapter.prototype.stop = function () {
+        this.adaptee.stop();
+    };
     //hitTest() : boolean { return false; }
     //lineGradientStyle(fillType: string, colors: array, alphas: array, ratios: array, matrix: Object, spreadMethod: string = null, interpolationMethod: string, focalPointRatio: number) : void {}
     //lineStyle(thickness: number, rgb: number, alpha: number, pixelHinting: boolean, noScale: string, capsStyle: string, jointStyle: string, miterLimit: number) : void {}
@@ -58266,9 +58664,6 @@ var AS2MovieClipAdapter = (function (_super) {
     AS2MovieClipAdapter.prototype.nextFrame = function () {
         ++this.adaptee.currentFrameIndex;
     };
-    AS2MovieClipAdapter.prototype.play = function () {
-        this.adaptee.play();
-    };
     AS2MovieClipAdapter.prototype.prevFrame = function () {
         --this.adaptee.currentFrameIndex;
     };
@@ -58277,9 +58672,6 @@ var AS2MovieClipAdapter = (function (_super) {
         this.adaptee._iMasks = [mc];
     };
     //startDrag(lockCenter: boolean = false, left: number = 0, top: number = 0, right: number = 0, bottom: number = 0) : void {}
-    AS2MovieClipAdapter.prototype.stop = function () {
-        this.adaptee.stop();
-    };
     //stopDrag() : void {}
     AS2MovieClipAdapter.prototype.swapDepths = function (target) {
         var adaptee = this.adaptee;
@@ -58312,16 +58704,9 @@ var AS2MovieClipAdapter = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(AS2MovieClipAdapter.prototype, "_parent", {
-        get: function () {
-            return (this.adaptee.parent.adapter);
-        },
-        enumerable: true,
-        configurable: true
-    });
     AS2MovieClipAdapter.prototype._pRegisterChild = function (child) {
         if (child.name)
-            this[child.name] = child;
+            this[child.name] = child["adapter"] ? child["adapter"] : child;
     };
     AS2MovieClipAdapter.prototype._pUnregisterChild = function (child) {
         for (var key in this) {
@@ -58357,7 +58742,7 @@ var AS2MovieClipAdapter = (function (_super) {
         if (typeof frame === "string")
             mc.jumpToLabel(frame);
         else
-            mc.currentFrameIndex = frame;
+            mc.currentFrameIndex = frame - 1;
     };
     AS2MovieClipAdapter.prototype._updateDepths = function (target) {
         var childrenArray = target["_children"];
@@ -58389,18 +58774,98 @@ var AS2MovieClipAdapter = (function (_super) {
 })(AS2SymbolAdapter);
 module.exports = AS2MovieClipAdapter;
 
-},{"awayjs-core/lib/geom/Point":undefined,"awayjs-display/lib/events/MouseEvent":undefined,"awayjs-player/lib/adapters/AS2SymbolAdapter":"awayjs-player/lib/adapters/AS2SymbolAdapter","awayjs-player/lib/display/MovieClip":"awayjs-player/lib/display/MovieClip","awayjs-player/lib/events/MovieClipEvent":"awayjs-player/lib/events/MovieClipEvent"}],"awayjs-player/lib/adapters/AS2SymbolAdapter":[function(require,module,exports){
+},{"awayjs-core/lib/geom/Point":undefined,"awayjs-display/lib/events/MouseEvent":undefined,"awayjs-player/lib/adapters/AS2SymbolAdapter":"awayjs-player/lib/adapters/AS2SymbolAdapter","awayjs-player/lib/display/MovieClip":"awayjs-player/lib/display/MovieClip","awayjs-player/lib/events/MovieClipEvent":"awayjs-player/lib/events/MovieClipEvent"}],"awayjs-player/lib/adapters/AS2SoundAdapter":[function(require,module,exports){
 // also contains global AS2 functions
+var AS2SoundAdapter = (function () {
+    // TODO: Any real Sound stuff should be externalized for AwayJS use. For now use internally since it's only 2D.
+    function AS2SoundAdapter(target) {
+        this._pan = 0;
+        this._volume = 0;
+        // not sure how to handle target yet
+        this._audio = new Audio();
+    }
+    AS2SoundAdapter.prototype.attachSound = function (id) {
+        // not sure how to handle this one yet
+    };
+    AS2SoundAdapter.prototype.getBytesLoaded = function () {
+        return 1;
+    };
+    AS2SoundAdapter.prototype.getBytesTotal = function () {
+        return 1;
+    };
+    AS2SoundAdapter.prototype.getPan = function () {
+        return this._pan;
+    };
+    AS2SoundAdapter.prototype.setPan = function (value) {
+        this._pan = value;
+    };
+    AS2SoundAdapter.prototype.getTransform = function () {
+        return this._transform;
+    };
+    AS2SoundAdapter.prototype.setTransform = function (value) {
+        this._transform = value;
+    };
+    AS2SoundAdapter.prototype.getVolume = function () {
+        return this._volume;
+    };
+    AS2SoundAdapter.prototype.setVolume = function (value) {
+        this._volume = value;
+    };
+    AS2SoundAdapter.prototype.loadSound = function (url, isStreaming) {
+        this._audio.src = url;
+        // how to handle isStreaming? Manually?
+    };
+    AS2SoundAdapter.prototype.start = function (offsetInSeconds, loops) {
+        if (loops === void 0) { loops = 0; }
+        this._audio.currentTime = offsetInSeconds;
+        this._audio.play();
+        this._audio.loop = loops ? true : false;
+    };
+    AS2SoundAdapter.prototype.stop = function (linkageID) {
+        if (linkageID === void 0) { linkageID = null; }
+        this._audio.pause();
+    };
+    Object.defineProperty(AS2SoundAdapter.prototype, "position", {
+        get: function () {
+            return this._audio.currentTime;
+        },
+        set: function (value) {
+            this._audio.currentTime = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AS2SoundAdapter.prototype, "duration", {
+        get: function () {
+            return this._audio.duration;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AS2SoundAdapter.prototype, "id3", {
+        get: function () {
+            return {};
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return AS2SoundAdapter;
+})();
+module.exports = AS2SoundAdapter;
+
+},{}],"awayjs-player/lib/adapters/AS2SymbolAdapter":[function(require,module,exports){
+// also contains global AS2 gunctions
 var AS2SymbolAdapter = (function () {
     function AS2SymbolAdapter(adaptee) {
         this.__quality = "high";
         this._adaptee = adaptee;
         if (AS2SymbolAdapter.REFERENCE_TIME === -1)
-            AS2SymbolAdapter.REFERENCE_TIME = new Date().getMilliseconds();
+            AS2SymbolAdapter.REFERENCE_TIME = new Date().getTime();
         if (!AS2SymbolAdapter.CLASS_REPLACEMENTS) {
             AS2SymbolAdapter.CLASS_REPLACEMENTS = {};
             AS2SymbolAdapter.CLASS_REPLACEMENTS["Color"] = "awayjs-player/lib/adapters/AS2ColorAdapter";
             AS2SymbolAdapter.CLASS_REPLACEMENTS["System"] = "awayjs-player/lib/adapters/AS2SystemAdapter";
+            AS2SymbolAdapter.CLASS_REPLACEMENTS["Sound"] = "awayjs-player/lib/adapters/AS2SoundAdapter";
         }
     }
     AS2SymbolAdapter.prototype.getVersion = function () {
@@ -58503,7 +58968,7 @@ var AS2SymbolAdapter = (function () {
     };
     // may need proper high-def timer mechanism
     AS2SymbolAdapter.prototype.getTimer = function () {
-        return new Date().getMilliseconds() - AS2SymbolAdapter.REFERENCE_TIME;
+        return new Date().getTime() - AS2SymbolAdapter.REFERENCE_TIME;
     };
     Object.defineProperty(AS2SymbolAdapter.prototype, "_alpha", {
         get: function () {
@@ -58546,15 +59011,12 @@ var AS2SymbolAdapter = (function () {
     });
     Object.defineProperty(AS2SymbolAdapter.prototype, "_root", {
         get: function () {
-            if (!AS2SymbolAdapter.ROOT) {
+            if (!this.__root) {
+                var p = this._parent;
                 // parents are always MovieClips
-                var clip = this.adaptee;
-                while (clip.parent && clip.parent.adapter) {
-                    clip = clip.parent;
-                }
-                AS2SymbolAdapter.ROOT = clip.adapter;
+                this.__root = p ? p._root : this;
             }
-            return AS2SymbolAdapter.ROOT;
+            return this.__root;
         },
         enumerable: true,
         configurable: true
@@ -58565,6 +59027,14 @@ var AS2SymbolAdapter = (function () {
     Object.defineProperty(AS2SymbolAdapter.prototype, "classReplacements", {
         get: function () {
             return AS2SymbolAdapter.CLASS_REPLACEMENTS;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AS2SymbolAdapter.prototype, "_parent", {
+        get: function () {
+            var parent = this.adaptee.parent;
+            return parent ? (parent.adapter) : null;
         },
         enumerable: true,
         configurable: true
@@ -58662,14 +59132,29 @@ var MovieClip = (function (_super) {
         _super.call(this);
         this._loop = true;
         this._prototype = this;
-        this._keyFrames = new Array();
-        this._potentialChildren = new Array();
+        this._keyFrames = [];
+        this._keyFrameActive = [];
+        this._potentialPrototypes = [];
+        this._potentialInstances = [];
         this._currentFrameIndex = -1;
+        this._currentKeyFrameIndex = -1;
         this._isPlaying = true; // auto-play
-        this._fps = 25;
+        this._fps = 30;
         this._time = 0;
         this._numFrames = 0;
+        this._enterFrame = new MovieClipEvent(MovieClipEvent.ENTER_FRAME, this);
+        this.inheritColorTransform = true;
     }
+    Object.defineProperty(MovieClip.prototype, "loop", {
+        get: function () {
+            return this._loop;
+        },
+        set: function (value) {
+            this._loop = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(MovieClip.prototype, "numFrames", {
         get: function () {
             return this._numFrames;
@@ -58679,23 +59164,24 @@ var MovieClip = (function (_super) {
     });
     MovieClip.prototype.jumpToLabel = function (label) {
         var index = -1;
-        /*var len = this._keyFrames.length;
-
+        var len = this._keyFrames.length;
         for (var i = 0; i < len; ++i) {
-            if (this._keyFrames[i].label) {
-                index = Math.round(this._keyFrames[i].startTime * this._fps);
+            if (this._keyFrames[i].label === label) {
+                index = this._keyFrames[i].firstFrame;
                 break;
             }
-        }*/
-        console.log("Implement labels");
-        if (index !== -1)
+        }
+        if (index !== -1) {
+            //console.log("Jumping to label " + label + "(frame " + index + ")");
             this.currentFrameIndex = index;
+        }
     };
     Object.defineProperty(MovieClip.prototype, "currentFrameIndex", {
         get: function () {
             return this._currentFrameIndex;
         },
         set: function (value) {
+            value = Math.floor(value);
             if (value < 0)
                 value = 0;
             else if (value >= this._numFrames)
@@ -58703,9 +59189,11 @@ var MovieClip = (function (_super) {
             this._time = 0;
             var isPlaying = this._isPlaying;
             this._isPlaying = true;
-            while (this._currentFrameIndex != value)
-                // skip frames
+            while (this._currentFrameIndex != value) {
+                // do not advance children, do not call post-constructs (scripts etc, only constructs are relevant)
                 this.advanceFrame(true);
+            }
+            this._skipAdvance = true;
             this._isPlaying = isPlaying;
         },
         enumerable: true,
@@ -58738,9 +59226,21 @@ var MovieClip = (function (_super) {
         configurable: true
     });
     MovieClip.prototype.addChild = function (child) {
+        //if (child.name) console.log("adding child " + child.name + " at frame " + this._currentFrameIndex);
+        child.inheritColorTransform = true;
         _super.prototype.addChild.call(this, child);
+        if (child.hasOwnProperty("_currentFrameIndex")) {
+            child._iInit();
+        }
         this.dispatchEvent(new MovieClipEvent(MovieClipEvent.CHILD_ADDED, child));
         return child;
+    };
+    MovieClip.prototype._iInit = function () {
+        // first frame initialisation
+        if (this._currentFrameIndex === -1) {
+            this.advanceFrame(true);
+            this._skipAdvance = true;
+        }
     };
     MovieClip.prototype.removeChild = function (child) {
         _super.prototype.removeChild.call(this, child);
@@ -58774,44 +59274,51 @@ var MovieClip = (function (_super) {
      * should be called right before the call to away3d-render.
      */
     MovieClip.prototype.update = function (timeDelta) {
-        this.logHierarchy();
+        //this.logHierarchy();
         // TODO: Implement proper elastic racetrack logic
-        var frameMarker = 1000 / this._fps;
-        // right now, just advance frame once time marker has been reached
-        this._time += timeDelta;
+        var frameMarker = Math.floor(1000 / this._fps);
+        // right now, just advance frame once time marker has been reached (only allow for one frame advance per-update)
+        this._time += Math.min(timeDelta, frameMarker);
         if (this._time > frameMarker) {
-            this._time = 0;
+            this._time -= frameMarker; //evens out RAF fluctuations.
             this.advanceFrame();
+            this.dispatchEvent(this._enterFrame);
+            this.executePostConstructCommands();
         }
     };
     /**
      * Add a new TimelineFrame.
      */
     MovieClip.prototype.addFrame = function (newFrame) {
-        var endFrame = Math.ceil((newFrame.startTime + newFrame.duration) / 1000 * this._fps);
+        var endFrame = newFrame.lastFrame;
         if (this._numFrames < endFrame)
             this._numFrames = endFrame;
         this._keyFrames.push(newFrame);
+        this._keyFrameActive.push(MovieClip.INACTIVE);
     };
-    /**
-     * Returns the child ID for this MovieClip
-     */
-    MovieClip.prototype.getPotentialChild = function (id) {
-        return this._potentialChildren[id];
+    MovieClip.prototype.getPotentialChildPrototype = function (id) {
+        return this._potentialPrototypes[id];
+    };
+    MovieClip.prototype.getPotentialChildInstance = function (id) {
+        if (!this._potentialInstances[id]) {
+            this._potentialInstances[id] = this._potentialPrototypes[id].clone();
+        }
+        return this._potentialInstances[id];
     };
     /**
      * Returns the child ID for this MovieClip
      */
     MovieClip.prototype.registerPotentialChild = function (prototype) {
-        var id = this._potentialChildren.length;
-        this._potentialChildren[id] = prototype.clone();
+        var id = this._potentialPrototypes.length;
+        this._potentialPrototypes[id] = prototype;
+        this._potentialInstances[id] = null;
         return id;
     };
     MovieClip.prototype.activateChild = function (id) {
-        this.addChild(this._potentialChildren[id]);
+        this.addChild(this.getPotentialChildInstance(id));
     };
     MovieClip.prototype.deactivateChild = function (id) {
-        this.removeChild(this._potentialChildren[id]);
+        this.removeChild(this._potentialInstances[id]);
     };
     /**
      * This is called inside the TimelineFrame.execute() function.
@@ -58822,16 +59329,22 @@ var MovieClip = (function (_super) {
      * Stop playback of animation and hold current position
      */
     MovieClip.prototype.stop = function () {
-        this._isPlaying = false; // no need to call any other stuff
+        this._isPlaying = false;
     };
     MovieClip.prototype.clone = function () {
         var clone = new MovieClip();
+        var i;
         if (this._adapter)
             clone.adapter = this._adapter.clone(clone);
         clone._prototype = this._prototype;
         clone._keyFrames = this._keyFrames;
-        for (var i = 0; i < this._potentialChildren.length; ++i) {
-            clone._potentialChildren[i] = this._potentialChildren[i].clone();
+        clone._keyFrameActive = [];
+        for (i = 0; i < this._keyFrames.length; ++i) {
+            clone._keyFrameActive[i] = MovieClip.INACTIVE;
+        }
+        for (i = 0; i < this._potentialPrototypes.length; ++i) {
+            clone._potentialPrototypes[i] = this._potentialPrototypes[i];
+            clone._potentialInstances[i] = null;
         }
         clone._fps = this._fps;
         clone._loop = this._loop;
@@ -58852,17 +59365,23 @@ var MovieClip = (function (_super) {
         this._currentFrameIndex = 0;
         for (var i = this.numChildren - 1; i >= 0; --i)
             this.removeChildAt(i);
-        for (var i = 0; i < this._keyFrames.length; ++i) {
-            var keyFrame = this._keyFrames[i];
-            // deactivate any currently active keyframes first
-            if (keyFrame.isActive)
-                keyFrame.deactivate(this);
-        }
+        /*
+         for (var i = 0; i < this._keyFrames.length; ++i) {
+         var keyFrame = this._keyFrames[i];
+
+         //  deactivate any currently active keyframes first
+         //  can not do it like this, because we can not keep track of active state for shared command-list
+         //  either we deactivate all, or we deactivate nothing, or we make system for it
+         //  if (keyFrame.isActive)
+         //      keyFrame.deactivate(this);
+         }
+         */
     };
-    MovieClip.prototype.advanceFrame = function (skipFrames) {
-        if (skipFrames === void 0) { skipFrames = false; }
+    MovieClip.prototype.advanceFrame = function (skipChildren) {
+        if (skipChildren === void 0) { skipChildren = false; }
         var i;
-        var advance = this._isPlaying;
+        var oldFrameIndex = this._currentFrameIndex;
+        var advance = this._isPlaying && !this._skipAdvance;
         if (advance && this._currentFrameIndex == this._numFrames - 1 && !this._loop) {
             advance = false;
         }
@@ -58874,27 +59393,37 @@ var MovieClip = (function (_super) {
             if (++this._currentFrameIndex == this._numFrames)
                 this.resetPlayHead();
         }
-        this.updateKeyFrames(skipFrames);
-        // advance children, last child first
-        if (!skipFrames) {
-            for (i = this.numChildren - 1; i >= 0; --i) {
-                var child = this.getChildAt(i);
-                if (child instanceof MovieClip)
-                    child.advanceFrame(skipFrames);
-            }
+        if (oldFrameIndex != this._currentFrameIndex || this._skipAdvance)
+            this.updateKeyFrames(skipChildren);
+        if (!skipChildren)
+            this.advanceChildren();
+        this._skipAdvance = false;
+    };
+    MovieClip.prototype.advanceChildren = function () {
+        var len = this.numChildren;
+        for (var i = 0; i < len; ++i) {
+            var child = this.getChildAt(i);
+            if (child instanceof MovieClip)
+                child.advanceFrame();
         }
     };
     MovieClip.prototype.updateKeyFrames = function (skipFrames) {
-        // TODO: Switch to frames over time (so we can check with ==, instead of > and active)
-        var time = this._currentFrameIndex / this._fps * 1000;
+        var frameIndex = this._currentFrameIndex;
         for (var i = 0; i < this._keyFrames.length; ++i) {
             var keyFrame = this._keyFrames[i];
-            if (time >= keyFrame.startTime && time <= keyFrame.endTime && !keyFrame.isActive)
-                keyFrame.activate(this);
-            if (time >= keyFrame.endTime && keyFrame.isActive)
-                keyFrame.deactivate(this);
-            if (!skipFrames && keyFrame.isActive)
-                keyFrame.update(this, this._time);
+            var isActive = this._keyFrameActive[i];
+            if (frameIndex == keyFrame.firstFrame && isActive === MovieClip.INACTIVE) {
+                keyFrame.construct(this);
+                this._keyFrameActive[i] = MovieClip.CONSTRUCTED;
+                isActive = MovieClip.CONSTRUCTED;
+            }
+            if (frameIndex >= keyFrame.lastFrame || frameIndex < keyFrame.firstFrame && isActive !== MovieClip.INACTIVE) {
+                keyFrame.deconstruct(this);
+                this._keyFrameActive[i] = MovieClip.INACTIVE;
+                isActive = MovieClip.INACTIVE;
+            }
+            if (!skipFrames && isActive)
+                keyFrame.update(this, this._currentFrameIndex);
         }
     };
     // DEBUG CODE:
@@ -58917,7 +59446,27 @@ var MovieClip = (function (_super) {
         str += " " + target.name;
         console.log(str);
     };
+    MovieClip.prototype.executePostConstructCommands = function () {
+        var i;
+        var time = this._currentFrameIndex;
+        var len = this._keyFrames.length;
+        for (i = 0; i < len; ++i) {
+            if (this._keyFrameActive[i] === MovieClip.CONSTRUCTED) {
+                this._keyFrames[i].postConstruct(this);
+                this._keyFrameActive[i] = MovieClip.POST_CONSTRUCTED;
+            }
+        }
+        len = this.numChildren;
+        for (i = 0; i < len; ++i) {
+            var child = this.getChildAt(i);
+            if (child instanceof MovieClip)
+                child.executePostConstructCommands();
+        }
+    };
     MovieClip.assetType = "[asset MovieClip]";
+    MovieClip.INACTIVE = 0;
+    MovieClip.CONSTRUCTED = 1;
+    MovieClip.POST_CONSTRUCTED = 2;
     return MovieClip;
 })(DisplayObjectContainer);
 module.exports = MovieClip;
@@ -58984,7 +59533,7 @@ var Partition2DNode = (function (_super) {
         this._root = root;
     }
     Partition2DNode.prototype.acceptTraverser = function (traverser) {
-        this._maskConfigID = 0;
+        this._maskConfigID = -1;
         this._index = 0;
         if (traverser.enterNode(this)) {
             this.traverseSceneGraph(this._root, traverser);
@@ -59010,7 +59559,7 @@ var Partition2DNode = (function (_super) {
         }
         displayObject["hierarchicalMaskID"] = maskID;
         displayObject["hierarchicalMasks"] = appliedMasks;
-        displayObject["maskConfigID"] = this._maskConfigID;
+        displayObject["maskConfigID"] = appliedMasks ? this._maskConfigID : -1;
         // moving back up the tree, mask will change again
         if (displayObject._iMasks)
             ++this._maskConfigID;
@@ -59364,9 +59913,19 @@ var TimelineKeyFrame = (function () {
         this._duration = 1; //use millisecs for duration ? or frames ?
         this._frameCommands = [];
         this._frameConstructCommands = [];
+        this._framePostConstructCommands = [];
         this._frameDestructCommands = [];
-        this._isActive = false;
     }
+    Object.defineProperty(TimelineKeyFrame.prototype, "label", {
+        get: function () {
+            return this._label;
+        },
+        set: function (value) {
+            this._label = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     TimelineKeyFrame.prototype.addCommand = function (command) {
         // make the timeline available for the commands
         this._frameCommands.push(command);
@@ -59375,13 +59934,17 @@ var TimelineKeyFrame = (function () {
         // make the timeline available for the commands
         this._frameConstructCommands.push(command);
     };
+    TimelineKeyFrame.prototype.addPostConstructCommand = function (command) {
+        // make the timeline available for the commands
+        this._framePostConstructCommands.push(command);
+    };
     TimelineKeyFrame.prototype.addDestructCommand = function (command) {
         // make the timeline available for the commands
         this._frameDestructCommands.push(command);
     };
-    Object.defineProperty(TimelineKeyFrame.prototype, "startTime", {
+    Object.defineProperty(TimelineKeyFrame.prototype, "firstFrame", {
         get: function () {
-            return this._startTime;
+            return this._firstFrame;
         },
         enumerable: true,
         configurable: true
@@ -59393,42 +59956,38 @@ var TimelineKeyFrame = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(TimelineKeyFrame.prototype, "endTime", {
+    Object.defineProperty(TimelineKeyFrame.prototype, "lastFrame", {
         get: function () {
-            return this._endTime;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(TimelineKeyFrame.prototype, "isActive", {
-        get: function () {
-            return this._isActive;
+            return this._lastFrame;
         },
         enumerable: true,
         configurable: true
     });
     TimelineKeyFrame.prototype.setFrameTime = function (startTime, duration) {
-        this._startTime = startTime;
+        this._firstFrame = startTime;
         this._duration = duration;
-        this._endTime = startTime + duration;
+        this._lastFrame = startTime + duration;
     };
-    TimelineKeyFrame.prototype.activate = function (sourceMovieClip) {
-        this._isActive = true;
+    TimelineKeyFrame.prototype.construct = function (sourceMovieClip) {
         var len = this._frameConstructCommands.length;
         for (var i = 0; i < len; i++)
-            this._frameConstructCommands[i].execute(sourceMovieClip, this._startTime);
+            this._frameConstructCommands[i].execute(sourceMovieClip, this._firstFrame);
     };
-    TimelineKeyFrame.prototype.deactivate = function (sourceMovieClip) {
-        this._isActive = false;
-        var len = this._frameDestructCommands.length;
-        var endTime = this._duration + this._startTime;
+    // needs to be called after children have been constructed
+    TimelineKeyFrame.prototype.postConstruct = function (sourceMovieClip) {
+        var len = this._framePostConstructCommands.length;
         for (var i = 0; i < len; i++)
-            this._frameDestructCommands[i].execute(sourceMovieClip, endTime);
+            this._framePostConstructCommands[i].execute(sourceMovieClip, this._firstFrame);
     };
-    TimelineKeyFrame.prototype.update = function (sourceMovieClip, time) {
+    TimelineKeyFrame.prototype.deconstruct = function (sourceMovieClip) {
+        var len = this._frameDestructCommands.length;
+        for (var i = 0; i < len; i++)
+            this._frameDestructCommands[i].execute(sourceMovieClip, this._lastFrame + 1);
+    };
+    TimelineKeyFrame.prototype.update = function (sourceMovieClip, frame) {
         var len = this._frameCommands.length;
         for (var i = 0; i < len; i++)
-            this._frameCommands[i].execute(sourceMovieClip, time);
+            this._frameCommands[i].execute(sourceMovieClip, frame);
     };
     return TimelineKeyFrame;
 })();
@@ -59436,13 +59995,13 @@ module.exports = TimelineKeyFrame;
 
 },{}],"awayjs-player/lib/timeline/commands/AddChildAtDepthCommand":[function(require,module,exports){
 var AddChildAtDepthCommand = (function () {
-    function AddChildAtDepthCommand(childID, target_depth) {
+    function AddChildAtDepthCommand(childID, targetDepth) {
         this._childID = childID;
-        this._target_depth = target_depth;
+        this._targetDepth = targetDepth;
     }
     AddChildAtDepthCommand.prototype.execute = function (sourceMovieClip, time) {
-        var target = sourceMovieClip.getPotentialChild(this._childID);
-        target["__AS2Depth"] = this._target_depth;
+        var target = sourceMovieClip.getPotentialChildInstance(this._childID);
+        target["__AS2Depth"] = this._targetDepth;
         sourceMovieClip.activateChild(this._childID);
         sourceMovieClip.visible = true;
     };
@@ -59493,11 +60052,19 @@ var ExecuteScriptCommand = (function () {
         else
             this._translatedScript = script;
     }
-    ExecuteScriptCommand.prototype.execute = function (sourceMovieClip, time) {
-        if (!this._translatedScript)
+    ExecuteScriptCommand.prototype.execute = function (sourceMovieClip, frame) {
+        if (!this._translatedScript) {
             this.translateScript(sourceMovieClip.adapter.classReplacements);
+        }
         var caller = sourceMovieClip.adapter ? sourceMovieClip.adapter : sourceMovieClip;
-        this._translatedScript.call(caller);
+        try {
+            this._translatedScript.call(caller);
+        }
+        catch (err) {
+            console.log("Script error in " + sourceMovieClip.name + ":\n" + frame, this._translatedScript);
+            console.log(err.message);
+            sourceMovieClip.logHierarchy();
+        }
     };
     ExecuteScriptCommand.prototype.regexIndexOf = function (str, regex, startpos) {
         var indexOf = str.substring(startpos || 0).search(regex);
@@ -59508,8 +60075,6 @@ var ExecuteScriptCommand = (function () {
         var replaced = this._script.replace(/(\\n|\r)/g, "");
         var replacementPreface = "";
         var replacementPostface = "";
-        // where "this" is a single word
-        replaced = replaced.replace(/\bthis\./, "___scoped_this___.");
         for (var srcName in classReplacements) {
             var dstName = classReplacements[srcName];
             // where class name is a single word
@@ -59519,44 +60084,51 @@ var ExecuteScriptCommand = (function () {
             // make sure a definition exists, even if it's undefined
             replacementPreface += "var __OLD_" + srcName + " = typeof " + srcName + " == 'function'? " + srcName + " : undefined;\n";
             replacementPreface += srcName + " = require(\"" + dstName + "\");\n";
+            replacementPreface += "function int(value) { return value | 0; }\n";
             replacementPostface += srcName + " = __OLD_" + srcName + ";\n";
         }
-        var functions = [];
-        var index = -1;
-        var functionRegEx = /\bfunction\s+[A-Za-z_][A-Za-z0-9_]*/g;
-        do {
+        //var functions : string[] = [];
+        //var index = -1;
+        //var functionRegEx = /\bfunction\s+[A-Za-z_][A-Za-z0-9_]*/g;
+        /*do {
             // find a function definition, and pray we can replace global scope
-            index = this.regexIndexOf(replaced, functionRegEx, index >= 0 ? index : 0);
+            index = this.regexIndexOf(replaced, functionRegEx, index >= 0? index : 0);
             if (index >= 0) {
                 functions.push(replaced.substring(index + 9, replaced.indexOf("(", index)));
                 var insertIndex = replaced.indexOf("{", index) + 1;
+
                 replaced = replaced.slice(0, insertIndex) + "\nwith (___scoped_this___) {\n" + replaced.slice(insertIndex);
+
                 insertIndex += 27;
+
                 // insert a closing bracket before the closing bracket of the function (and not one that belongs to another index
                 var closingFound = 0;
-                var openingFound = 1; // count the opening bracket for the function
+                var openingFound = 1;   // count the opening bracket for the function
                 var len = replaced.length;
+
                 while (insertIndex < len) {
                     var char = replaced.charAt(insertIndex);
                     if (char === "{")
                         ++openingFound;
                     else if (char === "}")
                         ++closingFound;
+
                     // matching closing found
-                    if (closingFound === openingFound)
-                        break;
+                    if (closingFound === openingFound) break;
                     ++insertIndex;
                 }
+
                 replaced = replaced.slice(0, insertIndex) + "\n}\n" + replaced.slice(insertIndex);
                 index = insertIndex + 3;
             }
         } while (index !== -1);
+
         for (var i = 0; i < functions.length; ++i) {
             replacementPostface += "___scoped_this___." + functions[i] + " = " + functions[i] + ";\n";
-        }
+        }*/
         // make sure we don't use "this", since Actionscript's "this" has the same scope rules as a variable
-        var str = replacementPreface + "var ___scoped_this___ = this;" + "with(___scoped_this___) { \n" + replaced + "}\n" + replacementPostface;
-        console.log(str);
+        var str = replacementPreface + replaced + replacementPostface;
+        //console.log(str);
         this._translatedScript = new Function(str);
     };
     return ExecuteScriptCommand;
@@ -59606,7 +60178,7 @@ var SetInstanceNameCommand = (function () {
         this._name = name;
     }
     SetInstanceNameCommand.prototype.execute = function (sourceMovieClip, time) {
-        var target = sourceMovieClip.getPotentialChild(this._targetID);
+        var target = sourceMovieClip.getPotentialChildInstance(this._targetID);
         sourceMovieClip[this._name] = target;
         target.name = this._name;
     };
@@ -59625,9 +60197,9 @@ var SetMaskCommand = (function () {
         var len = this._maskIDs.length;
         var masks = new Array();
         for (var i = 0; i < len; ++i) {
-            masks[i] = sourceMovieClip.getPotentialChild(this._maskIDs[i]);
+            masks[i] = sourceMovieClip.getPotentialChildInstance(this._maskIDs[i]);
         }
-        sourceMovieClip.getPotentialChild(this._targetID)._iMasks = masks;
+        sourceMovieClip.getPotentialChildInstance(this._targetID)._iMasks = masks;
     };
     return SetMaskCommand;
 })();
@@ -59642,8 +60214,14 @@ var UpdatePropertyCommand = (function () {
         this._value = value;
     }
     UpdatePropertyCommand.prototype.execute = function (sourceMovieClip, time) {
-        var target = sourceMovieClip.getPotentialChild(this._targetID);
-        target[this._propertyName] = this._value;
+        try {
+            var target = sourceMovieClip.getPotentialChildInstance(this._targetID);
+            target[this._propertyName] = this._value;
+        }
+        catch (err) {
+            console.log("Failed to set " + this._propertyName + " on " + sourceMovieClip.name);
+            throw err;
+        }
     };
     return UpdatePropertyCommand;
 })();
@@ -61034,7 +61612,7 @@ var MovieClipAWDParser = (function (_super) {
             //console.log("duration = " + frameDuration);
             numLabels = this.awd_file_data.newBlockBytes.readUnsignedByte();
             for (j = 0; j < numLabels; j++) {
-                label = this.awd_file_data.parseVarStr();
+                frame.label = this.awd_file_data.parseVarStr();
             }
             numCommands = this.awd_file_data.newBlockBytes.readUnsignedShort();
             //console.log("numCommands "+numCommands);
@@ -61062,7 +61640,7 @@ var MovieClipAWDParser = (function (_super) {
                             hasDepthChanges = true;
                             target_depth = this.awd_file_data.newBlockBytes.readShort();
                             //console.log("target_depth ", target_depth);
-                            var potChild = new_mc.getPotentialChild(objectID);
+                            var potChild = new_mc.getPotentialChildPrototype(objectID);
                             if (potChild != undefined) {
                                 frame.addConstructCommand(new AddChildAtDepthCommand(objectID, target_depth));
                                 // if the object is a tetfield, we set the textfield-name as instancename
@@ -63145,10 +63723,10 @@ var AWDParser = (function (_super) {
         this._startedParsing = false;
         this._texture_users = {};
         this._parsed_header = false;
-        // temp for checking stats
-        this.total_time = 0;
-        this.geom_time = 0;
-        this.timeline_time = 0;
+        this._time_all = 0;
+        this._time_geom = 0;
+        this._time_timeline = 0;
+        this._time_fonts = 0;
         this._blocks = new Array();
         this._blocks[0] = new AWDBlock();
         this._blocks[0].data = null; // Zero address means null in AWD
@@ -63349,6 +63927,10 @@ var AWDParser = (function (_super) {
         var type;
         var flags;
         var len;
+        /*
+                var start_timeing = 0;
+                start_timeing = performance.now();
+        */
         this._cur_block_id = this._body.readUnsignedInt();
         ns = this._body.readUnsignedByte();
         type = this._body.readUnsignedByte();
@@ -63403,7 +63985,6 @@ var AWDParser = (function (_super) {
             console.log("AWDBlock:  ID = " + this._cur_block_id + " | TypeID = " + type + " | Compression = " + blockCompression + " | Matrix-Precision = " + this._accuracyMatrix + " | Geometry-Precision = " + this._accuracyGeo + " | Properties-Precision = " + this._accuracyProps);
         }
         this._blocks[this._cur_block_id] = block;
-        //var time_start = performance.now();
         if ((this._version[0] == 3) && (this._version[1] == 0)) {
             // probably should contain some info about the type of animation
             var factory = new AS2SceneGraphFactory();
@@ -63540,7 +64121,6 @@ var AWDParser = (function (_super) {
                     break;
             }
         }
-        //*/
         var msgCnt = 0;
         if (this._newBlockBytes.position == blockEndBlock) {
             if (this._debug) {
@@ -63566,20 +64146,23 @@ var AWDParser = (function (_super) {
                 }
             }
         }
-        /*
-                var time_end = performance.now();
-                var thisTime:number=time_end-time_start;
-                this.total_time+=thisTime;
-                if(type==1){
-                    this.geom_time+=thisTime;
-                }
-                else if(type==133){
-                    this.timeline_time+=thisTime;
-                }
-                console.log("'parsed '"+type+"'  block in "+thisTime+ " ms", " total: ",this.total_time," geom: ",this.geom_time,"timelines:",this.timeline_time);
-        */
         this._body.position = blockEndAll;
         this._newBlockBytes = null;
+        /*
+                var end_timing = performance.now();
+                var time_delta = end_timing - start_timeing;
+                this._time_all+=time_delta;
+                if(type==1){
+                    this._time_geom+=time_delta;
+                }
+                else if(type==133){
+                    this._time_timeline+=time_delta;
+                }
+                else if(type==135){
+                    this._time_fonts+=time_delta;
+                }
+                console.log("Parsed block of type: "+type +" in "+time_delta+" ms | parsing total: "+this._time_all+" | geoms: "+this._time_geom+" | timelines: "+this._time_timeline+" | fonts: "+this._time_fonts);
+        */
     };
     //--Parser Blocks---------------------------------------------------------------------------
     AWDParser.prototype.parseTesselatedFont = function (blockID) {
@@ -63682,7 +64265,7 @@ var AWDParser = (function (_super) {
         var data_id = this._newBlockBytes.readUnsignedInt();
         //console.log("mat  '" + data_id);
         var mat;
-        var returnedArrayMaterial = this.getAssetByID(data_id, [MethodMaterial.assetType]);
+        var returnedArrayMaterial = this.getAssetByID(data_id, [MethodMaterial.assetType, BasicMaterial.assetType]);
         if (returnedArrayMaterial[0]) {
             mat = returnedArrayMaterial[1];
         }
@@ -63792,7 +64375,7 @@ var AWDParser = (function (_super) {
         var name = this.parseVarStr();
         var data_id = this._newBlockBytes.readUnsignedInt();
         var mat;
-        var returnedArrayMaterial = this.getAssetByID(data_id, [MethodMaterial.assetType]);
+        var returnedArrayMaterial = this.getAssetByID(data_id, [MethodMaterial.assetType, BasicMaterial.assetType]);
         if (returnedArrayMaterial[0]) {
             mat = returnedArrayMaterial[1];
         }
@@ -63835,11 +64418,14 @@ var AWDParser = (function (_super) {
         while (materials_parsed < num_materials) {
             var mat_id;
             mat_id = this._newBlockBytes.readUnsignedInt();
-            returnedArrayMaterial = this.getAssetByID(mat_id, [MethodMaterial.assetType]);
+            returnedArrayMaterial = this.getAssetByID(mat_id, [MethodMaterial.assetType, BasicMaterial.assetType]);
             if ((!returnedArrayMaterial[0]) && (mat_id > 0)) {
                 this._blocks[blockID].addError("Could not find Material Nr " + materials_parsed + " (ID = " + mat_id + " ) for this Mesh");
             }
             var m = returnedArrayMaterial[1];
+            //m.preserveAlpha = true;
+            m.alphaBlending = true;
+            m.useColorTransform = true;
             materials.push(m);
             materialNames.push(m.name);
             materials_parsed++;
@@ -63905,7 +64491,7 @@ var AWDParser = (function (_super) {
         var sceneID = this._newBlockBytes.readUnsignedByte();
         var fps = this._newBlockBytes.readFloat();
         //console.log("fps = "+fps);
-        //timeLineContainer.fps=fps;
+        timeLineContainer.fps = fps;
         var ms_per_frame = 1000 / fps;
         var num_instances = 0;
         var num_all_display_instances = 0;
@@ -63951,7 +64537,7 @@ var AWDParser = (function (_super) {
                 }
             }
         }
-        //console.log("Parsed "+num_potential_childs+" potential childs. They will be used by "+num_all_display_instances+" instances.");
+        console.log("Parsed " + num_potential_childs + " potential childs. They will be used by " + num_all_display_instances + " instances.");
         // register list of potential sounds
         // a potential child can be reused on a timeline (added / removed / added)
         var num_potential_sounds = this._newBlockBytes.readUnsignedShort();
@@ -63986,13 +64572,14 @@ var AWDParser = (function (_super) {
         for (i = 0; i < numFrames; i++) {
             frame = new TimelineKeyFrame();
             // todo: remove the ms_per_frame to set the duration in frames
-            frameDuration = this._newBlockBytes.readUnsignedInt() * ms_per_frame;
+            frameDuration = this._newBlockBytes.readUnsignedInt();
             frame.setFrameTime(totalDuration, frameDuration);
             totalDuration += frameDuration;
             //console.log("duration = " + frameDuration);
             numLabels = this._newBlockBytes.readUnsignedByte();
             for (j = 0; j < numLabels; j++) {
-                label = this.parseVarStr();
+                // TODO: Temporary way to handle labels
+                frame.label = this.parseVarStr();
             }
             numCommands = this._newBlockBytes.readUnsignedShort();
             //console.log("numCommands "+numCommands);
@@ -64020,7 +64607,7 @@ var AWDParser = (function (_super) {
                             hasDepthChanges = true;
                             target_depth = this._newBlockBytes.readShort();
                             //console.log("target_depth ", target_depth);
-                            var potChild = timeLineContainer.getPotentialChild(objectID);
+                            var potChild = timeLineContainer.getPotentialChildPrototype(objectID);
                             if (potChild != undefined) {
                                 frame.addConstructCommand(new AddChildAtDepthCommand(objectID, target_depth));
                                 // if the object is a tetfield, we set the textfield-name as instancename
@@ -64071,6 +64658,7 @@ var AWDParser = (function (_super) {
                                 thisColorTransform.blueOffset = this._newBlockBytes.readShort();
                                 thisColorTransform.alphaOffset = this._newBlockBytes.readShort();
                             }
+                            frame.addConstructCommand(new UpdatePropertyCommand(objectID, "colorTransform", thisColorTransform));
                         }
                         if (BitFlags.test(props_flag, BitFlags.FLAG5)) {
                             var blendmode_int = this._newBlockBytes.readUnsignedByte();
@@ -64120,7 +64708,7 @@ var AWDParser = (function (_super) {
             if (length_code > 0) {
                 // TODO: Script should probably not be attached to keyframes?
                 var frame_code = this._newBlockBytes.readUTFBytes(length_code);
-                frame.addConstructCommand(new ExecuteScriptCommand(frame_code));
+                frame.addPostConstructCommand(new ExecuteScriptCommand(frame_code));
             }
             //traceString += commandString;
             //trace("length_code = "+length_code+" frame_code = "+frame_code);
@@ -64419,7 +65007,7 @@ var AWDParser = (function (_super) {
         while (materials_parsed < num_materials) {
             var mat_id;
             mat_id = this._newBlockBytes.readUnsignedInt();
-            returnedArrayMaterial = this.getAssetByID(mat_id, [MethodMaterial.assetType]);
+            returnedArrayMaterial = this.getAssetByID(mat_id, [MethodMaterial.assetType, BasicMaterial.assetType]);
             if ((!returnedArrayMaterial[0]) && (mat_id > 0)) {
                 this._blocks[blockID].addError("Could not find Material Nr " + materials_parsed + " (ID = " + mat_id + " ) for this Mesh");
             }
