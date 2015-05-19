@@ -97,6 +97,8 @@
 		42E270E91AF7F59E00A3316F /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42E270E81AF7F59E00A3316F /* lodepng.cpp */; };
 		42E270ED1AF7F5D600A3316F /* Billboard.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42E270EC1AF7F5D600A3316F /* Billboard.cc */; };
 		42E270EF1AF7F5DC00A3316F /* MeshLibrary.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42E270EE1AF7F5DC00A3316F /* MeshLibrary.cc */; };
+		42E2714F1B0BEEFD00A3316F /* HTTPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42E2714E1B0BEEFD00A3316F /* HTTPServer.cpp */; };
+		42E271541B0BF34900A3316F /* libmongoose.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E271481B0BED5600A3316F /* libmongoose.a */; };
 		48DDB2761A02C52A00E10FE1 /* libtess2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DDB2731A02C4A300E10FE1 /* libtess2.a */; };
 		48DDB2781A02C7CF00E10FE1 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DDB2771A02C7CF00E10FE1 /* CoreServices.framework */; };
 		48DDB27A1A02C7DB00E10FE1 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DDB2791A02C7DB00E10FE1 /* ApplicationServices.framework */; };
@@ -123,6 +125,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		42E271471B0BED5600A3316F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42E271431B0BED5500A3316F /* mongoose.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 42E2713C1B0BED5500A3316F;
+			remoteInfo = mongoose;
+		};
+		42E271521B0BF28400A3316F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42E271431B0BED5500A3316F /* mongoose.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 42E2713B1B0BED5500A3316F;
+			remoteInfo = mongoose;
+		};
 		48DDB2721A02C4A300E10FE1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 48DDB26E1A02C4A300E10FE1 /* tess2.xcodeproj */;
@@ -303,6 +319,9 @@
 		42E270EB1AF7F5C600A3316F /* billboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = billboard.h; sourceTree = "<group>"; };
 		42E270EC1AF7F5D600A3316F /* Billboard.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Billboard.cc; sourceTree = "<group>"; };
 		42E270EE1AF7F5DC00A3316F /* MeshLibrary.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeshLibrary.cc; sourceTree = "<group>"; };
+		42E271431B0BED5500A3316F /* mongoose.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mongoose.xcodeproj; path = "../../../../../awd-sdk/cpp-libawd/lib/mongoose/mongoose/mongoose.xcodeproj"; sourceTree = "<group>"; };
+		42E2714D1B0BEEEF00A3316F /* HTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPServer.h; sourceTree = "<group>"; };
+		42E2714E1B0BEEFD00A3316F /* HTTPServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HTTPServer.cpp; sourceTree = "<group>"; };
 		48DDB26E1A02C4A300E10FE1 /* tess2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tess2.xcodeproj; path = "../../../ThirdParty/libtess2-master/mac/tess2/tess2.xcodeproj"; sourceTree = "<group>"; };
 		48DDB2771A02C7CF00E10FE1 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		48DDB2791A02C7DB00E10FE1 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
@@ -338,6 +357,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42E271541B0BF34900A3316F /* libmongoose.a in Frameworks */,
 				48DDB2781A02C7CF00E10FE1 /* CoreServices.framework in Frameworks */,
 				48DDB27A1A02C7DB00E10FE1 /* ApplicationServices.framework in Frameworks */,
 				48DDB27C1A02C7E200E10FE1 /* Foundation.framework in Frameworks */,
@@ -365,6 +385,7 @@
 		42CA66621AF5E13E00F208E2 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				42E2714D1B0BEEEF00A3316F /* HTTPServer.h */,
 				42CA66631AF5E13E00F208E2 /* awd.h */,
 				42CA66641AF5E13E00F208E2 /* awd_project.h */,
 				42CA66651AF5E13E00F208E2 /* base */,
@@ -479,6 +500,7 @@
 		42CA66A81AF5E16F00F208E2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				42E2714E1B0BEEFD00A3316F /* HTTPServer.cpp */,
 				42E270E81AF7F59E00A3316F /* lodepng.cpp */,
 				42CA66AA1AF5E16F00F208E2 /* awd_project.cc */,
 				42CA66AB1AF5E16F00F208E2 /* base */,
@@ -649,6 +671,14 @@
 			path = "../../../../../awd-sdk/cpp-libawd/lib/radix";
 			sourceTree = "<group>";
 		};
+		42E271441B0BED5500A3316F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42E271481B0BED5600A3316F /* libmongoose.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		48DDB26F1A02C4A300E10FE1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -736,6 +766,7 @@
 		F5D357220948E8C4008C36CA = {
 			isa = PBXGroup;
 			children = (
+				42E271431B0BED5500A3316F /* mongoose.xcodeproj */,
 				48DDB26E1A02C4A300E10FE1 /* tess2.xcodeproj */,
 				42CA66621AF5E13E00F208E2 /* include */,
 				42CA66A81AF5E16F00F208E2 /* src */,
@@ -812,6 +843,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				42E271531B0BF28400A3316F /* PBXTargetDependency */,
 				48DDB2751A02C50A00E10FE1 /* PBXTargetDependency */,
 			);
 			name = AwayExtensionsFlashPro.Release;
@@ -839,6 +871,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 42E271441B0BED5500A3316F /* Products */;
+					ProjectRef = 42E271431B0BED5500A3316F /* mongoose.xcodeproj */;
+				},
+				{
 					ProductGroup = 48DDB26F1A02C4A300E10FE1 /* Products */;
 					ProjectRef = 48DDB26E1A02C4A300E10FE1 /* tess2.xcodeproj */;
 				},
@@ -851,6 +887,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		42E271481B0BED5600A3316F /* libmongoose.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libmongoose.a;
+			remoteRef = 42E271471B0BED5600A3316F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		48DDB2731A02C4A300E10FE1 /* libtess2.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -928,6 +971,7 @@
 				42CA67591AF5E18C00F208E2 /* IceRadix3Passes.cpp in Sources */,
 				42CA67071AF5E16F00F208E2 /* AnimationSet.cc in Sources */,
 				42CA670F1AF5E16F00F208E2 /* Font.cc in Sources */,
+				42E2714F1B0BEEFD00A3316F /* HTTPServer.cpp in Sources */,
 				42CA67321AF5E16F00F208E2 /* geom_types.cc in Sources */,
 				42CA672C1AF5E16F00F208E2 /* BlockInstance.cc in Sources */,
 				42CA67471AF5E16F00F208E2 /* geomutil_helper.cc in Sources */,
@@ -1015,6 +1059,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		42E271531B0BF28400A3316F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = mongoose;
+			targetProxy = 42E271521B0BF28400A3316F /* PBXContainerItemProxy */;
+		};
 		48DDB2751A02C50A00E10FE1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = tess2;
@@ -1065,11 +1114,12 @@
 					../../../../XDK/app/include/common,
 					../../../../XDK/app/include/interfaces,
 					../../../../XDK/app/include/interfaces/DOM,
-					"../../../ThirdParty/libtess2-master/Include",
 					../../../ThirdParty/libjson_7.6.1/libjson,
 					"../../../ThirdParty/xerces-c-3.1.1/src",
+					"../../../ThirdParty/libtess2-master/Include",
 					../../../../XDK/app/include/interfaces/Exporter,
 					"../../../../../awd-sdk/cpp-libawd/include/**",
+					"../../../../../awd-sdk/cpp-libawd/lib/mongoose",
 					"../../../../../awd-sdk/cpp-libawd/lib/lode_png",
 					../../include,
 					$SOURCE_ROOT/include,
