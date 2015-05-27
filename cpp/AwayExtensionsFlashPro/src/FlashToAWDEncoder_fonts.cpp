@@ -307,7 +307,7 @@ FlashToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, AWD
 			this_font->set_name(font_name_str);
 			this_font->add_scene_name(this->current_scene_name);
 			FONT::FontStyle* this_font_style = this_font->get_font_style(font_style);
-			//AwayJS::Utils::Trace(m_pCallback, "text  = %s \n", text_run_text.c_str());
+			AwayJS::Utils::Trace(m_pCallback, "text  = %s \n", text_run_text.c_str());
 			for(char& c : text_run_text) {
 				AwayJS::Utils::Trace(m_pCallback, "Converted char to int %d \n", c);
 				if(int(c)<0)

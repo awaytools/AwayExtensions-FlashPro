@@ -268,9 +268,6 @@
     <ClInclude Include="..\..\include\FlashToAWDEncoder.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\TimelineEncoder.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\include\elements\timeline_frame.h">
       <Filter>Header\lib_awd\elements</Filter>
     </ClInclude>
@@ -561,9 +558,6 @@
     <ClCompile Include="..\..\src\FlashToAWDEncoder_fonts.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TimelineEncoder.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\PathSegment.cc">
       <Filter>Source\lib_awd\elements\geom</Filter>
     </ClCompile>
@@ -700,9 +694,6 @@
     </None>
     <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\awd_specs_part_3.dox">
       <Filter>doxygen_pages</Filter>
-    </None>
-    <None Include="..\..\..\..\..\..\_awayjs\AWDParser.ts">
-      <Filter>Header</Filter>
     </None>
   </ItemGroup>
 </Project>

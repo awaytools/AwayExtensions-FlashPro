@@ -26,67 +26,9 @@
 
 #include "FlashFCMPublicIDs.h"
 
-/*
-#include "FrameElement/IClassicText.h"
-#include "FrameElement/IParagraph.h"
-#include "FrameElement/ITextRun.h"
-#include "FrameElement/ITextStyle.h"
-#include "FrameElement/IShape.h"
-#include "FrameElement/ISound.h"
-#include "StrokeStyle/IDashedStrokeStyle.h"
-#include "StrokeStyle/IDottedStrokeStyle.h"
-#include "StrokeStyle/IHatchedStrokeStyle.h"
-#include "StrokeStyle/IRaggedStrokeStyle.h"
-#include "StrokeStyle/ISolidStrokeStyle.h"
-#include "StrokeStyle/IStippleStrokeStyle.h"
-
-#include "FillStyle/ISolidFillStyle.h"
-#include "FillStyle/IGradientFillStyle.h"
-#include "FillStyle/IBitmapFillStyle.h"
-
-#include "MediaInfo/IBitmapInfo.h"
-#include "FrameElement/IBitmapInstance.h"
-#include "FrameElement/ISound.h"
-#include "MediaInfo/ISoundInfo.h"
-#include "LibraryItem/IMediaItem.h"
-#include "LibraryItem/IFolderItem.h"
-#include "LibraryItem/IFontItem.h"
-#include "LibraryItem/ISymbolItem.h"
-#include "ILibraryItem.h"
-
-#include "FrameElement/IClassicText.h"
-#include "FrameElement/ITextStyle.h"
-#include "FrameElement/IParagraph.h"
-#include "FrameElement/ITextRun.h"
-#include "FrameElement/ITextBehaviour.h"
-
-#include "Service/Shape/IRegionGeneratorService.h"
-#include "Service/Shape/IFilledRegion.h"
-#include "Service/Shape/IStrokeGroup.h"
-#include "Service/Shape/IPath.h"
-#include "Service/Shape/IEdge.h"
-#include "Service/Shape/IShapeService.h"
-#include "Service/Image/IBitmapExportService.h"
-#include "Service/FontTable/IFontTableGeneratorService.h"
-#include "Service/FontTable/IFontTable.h"
-#include "Service/FontTable/IGlyph.h"
-
-#include "Utils/DOMTypes.h"
-#include "Utils/ILinearColorGradient.h"
-#include "Utils/IRadialColorGradient.h"
-
-#include "Exporter/Service/IResourcePalette.h"
-#include "Exporter/Service/ITimelineBuilder.h"
-#include "Exporter/Service/ITimelineBuilderFactory.h"
-
-#include "Exporter/Service/ISWFExportService.h"
-#include "Application/Service/IOutputConsoleService.h"
-*/
-
 #include "AWDTimelineWriter.h"
 #include "RessourcePalette.h"
 #include "TimelineBuilder.h"
-#include "TimelineEncoder.h"
 
 #ifdef _DEBUG
 	#include <stdlib.h>
@@ -98,19 +40,13 @@
 #endif  // _DEBUG
 namespace AwayJS
 {
-
-
     FCM::Result CPublisher::ClearCache()
     {
         return FCM_SUCCESS;
     }
 
 	
-    FCM::Result CPublisher::GetOutputFileName(        
-        DOM::PIFLADocument pFlaDocument, 
-        DOM::PITimeline pTimeline, 
-        const PIFCMDictionary pDictPublishSettings,
-        std::string& outFile)
+    FCM::Result CPublisher::GetOutputFileName(DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const PIFCMDictionary pDictPublishSettings, std::string& outFile)
     {
         FCM::Result res = FCM_SUCCESS;
         FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
@@ -185,7 +121,7 @@ namespace AwayJS
         return res;
     }
 	
-	AWD::result CPublisher::ExportLibraryItems(FCM::FCMListPtr pLibraryItemList, bool export_lib_bitmaps, bool export_lib_sounds, bool export_fonts, bool use_adobe_frame_cmds, TimelineEncoder* timelineEncoder)
+	AWD::result CPublisher::ExportLibraryItems(FCM::FCMListPtr pLibraryItemList, bool export_lib_bitmaps, bool export_lib_sounds, bool export_fonts, bool use_adobe_frame_cmds)
 	{
         FCM::U_Int32 count = 0;
         FCM::Result res;
@@ -211,7 +147,7 @@ namespace AwayJS
 				FCM::FCMListPtr pLibraryItems;
 				res = pFolder_item->GetChildren(pLibraryItems.m_Ptr);
 				ASSERT(FCM_SUCCESS_CODE(res));
-				awd_res=ExportLibraryItems(pLibraryItems, export_lib_bitmaps, export_lib_sounds, export_fonts, use_adobe_frame_cmds, timelineEncoder);
+				awd_res=ExportLibraryItems(pLibraryItems, export_lib_bitmaps, export_lib_sounds, export_fonts, use_adobe_frame_cmds);
 				if(awd_res!=result::AWD_SUCCESS)
 					return awd_res;
 				continue;
@@ -256,84 +192,63 @@ namespace AwayJS
 					std::string symbol_name_str=AwayJS::Utils::ToString(symbol_name, GetCallback());
 					// export a symbol (timeline). If the timeline has already been encoded, nothing will happen. 
 					//Utils::Trace(GetCallback(), "\n	->	Found Symbol %s | %s", symbol_name_str.c_str(), timeline_name_str.c_str());
-					if(use_adobe_frame_cmds){
-						BLOCKS::Timeline* this_timeline = this->awd_project->get_timeline_by_symbol_name(symbol_name_str);
-						if(this_timeline!=NULL){
-							this_timeline->add_scene_name("script-linkage");
-							continue;
-						}
-						else{				
-							// Generate frame commands				
-							FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
-							AutoPtr<IFrameCommandGenerator> m_frameCmdGeneratorService;		
-							AutoPtr<IResourcePalette> m_pResourcePalette;		
-							AwayJS::ResourcePalette* pResPalette;
-
-							res = GetCallback()->GetService(Exporter::Service::EXPORTER_FRAME_CMD_GENERATOR_SERVICE, pUnk.m_Ptr);
-							ASSERT(FCM_SUCCESS_CODE(res));
-							m_frameCmdGeneratorService = pUnk;
-					
-							res = GetCallback()->CreateInstance(NULL, CLSID_ResourcePalette, IID_IResourcePalette, (void**)&m_pResourcePalette);
-							ASSERT(FCM_SUCCESS_CODE(res));
-			
-							pResPalette = static_cast<ResourcePalette*>(m_pResourcePalette.m_Ptr);
-							pResPalette->Init(this->flash_to_awd_encoder);	
-							// Create a Timeline Builder Factory for the root timelines of the document
-							AutoPtr<ITimelineBuilderFactory> pTimelineBuilderFactory;
-							res = GetCallback()->CreateInstance(NULL, CLSID_TimelineBuilderFactory, IID_ITimelineBuilderFactory, (void**)&pTimelineBuilderFactory);
-							ASSERT(FCM_SUCCESS_CODE(res));
-							(static_cast<TimelineBuilderFactory*>(pTimelineBuilderFactory.m_Ptr))->Init(this->flash_to_awd_encoder);
-				
-							AutoPtr<DOM::ITimeline> timeline;
-							res = pSymbol_item->GetTimeLine(timeline.m_Ptr);
-
-							AutoPtr<ITimelineBuilder> pTimelineBuilder;
-							ITimelineWriter* pTimelineWriter;
-							Exporter::Service::RANGE range;		
-							range.min = 0;
-							res = timeline->GetMaxFrameCount(range.max);
-							range.max--;
-				
-							FCM::StringRep16 scene_name_str = NULL;
-							timeline->GetName(&scene_name_str);
-							std::string scene_name=AwayJS::Utils::ToString(scene_name_str, GetCallback());
-
-							// Generate frame commands		
-							res = m_frameCmdGeneratorService->GenerateFrameCommands(timeline, range, _pDict,	m_pResourcePalette, pTimelineBuilderFactory, pTimelineBuilder.m_Ptr);
-							ASSERT(FCM_SUCCESS_CODE(res));
-							((TimelineBuilder*)pTimelineBuilder.m_Ptr)->Build(0, scene_name_str, &pTimelineWriter);
-				
-							this_timeline = this->awd_project->get_timeline_by_symbol_name(scene_name);
-							this_timeline->set_script_name(script_name);
-							this_timeline->add_scene_name("script-linkage");
-
-							if(this->awd_project->get_blocks_for_external_ids()!=result::AWD_SUCCESS)
-								Utils::Trace(GetCallback(), "PROBLEM IN CONVERTING RESSOURCE_ID TO AWDBLOCKS FOR FRAMECOMMANDS!!!\nEXPORT STILL CONTINUES !!!\n");
-							pResPalette->Clear();
-							if(scene_name_str){
-								pCalloc->Free((FCM::PVoid)scene_name_str);
-							}
-						}
+					BLOCKS::Timeline* this_timeline = this->awd_project->get_timeline_by_symbol_name(symbol_name_str);
+					if(this_timeline!=NULL){
+						this_timeline->add_scene_name("script-linkage");
+						continue;
 					}
-					else{
-						BLOCKS::Timeline* this_timeline = this->awd_project->get_timeline_by_symbol_name(symbol_name_str);
-						if(this_timeline==NULL){
-							this_timeline=new BLOCKS::Timeline();
-							this_timeline->set_fps(this->awd_project->get_settings()->get_fps());
-							this->awd_project->add_block(this_timeline);
-						}
-						this_timeline->set_name(symbol_name_str);
-						this_timeline->set_symbol_name(symbol_name_str);
-						if(script_name.size()>0){
-							this_timeline->add_scene_name("script-linkage");
-							this_timeline->set_name(script_name);
-							this_timeline->set_script_name(script_name);
-						}	
+					else{				
+						// Generate frame commands				
+						FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
+						AutoPtr<IFrameCommandGenerator> m_frameCmdGeneratorService;		
+						AutoPtr<IResourcePalette> m_pResourcePalette;		
+						AwayJS::ResourcePalette* pResPalette;
+
+						res = GetCallback()->GetService(Exporter::Service::EXPORTER_FRAME_CMD_GENERATOR_SERVICE, pUnk.m_Ptr);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						m_frameCmdGeneratorService = pUnk;
+					
+						res = GetCallback()->CreateInstance(NULL, CLSID_ResourcePalette, IID_IResourcePalette, (void**)&m_pResourcePalette);
+						ASSERT(FCM_SUCCESS_CODE(res));
+			
+						pResPalette = static_cast<ResourcePalette*>(m_pResourcePalette.m_Ptr);
+						pResPalette->Init(this->flash_to_awd_encoder);	
+						// Create a Timeline Builder Factory for the root timelines of the document
+						AutoPtr<ITimelineBuilderFactory> pTimelineBuilderFactory;
+						res = GetCallback()->CreateInstance(NULL, CLSID_TimelineBuilderFactory, IID_ITimelineBuilderFactory, (void**)&pTimelineBuilderFactory);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						(static_cast<TimelineBuilderFactory*>(pTimelineBuilderFactory.m_Ptr))->Init(this->flash_to_awd_encoder);
+				
 						AutoPtr<DOM::ITimeline> timeline;
 						res = pSymbol_item->GetTimeLine(timeline.m_Ptr);
-						timelineEncoder->encode(timeline, this_timeline);
 
-					}
+						AutoPtr<ITimelineBuilder> pTimelineBuilder;
+						ITimelineWriter* pTimelineWriter;
+						Exporter::Service::RANGE range;		
+						range.min = 0;
+						res = timeline->GetMaxFrameCount(range.max);
+						range.max--;
+				
+						FCM::StringRep16 scene_name_str = NULL;
+						timeline->GetName(&scene_name_str);
+						std::string scene_name=AwayJS::Utils::ToString(scene_name_str, GetCallback());
+
+						// Generate frame commands		
+						res = m_frameCmdGeneratorService->GenerateFrameCommands(timeline, range, _pDict,	m_pResourcePalette, pTimelineBuilderFactory, pTimelineBuilder.m_Ptr);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						((TimelineBuilder*)pTimelineBuilder.m_Ptr)->Build(0, scene_name_str, &pTimelineWriter);
+				
+						this_timeline = this->awd_project->get_timeline_by_symbol_name(scene_name);
+						this_timeline->set_script_name(script_name);
+						this_timeline->add_scene_name("script-linkage");
+
+						if(this->awd_project->get_blocks_for_external_ids()!=result::AWD_SUCCESS)
+							Utils::Trace(GetCallback(), "PROBLEM IN CONVERTING RESSOURCE_ID TO AWDBLOCKS FOR FRAMECOMMANDS!!!\nEXPORT STILL CONTINUES !!!\n");
+						pResPalette->Clear();
+						if(scene_name_str){
+							pCalloc->Free((FCM::PVoid)scene_name_str);
+						}
+					}					
 					if(symbol_name)
 						pCalloc->Free((FCM::PVoid)symbol_name);
 					continue;

@@ -103,7 +103,6 @@
     <ClInclude Include="..\..\include\Publisher.h" />
     <ClInclude Include="..\..\include\RessourcePalette.h" />
     <ClInclude Include="..\..\include\TimelineBuilder.h" />
-    <ClInclude Include="..\..\include\TimelineEncoder.h" />
     <ClInclude Include="..\..\include\Utils.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -216,7 +215,6 @@
     <ClCompile Include="..\..\src\MyXmlParser.cpp" />
     <ClCompile Include="..\..\src\Publisher.cpp" />
     <ClCompile Include="..\..\src\PublisherUtils.cpp" />
-    <ClCompile Include="..\..\src\TimelineEncoder.cpp" />
     <ClCompile Include="..\..\src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -236,7 +234,6 @@
     <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_introduction.dox" />
     <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_main.dox" />
     <None Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\doxygen_docs\libawd_usage.dox" />
-    <None Include="..\..\..\..\..\..\_awayjs\AWDParser.ts" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{52D2400F-94F1-46C1-B14B-3BBD0ACA744D}</ProjectGuid>
@@ -380,7 +377,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_SYSTEM_NO_DEPRECATED;FLASHPRO_DVA_CUSTOM;BOOST_ALL_DYN_LINK;_WINDOWS;MSWindows;_WIN32_WINNT=0x600;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;PRERELEASE;DVA_MAJOR_DISPLAY_VERSION=2014;DVA_MINOR_DISPLAY_VERSION=0;DVA_PATCH_DISPLAY_VERSION=0;DVA_SUITE_VERSION=14;DVA_MAJOR_VERSION=14;DVA_MINOR_VERSION=1;DVA_PATCH_VERSION=0;DVA_BUILD_YEAR=2014;WIN_ENV;__EXCEPTION_TRACER__;USE_DVA_WORKSPACE=1;USE_EXO_MESSAGING=1;NDEBUG;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_SYSTEM_NO_DEPRECATED;FLASHPRO_DVA_CUSTOM;BOOST_ALL_DYN_LINK;_WINDOWS;MSWindows;_WIN32_WINNT=0x600;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;PRERELEASE;DVA_MAJOR_DISPLAY_VERSION=2014;DVA_MINOR_DISPLAY_VERSION=0;DVA_PATCH_DISPLAY_VERSION=0;DVA_SUITE_VERSION=14;DVA_MAJOR_VERSION=14;DVA_MINOR_VERSION=1;DVA_PATCH_VERSION=0;DVA_BUILD_YEAR=2014;WIN_ENV;__EXCEPTION_TRACER__;USE_DVA_WORKSPACE=1;USE_EXO_MESSAGING=1;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>

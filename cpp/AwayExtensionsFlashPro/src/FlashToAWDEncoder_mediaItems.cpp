@@ -158,7 +158,6 @@ FlashToAWDEncoder::ExportBitmap(DOM::LibraryItem::IMediaItem* media_item,  BASE:
 		bitmap_tex->set_height(bmheight);		
 		bitmap_tex->set_url(bitmapRelPath);
 		bitmap_tex->set_input_url(bitmapExportPath);
-		AwayJS::Utils::Trace(this->m_pCallback, "	ENCODe BITMAP 3\n");
 		if(output_block)
 			*output_block = bitmap_tex;
 		

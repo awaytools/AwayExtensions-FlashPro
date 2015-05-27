@@ -186,14 +186,14 @@
             document.getElementById("timelineDepth").selectedIndex = uiState.data["PublishSettings.TimelineDepth"];
         }
 
-        if(uiState.data["PublishSettings.UseAdobeFrameCommands"] != null && uiState.data["PublishSettings.UseAdobeFrameCommands"] != "undefined")
+        if(uiState.data["PublishSettings.PrintExportLog"] != null && uiState.data["PublishSettings.PrintExportLog"] != "undefined")
         {
-            if(uiState.data["PublishSettings.UseAdobeFrameCommands"] == "true")
+            if(uiState.data["PublishSettings.PrintExportLog"] == "true")
             {
-                document.getElementById("useAdobeFrameCommands").checked = true;
+                document.getElementById("printExportLog").checked = true;
             }else
             {
-                document.getElementById("useAdobeFrameCommands").checked = false;
+                document.getElementById("printExportLog").checked = false;
             }
         }
         if(uiState.data["PublishSettings.OpenPreview"] != null && uiState.data["PublishSettings.OpenPreview"] != "undefined")
@@ -500,13 +500,13 @@
         }
 
 
-        if(document.getElementById("useAdobeFrameCommands").checked == true)
+        if(document.getElementById("printExportLog").checked == true)
         {
-            pubSettings["PublishSettings.UseAdobeFrameCommands"] = "true";
+            pubSettings["PublishSettings.PrintExportLog"] = "true";
         }
         else
         {
-            pubSettings["PublishSettings.UseAdobeFrameCommands"] = "false";
+            pubSettings["PublishSettings.PrintExportLog"] = "false";
         }
         if(document.getElementById("embbed_sounds").checked == true)
         {
@@ -601,7 +601,7 @@
         document.getElementById("appendFilename").checked=false;
         document.getElementById("exportLibBitmaps").checked=true;
         document.getElementById("exportLibSounds").checked=true
-        document.getElementById("useAdobeFrameCommands").checked=true;
+        document.getElementById("printExportLog").checked=true;
         document.getElementById("sound_type").selectedIndex = "2";
         document.getElementById("radialGradientSize").selectedIndex = "2";
         document.getElementById("timelineDepth").selectedIndex = "0";
@@ -806,7 +806,7 @@
             </div>
             <div class="clearer">
                 <p>
-                    <input type="checkbox" disabled="true" id="useAdobeFrameCommands">Use Adobe Frame Generator
+                    <input type="checkbox" id="printExportLog">Print Export Log
                 </p>
             </div>
     </p>

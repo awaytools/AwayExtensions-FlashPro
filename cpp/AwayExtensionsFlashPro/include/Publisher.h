@@ -47,7 +47,6 @@
 
 #include "ILibraryItem.h"
 #include "RessourcePalette.h"
-#include "TimelineEncoder.h"
 #include "PluginConfiguration.h"
 
 
@@ -143,7 +142,7 @@ namespace AwayJS
 
         FCM::Boolean IsPreviewNeeded(const PIFCMDictionary pDictConfig);
 
-		AWD::result ExportLibraryItems(FCM::FCMListPtr pLibraryItemList, bool, bool, bool, bool, TimelineEncoder*);
+		AWD::result ExportLibraryItems(FCM::FCMListPtr pLibraryItemList, bool, bool, bool, bool);
 		
     };
 	
