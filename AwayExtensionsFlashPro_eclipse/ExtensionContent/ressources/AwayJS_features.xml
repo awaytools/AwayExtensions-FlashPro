@@ -100,7 +100,7 @@
 		</Property>
 		<Property name="Tracking" default="TrackAsButton" supported="true"/>
 	</Feature>
-	<Feature name="Filters" supported="true"/>
+	<Feature name="Filters" supported="false"/>
 	<Feature name="DropShadowFilter" supported="true">
 		<Property name="Quality" default="Low" supported="true"/>
 		<Property name="Angle" default ="0" supported="true"/>

@@ -451,7 +451,6 @@ namespace AwayJS
 			timelineCount=1;
 		}
 		
-		
 	// fill the awd-project with data:
 
 		FCM::U_Int32 i=0;
@@ -471,223 +470,50 @@ namespace AwayJS
 		int grafics_cnt_start=0;
 		int cnt_blocks=0;
 		
-		Utils::Trace(GetCallback(), "\nStart encoding Scenes:\n");
-		Utils::Trace(GetCallback(), "Encoding Using Adobe-Frame-Generator.\n");
-			
-		// Here the code splits into using Adobe-Frame-Generator or own implementation:
+		Utils::Trace(GetCallback(), "\nReading Settings for export took '%d' ms\n", this->awd_project->get_time_since_last_call());
 		
-		AutoPtr<IFrameCommandGenerator> m_frameCmdGeneratorService;
-		AutoPtr<IResourcePalette> m_pResourcePalette;		
-		AwayJS::ResourcePalette* pResPalette;
-		Utils::Trace(GetCallback(), "Encoding data....\n");
-		res = GetCallback()->GetService(Exporter::Service::EXPORTER_FRAME_CMD_GENERATOR_SERVICE, pUnk.m_Ptr);
-		ASSERT(FCM_SUCCESS_CODE(res));
-		m_frameCmdGeneratorService = pUnk;
-					
-		res = GetCallback()->CreateInstance(NULL, CLSID_ResourcePalette, IID_IResourcePalette, (void**)&m_pResourcePalette);
-		ASSERT(FCM_SUCCESS_CODE(res));
-			
-		pResPalette = static_cast<ResourcePalette*>(m_pResourcePalette.m_Ptr);
-		pResPalette->Init(this->flash_to_awd_encoder);	
-		AutoPtr<ITimelineBuilderFactory> pTimelineBuilderFactory;
-		res = GetCallback()->CreateInstance(NULL, CLSID_TimelineBuilderFactory, IID_ITimelineBuilderFactory, (void**)&pTimelineBuilderFactory);
-		ASSERT(FCM_SUCCESS_CODE(res));
-		(static_cast<TimelineBuilderFactory*>(pTimelineBuilderFactory.m_Ptr))->Init(this->flash_to_awd_encoder);
-			
+		Utils::Trace(GetCallback(), "\nStart encoding Scenes:");
+		
 		// if we have a input-timeline (pTimeline), we only export this (timelineCount is already 1 in this case)
 		int cntAllressources=0;
 		for (i = 0; i < timelineCount; i++)
-		{			
+		{
+
 			AutoPtr<DOM::ITimeline> timeline = pTimelineList[i];
 			if(pTimeline!=NULL)
 				timeline = pTimeline;
-
-			AutoPtr<ITimelineBuilder> pTimelineBuilder;
-			ITimelineWriter* pTimelineWriter;
-			Exporter::Service::RANGE range;		
-			range.min = 0;
-			res = timeline->GetMaxFrameCount(range.max);
-			range.max--;
-				
-
-			FCM::StringRep16 scene_name_str;
-			timeline->GetName(&scene_name_str);
-			std::string scene_name=AwayJS::Utils::ToString(scene_name_str, GetCallback());
-			this->flash_to_awd_encoder->current_scene_name=scene_name;
-			// Generate frame commands		
-			res = m_frameCmdGeneratorService->GenerateFrameCommands(timeline, range, pDictPublishSettings,	m_pResourcePalette, pTimelineBuilderFactory, pTimelineBuilder.m_Ptr);
-			ASSERT(FCM_SUCCESS_CODE(res));
-
-				
-			((TimelineBuilder*)pTimelineBuilder.m_Ptr)->Build(0, scene_name_str, &pTimelineWriter);
-				
-			BLOCKS::Timeline* scene_timeline_block = reinterpret_cast<BLOCKS::Timeline* >(this->awd_project->get_block_by_external_id_and_type_shared(std::to_string(0), BLOCK::block_type::TIMELINE, false));
-			if(scene_timeline_block!=NULL){
-				scene_timeline_block->set_scene_id(i+1);
-			}
-			if(this->awd_project->get_blocks_for_external_ids()!=result::AWD_SUCCESS)
-				Utils::Trace(GetCallback(), "PROBLEM IN CONVERTING RESSOURCE_ID TO AWDBLOCKS FOR FRAMECOMMANDS!!!\nEXPORT STILL CONTINUES !!!\n");
-
-			pResPalette->Clear();
-
-					
-			// print out results for this scene:
-			Utils::Trace(GetCallback(), "->	Encoded '%s'\n", scene_name.c_str());
-
-			cnt_before=all_timelines.size();
-			this->awd_project->get_blocks_by_type(all_timelines, BLOCK::block_type::TIMELINE);
-				
-			if(((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start))>0)
-				Utils::Trace(GetCallback(), "->		MovieClips:		%d\n", ((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)));
-						
-			if((this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)>0)
-				Utils::Trace(GetCallback(), "->		Graphics:		%d\n", (this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start));
-					
-			grafics_cnt_start = this->flash_to_awd_encoder->grafik_cnt;	
-
-			cnt_before=all_bitmaps.size();
-			this->awd_project->get_blocks_by_type(all_bitmaps, BLOCK::block_type::BITMAP_TEXTURE);
-			if((all_bitmaps.size()-cnt_before)>0)
-				Utils::Trace(GetCallback(), "->		Bitmaps:		%d\n", (all_bitmaps.size()-cnt_before));				
-				
-			cnt_before=all_billboards.size();
-			this->awd_project->get_blocks_by_type(all_billboards, BLOCK::block_type::BILLBOARD);
-			if((all_billboards.size()-cnt_before)>0)
-				Utils::Trace(GetCallback(), "->		Billboards:		%d\n", (all_billboards.size()-cnt_before));
-				
-			cnt_before=all_audios.size();
-			this->awd_project->get_blocks_by_type(all_audios, BLOCK::block_type::SOUND_SOURCE);
-			if((all_audios.size()-cnt_before)>0)
-				Utils::Trace(GetCallback(), "->		Sounds:			%d\n", (all_audios.size()-cnt_before));				
-	
-			cnt_before=all_fonts.size();
-			this->awd_project->get_blocks_by_type(all_fonts, BLOCK::block_type::FONT);
-			if((all_fonts.size()-cnt_before)>0)
-				Utils::Trace(GetCallback(), "->		Fonts:			%d\n", (all_fonts.size()-cnt_before));				
 			
-			cnt_before=all_textformats.size();
-			this->awd_project->get_blocks_by_type(all_textformats, BLOCK::block_type::FORMAT);
-			if((all_textformats.size()-cnt_before)>0)
-				Utils::Trace(GetCallback(), "->		Text-formats:	%d\n", (all_textformats.size()-cnt_before));
-				
-
-			cnt_before=all_tf.size();
-			this->awd_project->get_blocks_by_type(all_tf, BLOCK::block_type::TEXT_ELEMENT);
-			if((all_tf.size()-cnt_before)>0)
-				Utils::Trace(GetCallback(), "->		Text-fields:	%d\n", (all_tf.size()-cnt_before));
-				
-					
-			cnt_before=all_shapes.size();
-			this->awd_project->get_blocks_by_type(all_shapes, BLOCK::block_type::TRI_GEOM);
-			if((all_shapes.size()-cnt_before)>0)
-				Utils::Trace(GetCallback(), "->		Shapes/Meshes:	%d\n", (all_shapes.size()-cnt_before));
-				
-			cnt_before=all_meshes.size();
-			this->awd_project->get_blocks_by_type(all_meshes, BLOCK::block_type::MESH_INSTANCE_2);
-
-			cnt_before=all_materials.size();
-			this->awd_project->get_blocks_by_type(all_materials, BLOCK::block_type::SIMPLE_MATERIAL);
-			if((all_materials.size()-cnt_before)>0)
-				Utils::Trace(GetCallback(), "->		Materials:		%d\n", (all_materials.size()-cnt_before));
-		}			
-
+			this->ExportTimeline(pDictPublishSettings, timeline, i);		
+		}
+		Utils::Trace(GetCallback(), "\nEncoding  Scenes took '%d' ms\n", this->awd_project->get_time_since_last_call());
+		
 		// now all timelines should have been filled with data (Timelineframes)
 		// for all encountered frame-objects (display-objects / sounds) a AWDBlock should have been created.
-
-		// we might want to include assets that are not part of any timeline, and hence not added to the awd_project yet.
-
-		Utils::Trace(GetCallback(), "\nScenes encoded\n");
-
-		Utils::Trace(GetCallback(), "\nStart encoding library\n");
 		
+		
+		Utils::Trace(GetCallback(), "\nStart encoding library (audio / biitmaps / movieclips with script linkage");
 		FCM::FCMListPtr pLibraryItemList;
 		res = pFlaDocument->GetLibraryItems(pLibraryItemList.m_Ptr);
 		if (FCM_FAILURE_CODE(res)){
-			Utils::Trace(GetCallback(), "FAILED TO GET LIBRARY ITEMS FROM FLASH \n");
+			Utils::Trace(GetCallback(), "\n		FAILED TO GET LIBRARY ITEMS FROM FLASH ");
 			return FCM_EXPORT_FAILED;
 		}
 		this->flash_to_awd_encoder->current_scene_name="Library";
 		if(this->ExportLibraryItems(pLibraryItemList, export_lib_bitmaps, export_lib_sounds, export_lib_fonts, useADobeFramegenerator)!=result::AWD_SUCCESS){
-			Utils::Trace(GetCallback(), "FAILED TO COLLECT LIBRARY ITEMS \n");
+			Utils::Trace(GetCallback(), "\n		FAILED TO COLLECT LIBRARY ITEMS \n");
 			return FCM_EXPORT_FAILED;
 		}		
-		Utils::Trace(GetCallback(), "Library encoded.\n");
-			
-		cnt_before=all_timelines.size();
+		Utils::Trace(GetCallback(), "\nEncoding Library took '%d' ms\n", this->awd_project->get_time_since_last_call());
+		
 		this->awd_project->get_blocks_by_type(all_timelines, BLOCK::block_type::TIMELINE);
-		for(cnt_blocks=cnt_before; cnt_blocks<all_timelines.size(); cnt_blocks++){
-			all_timelines[cnt_blocks]->set_encountered_at("Library");
-		}
-		if(((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start))>0){
-			Utils::Trace(GetCallback(), "->		MovieClips:		%d\n", ((all_timelines.size()-cnt_before)-(this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)));
-		}
-		
-		if((this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start)>0){
-			Utils::Trace(GetCallback(), "->		Graphics:		%d\n", (this->flash_to_awd_encoder->grafik_cnt-grafics_cnt_start));
+		if(all_timelines.size()>0){
+			Utils::Trace(GetCallback(), "\nStart finalize %d Timelines", all_timelines.size());
+			this->awd_project->finalize_timelines();
+			Utils::Trace(GetCallback(), "\nFinalizing Timelines took '%d' ms\n", this->awd_project->get_time_since_last_call());
 		}
 		
-		cnt_before=all_bitmaps.size();
-		this->awd_project->get_blocks_by_type(all_bitmaps, BLOCK::block_type::BITMAP_TEXTURE);
-		if((all_bitmaps.size()-cnt_before)>0)
-			Utils::Trace(GetCallback(), "->		Bitmaps:		%d\n", (all_bitmaps.size()-cnt_before));
+		/*
 		
-		cnt_before=all_billboards.size();
-		this->awd_project->get_blocks_by_type(all_billboards, BLOCK::block_type::BILLBOARD);
-		if((all_billboards.size()-cnt_before)>0)
-			Utils::Trace(GetCallback(), "->		Billboards:			%d\n", (all_billboards.size()-cnt_before));
-		
-		for(AWDBlock* one_block : all_billboards){
-			BLOCKS::Billboard* this_lib_mesh = reinterpret_cast<BLOCKS::Billboard*>(one_block);
-			for(std::string one_name:this_lib_mesh->get_material()->scene_names){
-				one_block->add_scene_name(one_name); 
-			}
-		}
-		cnt_before=all_audios.size();
-		this->awd_project->get_blocks_by_type(all_audios, BLOCK::block_type::SOUND_SOURCE);
-		if((all_audios.size()-cnt_before)>0)
-			Utils::Trace(GetCallback(), "->		Sounds:			%d\n", (all_audios.size()-cnt_before));
-	
-		cnt_before=all_fonts.size();
-		this->awd_project->get_blocks_by_type(all_fonts, BLOCK::block_type::FONT);
-		if((all_fonts.size()-cnt_before)>0)
-			Utils::Trace(GetCallback(), "->		Fonts:			%d\n", (all_fonts.size()-cnt_before));
-			
-		cnt_before=all_textformats.size();
-		this->awd_project->get_blocks_by_type(all_textformats, BLOCK::block_type::FORMAT);
-		if((all_textformats.size()-cnt_before)>0)
-			Utils::Trace(GetCallback(), "->		Text-formats:	%d\n", (all_textformats.size()-cnt_before));
-
-		cnt_before=all_tf.size();
-		this->awd_project->get_blocks_by_type(all_tf, BLOCK::block_type::TEXT_ELEMENT);
-		if((all_tf.size()-cnt_before)>0)
-			Utils::Trace(GetCallback(), "->		Text-fields:	%d\n", (all_tf.size()-cnt_before));
-					
-		cnt_before=all_shapes.size();
-		this->awd_project->get_blocks_by_type(all_shapes, BLOCK::block_type::TRI_GEOM);
-		if((all_shapes.size()-cnt_before)>0)
-			Utils::Trace(GetCallback(), "->		Shapes/Meshes:	%d\n", (all_shapes.size()-cnt_before));
-
-		cnt_before=all_meshes.size();
-		this->awd_project->get_blocks_by_type(all_meshes, BLOCK::block_type::MESH_INSTANCE_2);
-		if((all_meshes.size()-cnt_before)>0){
-			for(cnt_blocks=cnt_before; cnt_blocks<all_meshes.size(); cnt_blocks++){
-				all_meshes[cnt_blocks]->set_encountered_at("Library");
-			}
-		}
-		for(AWDBlock* one_block : all_meshes){
-			BLOCKS::MeshLibrary* this_lib_mesh = reinterpret_cast<BLOCKS::MeshLibrary*>(one_block);
-			for(std::string one_name:this_lib_mesh->get_geom()->scene_names){
-				one_block->add_scene_name(one_name); 
-			}
-		}
-		
-		cnt_before=all_materials.size();
-		this->awd_project->get_blocks_by_type(all_materials, BLOCK::block_type::SIMPLE_MATERIAL);
-		if((all_materials.size()-cnt_before)>0)
-			Utils::Trace(GetCallback(), "->		Materials:	%d\n", (all_materials.size()-cnt_before));
-		
-
-
 		Utils::Trace(GetCallback(), "\nAll enountered object:\n");
 			
 		Utils::Trace(GetCallback(), "->		MovieClips:		%d\n", (all_timelines.size()-this->flash_to_awd_encoder->grafik_cnt));
@@ -702,20 +528,28 @@ namespace AwayJS
 		Utils::Trace(GetCallback(), "->		Meshes:			%d\n", all_meshes.size());
 		Utils::Trace(GetCallback(), "->		Materials:		%d\n", all_materials.size());
 
-		
 		Utils::Trace(GetCallback(), "\nAll Data Collected\n");
+		*/
 		
 		// process fonts
+		this->awd_project->get_blocks_by_type(all_fonts, BLOCK::block_type::FONT);
 		if(all_fonts.size()>0){
-			Utils::Trace(GetCallback(), "\nStart finalize Fonts\n");
+			Utils::Trace(GetCallback(), "\nStart finalize %d Fonts", all_fonts.size());
 			this->flash_to_awd_encoder->FinalizeFonts(this->fla_document);
-			Utils::Trace(GetCallback(), "All Fonts processed succesfully.\n");
+			Utils::Trace(GetCallback(), "\nFinalizing Fonts took '%d' ms\n", this->awd_project->get_time_since_last_call());
 		}
 		
+		
+		
 		// process geometries
+		
+		this->awd_project->get_time_since_last_call();
+		this->awd_project->get_blocks_by_type(all_shapes, BLOCK::block_type::TRI_GEOM);
+		
 		AWD::result awd_res;		
 		if(all_shapes.size()>0){
-			Utils::Trace(GetCallback(), "\nStart processing Geometry-Data\n");
+			Utils::Trace(GetCallback(), "\nStart processing Geometry-Data");
+			this->awd_project->get_time_since_last_call();
 			for(AWDBlock* awd_block : all_shapes){
 				BLOCKS::Geometry* geom = reinterpret_cast<BLOCKS::Geometry*>(awd_block);
 				if(geom==NULL){
@@ -733,6 +567,7 @@ namespace AwayJS
 					Utils::Trace(GetCallback(), "ERROR WHILE PROCESSING GEOMETRY name %s\n", awd_block->get_name().c_str());
 					return FCM_EXPORT_FAILED;
 				}
+				
                 /*
 				std::vector<std::string> messages;
 				geom->get_messages(messages, " -> ");
@@ -742,23 +577,27 @@ namespace AwayJS
 						Utils::Trace(GetCallback(), "%s\n", one_message.c_str());
 				}
 				*/
+		
 			}
-			Utils::Trace(GetCallback(), "Succesfully converted %d Shapes into AWD-Geometry\n", all_shapes.size());
+			Utils::Trace(GetCallback(), "\n		Succesfully converted %d Shapes into AWD-Geometry", all_shapes.size());
+			Utils::Trace(GetCallback(), "\nConverting Geometry took '%d' ms\n", this->awd_project->get_time_since_last_call());
 		}
 		
-		// create textuzre-atlas, create uvs-for shapes, merge and apply materials 
+		
+		// create texture-atlas, create uvs-for shapes, merge and apply materials 
 		if((all_shapes.size()>0)||(all_fonts.size())){
-			Utils::Trace(GetCallback(), "\nStart creating Textureatlas\n");
+			Utils::Trace(GetCallback(), "\nStart creating Textureatlas");
 			std::string filepath_no_extension2;
 			if(AWD::FILES::extract_path_without_file_extension(outFile, filepath_no_extension2)!=result::AWD_SUCCESS){
-				Utils::Trace(GetCallback(), "FAILED TO GET FILENAME FROM PATH \n");
+				Utils::Trace(GetCallback(), "\nFAILED TO GET FILENAME FROM PATH");
 				return FCM_EXPORT_FAILED;
 			}
 			std::string fileName2;
 			if(AWD::FILES::extract_name_from_path(filepath_no_extension2, fileName2)!=result::AWD_SUCCESS){
-				Utils::Trace(GetCallback(), "FAILED TO GET FILENAME FROM PATH \n");
+				Utils::Trace(GetCallback(), "\nFAILED TO GET FILENAME FROM PATH");
 				return FCM_EXPORT_FAILED;
 			}		
+			this->awd_project->get_blocks_by_type(all_materials, BLOCK::block_type::SIMPLE_MATERIAL);
 			AWD::create_TextureAtlasfor_timelines(this->awd_project, fileName2);
 			
 			cnt_before=all_materials.size();
@@ -769,22 +608,27 @@ namespace AwayJS
 					matcnt++;
 			}
 			if(matcnt!=cnt_before){
-				Utils::Trace(GetCallback(), "	Merged %d materials into %d materials\n", cnt_before, matcnt);
+				Utils::Trace(GetCallback(), "\n		Merged %d materials into %d materials", cnt_before, matcnt);
 			}
-			Utils::Trace(GetCallback(), "Succesfully created Textureatlas\n", all_shapes.size());
+			Utils::Trace(GetCallback(), "\nCreating Textureatlas took '%d' ms\n", this->awd_project->get_time_since_last_call());
 
 		}
 		
+		
 		// export the awd-file.
-		Utils::Trace(GetCallback(), "\nStart exporting into awd-file\n");
+		Utils::Trace(GetCallback(), "\nStart writing the file to disc");
 		awd_res = this->awd_project->export_file();
 		if(awd_res!=result::AWD_SUCCESS){
 			Utils::Trace(GetCallback(), "FAILED TO EXPORT %d\n", awd_res);
 			return FCM_EXPORT_FAILED;
 		}		
+		Utils::Trace(GetCallback(), "\nWriting the file to disc took '%d' ms\n", this->awd_project->get_time_since_last_call());
+		
+		/*
 		Utils::Trace(GetCallback(), "The AWD-file: '%s' should have been created.\n", outFile.c_str());
-
+		*/
 			
+		
 		if((print_export_log)&&(all_timelines.size()>0)){
 			Utils::Trace(GetCallback(), "\nTimelines exported: %d\n", all_timelines.size());
 
@@ -794,7 +638,7 @@ namespace AwayJS
 					Utils::Trace(GetCallback(), "FAILED TO GET TIMELINE FROM BASEBLOCK\n");
 					return FCM_EXPORT_FAILED;
 				}               
-				if(false)//timeline->is_grafic_instance)
+				if(timeline->is_grafic_instance)
 					Utils::Trace(GetCallback(), "Timelines for grapic instances no longer exported\n");
 				else{
 					//startTime=(double)AWD::GetTimeMs64();
@@ -809,6 +653,7 @@ namespace AwayJS
 			}
 		}
 		
+		/*
 
 		// make sure all textfields have a name. if they do not have a name already, give them a incremental ("tf_"+cnt)
 		if((print_export_log)&&(all_tf.size()>0)){
@@ -822,22 +667,24 @@ namespace AwayJS
 					else if(this_text->get_tf_type()==FONT::Textfield_type::INPUT_PSW){tf_type="INPUT_PSW";}
 					Utils::Trace(GetCallback(), "Textfield - name: '%s' type: '%s' text: '%s'\n", this_text->get_name().c_str(), tf_type.c_str(), this_text->get_text().c_str());
 				}
+				*/
 				/*
 				if(awd_block->get_name().size()==0){
 					cnt_tf++;
 					awd_block->set_name("tf"+std::to_string(cnt_tf));
 				}
 				*/
+				/*
 			}
 		}
+		*/
+		
 		if(print_export_log){
 			// return statistics of the awd-project.
 			std::vector<std::string> statistic_str;
 			this->awd_project->get_statistics(statistic_str);
 			for(std::string message : statistic_str)
 				Utils::Trace(GetCallback(), "%s\n", message.c_str());
-		
-
 
 			int all_bytes=0;
 			int this_bytes=0;
@@ -926,10 +773,7 @@ namespace AwayJS
 				Utils::Trace(GetCallback(), "\nAll:	%d kb\n", (all_bytes/1024));
 			}
 		}
-
-
-
-
+		
 
 		// copy the Preview files to output directory
 		 
@@ -995,8 +839,8 @@ namespace AwayJS
 			}
 
 		}
-		Utils::Trace(GetCallback(), "AwayJS-Document-Export Complete.");
 		
+		Utils::Trace(GetCallback(), "AwayJS-Document-Export Complete.");
 		delete this->awd_project;
 		delete this->flash_to_awd_encoder;
 					

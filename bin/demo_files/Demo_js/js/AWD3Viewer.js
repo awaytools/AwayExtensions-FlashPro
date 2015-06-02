@@ -235,6 +235,8 @@ var AWD3Viewer = (function () {
         loader.addEventListener(LoaderEvent.RESOURCE_COMPLETE, function (event) { return _this.onRessourceComplete(event); });
         //for plugin preview-runtime:
         loader.load(new URLRequest(document.getElementById("awdPath").innerHTML));
+        //loader.load(new URLRequest("assets/AWD3/mask_flicker.awd"));
+        //loader.load(new URLRequest("assets/AWD3/Icycle2_Intro_2.awd"));
         //loader.load(new URLRequest("assets/AWD3/AwayJEscher.awd"));
         //loader.load(new URLRequest("assets/AWD3/SimpleSoundTest.awd"));
         //loader.load(new URLRequest("assets/AWD3/Simple_text_test.awd"));

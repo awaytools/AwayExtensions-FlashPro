@@ -307,9 +307,9 @@ FlashToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, AWD
 			this_font->set_name(font_name_str);
 			this_font->add_scene_name(this->current_scene_name);
 			FONT::FontStyle* this_font_style = this_font->get_font_style(font_style);
-			AwayJS::Utils::Trace(m_pCallback, "text  = %s \n", text_run_text.c_str());
+			//AwayJS::Utils::Trace(m_pCallback, "text  = %s \n", text_run_text.c_str());
 			for(char& c : text_run_text) {
-				AwayJS::Utils::Trace(m_pCallback, "Converted char to int %d \n", c);
+				//AwayJS::Utils::Trace(m_pCallback, "Converted char to int %d \n", c);
 				if(int(c)<0)
 					AwayJS::Utils::Trace(m_pCallback, "Found Unsupported Font-char  = %d \n", c);
 				else
@@ -521,7 +521,7 @@ AWD::result FlashToAWDEncoder::FinalizeFonts(DOM::PIFLADocument pFlaDocument)
 			}
 			// thisString contains all ungenerated chars. convert this chars to subgeometries:
 			if(ungenerated_chars.size()>0){
-				AwayJS::Utils::Trace(this->m_pCallback, "ungenerated chars = %s \n", ungenerated_chars.c_str());
+				//AwayJS::Utils::Trace(this->m_pCallback, "ungenerated chars = %s \n", ungenerated_chars.c_str());
 				FCM::Result res;
 				res=fontTableGenerator->CreateFontTable(pFlaDocument, AwayJS::Utils::ToString16(ungenerated_chars, this->m_pCallback), AwayJS::Utils::ToString16(awd_font->get_name(), this->m_pCallback),  thisfontStyle->get_style_name().c_str(), thisFontTable.m_Ptr);
 				if(res != FCM_SUCCESS){

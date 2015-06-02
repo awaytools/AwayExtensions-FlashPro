@@ -112,6 +112,8 @@ namespace AwayJS
         const DOM::Utils::MATRIX2D* pMatrix,
         FCM::PIFCMUnknown pUnknown /* = NULL*/)
     {
+		
+		//Utils::Trace(m_pCallback, "Adding object on timeline %d.\n", thisTimeLine->timeline_id);
 		string resID = std::to_string(resId);
 		AWDBlock * thisBlock = this->awd->get_project()->get_block_by_external_id_shared(resID);
 		if(thisBlock==NULL){
@@ -180,6 +182,7 @@ namespace AwayJS
 		}
 		frameCommand->set_object_block(thisBlock);
 		
+		
         return FCM_SUCCESS;
     }
 
@@ -190,6 +193,7 @@ namespace AwayJS
         const DOM::Utils::MATRIX2D* pMatrix,
         DOM::Utils::RECT rect /* = NULL*/)
     {
+		
 		string resID = std::to_string(resId);
 		BLOCKS::TextElement* thistext_block = reinterpret_cast<BLOCKS::TextElement*>(this->awd->get_project()->get_block_by_external_id_and_type(resID, BLOCK::block_type::TEXT_ELEMENT, true));
 		if(thistext_block==NULL){
@@ -217,6 +221,7 @@ namespace AwayJS
 			double testy = new_mesh_mtx[5];
 			frameCommand->set_display_matrix(new_mesh_mtx);
         }
+		
         return FCM_SUCCESS;
     }
 	
@@ -225,6 +230,7 @@ namespace AwayJS
         FCM::U_Int32 objectId,
         FCM::PIFCMUnknown pUnknown /* = NULL*/)
     {
+		//Utils::Trace(m_pCallback, "FrameCommands for Audio are not exported yet.\n");
         FCM::Result res=FCM_SUCCESS;
 		/*
 		AWD::ANIM::FrameCommandSoundObject* frameCommand=(AWD::ANIM::FrameCommandSoundObject*)thisTimeLine->get_frame()->get_command(objectId, ANIM::frame_command_type::AWD_FRAME_COMMAND_SOUND);
@@ -292,13 +298,16 @@ namespace AwayJS
         FCM::U_Int32 objectId,
         FCM::U_Int32 placeAfterObjectId)
     {
-		// check if the depthchange is still neccessary
-		if(!thisTimeLine->test_depth_ids(objectId, placeAfterObjectId)){
-			_ASSERT(0);
+		
+		//	this is not usefull for our depth-managment.
+		//	i verified that if adding and removing object as defined by AddChild / RemoveChild Commands, keeps the order intakt 
+
+		/*if(!thisTimeLine->test_depth_ids(objectId, placeAfterObjectId)){
 			AwayJS::Utils::Trace(m_pCallback, "\n\nERROR DEPTH NEEDS TO BE UPDATED\n\n");
 			// todo, if this ever happens we need to implement remove the object, and readd it again after correct objectid.
 			// if this never happens, it means update ZORder is completle useless for us (adobe doesnt use it in their runtime either)
-		}
+		}*/
+		
         return FCM_SUCCESS;
     }
 	
@@ -306,6 +315,7 @@ namespace AwayJS
         FCM::U_Int32 objectId,
         FCM::U_Int32 maskTillObjectId)
     {
+		
 		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_update_command_by_id(objectId);
 		frameCommand->set_clipDepth(maskTillObjectId);
         
@@ -316,7 +326,7 @@ namespace AwayJS
         FCM::U_Int32 objectId,
         DOM::FrameElement::BlendMode blendMode)
     {
-	
+		
 		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_update_command_by_id(objectId);
 		
 		// convert blendmode to away3d blenmode
@@ -360,7 +370,7 @@ namespace AwayJS
     {
 		
 		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_update_command_by_id(objectId);
-		frameCommand->set_visible(visible);
+		frameCommand->set_visible(bool(visible));
         return FCM_SUCCESS;
     }
 
@@ -369,578 +379,7 @@ namespace AwayJS
         FCM::U_Int32 objectId,
         FCM::PIFCMUnknown pFilter)
     {
-		/*
-		AWD::ANIM::FrameCommandDisplayObject* frameCommand=(AWD::ANIM::FrameCommandDisplayObject*)thisTimeLine->get_frame()->get_command(objectId);
-		
-        FCM::Result res;
-        //JSONNode commandElement(JSON_NODE);
-        //commandElement.push_back(JSONNode("cmdType", "UpdateFilter"));
-        //commandElement.push_back(JSONNode("objectId", CreateJS::Utils::ToString(objectId)));
-        FCM::AutoPtr<DOM::GraphicFilter::IDropShadowFilter> pDropShadowFilter = pFilter;
-        FCM::AutoPtr<DOM::GraphicFilter::IBlurFilter> pBlurFilter = pFilter;
-        FCM::AutoPtr<DOM::GraphicFilter::IGlowFilter> pGlowFilter = pFilter;
-        FCM::AutoPtr<DOM::GraphicFilter::IBevelFilter> pBevelFilter = pFilter;
-        FCM::AutoPtr<DOM::GraphicFilter::IGradientGlowFilter> pGradientGlowFilter = pFilter;
-        FCM::AutoPtr<DOM::GraphicFilter::IGradientBevelFilter> pGradientBevelFilter = pFilter;
-        FCM::AutoPtr<DOM::GraphicFilter::IAdjustColorFilter> pAdjustColorFilter = pFilter;
-
-        if (pDropShadowFilter)
-        {
-			
-            FCM::Boolean enabled;
-            FCM::Double  angle;
-            FCM::Double  blurX;
-            FCM::Double  blurY;
-            FCM::Double  distance;
-            FCM::Boolean hideObject;
-            FCM::Boolean innerShadow;
-            FCM::Boolean knockOut;
-            DOM::Utils::FilterQualityType qualityType;
-            DOM::Utils::COLOR color;
-            FCM::S_Int32 strength;
-            std::string colorStr;
-
-            //commandElement.push_back(JSONNode("filterType", "DropShadowFilter"));
-			
-            pDropShadowFilter->IsEnabled(enabled);
-            if(enabled)
-            {
-                commandElement.push_back(JSONNode("enabled", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("enabled", "false"));
-            }
-
-            res = pDropShadowFilter->GetAngle(angle);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("angle", CreateJS::Utils::ToString((double)angle)));
-
-            res = pDropShadowFilter->GetBlurX(blurX);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
-
-            res = pDropShadowFilter->GetBlurY(blurY);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
-
-            res = pDropShadowFilter->GetDistance(distance);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("distance", CreateJS::Utils::ToString((double)distance)));
-
-            res = pDropShadowFilter->GetHideObject(hideObject);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if(hideObject)
-            {
-                commandElement.push_back(JSONNode("hideObject", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("hideObject", "false"));
-            }
-
-            res = pDropShadowFilter->GetInnerShadow(innerShadow);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if(innerShadow)
-            {
-                commandElement.push_back(JSONNode("innerShadow", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("innerShadow", "false"));
-            }
-
-            res = pDropShadowFilter->GetKnockout(knockOut);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if(knockOut)
-            {
-                commandElement.push_back(JSONNode("knockOut", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("knockOut", "false"));
-            }
-
-            res = pDropShadowFilter->GetQuality(qualityType);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if (qualityType == 0)
-                commandElement.push_back(JSONNode("qualityType", "low"));
-            else if (qualityType == 1)
-                commandElement.push_back(JSONNode("qualityType", "medium"));
-            else if (qualityType == 2)
-                commandElement.push_back(JSONNode("qualityType", "high"));
-
-            res = pDropShadowFilter->GetStrength(strength);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
-
-            res = pDropShadowFilter->GetShadowColor(color);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            colorStr = Utils::ToString(color);
-            commandElement.push_back(JSONNode("shadowColor", colorStr.c_str()));
-
-        }
-        if(pBlurFilter)
-        {
-            FCM::Boolean enabled;
-            FCM::Double  blurX;
-            FCM::Double  blurY;
-            DOM::Utils::FilterQualityType qualityType;
-
-            commandElement.push_back(JSONNode("filterType", "BlurFilter"));
-
-            res = pBlurFilter->IsEnabled(enabled);
-            if(enabled)
-            {
-                commandElement.push_back(JSONNode("enabled", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("enabled", "false"));
-            }
-
-            res = pBlurFilter->GetBlurX(blurX);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
-
-            res = pBlurFilter->GetBlurY(blurY);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
-
-            res = pBlurFilter->GetQuality(qualityType);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if (qualityType == 0)
-                commandElement.push_back(JSONNode("qualityType", "low"));
-            else if (qualityType == 1)
-                commandElement.push_back(JSONNode("qualityType", "medium"));
-            else if (qualityType == 2)
-                commandElement.push_back(JSONNode("qualityType", "high"));
-        }
-
-        if(pGlowFilter)
-        {
-			
-            FCM::Boolean enabled;
-            FCM::Double  blurX;
-            FCM::Double  blurY;
-            FCM::Boolean innerShadow;
-            FCM::Boolean knockOut;
-            DOM::Utils::FilterQualityType qualityType;
-            DOM::Utils::COLOR color;
-            FCM::S_Int32 strength;
-            std::string colorStr;
-			
-            commandElement.push_back(JSONNode("filterType", "GlowFilter"));
-
-            res = pGlowFilter->IsEnabled(enabled);
-            if(enabled)
-            {
-                commandElement.push_back(JSONNode("enabled", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("enabled", "false"));
-            }
-
-            res = pGlowFilter->GetBlurX(blurX);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
-
-            res = pGlowFilter->GetBlurY(blurY);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
-
-            res = pGlowFilter->GetInnerShadow(innerShadow);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if(innerShadow)
-            {
-                commandElement.push_back(JSONNode("innerShadow", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("innerShadow", "false"));
-            }
-
-            res = pGlowFilter->GetKnockout(knockOut);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if(knockOut)
-            {
-                commandElement.push_back(JSONNode("knockOut", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("knockOut", "false"));
-            }
-
-            res = pGlowFilter->GetQuality(qualityType);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if (qualityType == 0)
-                commandElement.push_back(JSONNode("qualityType", "low"));
-            else if (qualityType == 1)
-                commandElement.push_back(JSONNode("qualityType", "medium"));
-            else if (qualityType == 2)
-                commandElement.push_back(JSONNode("qualityType", "high"));
-
-            res = pGlowFilter->GetStrength(strength);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
-
-            res = pGlowFilter->GetShadowColor(color);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            colorStr = Utils::ToString(color);
-            commandElement.push_back(JSONNode("shadowColor", colorStr.c_str()));
-        }
-
-        if(pBevelFilter)
-        {
-            FCM::Boolean enabled;
-            FCM::Double  angle;
-            FCM::Double  blurX;
-            FCM::Double  blurY;
-            FCM::Double  distance;
-            DOM::Utils::COLOR highlightColor;
-            FCM::Boolean knockOut;
-            DOM::Utils::FilterQualityType qualityType;
-            DOM::Utils::COLOR color;
-            FCM::S_Int32 strength;
-            DOM::Utils::FilterType filterType;
-            std::string colorStr;
-            std::string colorString;
-            commandElement.push_back(JSONNode("filterType", "BevelFilter"));
-
-            res = pBevelFilter->IsEnabled(enabled);
-            if(enabled)
-            {
-                commandElement.push_back(JSONNode("enabled", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("enabled", "false"));
-            }
-
-            res = pBevelFilter->GetAngle(angle);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("angle", CreateJS::Utils::ToString((double)angle)));
-
-            res = pBevelFilter->GetBlurX(blurX);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
-
-            res = pBevelFilter->GetBlurY(blurY);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
-
-            res = pBevelFilter->GetDistance(distance);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("distance", CreateJS::Utils::ToString((double)distance)));
-
-            res = pBevelFilter->GetHighlightColor(highlightColor);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            colorString = Utils::ToString(highlightColor);
-            commandElement.push_back(JSONNode("highlightColor",colorString.c_str()));
-
-            res = pBevelFilter->GetKnockout(knockOut);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if(knockOut)
-            {
-                commandElement.push_back(JSONNode("knockOut", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("knockOut", "false"));
-            }
-
-            res = pBevelFilter->GetQuality(qualityType);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if (qualityType == 0)
-                commandElement.push_back(JSONNode("qualityType", "low"));
-            else if (qualityType == 1)
-                commandElement.push_back(JSONNode("qualityType", "medium"));
-            else if (qualityType == 2)
-                commandElement.push_back(JSONNode("qualityType", "high"));
-
-            res = pBevelFilter->GetStrength(strength);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
-
-            res = pBevelFilter->GetShadowColor(color);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            colorStr = Utils::ToString(color);
-            commandElement.push_back(JSONNode("shadowColor", colorStr.c_str()));
-
-            res = pBevelFilter->GetFilterType(filterType);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if (filterType == 0)
-                commandElement.push_back(JSONNode("filterType", "inner"));
-            else if (filterType == 1)
-                commandElement.push_back(JSONNode("filterType", "outer"));
-            else if (filterType == 2)
-                commandElement.push_back(JSONNode("filterType", "full"));
-
-        }
-
-        if(pGradientGlowFilter)
-        {
-            FCM::Boolean enabled;
-            FCM::Double  angle;
-            FCM::Double  blurX;
-            FCM::Double  blurY;
-            FCM::Double  distance;
-            FCM::Boolean knockOut;
-            DOM::Utils::FilterQualityType qualityType;
-            FCM::S_Int32 strength;
-            DOM::Utils::FilterType filterType;
-            commandElement.push_back(JSONNode("filterType", "GradientGlowFilter"));
-
-            pGradientGlowFilter->IsEnabled(enabled);
-            if(enabled)
-            {
-                commandElement.push_back(JSONNode("enabled", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("enabled", "false"));
-            }
-
-            res = pGradientGlowFilter->GetAngle(angle);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("angle", CreateJS::Utils::ToString((double)angle)));
-
-            res = pGradientGlowFilter->GetBlurX(blurX);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
-
-            res = pGradientGlowFilter->GetBlurY(blurY);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
-
-            res = pGradientGlowFilter->GetDistance(distance);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("distance", CreateJS::Utils::ToString((double)distance)));
-
-            res = pGradientGlowFilter->GetKnockout(knockOut);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if(knockOut)
-            {
-                commandElement.push_back(JSONNode("knockOut", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("knockOut", "false"));
-            }
-
-            res = pGradientGlowFilter->GetQuality(qualityType);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if (qualityType == 0)
-                commandElement.push_back(JSONNode("qualityType", "low"));
-            else if (qualityType == 1)
-                commandElement.push_back(JSONNode("qualityType", "medium"));
-            else if (qualityType == 2)
-                commandElement.push_back(JSONNode("qualityType", "high"));
-
-            res = pGradientGlowFilter->GetStrength(strength);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
-
-            res = pGradientGlowFilter->GetFilterType(filterType);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if (filterType == 0)
-                commandElement.push_back(JSONNode("filterType", "inner"));
-            else if (filterType == 1)
-                commandElement.push_back(JSONNode("filterType", "outer"));
-            else if (filterType == 2)
-                commandElement.push_back(JSONNode("filterType", "full"));
-
-            FCM::AutoPtr<FCM::IFCMUnknown> pColorGradient;
-            res = pGradientGlowFilter->GetGradient(pColorGradient.m_Ptr);
-            ASSERT(FCM_SUCCESS_CODE(res));
-
-            FCM::AutoPtr<DOM::Utils::ILinearColorGradient> pLinearGradient = pColorGradient;
-            if (pLinearGradient)
-            {
-
-                FCM::U_Int8 colorCount;
-                //DOM::Utils::GRADIENT_COLOR_POINT colorPoint;
-
-                res = pLinearGradient->GetKeyColorCount(colorCount);
-                ASSERT(FCM_SUCCESS_CODE(res));
-
-                std::string colorArray ;
-                std::string posArray ;
-                JSONNode*   stopPointArray = new JSONNode(JSON_ARRAY);
-
-                for (FCM::U_Int32 l = 0; l < colorCount; l++)
-                {
-                    DOM::Utils::GRADIENT_COLOR_POINT colorPoint;
-                    pLinearGradient->GetKeyColorAtIndex(l, colorPoint);
-                    JSONNode stopEntry(JSON_NODE);
-                    FCM::Float offset;
-
-                    offset = (float)((colorPoint.pos * 100) / 255.0);
-
-                    stopEntry.push_back(JSONNode("offset", Utils::ToString((double) offset)));
-                    stopEntry.push_back(JSONNode("stopColor", Utils::ToString(colorPoint.color)));
-                    stopEntry.push_back(JSONNode("stopOpacity", Utils::ToString((double)(colorPoint.color.alpha / 255.0))));
-                    stopPointArray->set_name("GradientStops");
-                    stopPointArray->push_back(stopEntry);
-                }
-
-                commandElement.push_back(*stopPointArray);
-
-            }//lineargradient
-        }
-
-        if(pGradientBevelFilter)
-        {
-            FCM::Boolean enabled;
-            FCM::Double  angle;
-            FCM::Double  blurX;
-            FCM::Double  blurY;
-            FCM::Double  distance;
-            FCM::Boolean knockOut;
-            DOM::Utils::FilterQualityType qualityType;
-            FCM::S_Int32 strength;
-            DOM::Utils::FilterType filterType;
-
-            commandElement.push_back(JSONNode("filterType", "GradientBevelFilter"));
-
-            pGradientBevelFilter->IsEnabled(enabled);
-            if(enabled)
-            {
-                commandElement.push_back(JSONNode("enabled", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("enabled", "false"));
-            }
-
-            res = pGradientBevelFilter->GetAngle(angle);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("angle", CreateJS::Utils::ToString((double)angle)));
-
-            res = pGradientBevelFilter->GetBlurX(blurX);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurX", CreateJS::Utils::ToString((double)blurX)));
-
-            res = pGradientBevelFilter->GetBlurY(blurY);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("blurY", CreateJS::Utils::ToString((double)blurY)));
-
-            res = pGradientBevelFilter->GetDistance(distance);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("distance", CreateJS::Utils::ToString((double)distance)));
-
-            res = pGradientBevelFilter->GetKnockout(knockOut);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if(knockOut)
-            {
-                commandElement.push_back(JSONNode("knockOut", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("knockOut", "false"));
-            }
-
-            res = pGradientBevelFilter->GetQuality(qualityType);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if (qualityType == 0)
-                commandElement.push_back(JSONNode("qualityType", "low"));
-            else if (qualityType == 1)
-                commandElement.push_back(JSONNode("qualityType", "medium"));
-            else if (qualityType == 2)
-                commandElement.push_back(JSONNode("qualityType", "high"));
-
-            res = pGradientBevelFilter->GetStrength(strength);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("strength", CreateJS::Utils::ToString(strength)));
-
-            res = pGradientBevelFilter->GetFilterType(filterType);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            if (filterType == 0)
-                commandElement.push_back(JSONNode("filterType", "inner"));
-            else if (filterType == 1)
-                commandElement.push_back(JSONNode("filterType", "outer"));
-            else if (filterType == 2)
-                commandElement.push_back(JSONNode("filterType", "full"));
-
-            FCM::AutoPtr<FCM::IFCMUnknown> pColorGradient;
-            res = pGradientBevelFilter->GetGradient(pColorGradient.m_Ptr);
-            ASSERT(FCM_SUCCESS_CODE(res));
-
-            FCM::AutoPtr<DOM::Utils::ILinearColorGradient> pLinearGradient = pColorGradient;
-            if (pLinearGradient)
-            {
-
-                FCM::U_Int8 colorCount;
-                //DOM::Utils::GRADIENT_COLOR_POINT colorPoint;
-
-                res = pLinearGradient->GetKeyColorCount(colorCount);
-                ASSERT(FCM_SUCCESS_CODE(res));
-
-                std::string colorArray ;
-                std::string posArray ;
-                JSONNode*   stopPointsArray = new JSONNode(JSON_ARRAY);
-
-                for (FCM::U_Int32 l = 0; l < colorCount; l++)
-                {
-                    DOM::Utils::GRADIENT_COLOR_POINT colorPoint;
-                    pLinearGradient->GetKeyColorAtIndex(l, colorPoint);
-                    JSONNode stopEntry(JSON_NODE);
-                    FCM::Float offset;
-
-                    offset = (float)((colorPoint.pos * 100) / 255.0);
-
-                    stopEntry.push_back(JSONNode("offset", Utils::ToString((double) offset)));
-                    stopEntry.push_back(JSONNode("stopColor", Utils::ToString(colorPoint.color)));
-                    stopEntry.push_back(JSONNode("stopOpacity", Utils::ToString((double)(colorPoint.color.alpha / 255.0))));
-                    stopPointsArray->set_name("GradientStops");
-                    stopPointsArray->push_back(stopEntry);
-                }
-
-                commandElement.push_back(*stopPointsArray);
-
-            }//lineargradient
-        }
-
-        if(pAdjustColorFilter)
-        {
-            FCM::Double brightness;
-            FCM::Double contrast;
-            FCM::Double saturation;
-            FCM::Double hue;
-            FCM::Boolean enabled;
-			
-            commandElement.push_back(JSONNode("filterType", "AdjustColorFilter"));
-
-            pAdjustColorFilter->IsEnabled(enabled);
-            if(enabled)
-            {
-                commandElement.push_back(JSONNode("enabled", "true"));
-            }
-            else
-            {
-                commandElement.push_back(JSONNode("enabled", "false"));
-            }
-
-            res = pAdjustColorFilter->GetBrightness(brightness);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("brightness", CreateJS::Utils::ToString((double)brightness)));
-
-            res = pAdjustColorFilter->GetContrast(contrast);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("contrast", CreateJS::Utils::ToString((double)contrast)));
-
-            res = pAdjustColorFilter->GetSaturation(saturation);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("saturation", CreateJS::Utils::ToString((double)saturation)));
-
-            res = pAdjustColorFilter->GetHue(hue);
-            ASSERT(FCM_SUCCESS_CODE(res));
-            commandElement.push_back(JSONNode("hue", CreateJS::Utils::ToString((double)hue)));
-			
-        }
-
-		*/
+		Utils::Trace(m_pCallback, "\n\nERROR: Graphic filters are not supported by AwayJS\n\n");
         return FCM_SUCCESS;
     }
 
@@ -968,19 +407,22 @@ namespace AwayJS
 
     FCM::Result AWDTimelineWriter::ShowFrame(FCM::U_Int32 frameNum)
     {
-		//Utils::Trace(m_pCallback, "showframe timeline %d \n", this->thisTimeLine->timeline_id);
+		
+		// this gets called at the end of each frame.
+		// we create a new frame here. this means at the end we will have 1 empty frame that needs to be popped from the list.
 		ANIM::TimelineFrame* newFrame=new ANIM::TimelineFrame();
 		newFrame->set_frame_duration(1);
 		thisTimeLine->add_adobe_frame(newFrame);	
+		
         return FCM_SUCCESS;
     }
 
 	
     FCM::Result AWDTimelineWriter::AddFrameScript(FCM::CStringRep16 pScript, FCM::U_Int32 layerNum)
     {
+		
         std::string script = Utils::ToString(pScript, m_pCallback);
-        //std::string scriptWithLayerNumber = "script Layer" +  Utils::ToString(layerNum);
-		thisTimeLine->adobe_frames.back()->set_frame_code(script);
+		thisTimeLine->get_frame()->set_frame_code(script);
 
         return FCM_SUCCESS;
     }
@@ -1002,11 +444,11 @@ namespace AwayJS
 		}
 		else{
 			if(labelType == 1)
-				thisTimeLine->adobe_frames.back()->add_label(ANIM::frame_label_type::AWD_FRAME_LABEL_NAME, label);
+				thisTimeLine->get_frame()->add_label(ANIM::frame_label_type::AWD_FRAME_LABEL_NAME, label);
 			else if(labelType == 2)//COMMENTS DONT SEAM TO GET EXPORTED BY IEXPORTERSERVICE
-				thisTimeLine->adobe_frames.back()->add_label(ANIM::frame_label_type::AWD_FRAME_LABEL_COMMENT, label);
+				thisTimeLine->get_frame()->add_label(ANIM::frame_label_type::AWD_FRAME_LABEL_COMMENT, label);
 			else if(labelType == 3)
-				thisTimeLine->adobe_frames.back()->add_label(ANIM::frame_label_type::AWD_FRAME_LABEL_ANCOR, label);
+				thisTimeLine->get_frame()->add_label(ANIM::frame_label_type::AWD_FRAME_LABEL_ANCOR, label);
 		}
 		
         return FCM_SUCCESS;
@@ -1016,6 +458,7 @@ namespace AwayJS
         m_pCallback(pcallback)
     {
 	
+		
 		this->awd=awd;
 		this->thisTimeLine=new BLOCKS::Timeline();
 		this->awd->grafik_cnt++;
@@ -1027,6 +470,7 @@ namespace AwayJS
 		ANIM::TimelineFrame* newFrame=new ANIM::TimelineFrame();
 		newFrame->set_frame_duration(1);
 		thisTimeLine->add_adobe_frame(newFrame);
+		
     }
 
 
@@ -1045,6 +489,13 @@ namespace AwayJS
     void AWDTimelineWriter::Finish(FCM::U_Int32 resId, FCM::StringRep16 pName)
     {
 		
+		if(thisTimeLine==NULL){
+			Utils::Trace(m_pCallback, "Failed finishing timeline, because current timeline object is NULL");
+			return;
+		}
+		
+		thisTimeLine->get_frames().pop_back();
+		thisTimeLine->is_collected=true;
         string resID_string=AwayJS::Utils::ToString(resId);
 		thisTimeLine->add_res_id(resID_string);
 		//Utils::Trace(m_pCallback, "Finish timeline %d \n", this->thisTimeLine->timeline_id);
@@ -1054,11 +505,14 @@ namespace AwayJS
 			thisTimeLine->set_symbol_name(AwayJS::Utils::ToString(pName, m_pCallback));
 			// set the name as fallback, if we cannot connect this instance to any library-symbol
 			thisTimeLine->set_name(AwayJS::Utils::ToString(pName, m_pCallback));
+			//awd->get_project()->exchange_timeline_by_name(thisTimeLine);
+			//return;
+
 		}
-		thisTimeLine->adobe_frames.pop_back();
-		thisTimeLine->finalize();
+		//thisTimeLine->finalize();
 		// we cache timelines by function awd_project->get_timeline_by_symbol_name
 		awd->get_project()->add_block(thisTimeLine);
+		
 		
     }
 

@@ -103,6 +103,8 @@ FlashToAWDEncoder::FlashToAWDEncoder(FCM::PIFCMCallback pCallback, AWDProject* a
 
 FlashToAWDEncoder::~FlashToAWDEncoder()
 {
+	this->geom_cache.clear();
+
 }
 
 AWDProject*

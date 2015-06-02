@@ -128,10 +128,10 @@ namespace AwayJS
         Exporter::Service::PITimelineBuilder pTimelineBuilder)
     {	
         m_resourceList.push_back(resourceId);
+		
 		if(pName!=NULL){
 			std::string symbol_name = AwayJS::Utils::ToString(pName, this->GetCallback());
 			BLOCKS::Timeline* thisTimeline = this->awd_converter->get_project()->get_timeline_by_symbol_name(symbol_name);
-			
 			if(thisTimeline!=NULL){
 				//Utils::Trace(GetCallback(), "Allready-exists: %s\n", symbol_name.c_str());
 				thisTimeline->add_res_id(std::to_string(resourceId));
@@ -141,9 +141,11 @@ namespace AwayJS
 			//Utils::Trace(GetCallback(), "Start exporting name %s\n", symbol_name.c_str());
 
 		}
-		TimelineBuilder* pTimeline = static_cast<TimelineBuilder*>(pTimelineBuilder);
-		ITimelineWriter* pTimelineWriter;
-		return pTimeline->Build(resourceId, pName, &pTimelineWriter);
+		//else{
+			TimelineBuilder* pTimeline = static_cast<TimelineBuilder*>(pTimelineBuilder);
+			ITimelineWriter* pTimelineWriter;
+			return pTimeline->Build(resourceId, pName, &pTimelineWriter);
+		//}
     }
 	
     FCM::Result ResourcePalette::AddShape(
@@ -152,6 +154,7 @@ namespace AwayJS
     {
 		//Utils::Trace(GetCallback(), "Start adding shape\n");
         m_resourceList.push_back(resourceId);
+		
 		//	this will create a new geom for this shape, add it to the AWDProject, and fill it with the path-data.
 		//	the geometries will be processed later.
 		//	we do not check for errors here. the created geometry_blocks can be queried for warning / error messages.
@@ -159,6 +162,7 @@ namespace AwayJS
 		BLOCKS::Geometry* this_geom=this->awd_converter->get_geom_for_shape(reinterpret_cast< DOM::FrameElement::IShape*>(pShape), geom_res_id, true);
 		this_geom->get_mesh_instance()->add_scene_name(this->awd_converter->current_scene_name);
 		this_geom->add_scene_name(this->awd_converter->current_scene_name);
+		
         return FCM_SUCCESS;
     }
 
@@ -191,15 +195,18 @@ namespace AwayJS
 		new_fill_material->set_material_type(MATERIAL::type::TEXTURE_MATERIAL);
 	//	new_fill_material->set_uv_transform_mtx(this->convert_matrix2x3(matrix));
 		new_fill_material->set_texture(reinterpret_cast<BLOCKS::BitmapTexture*>(new_texture));
+		
 		return FCM_SUCCESS;
 	}
 
 	FCM::Result ResourcePalette::AddClassicText(FCM::U_Int32 resourceId, DOM::FrameElement::PIClassicText pClassicText)
     {
         m_resourceList.push_back(resourceId);
+		
 		AWDBlock* new_text = NULL;
 		this->awd_converter->ExportText(pClassicText, &new_text, std::to_string(resourceId));
 		new_text->add_scene_name(this->awd_converter->current_scene_name);
+		
 		return FCM_SUCCESS;
     }
 	
@@ -216,7 +223,7 @@ namespace AwayJS
                 break;
             }
         }
-
+		
         //LOG(("[HasResource] ResId: %d HasResource: %d\n", resourceId, hasResource));
 
         return FCM_SUCCESS;
@@ -224,6 +231,7 @@ namespace AwayJS
 
 	FCM::Result ResourcePalette::HasResource(const std::string& name, FCM::Boolean& hasResource)
     {
+		
         hasResource = false;
         for (FCM::U_Int32 index = 0; index < m_resourceNames.size(); index++)
         {
@@ -233,7 +241,7 @@ namespace AwayJS
                 break;
             }
         }
-
+		
         return FCM_SUCCESS;
     }
 		
