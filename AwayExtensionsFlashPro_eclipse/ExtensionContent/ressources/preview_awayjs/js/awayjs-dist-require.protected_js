@@ -64846,6 +64846,7 @@ var AWDParser = (function (_super) {
         var type = this._newBlockBytes.readUnsignedByte();
         var data_len;
         //this._texture_users[this._cur_block_id.toString()] = [];
+        var start_loading = true;
         // External
         if (type == 0) {
             data_len = this._newBlockBytes.readUnsignedInt();
@@ -64858,6 +64859,9 @@ var AWDParser = (function (_super) {
         else {
             // todo: exporter does not export embed sounds yet
             data_len = this._newBlockBytes.readUnsignedInt();
+            if (data_len == 0) {
+                start_loading = false;
+            }
             var data;
             data = new ByteArray();
             this._newBlockBytes.readBytes(data, 0, data_len);
@@ -64868,8 +64872,8 @@ var AWDParser = (function (_super) {
         // Ignore for now
         this.parseProperties(null);
         this._blocks[blockID].extras = this.parseUserAttributes();
-        this._pPauseAndRetrieveDependencies();
-        //this._blocks[blockID].data = asset;todo
+        if (start_loading)
+            this._pPauseAndRetrieveDependencies();
         if (this._debug) {
             var textureStylesNames = ["external", "embed"];
             console.log("Start parsing a " + textureStylesNames[type] + " Audio file");
