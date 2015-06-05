@@ -146,7 +146,13 @@ namespace AwayJS
             if(trackMode == DOM::FrameElement::TRACK_AS_BUTTON)
             {
                 LOG(("[AddMovieClip] ObjId: %d, is a button with TrackingMode set to TRACK_AS_BUTTON\n", objectId));
-                
+				std::string res_id = std::to_string(pMovieClipInfo->resourceId);
+				BLOCKS::Timeline* thisBlock = reinterpret_cast<BLOCKS::Timeline*>(this->m_pTimelineWriter->awd->get_project()->get_block_by_external_id_shared(res_id));
+				if(thisBlock==NULL){
+					return FCM_EXPORT_FAILED;
+				}
+				thisBlock->isButton=true;
+
             }else
             {
                 LOG(("[AddMovieClip] ObjId: %d, is a button with TrackingMode set to TRACK_AS_MENU_ITEM\n", objectId));

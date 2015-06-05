@@ -85,6 +85,7 @@ namespace AwayJS
     {
     public:
 		
+		FlashToAWDEncoder* awd;
         virtual FCM::Result PlaceObject(
             FCM::U_Int32 resId,
             FCM::U_Int32 objectId,
@@ -152,7 +153,6 @@ namespace AwayJS
         void Finish(FCM::U_Int32 resId, FCM::StringRep16 pName);
 
     private:
-		FlashToAWDEncoder* awd;
 		BLOCKS::Timeline* thisTimeLine;
 		vector<AWD::ANIM::FrameCommandDisplayObject*> frameCommands;
 
