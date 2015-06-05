@@ -9350,8 +9350,7 @@ var AssetLoader = (function (_super) {
                     handled = this._parseErrorHandlers[i](event);
         }
         if (handled) {
-            this.dispose();
-            return;
+            this.retrieveNext();
         }
         else {
             throw new Error(event.message);
@@ -9487,11 +9486,27 @@ var AssetLoader = (function (_super) {
             parser.parseAsync(dependency.data);
         }
         else {
+            var handled;
             var message = "No parser defined. To enable all parsers for auto-detection, use Parsers.enableAllBundled()";
-            if (this.hasEventListener(ParserEvent.PARSE_ERROR))
-                this.dispatchEvent(new ParserEvent(ParserEvent.PARSE_ERROR, message));
-            else
+            var event = new ParserEvent(ParserEvent.PARSE_ERROR, message);
+            if (this.hasEventListener(ParserEvent.PARSE_ERROR)) {
+                this.dispatchEvent(event);
+                handled = true;
+            }
+            else {
+                // TODO: Consider not doing this even when AssetLoader does
+                // have it's own LOAD_ERROR listener
+                var i, len = this._parseErrorHandlers.length;
+                for (i = 0; i < len; i++)
+                    if (!handled)
+                        handled = this._parseErrorHandlers[i](event);
+            }
+            if (handled) {
+                this.retrieveNext();
+            }
+            else {
                 throw new Error(message);
+            }
         }
     };
     /**
@@ -19489,6 +19504,9 @@ var Loader = (function (_super) {
         this._assetLibId = assetLibraryId;
         this._onResourceCompleteDelegate = function (event) { return _this.onResourceComplete(event); };
         this._onAssetCompleteDelegate = function (event) { return _this.onAssetComplete(event); };
+        this._onTextureSizeErrorDelegate = function (event) { return _this.onTextureSizeError(event); };
+        this._onLoadErrorDelegate = function (event) { return _this.onLoadError(event); };
+        this._onParseErrorDelegate = function (event) { return _this.onParseError(event); };
     }
     Object.defineProperty(Loader.prototype, "content", {
         /**
@@ -19742,10 +19760,11 @@ var Loader = (function (_super) {
             token = loader.load(request, context, ns, parser);
         }
         token.addEventListener(LoaderEvent.RESOURCE_COMPLETE, this._onResourceCompleteDelegate);
+        token.addEventListener(AssetEvent.TEXTURE_SIZE_ERROR, this._onTextureSizeErrorDelegate);
         token.addEventListener(AssetEvent.ASSET_COMPLETE, this._onAssetCompleteDelegate);
         // Error are handled separately (see documentation for addErrorHandler)
-        token._iLoader._iAddErrorHandler(this.onLoadError);
-        token._iLoader._iAddParseErrorHandler(this.onParseError);
+        token._iLoader._iAddErrorHandler(this._onLoadErrorDelegate);
+        token._iLoader._iAddParseErrorHandler(this._onParseErrorDelegate);
         return token;
     };
     /**
@@ -19850,10 +19869,11 @@ var Loader = (function (_super) {
             token = loader.loadData(data, '', context, ns, parser);
         }
         token.addEventListener(LoaderEvent.RESOURCE_COMPLETE, this._onResourceCompleteDelegate);
+        token.addEventListener(AssetEvent.TEXTURE_SIZE_ERROR, this._onTextureSizeErrorDelegate);
         token.addEventListener(AssetEvent.ASSET_COMPLETE, this._onAssetCompleteDelegate);
         // Error are handled separately (see documentation for addErrorHandler)
-        token._iLoader._iAddErrorHandler(this.onLoadError);
-        token._iLoader._iAddParseErrorHandler(this.onParseError);
+        token._iLoader._iAddErrorHandler(this._onLoadErrorDelegate);
+        token._iLoader._iAddParseErrorHandler(this._onParseErrorDelegate);
         return token;
     };
     /**
@@ -19936,6 +19956,9 @@ var Loader = (function (_super) {
         else {
             return false;
         }
+    };
+    Loader.prototype.onTextureSizeError = function (event) {
+        this.dispatchEvent(event);
     };
     /**
      * Called when the resource and all of its dependencies was retrieved.
@@ -58867,7 +58890,21 @@ var AS2MCSoundProps = (function (_super) {
 })(EventDispatcher);
 module.exports = AS2MCSoundProps;
 
-},{"awayjs-core/lib/events/Event":undefined,"awayjs-core/lib/events/EventDispatcher":undefined}],"awayjs-player/lib/adapters/AS2MovieClipAdapter":[function(require,module,exports){
+},{"awayjs-core/lib/events/Event":undefined,"awayjs-core/lib/events/EventDispatcher":undefined}],"awayjs-player/lib/adapters/AS2MouseAdapter":[function(require,module,exports){
+var AS2MouseAdapter = (function () {
+    function AS2MouseAdapter() {
+    }
+    // this does nothing really, just to catch usage in scripts
+    AS2MouseAdapter.addListener = function (listener) {
+        AS2MouseAdapter._globalListeners.push(listener);
+        // TODO: Init actual mouse events here, relative to root MovieClip (I suppose?)
+    };
+    AS2MouseAdapter._globalListeners = [];
+    return AS2MouseAdapter;
+})();
+module.exports = AS2MouseAdapter;
+
+},{}],"awayjs-player/lib/adapters/AS2MovieClipAdapter":[function(require,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -59134,7 +59171,24 @@ var AS2MovieClipAdapter = (function (_super) {
 })(AS2SymbolAdapter);
 module.exports = AS2MovieClipAdapter;
 
-},{"awayjs-core/lib/geom/Point":undefined,"awayjs-display/lib/events/MouseEvent":undefined,"awayjs-player/lib/adapters/AS2MCSoundProps":"awayjs-player/lib/adapters/AS2MCSoundProps","awayjs-player/lib/adapters/AS2SymbolAdapter":"awayjs-player/lib/adapters/AS2SymbolAdapter","awayjs-player/lib/display/MovieClip":"awayjs-player/lib/display/MovieClip","awayjs-player/lib/events/MovieClipEvent":"awayjs-player/lib/events/MovieClipEvent"}],"awayjs-player/lib/adapters/AS2SoundAdapter":[function(require,module,exports){
+},{"awayjs-core/lib/geom/Point":undefined,"awayjs-display/lib/events/MouseEvent":undefined,"awayjs-player/lib/adapters/AS2MCSoundProps":"awayjs-player/lib/adapters/AS2MCSoundProps","awayjs-player/lib/adapters/AS2SymbolAdapter":"awayjs-player/lib/adapters/AS2SymbolAdapter","awayjs-player/lib/display/MovieClip":"awayjs-player/lib/display/MovieClip","awayjs-player/lib/events/MovieClipEvent":"awayjs-player/lib/events/MovieClipEvent"}],"awayjs-player/lib/adapters/AS2SharedObjectAdapter":[function(require,module,exports){
+var AS2SharedObjectAdapter = (function () {
+    function AS2SharedObjectAdapter() {
+        this.data = {};
+    }
+    // should become a static
+    AS2SharedObjectAdapter.getLocal = function (name, localPath, secure) {
+        return new AS2SharedObjectAdapter();
+    };
+    // needs to stay as it is
+    AS2SharedObjectAdapter.prototype.flush = function () {
+        // save all local data to wherever it needs to go
+    };
+    return AS2SharedObjectAdapter;
+})();
+module.exports = AS2SharedObjectAdapter;
+
+},{}],"awayjs-player/lib/adapters/AS2SoundAdapter":[function(require,module,exports){
 var Event = require("awayjs-core/lib/events/Event");
 var AS2MCSoundProps = require("awayjs-player/lib/adapters/AS2MCSoundProps");
 var AssetLibrary = require("awayjs-core/lib/library/AssetLibrary");
@@ -59162,7 +59216,12 @@ var AS2SoundAdapter = (function () {
     AS2SoundAdapter.prototype.attachSound = function (id) {
         // TODO: This will be AudioAsset or something
         var asset = AssetLibrary.getAsset(id);
-        var source = asset.htmlAudioElement;
+        var source;
+        if (asset)
+            source = asset.htmlAudioElement;
+        else {
+            source = new Audio();
+        }
         this._soundProps.audio = source.cloneNode();
         this.updateVolume();
     };
@@ -59209,27 +59268,35 @@ var AS2SoundAdapter = (function () {
     AS2SoundAdapter.prototype.start = function (offsetInSeconds, loops) {
         if (offsetInSeconds === void 0) { offsetInSeconds = 0; }
         if (loops === void 0) { loops = 0; }
-        this._soundProps.audio.currentTime = offsetInSeconds;
-        this._soundProps.loops = loops;
-        this._soundProps.audio.play();
+        if (this._soundProps.audio) {
+            this._soundProps.audio.currentTime = offsetInSeconds;
+            this._soundProps.loops = loops;
+            this._soundProps.audio.play();
+        }
     };
     AS2SoundAdapter.prototype.stop = function (linkageID) {
         if (linkageID === void 0) { linkageID = null; }
-        this._soundProps.audio.pause();
+        if (this._soundProps.audio)
+            this._soundProps.audio.pause();
     };
     Object.defineProperty(AS2SoundAdapter.prototype, "position", {
         get: function () {
-            return this._soundProps.audio.currentTime;
+            if (this._soundProps.audio)
+                return this._soundProps.audio.currentTime;
+            return 0;
         },
         set: function (value) {
-            this._soundProps.audio.currentTime = value;
+            if (this._soundProps.audio)
+                this._soundProps.audio.currentTime = value;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(AS2SoundAdapter.prototype, "duration", {
         get: function () {
-            return this._soundProps.audio.duration;
+            if (this._soundProps.audio)
+                return this._soundProps.audio.duration;
+            return 0;
         },
         enumerable: true,
         configurable: true
@@ -59245,14 +59312,28 @@ var AS2SoundAdapter = (function () {
         this.updateVolume();
     };
     AS2SoundAdapter.prototype.updateVolume = function () {
-        this._soundProps.audio.volume = this._soundProps.volume * AS2SoundAdapter._globalSoundProps.volume;
+        if (this._soundProps.audio)
+            this._soundProps.audio.volume = this._soundProps.volume * AS2SoundAdapter._globalSoundProps.volume;
     };
     AS2SoundAdapter._globalSoundProps = new AS2MCSoundProps();
     return AS2SoundAdapter;
 })();
 module.exports = AS2SoundAdapter;
 
-},{"awayjs-core/lib/events/Event":undefined,"awayjs-core/lib/library/AssetLibrary":undefined,"awayjs-player/lib/adapters/AS2MCSoundProps":"awayjs-player/lib/adapters/AS2MCSoundProps"}],"awayjs-player/lib/adapters/AS2SymbolAdapter":[function(require,module,exports){
+},{"awayjs-core/lib/events/Event":undefined,"awayjs-core/lib/library/AssetLibrary":undefined,"awayjs-player/lib/adapters/AS2MCSoundProps":"awayjs-player/lib/adapters/AS2MCSoundProps"}],"awayjs-player/lib/adapters/AS2StageAdapter":[function(require,module,exports){
+var AS2StageAdapter = (function () {
+    function AS2StageAdapter() {
+    }
+    // this does nothing really, just to catch usage in scripts
+    AS2StageAdapter.showMenu = true;
+    return AS2StageAdapter;
+})();
+module.exports = AS2StageAdapter;
+
+},{}],"awayjs-player/lib/adapters/AS2SymbolAdapter":[function(require,module,exports){
+var AS2SharedObjectAdapter = require("awayjs-player/lib/adapters/AS2SharedObjectAdapter");
+var AS2MouseAdapter = require("awayjs-player/lib/adapters/AS2MouseAdapter");
+var AS2StageAdapter = require("awayjs-player/lib/adapters/AS2StageAdapter");
 // also contains global AS2 gunctions
 var AS2SymbolAdapter = (function () {
     function AS2SymbolAdapter(adaptee) {
@@ -59267,6 +59348,29 @@ var AS2SymbolAdapter = (function () {
             AS2SymbolAdapter.CLASS_REPLACEMENTS["Sound"] = "awayjs-player/lib/adapters/AS2SoundAdapter";
         }
     }
+    Object.defineProperty(AS2SymbolAdapter.prototype, "Mouse", {
+        // TODO: REMOVE AND PROVIDE AS CLASS (See System) ONCE TRANSLATOR IS FIXED
+        // And then change properties to statics
+        get: function () {
+            return AS2MouseAdapter;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AS2SymbolAdapter.prototype, "Stage", {
+        get: function () {
+            return AS2StageAdapter;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AS2SymbolAdapter.prototype, "SharedObject", {
+        get: function () {
+            return AS2SharedObjectAdapter;
+        },
+        enumerable: true,
+        configurable: true
+    });
     AS2SymbolAdapter.prototype.getVersion = function () {
         return 0;
     };
@@ -59452,7 +59556,7 @@ var AS2SymbolAdapter = (function () {
 })();
 module.exports = AS2SymbolAdapter;
 
-},{}],"awayjs-player/lib/adapters/AS2SystemAdapter":[function(require,module,exports){
+},{"awayjs-player/lib/adapters/AS2MouseAdapter":"awayjs-player/lib/adapters/AS2MouseAdapter","awayjs-player/lib/adapters/AS2SharedObjectAdapter":"awayjs-player/lib/adapters/AS2SharedObjectAdapter","awayjs-player/lib/adapters/AS2StageAdapter":"awayjs-player/lib/adapters/AS2StageAdapter"}],"awayjs-player/lib/adapters/AS2SystemAdapter":[function(require,module,exports){
 // also contains global AS2 functions
 var AS2SystemAdapter = (function () {
     function AS2SystemAdapter() {
@@ -59464,27 +59568,48 @@ var AS2SystemAdapter = (function () {
 module.exports = AS2SystemAdapter;
 
 },{}],"awayjs-player/lib/adapters/AS2TextFieldAdapter":[function(require,module,exports){
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var AS2SymbolAdapter = require("awayjs-player/lib/adapters/AS2SymbolAdapter");
 var AdaptedTextField = require("awayjs-player/lib/display/AdaptedTextField");
-var AS2TextFieldAdapter = (function () {
+var AS2TextFieldAdapter = (function (_super) {
+    __extends(AS2TextFieldAdapter, _super);
     function AS2TextFieldAdapter(adaptee) {
         // create an empty text field if none is passed
-        this._adaptee = adaptee || new AdaptedTextField();
+        _super.call(this, adaptee || new AdaptedTextField());
     }
-    Object.defineProperty(AS2TextFieldAdapter.prototype, "adaptee", {
+    AS2TextFieldAdapter.prototype.clone = function (newAdaptee) {
+        return new AS2TextFieldAdapter(newAdaptee);
+    };
+    Object.defineProperty(AS2TextFieldAdapter.prototype, "embedFonts", {
         get: function () {
-            return this._adaptee;
+            return this._embedFonts;
+        },
+        set: function (value) {
+            this._embedFonts = value;
         },
         enumerable: true,
         configurable: true
     });
-    AS2TextFieldAdapter.prototype.clone = function (newAdaptee) {
-        return new AS2TextFieldAdapter(newAdaptee);
-    };
+    Object.defineProperty(AS2TextFieldAdapter.prototype, "text", {
+        get: function () {
+            return this.adaptee.text;
+        },
+        set: function (value) {
+            this.adaptee.text = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return AS2TextFieldAdapter;
-})();
+})(AS2SymbolAdapter);
 module.exports = AS2TextFieldAdapter;
 
-},{"awayjs-player/lib/display/AdaptedTextField":"awayjs-player/lib/display/AdaptedTextField"}],"awayjs-player/lib/adapters/MovieClipAdapter":[function(require,module,exports){
+},{"awayjs-player/lib/adapters/AS2SymbolAdapter":"awayjs-player/lib/adapters/AS2SymbolAdapter","awayjs-player/lib/display/AdaptedTextField":"awayjs-player/lib/display/AdaptedTextField"}],"awayjs-player/lib/adapters/MovieClipAdapter":[function(require,module,exports){
 
 },{}],"awayjs-player/lib/adapters/TextFieldAdapter":[function(require,module,exports){
 
@@ -59496,14 +59621,13 @@ var __extends = this.__extends || function (d, b) {
     d.prototype = new __();
 };
 var TextField = require("awayjs-display/lib/entities/TextField");
+var MovieClipEvent = require("awayjs-player/lib/events/MovieClipEvent");
 var AdaptedTextField = (function (_super) {
     __extends(AdaptedTextField, _super);
     function AdaptedTextField() {
         _super.call(this);
     }
     Object.defineProperty(AdaptedTextField.prototype, "adapter", {
-        // adapter is used to provide MovieClip to scripts taken from different platforms
-        // TODO: Perhaps adapters should be created dynamically whenever needed, rather than storing them
         get: function () {
             return this._adapter;
         },
@@ -59517,14 +59641,28 @@ var AdaptedTextField = (function (_super) {
     AdaptedTextField.prototype.clone = function () {
         var clone = new AdaptedTextField();
         this._iCopyToTextField(clone);
-        clone.adapter = this.adapter.clone(clone);
+        if (this._adapter)
+            clone.adapter = this._adapter.clone(clone);
         return clone;
     };
+    Object.defineProperty(AdaptedTextField.prototype, "name", {
+        get: function () {
+            return this._pName;
+        },
+        set: function (value) {
+            if (this._pName !== value) {
+                this._pName = value;
+                this.dispatchEvent(new MovieClipEvent(MovieClipEvent.NAME_CHANGED, this));
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return AdaptedTextField;
 })(TextField);
 module.exports = AdaptedTextField;
 
-},{"awayjs-display/lib/entities/TextField":undefined}],"awayjs-player/lib/display/MovieClip":[function(require,module,exports){
+},{"awayjs-display/lib/entities/TextField":undefined,"awayjs-player/lib/events/MovieClipEvent":"awayjs-player/lib/events/MovieClipEvent"}],"awayjs-player/lib/display/MovieClip":[function(require,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -59727,11 +59865,6 @@ var MovieClip = (function (_super) {
     };
     MovieClip.prototype.deactivateChild = function (id) {
         this.removeChild(this._potentialInstances[id]);
-    };
-    /**
-     * This is called inside the TimelineFrame.execute() function.
-     */
-    MovieClip.prototype.executeFrameScript = function (frameScript) {
     };
     /**
      * Stop playback of animation and hold current position
@@ -60048,7 +60181,7 @@ var Mask = (function () {
                     var obj = this._registeredMasks[j];
                     //console.log("testing for " + mask["hierarchicalMaskID"] + ", " + mask.name);
                     if (obj.sourceEntity["hierarchicalMaskID"] === mask["hierarchicalMaskID"]) {
-                        console.log("Rendering hierarchicalMaskID " + mask["hierarchicalMaskID"]);
+                        //console.log("Rendering hierarchicalMaskID " + mask["hierarchicalMaskID"]);
                         this._draw(obj);
                     }
                 }
@@ -60200,7 +60333,7 @@ var Renderer2D = (function (_super) {
             passes = render.passes;
             if (renderable.sourceEntity["hierarchicalMaskID"] !== -1) {
                 renderable2 = renderable.next;
-                console.log("Registering mask: " + renderable.sourceEntity["hierarchicalMaskID"], renderable.sourceEntity.name);
+                //console.log("Registering mask: " + renderable.sourceEntity["hierarchicalMaskID"], renderable.sourceEntity.name);
                 this._mask.registerMask(renderable);
             }
             else if (this._disableColor && render._renderOwner.alphaThreshold != 0) {
@@ -60218,10 +60351,9 @@ var Renderer2D = (function (_super) {
                         gl.disable(gl.STENCIL_TEST);
                         gl.stencilFunc(gl.ALWAYS, 0, 0xff);
                         gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
-                        console.log("Let's not use stencil!");
                     }
                     else {
-                        console.log("Rendering masks with configID " + newMaskConfigID);
+                        //console.log("Rendering masks with configID " + newMaskConfigID);
                         //this._pContext.setStencilReferenceValue(newMaskConfigID);
                         gl.enable(gl.STENCIL_TEST);
                         gl.stencilFunc(gl.ALWAYS, newMaskConfigID, 0xff);
@@ -60239,7 +60371,7 @@ var Renderer2D = (function (_super) {
                     pass = passes[i];
                     this.activatePass(renderable, pass, camera);
                     do {
-                        console.log("Rendering normal DO " + renderable2);
+                        //console.log("Rendering normal DO " + renderable2);
                         renderable2._iRender(pass, camera, this._pRttViewProjectionMatrix);
                         renderable2 = renderable2.next;
                     } while (renderable2 && renderable2.render == render && renderable2.sourceEntity["maskConfigID"] === maskConfigID && renderable2.sourceEntity["hierarchicalMaskID"] === -1);
@@ -60534,8 +60666,14 @@ var ExecuteScriptCommand = (function () {
         }*/
         // make sure we don't use "this", since Actionscript's "this" has the same scope rules as a variable
         var str = replacementPreface + replaced + replacementPostface;
-        //console.log(str);
-        this._translatedScript = new Function(str);
+        try {
+            this._translatedScript = new Function(str);
+        }
+        catch (err) {
+            console.log("Syntax error in script:\n", str);
+            console.log(err.message);
+            throw err;
+        }
     };
     return ExecuteScriptCommand;
 })();
@@ -60575,7 +60713,50 @@ var RemoveChildrenAtDepthCommand = (function () {
 })();
 module.exports = RemoveChildrenAtDepthCommand;
 
-},{}],"awayjs-player/lib/timeline/commands/SetInstanceNameCommand":[function(require,module,exports){
+},{}],"awayjs-player/lib/timeline/commands/SetButtonCommand":[function(require,module,exports){
+var MouseEvent = require("awayjs-display/lib/events/MouseEvent");
+var SceneEvent = require("awayjs-display/lib/events/SceneEvent");
+var MovieClip = require("awayjs-player/lib/display/MovieClip");
+var SetButtonCommand = (function () {
+    function SetButtonCommand(targetID) {
+        this._targetID = targetID;
+    }
+    SetButtonCommand.prototype.execute = function (sourceMovieClip, time) {
+        var target = sourceMovieClip.getPotentialChildInstance(this._targetID);
+        if (target instanceof MovieClip) {
+            var mc = target;
+            mc.stop();
+            this._onMouseOver = function () {
+                target.currentFrameIndex = 1;
+            };
+            this._onMouseOut = function () {
+                target.currentFrameIndex = 0;
+            };
+            this._onMouseDown = function () {
+                target.currentFrameIndex = 2;
+            };
+            this._onMouseUp = function () {
+                target.currentFrameIndex = target.currentFrameIndex == 0 ? 0 : 1;
+            };
+            this._onRemovedFromScene = function () {
+                mc.removeEventListener(MouseEvent.MOUSE_OVER, this._onMouseOver);
+                mc.removeEventListener(MouseEvent.MOUSE_OUT, this._onMouseOut);
+                mc.removeEventListener(MouseEvent.MOUSE_DOWN, this._onMouseDown);
+                mc.removeEventListener(MouseEvent.MOUSE_UP, this._onMouseUp);
+                mc.removeEventListener(SceneEvent.REMOVED_FROM_SCENE, this._onRemovedFromScene);
+            };
+            mc.addEventListener(MouseEvent.MOUSE_OVER, this._onMouseOver);
+            mc.addEventListener(MouseEvent.MOUSE_OUT, this._onMouseOut);
+            mc.addEventListener(MouseEvent.MOUSE_DOWN, this._onMouseDown);
+            mc.addEventListener(MouseEvent.MOUSE_UP, this._onMouseUp);
+            mc.addEventListener(SceneEvent.REMOVED_FROM_SCENE, this._onRemovedFromScene);
+        }
+    };
+    return SetButtonCommand;
+})();
+module.exports = SetButtonCommand;
+
+},{"awayjs-display/lib/events/MouseEvent":undefined,"awayjs-display/lib/events/SceneEvent":undefined,"awayjs-player/lib/display/MovieClip":"awayjs-player/lib/display/MovieClip"}],"awayjs-player/lib/timeline/commands/SetInstanceNameCommand":[function(require,module,exports){
 // can't use SetPropertyCommand since we NEED the setter to be called properly
 var SetInstanceNameCommand = (function () {
     // target can be MovieClip, its ColorTransform, and so on
@@ -64106,6 +64287,7 @@ var ShadowSoftMethod = require("awayjs-methodmaterials/lib/methods/ShadowSoftMet
 var BasicMaterial = require("awayjs-display/lib/materials/BasicMaterial");
 var AS2SceneGraphFactory = require("awayjs-player/lib/factories/AS2SceneGraphFactory");
 var TimelineKeyFrame = require("awayjs-player/lib/timeline/TimelineKeyFrame");
+var SetButtonCommand = require("awayjs-player/lib/timeline/commands/SetButtonCommand");
 var AddChildAtDepthCommand = require("awayjs-player/lib/timeline/commands/AddChildAtDepthCommand");
 var ApplyAS2DepthsCommand = require("awayjs-player/lib/timeline/commands/ApplyAS2DepthsCommand");
 var ExecuteScriptCommand = require("awayjs-player/lib/timeline/commands/ExecuteScriptCommand");
@@ -64206,7 +64388,7 @@ var AWDParser = (function (_super) {
                 this_block.data = audio_asset; // Store finished asset
                 // Finalize texture asset to dispatch texture event, which was
                 // previously suppressed while the dependency was loaded.
-                console.log("Parsing audio " + this_block.name);
+                //console.log("Parsing audio " + this_block.name);
                 this._pFinalizeAsset(audio_asset, this_block.name);
                 if (this._debug) {
                     console.log("Successfully loaded Sound into WaveAudio");
@@ -64846,7 +65028,6 @@ var AWDParser = (function (_super) {
         var type = this._newBlockBytes.readUnsignedByte();
         var data_len;
         //this._texture_users[this._cur_block_id.toString()] = [];
-        var start_loading = true;
         // External
         if (type == 0) {
             data_len = this._newBlockBytes.readUnsignedInt();
@@ -64859,9 +65040,6 @@ var AWDParser = (function (_super) {
         else {
             // todo: exporter does not export embed sounds yet
             data_len = this._newBlockBytes.readUnsignedInt();
-            if (data_len == 0) {
-                start_loading = false;
-            }
             var data;
             data = new ByteArray();
             this._newBlockBytes.readBytes(data, 0, data_len);
@@ -64872,8 +65050,8 @@ var AWDParser = (function (_super) {
         // Ignore for now
         this.parseProperties(null);
         this._blocks[blockID].extras = this.parseUserAttributes();
-        if (start_loading)
-            this._pPauseAndRetrieveDependencies();
+        this._pPauseAndRetrieveDependencies();
+        //this._blocks[blockID].data = asset;todo
         if (this._debug) {
             var textureStylesNames = ["external", "embed"];
             console.log("Start parsing a " + textureStylesNames[type] + " Audio file");
@@ -65001,9 +65179,10 @@ var AWDParser = (function (_super) {
                         break;
                     case 2:
                     case 3:
+                    case 6:
                         objectID = this._newBlockBytes.readUnsignedShort();
                         //console.log("add / update objectID ", objectID);
-                        if (commandType == 2) {
+                        if (commandType != 3) {
                             hasDepthChanges = true;
                             target_depth = this._newBlockBytes.readShort();
                             //console.log("target_depth ", target_depth);
@@ -65011,8 +65190,13 @@ var AWDParser = (function (_super) {
                             if (potChild != undefined) {
                                 frame.addConstructCommand(new AddChildAtDepthCommand(objectID, target_depth));
                                 // if the object is a tetfield, we set the textfield-name as instancename
-                                if (potChild.isAsset(TextField)) {
-                                    frame.addConstructCommand(new SetInstanceNameCommand(objectID, potChild.name));
+                                if (commandType == 6) {
+                                    frame.addConstructCommand(new SetButtonCommand(objectID));
+                                }
+                                else {
+                                    if (potChild.isAsset(TextField)) {
+                                        frame.addConstructCommand(new SetInstanceNameCommand(objectID, potChild.name));
+                                    }
                                 }
                             }
                             else {
@@ -66950,7 +67134,7 @@ var BitFlags = (function () {
 })();
 module.exports = AWDParser;
 
-},{"awayjs-core/lib/attributes/AttributesBuffer":undefined,"awayjs-core/lib/attributes/Float2Attributes":undefined,"awayjs-core/lib/attributes/Float3Attributes":undefined,"awayjs-core/lib/data/BitmapImageCube":undefined,"awayjs-core/lib/data/BlendMode":undefined,"awayjs-core/lib/geom/ColorTransform":undefined,"awayjs-core/lib/geom/Matrix3D":undefined,"awayjs-core/lib/geom/Vector3D":undefined,"awayjs-core/lib/net/URLLoaderDataFormat":undefined,"awayjs-core/lib/net/URLRequest":undefined,"awayjs-core/lib/parsers/ParserBase":undefined,"awayjs-core/lib/parsers/ParserUtils":undefined,"awayjs-core/lib/projections/OrthographicOffCenterProjection":undefined,"awayjs-core/lib/projections/OrthographicProjection":undefined,"awayjs-core/lib/projections/PerspectiveProjection":undefined,"awayjs-core/lib/utils/ByteArray":undefined,"awayjs-display/lib/animators/nodes/AnimationNodeBase":undefined,"awayjs-display/lib/base/CurveSubGeometry":undefined,"awayjs-display/lib/base/Geometry":undefined,"awayjs-display/lib/base/LightBase":undefined,"awayjs-display/lib/base/TriangleSubGeometry":undefined,"awayjs-display/lib/containers/DisplayObjectContainer":undefined,"awayjs-display/lib/entities/Billboard":undefined,"awayjs-display/lib/entities/Camera":undefined,"awayjs-display/lib/entities/DirectionalLight":undefined,"awayjs-display/lib/entities/Mesh":undefined,"awayjs-display/lib/entities/PointLight":undefined,"awayjs-display/lib/entities/Skybox":undefined,"awayjs-display/lib/entities/TextField":undefined,"awayjs-display/lib/managers/DefaultMaterialManager":undefined,"awayjs-display/lib/materials/BasicMaterial":undefined,"awayjs-display/lib/materials/lightpickers/LightPickerBase":undefined,"awayjs-display/lib/materials/lightpickers/StaticLightPicker":undefined,"awayjs-display/lib/materials/shadowmappers/CubeMapShadowMapper":undefined,"awayjs-display/lib/materials/shadowmappers/DirectionalShadowMapper":undefined,"awayjs-display/lib/prefabs/PrefabBase":undefined,"awayjs-display/lib/prefabs/PrimitiveCapsulePrefab":undefined,"awayjs-display/lib/prefabs/PrimitiveConePrefab":undefined,"awayjs-display/lib/prefabs/PrimitiveCubePrefab":undefined,"awayjs-display/lib/prefabs/PrimitiveCylinderPrefab":undefined,"awayjs-display/lib/prefabs/PrimitivePlanePrefab":undefined,"awayjs-display/lib/prefabs/PrimitivePrefabBase":undefined,"awayjs-display/lib/prefabs/PrimitiveSpherePrefab":undefined,"awayjs-display/lib/prefabs/PrimitiveTorusPrefab":undefined,"awayjs-display/lib/text/Font":undefined,"awayjs-display/lib/text/TextFormat":undefined,"awayjs-display/lib/textures/Single2DTexture":undefined,"awayjs-display/lib/textures/SingleCubeTexture":undefined,"awayjs-methodmaterials/lib/MethodMaterial":undefined,"awayjs-methodmaterials/lib/MethodMaterialMode":undefined,"awayjs-methodmaterials/lib/methods/AmbientEnvMapMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseCelMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseDepthMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseGradientMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseLightMapMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseWrapMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectAlphaMaskMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectColorMatrixMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectColorTransformMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectEnvMapMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectFogMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectFresnelEnvMapMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectLightMapMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectMethodBase":undefined,"awayjs-methodmaterials/lib/methods/EffectRimLightMethod":undefined,"awayjs-methodmaterials/lib/methods/NormalSimpleWaterMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowDitheredMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowFilteredMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowHardMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowMapMethodBase":undefined,"awayjs-methodmaterials/lib/methods/ShadowNearMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowSoftMethod":undefined,"awayjs-methodmaterials/lib/methods/SpecularAnisotropicMethod":undefined,"awayjs-methodmaterials/lib/methods/SpecularCelMethod":undefined,"awayjs-methodmaterials/lib/methods/SpecularFresnelMethod":undefined,"awayjs-methodmaterials/lib/methods/SpecularPhongMethod":undefined,"awayjs-parsers/lib/AWD3ParserUtils/AWDBlock":"awayjs-parsers/lib/AWD3ParserUtils/AWDBlock","awayjs-player/lib/factories/AS2SceneGraphFactory":undefined,"awayjs-player/lib/timeline/TimelineKeyFrame":undefined,"awayjs-player/lib/timeline/commands/AddChildAtDepthCommand":undefined,"awayjs-player/lib/timeline/commands/ApplyAS2DepthsCommand":undefined,"awayjs-player/lib/timeline/commands/ExecuteScriptCommand":undefined,"awayjs-player/lib/timeline/commands/RemoveChildrenAtDepthCommand":undefined,"awayjs-player/lib/timeline/commands/SetInstanceNameCommand":undefined,"awayjs-player/lib/timeline/commands/SetMaskCommand":undefined,"awayjs-player/lib/timeline/commands/UpdatePropertyCommand":undefined,"awayjs-renderergl/lib/animators/AnimationSetBase":undefined,"awayjs-renderergl/lib/animators/SkeletonAnimationSet":undefined,"awayjs-renderergl/lib/animators/SkeletonAnimator":undefined,"awayjs-renderergl/lib/animators/VertexAnimationSet":undefined,"awayjs-renderergl/lib/animators/VertexAnimator":undefined,"awayjs-renderergl/lib/animators/data/JointPose":undefined,"awayjs-renderergl/lib/animators/data/Skeleton":undefined,"awayjs-renderergl/lib/animators/data/SkeletonJoint":undefined,"awayjs-renderergl/lib/animators/data/SkeletonPose":undefined,"awayjs-renderergl/lib/animators/nodes/SkeletonClipNode":undefined,"awayjs-renderergl/lib/animators/nodes/VertexClipNode":undefined}],"awayjs-parsers/lib/MD2Parser":[function(require,module,exports){
+},{"awayjs-core/lib/attributes/AttributesBuffer":undefined,"awayjs-core/lib/attributes/Float2Attributes":undefined,"awayjs-core/lib/attributes/Float3Attributes":undefined,"awayjs-core/lib/data/BitmapImageCube":undefined,"awayjs-core/lib/data/BlendMode":undefined,"awayjs-core/lib/geom/ColorTransform":undefined,"awayjs-core/lib/geom/Matrix3D":undefined,"awayjs-core/lib/geom/Vector3D":undefined,"awayjs-core/lib/net/URLLoaderDataFormat":undefined,"awayjs-core/lib/net/URLRequest":undefined,"awayjs-core/lib/parsers/ParserBase":undefined,"awayjs-core/lib/parsers/ParserUtils":undefined,"awayjs-core/lib/projections/OrthographicOffCenterProjection":undefined,"awayjs-core/lib/projections/OrthographicProjection":undefined,"awayjs-core/lib/projections/PerspectiveProjection":undefined,"awayjs-core/lib/utils/ByteArray":undefined,"awayjs-display/lib/animators/nodes/AnimationNodeBase":undefined,"awayjs-display/lib/base/CurveSubGeometry":undefined,"awayjs-display/lib/base/Geometry":undefined,"awayjs-display/lib/base/LightBase":undefined,"awayjs-display/lib/base/TriangleSubGeometry":undefined,"awayjs-display/lib/containers/DisplayObjectContainer":undefined,"awayjs-display/lib/entities/Billboard":undefined,"awayjs-display/lib/entities/Camera":undefined,"awayjs-display/lib/entities/DirectionalLight":undefined,"awayjs-display/lib/entities/Mesh":undefined,"awayjs-display/lib/entities/PointLight":undefined,"awayjs-display/lib/entities/Skybox":undefined,"awayjs-display/lib/entities/TextField":undefined,"awayjs-display/lib/managers/DefaultMaterialManager":undefined,"awayjs-display/lib/materials/BasicMaterial":undefined,"awayjs-display/lib/materials/lightpickers/LightPickerBase":undefined,"awayjs-display/lib/materials/lightpickers/StaticLightPicker":undefined,"awayjs-display/lib/materials/shadowmappers/CubeMapShadowMapper":undefined,"awayjs-display/lib/materials/shadowmappers/DirectionalShadowMapper":undefined,"awayjs-display/lib/prefabs/PrefabBase":undefined,"awayjs-display/lib/prefabs/PrimitiveCapsulePrefab":undefined,"awayjs-display/lib/prefabs/PrimitiveConePrefab":undefined,"awayjs-display/lib/prefabs/PrimitiveCubePrefab":undefined,"awayjs-display/lib/prefabs/PrimitiveCylinderPrefab":undefined,"awayjs-display/lib/prefabs/PrimitivePlanePrefab":undefined,"awayjs-display/lib/prefabs/PrimitivePrefabBase":undefined,"awayjs-display/lib/prefabs/PrimitiveSpherePrefab":undefined,"awayjs-display/lib/prefabs/PrimitiveTorusPrefab":undefined,"awayjs-display/lib/text/Font":undefined,"awayjs-display/lib/text/TextFormat":undefined,"awayjs-display/lib/textures/Single2DTexture":undefined,"awayjs-display/lib/textures/SingleCubeTexture":undefined,"awayjs-methodmaterials/lib/MethodMaterial":undefined,"awayjs-methodmaterials/lib/MethodMaterialMode":undefined,"awayjs-methodmaterials/lib/methods/AmbientEnvMapMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseCelMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseDepthMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseGradientMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseLightMapMethod":undefined,"awayjs-methodmaterials/lib/methods/DiffuseWrapMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectAlphaMaskMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectColorMatrixMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectColorTransformMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectEnvMapMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectFogMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectFresnelEnvMapMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectLightMapMethod":undefined,"awayjs-methodmaterials/lib/methods/EffectMethodBase":undefined,"awayjs-methodmaterials/lib/methods/EffectRimLightMethod":undefined,"awayjs-methodmaterials/lib/methods/NormalSimpleWaterMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowDitheredMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowFilteredMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowHardMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowMapMethodBase":undefined,"awayjs-methodmaterials/lib/methods/ShadowNearMethod":undefined,"awayjs-methodmaterials/lib/methods/ShadowSoftMethod":undefined,"awayjs-methodmaterials/lib/methods/SpecularAnisotropicMethod":undefined,"awayjs-methodmaterials/lib/methods/SpecularCelMethod":undefined,"awayjs-methodmaterials/lib/methods/SpecularFresnelMethod":undefined,"awayjs-methodmaterials/lib/methods/SpecularPhongMethod":undefined,"awayjs-parsers/lib/AWD3ParserUtils/AWDBlock":"awayjs-parsers/lib/AWD3ParserUtils/AWDBlock","awayjs-player/lib/factories/AS2SceneGraphFactory":undefined,"awayjs-player/lib/timeline/TimelineKeyFrame":undefined,"awayjs-player/lib/timeline/commands/AddChildAtDepthCommand":undefined,"awayjs-player/lib/timeline/commands/ApplyAS2DepthsCommand":undefined,"awayjs-player/lib/timeline/commands/ExecuteScriptCommand":undefined,"awayjs-player/lib/timeline/commands/RemoveChildrenAtDepthCommand":undefined,"awayjs-player/lib/timeline/commands/SetButtonCommand":undefined,"awayjs-player/lib/timeline/commands/SetInstanceNameCommand":undefined,"awayjs-player/lib/timeline/commands/SetMaskCommand":undefined,"awayjs-player/lib/timeline/commands/UpdatePropertyCommand":undefined,"awayjs-renderergl/lib/animators/AnimationSetBase":undefined,"awayjs-renderergl/lib/animators/SkeletonAnimationSet":undefined,"awayjs-renderergl/lib/animators/SkeletonAnimator":undefined,"awayjs-renderergl/lib/animators/VertexAnimationSet":undefined,"awayjs-renderergl/lib/animators/VertexAnimator":undefined,"awayjs-renderergl/lib/animators/data/JointPose":undefined,"awayjs-renderergl/lib/animators/data/Skeleton":undefined,"awayjs-renderergl/lib/animators/data/SkeletonJoint":undefined,"awayjs-renderergl/lib/animators/data/SkeletonPose":undefined,"awayjs-renderergl/lib/animators/nodes/SkeletonClipNode":undefined,"awayjs-renderergl/lib/animators/nodes/VertexClipNode":undefined}],"awayjs-parsers/lib/MD2Parser":[function(require,module,exports){
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
