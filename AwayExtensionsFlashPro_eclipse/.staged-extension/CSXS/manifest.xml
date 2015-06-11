@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ExtensionManifest Version="4.0" ExtensionBundleId="AwayExtensionsFlashPro" ExtensionBundleVersion="0.9.86"
+<ExtensionManifest Version="4.0" ExtensionBundleId="AwayExtensionsFlashPro" ExtensionBundleVersion="0.9.87"
 		ExtensionBundleName="AwayExtensionsFlashPro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Author>
 		<![CDATA[www.away3d.com]]>

@@ -225,7 +225,7 @@ AWD::result CPublisher::ExportTimeline(const PIFCMDictionary pDictPublishSetting
 				res = pDict->Get(kLibProp_LinkageClass_DictKey, link_type, script_name_8, valLen);
 				ASSERT(FCM_SUCCESS_CODE(res));
 				script_name+=script_name_8;
-				delete []script_name_8;
+				//delete []script_name_8;
 			}
 			if(export_fonts){
 				DOM::AutoPtr<DOM::LibraryItem::IFontItem> pFontItem = plibrary_item;
@@ -253,6 +253,7 @@ AWD::result CPublisher::ExportTimeline(const PIFCMDictionary pDictPublishSetting
 					BLOCKS::Timeline* this_timeline = this->awd_project->get_timeline_by_symbol_name(symbol_name_str);
 					if(this_timeline!=NULL){
 						this_timeline->add_scene_name("script-linkage");
+						this_timeline->set_name(script_name);
 						if(symbol_name)
 							pCalloc->Free((FCM::PVoid)symbol_name);
 						continue;
@@ -260,6 +261,8 @@ AWD::result CPublisher::ExportTimeline(const PIFCMDictionary pDictPublishSetting
 					AutoPtr<DOM::ITimeline> timeline;
 					res = pSymbol_item->GetTimeLine(timeline.m_Ptr);
 					this->ExportTimeline(_pDict, timeline, -1);
+					this_timeline = this->awd_project->get_timeline_by_symbol_name(symbol_name_str);
+					this_timeline->set_name(script_name);
 					
 					if(symbol_name)
 						pCalloc->Free((FCM::PVoid)symbol_name);
