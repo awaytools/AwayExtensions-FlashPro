@@ -235,8 +235,8 @@ namespace AwayJS
 
 			
 		// get the settings for resolve_intersections, or set them to default, if resolve_intersections is false
-		double curveThreshold=0.1;
-		int maxIterations=4;
+		double curveThreshold=0.05;
+		int maxIterations=50;
 		/*if(resolveIntersects){
 			// defines the max threshold of "curviness" before subdividing of curves should be stopped
 			std::string curveThreshold_s;
@@ -263,13 +263,12 @@ namespace AwayJS
 		if(export_framescripts_s=="false")
 			export_framescripts=false;
 
-		// defines the max threshold of "curviness" before subdividing of curves should be stopped
 		double exterior_threshold=0.0;
-		std::string exterior_threshold_s;
+		/*std::string exterior_threshold_s;
 		ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.MinimizeExteriorTreshold", exterior_threshold_s);
 		if(!exterior_threshold_s.empty())
 			exterior_threshold=std::stod(exterior_threshold_s);
-
+			*/
 		bool export_invisible_timeline_layer=false;
 		std::string export_invisible_timeline_layer_s;
 		ReadString(pDictPublishSettings, (FCM::StringRep8)"PublishSettings.IncludeInvisibleLayer", export_invisible_timeline_layer_s);

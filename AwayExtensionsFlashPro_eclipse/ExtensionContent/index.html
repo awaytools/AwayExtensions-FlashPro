@@ -291,33 +291,6 @@
                 document.getElementById("embbed_textures").checked = false;
             }
         }
-        if(uiState.data["PublishSettings.MinimizeExteriorTresholdStrokes"] != null && uiState.data["PublishSettings.MinimizeExteriorTresholdStrokes"] != "undefined")
-        {
-            if(uiState.data["PublishSettings.MinimizeExteriorTresholdStrokes"] == "true")
-            {
-                document.getElementById("minimize_exterior_treshold_strokes").checked = true;
-            }else
-            {
-                document.getElementById("minimize_exterior_treshold_strokes").checked = false;
-            }
-        }
-        if(uiState.data["PublishSettings.MinimizeExteriorTresholdFonts"] != null && uiState.data["PublishSettings.MinimizeExteriorTresholdFonts"] != "undefined")
-        {
-            if(uiState.data["PublishSettings.MinimizeExteriorTresholdFonts"] == "true")
-            {
-                document.getElementById("minimize_exterior_treshold_fonts").checked = true;
-            }else
-            {
-                document.getElementById("minimize_exterior_treshold_fonts").checked = false;
-            }
-        }
-
-
-        if(uiState.data["PublishSettings.MinimizeExteriorTreshold"] !=null && uiState.data["PublishSettings.MinimizeExteriorTreshold"] != undefined)
-        {
-            document.getElementById("minimize_exterior_treshold").value = uiState.data["PublishSettings.MinimizeExteriorTreshold"];
-            document.getElementById("minimize_exterior_label").innerHTML  = "Exterior Treshold = "+uiState.data["PublishSettings.MinimizeExteriorTreshold"];
-        }
 
         //var test = csInterface.closeExtension();
         //evalScript("fl.runScript('"+awayjsfl_script_path+"', 'change_preview_settings', 'test1', 'test2', 'test3', 'test4');", read_preview_settings);
@@ -439,28 +412,6 @@
         //   "FlashPlayer11.9"
         //   "FlashPlayer12.0"
         //   "FlashPlayer13.0"
-
-
-        if(document.getElementById("minimize_exterior_treshold_fonts").checked == true)
-        {
-            pubSettings["PublishSettings.MinimizeExteriorTresholdFonts"] = "true";
-        }
-        else
-        {
-            pubSettings["PublishSettings.MinimizeExteriorTresholdFonts"] = "false";
-        }
-
-        if(document.getElementById("minimize_exterior_treshold_strokes").checked == true)
-        {
-            pubSettings["PublishSettings.MinimizeExteriorTresholdStrokes"] = "true";
-        }
-        else
-        {
-            pubSettings["PublishSettings.MinimizeExteriorTresholdStrokes"] = "false";
-        }
-
-        var e2 = document.getElementById("minimize_exterior_treshold").value.toString();
-        pubSettings["PublishSettings.MinimizeExteriorTreshold"] = e2;
 
 
         if(document.getElementById("includeVisiblelayers").checked == true)
@@ -586,14 +537,10 @@
         //Light and dark theme change
 
 
-        document.getElementById("minimize_exterior_treshold").defaultValue = "0.1";
         document.getElementById("includeVisiblelayers").checked=true;
         document.getElementById("usePreview").checked=true;
         document.getElementById("exportShapesInDebugMode").checked=false;
 
-
-        document.getElementById("minimize_exterior_treshold_fonts").checked=false;
-        document.getElementById("minimize_exterior_treshold_strokes").checked=false;
         document.getElementById("exportLibFonts").checked=true;
         document.getElementById("embbed_sounds").checked=true;
         document.getElementById("embbed_textures").checked=true;
@@ -608,9 +555,7 @@
         document.getElementById("fontData").selectedIndex = "0";
         document.getElementById("geometryData").selectedIndex = "0";
           
-
-        document.getElementById("minimize_exterior_label").innerHTML  = "Exterior Treshold = 0.1";
-
+        
         var skinInfo = JSON.parse(window.__adobe_cep__.getHostEnvironment()).appSkinInfo;
         var styleSheets= document.styleSheets;
         ChangePanelTheme(skinInfo);
@@ -795,16 +740,6 @@
                 <p>
                     <input type="checkbox" id="exportShapesInDebugMode">Export shapes in debug mode (split triangles into subgeos based on curve-type)
                 </p>
-            </div>
-            <div class="clearer">
-                <p>
-                    <label id="minimize_exterior_label" class="myLabel3" >Exterior Threshold</label>
-                    <input type="range" id="minimize_exterior_treshold" min="0.00" max="0.5" step="0.01"  onchange="onSliderChange_exterior(this.value)">
-                    <input type="checkbox" id="minimize_exterior_treshold_strokes">on strokes
-                    <input type="checkbox" id="minimize_exterior_treshold_fonts">on fonts
-                </p>
-            </div>
-            <div class="clearer">
                 <p>
                     <input type="checkbox" id="printExportLog">Print Export Log
                 </p>

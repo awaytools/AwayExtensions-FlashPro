@@ -9,7 +9,7 @@
     <LocalDebuggerAttach>false</LocalDebuggerAttach>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommand>C:\Program Files\Adobe\Adobe Flash CC 2015\Flash.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>C:\Program Files\Adobe\Adobe Flash CC Prerelease\Flash.exe</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

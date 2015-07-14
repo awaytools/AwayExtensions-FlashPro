@@ -127,7 +127,7 @@ FlashToAWDEncoder::ExportBitmap(DOM::LibraryItem::IMediaItem* media_item,  BASE:
 		bitmapExportPath += bitmapName; 
 #ifdef _WINDOWS
         // also create the relative-path that should be saved into AWD (in case it is set to external-data)
-        bitmapRelPath = ".\\" + this->awd_project->get_settings()->get_texture_directory_name() + bitmapName;
+        bitmapRelPath = "./" + this->awd_project->get_settings()->get_texture_directory_name() + bitmapName;
 #endif
 #ifdef __APPLE__
         // also create the relative-path that should be saved into AWD (in case it is set to external-data)
@@ -228,7 +228,7 @@ FlashToAWDEncoder::ExportSound(DOM::LibraryItem::IMediaItem* media_item,  BASE::
 	std::string soundRelPath;
 #ifdef _WINDOWS
         // also create the relative-path that should be saved into AWD (in case it is set to external-data)
-        soundRelPath = ".\\" + this->awd_project->get_settings()->get_audio_directory_name() + soundName;
+        soundRelPath = "./" + this->awd_project->get_settings()->get_audio_directory_name() + soundName;
 #endif
 #ifdef __APPLE__
         // also create the relative-path that should be saved into AWD (in case it is set to external-data)

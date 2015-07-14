@@ -426,6 +426,8 @@ AWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem* 
 
 	FONT::FontStyle* awdFontStyle=font_block->get_font_style(fontStyle);
 	awdFontStyle->set_style_size(fontsize);	
+	awdFontStyle->set_whitespace_size(fontsize);	
+	
 	//Utils::Trace(this->m_pCallback, "glyph-count:%d\n", glyphCount);
 	for (FCM::U_Int32 g = 0; g < glyphCount; g++)
 	{
@@ -437,13 +439,20 @@ AWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem* 
 		thisGlyph->GetCharCode(charCode);
 		//AwayJS::Utils::Trace(this->m_pCallback, "Created font %d \n", charCode);
 		//thisGlyph->GetAdvance
-		FONT::FontShape*  thisFontShape= awdFontStyle->get_fontShape(charCode);
-		if(thisFontShape!=NULL){
-			//Utils::Trace(this->m_pCallback, "Export shape for glyph with charCode = %d \n", charCode);
-			if(glyphShape){
-				if (glyphShape)
-				{
-					this->ExportStrokeForFont(glyphShape, thisFontShape);
+		if(charCode==32){
+			FCM::Double advanced;
+			thisGlyph->GetAdvance(advanced);
+			awdFontStyle->set_whitespace_size(advanced);
+		}
+		else{
+			FONT::FontShape*  thisFontShape= awdFontStyle->get_fontShape(charCode);
+			if(thisFontShape!=NULL){
+				//Utils::Trace(this->m_pCallback, "Export shape for glyph with charCode = %d \n", charCode);
+				if(glyphShape){
+					if (glyphShape)
+					{
+						this->ExportStrokeForFont(glyphShape, thisFontShape);
+					}
 				}
 			}
 		}
@@ -535,6 +544,7 @@ AWD::result FlashToAWDEncoder::FinalizeFonts(DOM::PIFLADocument pFlaDocument)
 				}	
 				//Utils::Trace(this->m_pCallback, "fontsize:%d\n", fontsize);	
 				thisfontStyle->set_style_size(fontsize);
+				thisfontStyle->set_whitespace_size(fontsize);
 				FCM::FCMListPtr kerningPairs;
 				thisFontTable->GetKerningPairs(DOM::FrameElement::ORIENTATION_MODE_HORIZONTAL,kerningPairs.m_Ptr);
 				FCM::U_Int32 kerningPairsCount;
@@ -574,15 +584,20 @@ AWD::result FlashToAWDEncoder::FinalizeFonts(DOM::PIFLADocument pFlaDocument)
 					thisGlyph->GetOutline(glyphShape);
 					FCM::U_Int16 charCode;
 					thisGlyph->GetCharCode(charCode);
-
-					FONT::FontShape*  thisFontShape= thisfontStyle->get_fontShape(charCode);
-					if(thisFontShape!=NULL){
-						if(glyphShape){
-							this->ExportStrokeForFont(glyphShape, thisFontShape);
+					
+					if(charCode==32){
+						thisfontStyle->set_whitespace_size(advanced_value);
+						thisfontStyle->delete_fontShape(32);
+					}
+					else{
+						FONT::FontShape*  thisFontShape= thisfontStyle->get_fontShape(charCode);
+						if(thisFontShape!=NULL){
+							if(glyphShape){
+								this->ExportStrokeForFont(glyphShape, thisFontShape);
+							}
 						}
 					}
 				}
-
 				// we check again if there are any ungenerated chars in the font-style.
 				// if this happens, we delete the invalid chars and output a message.
                 std::vector<FONT::FontShape*> ungenerated_end=thisfontStyle->get_ungenerated_chars();
