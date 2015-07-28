@@ -96,7 +96,7 @@ namespace AwayJS
         END_INTERFACE_MAP
         
     public:
-		AWD::result CPublisher::ExportTimeline(const PIFCMDictionary pDictPublishSettings, DOM::ITimeline* pTimeline, int);
+		AWD::result ExportTimeline(const PIFCMDictionary pDictPublishSettings, DOM::ITimeline* pTimeline, int);
         virtual FCM::Result _FCMCALL Publish(
             DOM::PIFLADocument pFlaDocument, 
             const PIFCMDictionary pDictPublishSettings, 

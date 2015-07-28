@@ -110,17 +110,14 @@
 		B89ED4BA1A8D964D003A027C /* TimeLineBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4A91A8D964D003A027C /* TimeLineBuilder.cpp */; };
 		B89ED4BB1A8D964D003A027C /* DocType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4AA1A8D964D003A027C /* DocType.cpp */; };
 		B89ED4BC1A8D964D003A027C /* FlashToAWDEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4AB1A8D964D003A027C /* FlashToAWDEncoder.cpp */; };
-		B89ED4BD1A8D964D003A027C /* FlashToAWDEncoder_audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4AC1A8D964D003A027C /* FlashToAWDEncoder_audio.cpp */; };
 		B89ED4BE1A8D964D003A027C /* FlashToAWDEncoder_fills.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4AD1A8D964D003A027C /* FlashToAWDEncoder_fills.cpp */; };
 		B89ED4BF1A8D964D003A027C /* FlashToAWDEncoder_fonts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4AE1A8D964D003A027C /* FlashToAWDEncoder_fonts.cpp */; };
 		B89ED4C01A8D964D003A027C /* FlashToAWDEncoder_mediaItems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4AF1A8D964D003A027C /* FlashToAWDEncoder_mediaItems.cpp */; };
 		B89ED4C11A8D964D003A027C /* FlashToAWDEncoder_shapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4B01A8D964D003A027C /* FlashToAWDEncoder_shapes.cpp */; };
-		B89ED4C21A8D964D003A027C /* FlashToAWDEncoder_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4B11A8D964D003A027C /* FlashToAWDEncoder_text.cpp */; };
 		B89ED4C31A8D964D003A027C /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4B21A8D964D003A027C /* Main.cpp */; };
 		B89ED4C41A8D964D003A027C /* MyXmlParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4B31A8D964D003A027C /* MyXmlParser.cpp */; };
 		B89ED4C51A8D964D003A027C /* Publisher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4B41A8D964D003A027C /* Publisher.cpp */; };
 		B89ED4C61A8D964D003A027C /* PublisherUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4B51A8D964D003A027C /* PublisherUtils.cpp */; };
-		B89ED4C71A8D964D003A027C /* TimeLineEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4B61A8D964D003A027C /* TimeLineEncoder.cpp */; };
 		B89ED4C81A8D964D003A027C /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B89ED4B71A8D964D003A027C /* Utils.cpp */; };
 /* End PBXBuildFile section */
 
@@ -332,17 +329,14 @@
 		B89ED4A91A8D964D003A027C /* TimeLineBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLineBuilder.cpp; sourceTree = "<group>"; };
 		B89ED4AA1A8D964D003A027C /* DocType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DocType.cpp; sourceTree = "<group>"; };
 		B89ED4AB1A8D964D003A027C /* FlashToAWDEncoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlashToAWDEncoder.cpp; sourceTree = "<group>"; };
-		B89ED4AC1A8D964D003A027C /* FlashToAWDEncoder_audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlashToAWDEncoder_audio.cpp; sourceTree = "<group>"; };
 		B89ED4AD1A8D964D003A027C /* FlashToAWDEncoder_fills.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlashToAWDEncoder_fills.cpp; sourceTree = "<group>"; };
 		B89ED4AE1A8D964D003A027C /* FlashToAWDEncoder_fonts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlashToAWDEncoder_fonts.cpp; sourceTree = "<group>"; };
 		B89ED4AF1A8D964D003A027C /* FlashToAWDEncoder_mediaItems.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlashToAWDEncoder_mediaItems.cpp; sourceTree = "<group>"; };
 		B89ED4B01A8D964D003A027C /* FlashToAWDEncoder_shapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlashToAWDEncoder_shapes.cpp; sourceTree = "<group>"; };
-		B89ED4B11A8D964D003A027C /* FlashToAWDEncoder_text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlashToAWDEncoder_text.cpp; sourceTree = "<group>"; };
 		B89ED4B21A8D964D003A027C /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		B89ED4B31A8D964D003A027C /* MyXmlParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyXmlParser.cpp; sourceTree = "<group>"; };
 		B89ED4B41A8D964D003A027C /* Publisher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Publisher.cpp; sourceTree = "<group>"; };
 		B89ED4B51A8D964D003A027C /* PublisherUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PublisherUtils.cpp; sourceTree = "<group>"; };
-		B89ED4B61A8D964D003A027C /* TimeLineEncoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLineEncoder.cpp; sourceTree = "<group>"; };
 		B89ED4B71A8D964D003A027C /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
 		F5977F0C09B7D3B80058A43E /* project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = project.xcconfig; path = ../AwayExtensionsFlashPro.xcconfigs/project.xcconfig; sourceTree = "<group>"; };
 		F5977F0F09B7D4150058A43E /* project_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = project_debug.xcconfig; path = ../AwayExtensionsFlashPro.xcconfigs/project_debug.xcconfig; sourceTree = "<group>"; };
@@ -725,17 +719,14 @@
 				B89ED4A61A8D964D003A027C /* adobe_frame_commands */,
 				B89ED4AA1A8D964D003A027C /* DocType.cpp */,
 				B89ED4AB1A8D964D003A027C /* FlashToAWDEncoder.cpp */,
-				B89ED4AC1A8D964D003A027C /* FlashToAWDEncoder_audio.cpp */,
 				B89ED4AD1A8D964D003A027C /* FlashToAWDEncoder_fills.cpp */,
 				B89ED4AE1A8D964D003A027C /* FlashToAWDEncoder_fonts.cpp */,
 				B89ED4AF1A8D964D003A027C /* FlashToAWDEncoder_mediaItems.cpp */,
 				B89ED4B01A8D964D003A027C /* FlashToAWDEncoder_shapes.cpp */,
-				B89ED4B11A8D964D003A027C /* FlashToAWDEncoder_text.cpp */,
 				B89ED4B21A8D964D003A027C /* Main.cpp */,
 				B89ED4B31A8D964D003A027C /* MyXmlParser.cpp */,
 				B89ED4B41A8D964D003A027C /* Publisher.cpp */,
 				B89ED4B51A8D964D003A027C /* PublisherUtils.cpp */,
-				B89ED4B61A8D964D003A027C /* TimeLineEncoder.cpp */,
 				B89ED4B71A8D964D003A027C /* Utils.cpp */,
 			);
 			name = src;
@@ -952,7 +943,6 @@
 			files = (
 				42CA67161AF5E16F00F208E2 /* Namespace.cc in Sources */,
 				42CA67081AF5E16F00F208E2 /* Animator.cc in Sources */,
-				B89ED4BD1A8D964D003A027C /* FlashToAWDEncoder_audio.cpp in Sources */,
 				42CA673A1AF5E16F00F208E2 /* ShadingMethod.cc in Sources */,
 				42CA67151AF5E16F00F208E2 /* MetaData.cc in Sources */,
 				42CA67461AF5E16F00F208E2 /* geomutil.cc in Sources */,
@@ -997,7 +987,6 @@
 				42E270E71AF7F3C400A3316F /* TimelineDepthManager.cc in Sources */,
 				42CA67281AF5E16F00F208E2 /* NumAttr.cc in Sources */,
 				B89ED4C31A8D964D003A027C /* Main.cpp in Sources */,
-				B89ED4C71A8D964D003A027C /* TimeLineEncoder.cpp in Sources */,
 				42CA67371AF5E16F00F208E2 /* SubGeomInternal.cc in Sources */,
 				42CA67111AF5E16F00F208E2 /* Light.cc in Sources */,
 				B89ED4B91A8D964D003A027C /* RessourcePalette.cpp in Sources */,
@@ -1022,7 +1011,6 @@
 				42CA67351AF5E16F00F208E2 /* SharedVertex.cc in Sources */,
 				42CA67361AF5E16F00F208E2 /* SubGeom.cc in Sources */,
 				42CA67451AF5E16F00F208E2 /* DirentWin.cpp in Sources */,
-				B89ED4C21A8D964D003A027C /* FlashToAWDEncoder_text.cpp in Sources */,
 				42CA672F1AF5E16F00F208E2 /* DataStream.cc in Sources */,
 				42E270ED1AF7F5D600A3316F /* Billboard.cc in Sources */,
 				42CA67041AF5E16F00F208E2 /* DataBlockBase.cc in Sources */,
