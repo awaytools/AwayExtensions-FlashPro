@@ -1,0 +1,87 @@
+[1mdiff --git a/cpp/AwayExtensionsFlashPro/include/FlashToAWDEncoder.h b/cpp/AwayExtensionsFlashPro/include/FlashToAWDEncoder.h[m
+[1mindex 1273bb3..e4371a2 100644[m
+[1m--- a/cpp/AwayExtensionsFlashPro/include/FlashToAWDEncoder.h[m
+[1m+++ b/cpp/AwayExtensionsFlashPro/include/FlashToAWDEncoder.h[m
+[36m@@ -124,7 +124,7 @@[m [mclass FlashToAWDEncoder[m
+ 		[m
+ 		AWD::result ExportText(DOM::FrameElement::IClassicText*, AWDBlock** awd_block, const std::string);[m
+ [m
+[31m-		AWD::BASE::AWDBlock* ExportFont(DOM::LibraryItem::IFontItem* font);[m
+[32m+[m		[32mAWD::BASE::AWDBlock* ExportFont(DOM::LibraryItem::IFontItem* font, std::string name);[m
+ [m
+ 		AWD::result FinalizeFonts(DOM::PIFLADocument pFlaDocument);[m
+ 		[m
+[1mdiff --git a/cpp/AwayExtensionsFlashPro/project/win/AwayExtensionsFlashPro.sdf b/cpp/AwayExtensionsFlashPro/project/win/AwayExtensionsFlashPro.sdf[m
+[1mindex c82e373..42524d9 100644[m
+Binary files a/cpp/AwayExtensionsFlashPro/project/win/AwayExtensionsFlashPro.sdf and b/cpp/AwayExtensionsFlashPro/project/win/AwayExtensionsFlashPro.sdf differ
+[1mdiff --git a/cpp/AwayExtensionsFlashPro/project/win/AwayExtensionsFlashPro.v11.suo b/cpp/AwayExtensionsFlashPro/project/win/AwayExtensionsFlashPro.v11.suo[m
+[1mindex c85e52d..7eaab9e 100644[m
+Binary files a/cpp/AwayExtensionsFlashPro/project/win/AwayExtensionsFlashPro.v11.suo and b/cpp/AwayExtensionsFlashPro/project/win/AwayExtensionsFlashPro.v11.suo differ
+[1mdiff --git a/cpp/AwayExtensionsFlashPro/src/FlashToAWDEncoder_fonts.cpp b/cpp/AwayExtensionsFlashPro/src/FlashToAWDEncoder_fonts.cpp[m
+[1mindex b91cf54..7e734f2 100644[m
+[1m--- a/cpp/AwayExtensionsFlashPro/src/FlashToAWDEncoder_fonts.cpp[m
+[1m+++ b/cpp/AwayExtensionsFlashPro/src/FlashToAWDEncoder_fonts.cpp[m
+[36m@@ -228,7 +228,14 @@[m [mFlashToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, AWD[m
+ 			[m
+             FCM::StringRep16 font_name;[m
+             text_style->GetFontName(&font_name);[m
+[31m-            std::string font_name_str = AwayJS::Utils::ToString(font_name, this->m_pCallback);      [m
+[32m+[m[32m            std::string font_name_str = AwayJS::Utils::ToString(font_name, this->m_pCallback);[m[41m [m
+[32m+[m			[32mstd::string str2="*";[m
+[32m+[m			[32mif(font_name)AwayJS::Utils::Trace(this->m_pCallback, "textfield fontName = %s \n",font_name_str.c_str());[m
+[32m+[m			[32mstd::size_t found = font_name_str.find(str2);[m
+[32m+[m			[32mif (found!=std::string::npos)[m
+[32m+[m				[32mfont_name_str.replace(font_name_str.find(str2),str2.length(),"");[m
+[32m+[m[41m     [m
+[32m+[m			[32mif(font_name)AwayJS::Utils::Trace(this->m_pCallback, "textfield fontName = %s \n",font_name_str.c_str());[m
+ [m
+             FCM::StringRep8 font_style;[m
+             text_style->GetFontStyle(&font_style);[m
+[36m@@ -337,7 +344,7 @@[m [mFlashToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, AWD[m
+ [m
+  // converts a entire flash font-item found in the library into awd-font (genertes shapes for font)[m
+  [m
+[31m-AWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem* font)[m
+[32m+[m[32mAWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem* font, std::string name)[m
+ {[m
+ 	[m
+ 	FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AwayJS::Utils::GetCallocService(this->m_pCallback);[m
+[36m@@ -353,10 +360,9 @@[m [mAWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem*[m
+ 		AwayJS::Utils::Trace(this->m_pCallback, "Could not generate IFontTable");[m
+ 		return NULL;[m
+ 	}[m
+[31m-[m
+ 	FCM::StringRep16 fontName;[m
+ 	font->GetFontName(&fontName);[m
+[31m-	//if(fontName)Utils::Trace(this->m_pCallback, "fontName = %s \n",Utils::ToString(fontName, this->m_pCallback).c_str());[m
+[32m+[m	[32mif(fontName)AwayJS::Utils::Trace(this->m_pCallback, "fontName = %s \n",AwayJS::Utils::ToString(fontName, this->m_pCallback).c_str());[m
+ 	FCM::StringRep8 fontStyle;[m
+ 	font->GetFontStyle(&fontStyle);[m
+ 	//if(fontStyle)Utils::Trace(this->m_pCallback, "fontStyle = %s \n",Utils::ToString(Utils::ToString16(fontStyle, this->m_pCallback), this->m_pCallback).c_str());[m
+[36m@@ -417,7 +423,7 @@[m [mAWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem*[m
+     std::string fontName2=AwayJS::Utils::ToString(fontName, this->m_pCallback);[m
+ 	if(fontName)[m
+ 		pCalloc->Free((FCM::PVoid)fontName);[m
+[31m-	BLOCKS::Font* font_block=reinterpret_cast<BLOCKS::Font*>(this->awd_project->get_block_by_name_and_type(fontName2, BLOCK::block_type::FONT, true));[m
+[32m+[m	[32mBLOCKS::Font* font_block=reinterpret_cast<BLOCKS::Font*>(this->awd_project->get_block_by_name_and_type(name, BLOCK::block_type::FONT, true));[m
+ 	font_block->set_name(fontName2);[m
+ 	font_block->add_scene_name(this->current_scene_name);[m
+ 	//AwayJS::Utils::Trace(this->m_pCallback, "Created font block");[m
+[1mdiff --git a/cpp/AwayExtensionsFlashPro/src/PublisherUtils.cpp b/cpp/AwayExtensionsFlashPro/src/PublisherUtils.cpp[m
+[1mindex f8d43ae..53ff236 100644[m
+[1m--- a/cpp/AwayExtensionsFlashPro/src/PublisherUtils.cpp[m
+[1m+++ b/cpp/AwayExtensionsFlashPro/src/PublisherUtils.cpp[m
+[36m@@ -230,9 +230,12 @@[m [mAWD::result CPublisher::ExportTimeline(const PIFCMDictionary pDictPublishSetting[m
+ 			if(export_fonts){[m
+ 				DOM::AutoPtr<DOM::LibraryItem::IFontItem> pFontItem = plibrary_item;[m
+ 				if(pFontItem){[m
+[32m+[m					[32mFCM::StringRep16 symbol_name=NULL;[m
+[32m+[m					[32mplibrary_item->GetName(&symbol_name);[m
+[32m+[m					[32mstd::string symbol_name_str=AwayJS::Utils::ToString(symbol_name, GetCallback());[m
+ 					//Utils::Trace(GetCallback(), "\n	->	Found Font");[m
+ 					// export a font item from library[m
+[31m-					AWDBlock* new_font = this->flash_to_awd_encoder->ExportFont(pFontItem);[m
+[32m+[m					[32mAWDBlock* new_font = this->flash_to_awd_encoder->ExportFont(pFontItem, symbol_name_str);[m
+ 					if(new_font==NULL)[m
+                 		return awd_res;[m
+ 					if(script_name.size()>0){[m

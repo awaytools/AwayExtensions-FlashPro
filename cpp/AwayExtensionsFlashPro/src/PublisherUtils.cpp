@@ -230,9 +230,12 @@ AWD::result CPublisher::ExportTimeline(const PIFCMDictionary pDictPublishSetting
 			if(export_fonts){
 				DOM::AutoPtr<DOM::LibraryItem::IFontItem> pFontItem = plibrary_item;
 				if(pFontItem){
+					FCM::StringRep16 symbol_name=NULL;
+					plibrary_item->GetName(&symbol_name);
+					std::string symbol_name_str=AwayJS::Utils::ToString(symbol_name, GetCallback());
 					//Utils::Trace(GetCallback(), "\n	->	Found Font");
 					// export a font item from library
-					AWDBlock* new_font = this->flash_to_awd_encoder->ExportFont(pFontItem);
+					AWDBlock* new_font = this->flash_to_awd_encoder->ExportFont(pFontItem, symbol_name_str);
 					if(new_font==NULL)
                 		return awd_res;
 					if(script_name.size()>0){

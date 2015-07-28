@@ -124,7 +124,7 @@ class FlashToAWDEncoder
 		
 		AWD::result ExportText(DOM::FrameElement::IClassicText*, AWDBlock** awd_block, const std::string);
 
-		AWD::BASE::AWDBlock* ExportFont(DOM::LibraryItem::IFontItem* font);
+		AWD::BASE::AWDBlock* ExportFont(DOM::LibraryItem::IFontItem* font, std::string name);
 
 		AWD::result FinalizeFonts(DOM::PIFLADocument pFlaDocument);
 		

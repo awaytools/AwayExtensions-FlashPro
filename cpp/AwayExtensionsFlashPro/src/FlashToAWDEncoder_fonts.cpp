@@ -228,7 +228,14 @@ FlashToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, AWD
 			
             FCM::StringRep16 font_name;
             text_style->GetFontName(&font_name);
-            std::string font_name_str = AwayJS::Utils::ToString(font_name, this->m_pCallback);      
+            std::string font_name_str = AwayJS::Utils::ToString(font_name, this->m_pCallback); 
+			std::string str2="*";
+			if(font_name)AwayJS::Utils::Trace(this->m_pCallback, "textfield fontName = %s \n",font_name_str.c_str());
+			std::size_t found = font_name_str.find(str2);
+			if (found!=std::string::npos)
+				font_name_str.replace(font_name_str.find(str2),str2.length(),"");
+     
+			if(font_name)AwayJS::Utils::Trace(this->m_pCallback, "textfield fontName = %s \n",font_name_str.c_str());
 
             FCM::StringRep8 font_style;
             text_style->GetFontStyle(&font_style);
@@ -337,7 +344,7 @@ FlashToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, AWD
 
  // converts a entire flash font-item found in the library into awd-font (genertes shapes for font)
  
-AWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem* font)
+AWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem* font, std::string name)
 {
 	
 	FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AwayJS::Utils::GetCallocService(this->m_pCallback);
@@ -353,10 +360,9 @@ AWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem* 
 		AwayJS::Utils::Trace(this->m_pCallback, "Could not generate IFontTable");
 		return NULL;
 	}
-
 	FCM::StringRep16 fontName;
 	font->GetFontName(&fontName);
-	//if(fontName)Utils::Trace(this->m_pCallback, "fontName = %s \n",Utils::ToString(fontName, this->m_pCallback).c_str());
+	if(fontName)AwayJS::Utils::Trace(this->m_pCallback, "fontName = %s \n",AwayJS::Utils::ToString(fontName, this->m_pCallback).c_str());
 	FCM::StringRep8 fontStyle;
 	font->GetFontStyle(&fontStyle);
 	//if(fontStyle)Utils::Trace(this->m_pCallback, "fontStyle = %s \n",Utils::ToString(Utils::ToString16(fontStyle, this->m_pCallback), this->m_pCallback).c_str());
@@ -417,7 +423,7 @@ AWD::BASE::AWDBlock* FlashToAWDEncoder::ExportFont(DOM::LibraryItem::IFontItem* 
     std::string fontName2=AwayJS::Utils::ToString(fontName, this->m_pCallback);
 	if(fontName)
 		pCalloc->Free((FCM::PVoid)fontName);
-	BLOCKS::Font* font_block=reinterpret_cast<BLOCKS::Font*>(this->awd_project->get_block_by_name_and_type(fontName2, BLOCK::block_type::FONT, true));
+	BLOCKS::Font* font_block=reinterpret_cast<BLOCKS::Font*>(this->awd_project->get_block_by_name_and_type(name, BLOCK::block_type::FONT, true));
 	font_block->set_name(fontName2);
 	font_block->add_scene_name(this->current_scene_name);
 	//AwayJS::Utils::Trace(this->m_pCallback, "Created font block");
