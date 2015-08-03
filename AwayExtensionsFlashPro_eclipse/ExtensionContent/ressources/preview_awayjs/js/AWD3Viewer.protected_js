@@ -48,7 +48,7 @@ var Loader = require("awayjs-display/lib/containers/Loader");
 var Renderer2D = require("awayjs-player/lib/renderer/Renderer2D");
 var AWDParser = require("awayjs-parsers/lib/AWDParser");
 var Partition2D = require("awayjs-player/lib/partition/Partition2D");
-var MovieClip = require("awayjs-player/lib/display/MovieClip");
+var MovieClip = require("awayjs-display/lib/entities/MovieClip");
 var CoordinateSystem = require("awayjs-core/lib/projections/CoordinateSystem");
 var PerspectiveProjection = require("awayjs-core/lib/projections/PerspectiveProjection");
 var Camera = require("awayjs-display/lib/entities/Camera");
@@ -60,6 +60,8 @@ var AWD3ViewerMinimal = (function () {
     function AWD3ViewerMinimal() {
         this._fps = 30;
         this._time = 0;
+        this._replaced_gettext = false;
+        this._updated_property = false;
         this.init();
     }
     /**
@@ -152,13 +154,12 @@ var AWD3ViewerMinimal = (function () {
         }
         else if (event.asset.isAsset(MovieClip)) {
             var one_mc = event.asset;
-            /*if (one_mc.name == "border" || one_mc.name == "dream" || one_mc.name == "IAP Menu" || one_mc.name == "shoptag_shapes" || one_mc.name == "shopttag_cliffedges") {
-                console.log("NAME:", one_mc.name)
+            if (one_mc.name == "border" || one_mc.name == "dream" || one_mc.name == "IAP Menu" || one_mc.name == "shoptag_shapes" || one_mc.name == "shopttag_cliffedges") {
+                console.log("NAME:", one_mc.name);
                 one_mc.mouseEnabled = false;
                 one_mc.mouseChildren = false;
-            }*/
+            }
             this._rootTimeLine = one_mc;
-            this._rootTimeLine.partition = new Partition2D(this._rootTimeLine);
         }
     };
     /**
@@ -178,9 +179,13 @@ var AWD3ViewerMinimal = (function () {
      */
     AWD3ViewerMinimal.prototype.onRessourceComplete = function (event) {
         if (this._rootTimeLine) {
+            this._rootTimeLine.partition = new Partition2D(this._rootTimeLine);
             //console.log("LOADING A ROOT name = " + this._rootTimeLine.name + " duration=" + this._rootTimeLine.duration);
             this._view.scene.addChild(this._rootTimeLine);
         }
+    };
+    AWD3ViewerMinimal.prototype.getText = function (input_string) {
+        return "test getText";
     };
     /**
      * Render loop
@@ -188,15 +193,9 @@ var AWD3ViewerMinimal = (function () {
     AWD3ViewerMinimal.prototype.onEnterFrame = function (dt) {
         var frameMarker = Math.floor(1000 / this._fps);
         this._time += Math.min(dt, frameMarker);
-        //if (this._rootTimeLine)
-        //	this._rootTimeLine.logHierarchy();
-        //update camera controler
-        // this._cameraController.update();
         if (this._rootTimeLine != undefined) {
-            //console.log("RENDER = ");
             this._rootTimeLine.update(dt);
         }
-        //console.log("RENDER = ");
         //update view
         if (this._time >= frameMarker) {
             this._time = 0;
@@ -218,7 +217,7 @@ window.onload = function () {
     new AWD3ViewerMinimal();
 };
 
-},{"awayjs-core/lib/events/AssetEvent":undefined,"awayjs-core/lib/events/IOErrorEvent":undefined,"awayjs-core/lib/events/LoaderEvent":undefined,"awayjs-core/lib/events/ParserEvent":undefined,"awayjs-core/lib/net/URLRequest":undefined,"awayjs-core/lib/projections/CoordinateSystem":undefined,"awayjs-core/lib/projections/PerspectiveProjection":undefined,"awayjs-core/lib/utils/RequestAnimationFrame":undefined,"awayjs-display/lib/containers/Loader":undefined,"awayjs-display/lib/containers/View":undefined,"awayjs-display/lib/controllers/HoverController":undefined,"awayjs-display/lib/entities/Billboard":undefined,"awayjs-display/lib/entities/Camera":undefined,"awayjs-display/lib/entities/Mesh":undefined,"awayjs-display/lib/entities/TextField":undefined,"awayjs-parsers/lib/AWDParser":undefined,"awayjs-player/lib/display/MovieClip":undefined,"awayjs-player/lib/partition/Partition2D":undefined,"awayjs-player/lib/renderer/Renderer2D":undefined}]},{},["./src/AWD3ViewerMinimal.ts"])
+},{"awayjs-core/lib/events/AssetEvent":undefined,"awayjs-core/lib/events/IOErrorEvent":undefined,"awayjs-core/lib/events/LoaderEvent":undefined,"awayjs-core/lib/events/ParserEvent":undefined,"awayjs-core/lib/net/URLRequest":undefined,"awayjs-core/lib/projections/CoordinateSystem":undefined,"awayjs-core/lib/projections/PerspectiveProjection":undefined,"awayjs-core/lib/utils/RequestAnimationFrame":undefined,"awayjs-display/lib/containers/Loader":undefined,"awayjs-display/lib/containers/View":undefined,"awayjs-display/lib/controllers/HoverController":undefined,"awayjs-display/lib/entities/Billboard":undefined,"awayjs-display/lib/entities/Camera":undefined,"awayjs-display/lib/entities/Mesh":undefined,"awayjs-display/lib/entities/MovieClip":undefined,"awayjs-display/lib/entities/TextField":undefined,"awayjs-parsers/lib/AWDParser":undefined,"awayjs-player/lib/partition/Partition2D":undefined,"awayjs-player/lib/renderer/Renderer2D":undefined}]},{},["./src/AWD3ViewerMinimal.ts"])
 
 
 //# sourceMappingURL=AWD3ViewerMinimal.js.map
