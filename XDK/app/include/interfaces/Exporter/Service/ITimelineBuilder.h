@@ -195,7 +195,7 @@ namespace Exporter
          *
          * @brief This interface represents a builder for a timeline. Timeline builder
          *        contains methods that are invoked by FrameCommandGenerator service (implemented 
-         *        in FlashPro) to add frame commands for a timeline.
+         *        in 'Adobe Animate CC') to add frame commands for a timeline.
          */
         BEGIN_DECLARE_INTERFACE(ITimelineBuilder, IID_ITIMELINE_BUILDER)
 

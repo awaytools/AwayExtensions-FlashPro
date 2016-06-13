@@ -49,7 +49,7 @@ namespace DOM
         /**
          * @enum BlendMode
          *
-         * @brief Defines the different Blend modes available in Flash for the movieclip instance.
+         * @brief Defines the different Blend modes available for the movieclip instance.
          */
         enum BlendMode
         {

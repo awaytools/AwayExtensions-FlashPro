@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.away.AwayExtensionsAnimateCC" ExtensionBundleVersion="1.0.9"
+		ExtensionBundleName="AwayExtensionsAnimateCC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ExtensionList>
+		<Extension Id="com.away.AwayExtensionsAnimateCC.PublishSettings" Version="1.0.9" />
+		<Extension Id="com.away.AwayExtensionsAnimateCC.Plugin" Version="1.0.9" />
+		<Extension Id="com.away.AwayExtensionsAnimateCC.Panel" Version="1.0.9" />
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="FLPR" Version="15.1" />
+		</HostList>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="4.0" />
+
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+	<DispatchInfoList>
+		<Extension Id="com.away.AwayExtensionsAnimateCC.PublishSettings">
+			<DispatchInfo >
+				<Resources>
+				<MainPath>./publisher.html</MainPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+				</Lifecycle>
+				<UI>
+					<Type>ModalDialog</Type>
+					<Geometry>
+						<Size>
+							<Height>400</Height>
+							<Width>350</Width>
+						</Size>
+						<MaxSize>
+							<Height>1080</Height>
+							<Width>1920</Width>
+						</MaxSize>
+						<MinSize>
+							<Height>300</Height>
+							<Width>350</Width>
+						</MinSize>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+		<Extension Id="com.away.AwayExtensionsAnimateCC.Plugin">
+			<DispatchInfo >
+				<Resources>
+				<MainPath>./plugin/fcm.xml</MainPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+				</Lifecycle>
+				<UI>
+					<Type>ModalDialog</Type>
+					<Geometry>
+						<Size>
+							<Height>200</Height>
+							<Width>200</Width>
+						</Size>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+		<Extension Id="com.away.AwayExtensionsAnimateCC.Panel">
+			<DispatchInfo >
+				<Resources>
+				<MainPath>./panel.html</MainPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+				</Lifecycle>
+				<UI>
+					<Type>Panel</Type>
+					<Menu>AwayTools</Menu>
+					<Geometry>
+						<Size>
+							<Height>300</Height>
+							<Width>300</Width>
+						</Size>
+						<MinSize>
+							<Height>300</Height>
+							<Width>300</Width>
+						</MinSize>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>

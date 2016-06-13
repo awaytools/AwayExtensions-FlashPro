@@ -439,21 +439,40 @@
 #define FCM_EXPORT_FAILED                       (FCM_EXPORT_ERR_BASE+0x00000001L)
 
 
+/**
+* @def   FCM_APPLICATION_ERR_BASE
+*
+* @brief Base code for 'Adobe Animate CC' Application errors.
+*/
+#define FCM_APPLICATION_ERR_BASE                0x0000E000L
+
 
 /**
  * @def   FCM_FLASH_APPLICATION_ERR_BASE
  *
  * @brief Base code for FlashApplication errors.
+ *
+ * @deprecated This macro is deprecated. Please use FCM_APPLICATION_ERR_BASE.
  */
-#define FCM_FLASH_APPLICATION_ERR_BASE                  0x0000E000L
+#define FCM_FLASH_APPLICATION_ERR_BASE          FCM_APPLICATION_ERR_BASE
+
 
 /**
- * @def   FCM_FLASH_APPLICATION_ERR_NO_OUTPUT_CONSOLE
+ * @def   FCM_APPLICATION_ERR_NO_OUTPUT_CONSOLE
  *
  * @brief Error code thrown when output console is not found.
  */
-#define FCM_FLASH_APPLICATION_ERR_NO_OUTPUT_CONSOLE        (FCM_FLASH_APPLICATION_ERR_BASE+0x00000001L)
+#define FCM_APPLICATION_ERR_NO_OUTPUT_CONSOLE   (FCM_APPLICATION_ERR_BASE + 0x00000001L)
 
+
+/**
+* @def   FCM_FLASH_APPLICATION_ERR_NO_OUTPUT_CONSOLE
+*
+* @brief Error code thrown when output console is not found.
+*
+* @deprecated This macro is deprecated. Please use FCM_APPLICATION_ERR_NO_OUTPUT_CONSOLE.
+*/
+#define FCM_FLASH_APPLICATION_ERR_NO_OUTPUT_CONSOLE   FCM_APPLICATION_ERR_NO_OUTPUT_CONSOLE
 
 
 /* -------------------------------------------------- Structs / Unions */

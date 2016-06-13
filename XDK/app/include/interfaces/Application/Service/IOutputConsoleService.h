@@ -20,8 +20,7 @@
  * @file  IOutputConsoleService.h
  *
  * @brief This file contains the interface for IOutputConsoleService. This service 
- *        can be used to trace messages to the Flash Professional Output Panel.
- *        
+ *        can be used to trace messages to the 'Adobe Animate CC' output panel.
  */
 
 #ifndef IOUTPUT_CONSOLE_SERVICE_H_
@@ -64,8 +63,8 @@ namespace Application
         /**
          * @class IOutputConsoleService
          *
-         * @brief IOutputConsoleService defines an interface to output messages to the Flash 
-         *        output console.
+         * @brief IOutputConsoleService defines an interface to output messages to the 
+         *        'Adobe Animate CC' output console.
          */
         BEGIN_DECLARE_INTERFACE(IOutputConsoleService, IID_IOUTPUT_CONSOLE_SERVICE)
         

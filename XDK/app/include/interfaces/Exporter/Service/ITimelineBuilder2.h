@@ -69,11 +69,10 @@ namespace Exporter
          * @brief This interface represents a builder for a timeline. ITimelineBuilder2
          *        contains all the methods inherited from ITimelineBuilder and the new methods 
          *        mentioned in this file that are invoked by the FrameCommandGenerator 
-         *        service (implemented 
-         *        in FlashPro) to add frame commands for a timeline.
+         *        service (implemented in 'Adobe Animate CC') to add frame commands for 
+         *        a timeline.
          *
-         * @note  This interface is available in version 1.1.0 of the SDK (ie 
-         *        Flash Professional Version 14.2.0) and above.
+         * @note  This interface is available in version 1.1.0 of the SDK and above.
          */
         BEGIN_DECLARE_INTERFACE_INHERIT(ITimelineBuilder2, IID_ITIMELINE_BUILDER_2, ITimelineBuilder)
             

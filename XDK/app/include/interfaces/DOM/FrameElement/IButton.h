@@ -40,7 +40,7 @@ namespace DOM
         /**
          * @enum ButtonTrackMode
          *
-         * @brief Defines the different tracking option availabe in Flash for a button instance.
+         * @brief Defines the different tracking option availabe for a button instance.
          */
         enum ButtonTrackMode
         {

@@ -1,0 +1,289 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.6-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.6-dist/css/bootstrap-theme.css" rel="stylesheet" type="text/css" />
+    <script src="./lib/jquery1_12_0.min.js"></script>
+    <script src="./lib/bootstrap-3.3.6-dist/js/bootstrap.js"></script>
+    <script src="./publisher.js"></script>
+
+    <link id="colorThemeCSS" href="css/mkDroverPanel_D.css" rel="stylesheet" type="text/css" />
+    <script src="./lib/CSInterface-4.0.0.js"></script>
+</head>
+
+
+<body >
+<!-- The scrollable area -->
+<!-- The navbar - The <a> elements are used to jump to a section in the scrollable area -->
+<!-- nav class="navbar navbar-inverse navbar-fixed-top">
+    <ul class="nav navbar-nav">
+        <li><a href="#section1">Section 1</a></li>
+    </ul>
+</nav-->
+
+<div id="overlay_loading">
+
+</div>
+<div id="scrollable_content" >
+    <div id="scrollable_content_inner">
+        <div style="width:100%;height:85px;"></div>
+        <!--pre><code contenteditable="true" class="TypeScript">
+            import something = require("sdfsdf");
+            var test:number=0;
+        </code></pre-->
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <a data-toggle="collapse" href="#collapse1">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            General
+                        </h4>
+                    </div>
+                </a>
+                <div id="collapse1" class="panel-collapse collapse in">
+                    <div id="general_settings" class="panel-body">
+                        <div class="ui_comp_double">
+                            <label class="myLabel" for="of">Output File:</label>
+                            <input type="text" id="of">
+                            <button class="awayjs_button" id="OPShowOpenDialog" onclick="opsd()"><span class="glyphicon glyphicon-folder-open"></span></button>
+                        </div>
+                        <div class="ui_comp_single">
+                            <div class="chboxwrap">
+                                <input type="checkbox" id="usePreview" onchange="switchPreviewOnOff(this)"/>
+                            </div>
+                            <label class="myCHBXLabel" for="usePreview">Open Preview</label>
+                        </div>
+                        <div class="ui_comp_single">
+                            <div class="chboxwrap">
+                                <input type="checkbox" id="copyRuntime" onchange="switchPreviewOnOff(this)"/>
+                            </div>
+                            <label class="myCHBXLabel" for="copyRuntime">Copy Runtime</label>
+                        </div>
+                        <div class="ui_comp_single">
+                            <div class="chboxwrap">
+                                <input type="checkbox" id="createLogfile"/>
+                            </div>
+                            <label class="myCHBXLabel" for="createLogfile">Create logfile</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <!--div class="chboxwrap2">
+                    <input type="checkbox" class="awayjs_checkbox" id="exportTimelines"  onChange="enableUIElements(this)"/>
+                </div-->
+                <a data-toggle="collapse" id="exportTimelines_open" href="#exportTimelines_panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Timelines / Scripting
+                        </h4>
+                    </div>
+                </a>
+                <div id="exportTimelines_panel" class="panel-collapse collapse">
+                    <div id="exportTimelines_settings" class="panel-body">
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox" class="awayjs_checkbox" id="includeVisiblelayers"/>
+                                </div>
+                            <label class="myCHBXLabel2" for="includeVisiblelayers">Include hidden layers</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="exportFrameScript">
+                            </div>
+                            <label class="myCHBXLabel2" for="exportFrameScript">Export Frame-Scripts</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="exportExternalFrameScript">
+                            </div>
+                            <label class="myCHBXLabel2" for="exportExternalFrameScript">External Scripts</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="printExportLogTimeline">
+                            </div>
+                            <label class="myCHBXLabel2" for="printExportLogTimeline">Print timeline log</label>
+                        </div>
+                        <div class="ui_comp_single">
+                            <button class="awayjs_button" id="" onclick="importFrameScriptsFromJS()">Import Scripts</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <!--div class="chboxwrap2">
+                    <input type="checkbox" class="awayjs_checkbox" id="exportGeometries" onChange="enableUIElements(this)"/>
+                </div-->
+                <a data-toggle="collapse" id="exportGeometries_open" href="#exportGeometries_panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Shapes / Geometry
+                        </h4>
+                    </div>
+                </a>
+                <div id="exportGeometries_panel" class="panel-collapse collapse">
+                    <div id="exportGeometries_settings" class="panel-body">
+                        <div class="ui_comp_single3">
+                            <div class="chboxwrap">
+                                <input type="checkbox" id="exportShapesInDebugMode"/>
+                            </div>
+                            <label class="myCHBXLabel2" for="exportShapesInDebugMode">Debug mode</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <!--div class="chboxwrap2">
+                    <input type="checkbox" class="awayjs_checkbox" id="exportFonts" onChange="enableUIElements(this)"/>
+                </div-->
+                <a data-toggle="collapse" id="exportFonts_open" href="#exportFonts_panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Fonts / Text
+                        </h4>
+                    </div>
+                </a>
+                <div id="exportFonts_panel" class="panel-collapse collapse">
+                    <div id="exportFonts_settings" class="panel-body">
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="exportLibFonts">
+                            </div>
+                            <label class="myCHBXLabel2" for="exportLibFonts">Export library fonts</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="embbedAllChars">
+                            </div>
+                            <label class="myCHBXLabel2" for="embbedAllChars">Embed used chars</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <!--div class="chboxwrap2">
+                    <input type="checkbox" class="awayjs_checkbox" id="exportBitmaps" onChange="enableUIElements(this)"/>
+                </div-->
+                <a data-toggle="collapse" id="exportBitmaps_open" href="#exportBitmaps_panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Bitmaps
+                        </h4>
+                    </div>
+                </a>
+                <div id="exportBitmaps_panel" class="panel-collapse collapse">
+                    <div id="exportBitmaps_settings" class="panel-body">
+                        <div class="ui_comp_single3">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="exportLibBitmaps">
+                            </div>
+                            <label class="myCHBXLabel3" for="exportLibBitmaps">Export library bitmaps</label>
+                        </div>
+                        <div class="ui_comp_single3">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="forceTextureOverwrite">
+                            </div>
+                            <label class="myCHBXLabel3" for="forceTextureOverwrite">Force override bitmaps</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="embbed_textures">
+                            </div>
+                            <label class="myCHBXLabel2" for="embbed_textures">Embed bitmaps</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <!--div class="chboxwrap2">
+                    <input type="checkbox" class="awayjs_checkbox" id="exportSounds" onChange="enableUIElements(this);"/>
+                </div-->
+                <a data-toggle="collapse" id="exportSounds_open" href="#exportSounds_panel">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Sounds
+                        </h4>
+                    </div>
+                </a>
+                <div id="exportSounds_panel" class="panel-collapse collapse">
+                    <div id="exportSounds_settings" class="panel-body">
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="exportLibSounds" onChange="enableUIElements()">
+                            </div>
+                            <label class="myCHBXLabel2" for="exportLibSounds">Export library sounds</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="embbed_sounds">
+                            </div>
+                            <label class="myCHBXLabel2" for="embbed_sounds">Embed sounds</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="exportTimelineSounds">
+                            </div>
+                            <label class="myCHBXLabel2" for="exportTimelineSounds">Timeline sounds</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="createAudioMap">
+                            </div>
+                            <label class="myCHBXLabel2" for="createAudioMap">Create sounds map</label>
+                        </div>
+                        <div class="ui_comp_single3">
+                            <div class="chboxwrap">
+                                <input type="checkbox"  class="awayjs_checkbox" id="forceSoundOverwrite">
+                            </div>
+                            <label class="myCHBXLabel3" for="forceSoundOverwrite">Force override sounds</label>
+                        </div>
+                        <div class="ui_comp_double">
+                            <p style="margin-left: 5px;">
+                                <label class="myCHBXLabel2">Save soundfiles as</label>
+                                <select id="sound_type">
+                                    <option value="0">UNCHANGED</option>
+                                    <option value="1">WAV</option>
+                                    <option value="2">MP3</option>
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="version_display"><br><br>v1.0.9<br><a onclick="open_github()" >AwayExensionsAnimateCC</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div id="header">
+        <button class="awayjs_button" id="open_panel" onclick="open_panel()"><span class="glyphicon glyphicon-log-in"></span></button>
+        <button class="awayjs_button" id="open_help" onclick="open_help()"><span class="glyphicon glyphicon-question-sign"></span></button>
+        <img id="logo" src="./ressources/fileicon_AwayBuilder_128.png" alt="Away3d logo">
+    </div>
+</div>
+<nav class="navbar navbar-inverse navbar-fixed-bottom">
+    <div id="footer">
+        <button class="awayjs_button" id="publish" onclick="onPublish()">Publish</button>
+        <button class="awayjs_button" id="ok" onclick="onOK()">OK</button>
+        <button class="awayjs_button" id="cancel" onclick="onCancel()">Cancel</button>
+    </div>
+</nav>
+</body>
+
+</html>

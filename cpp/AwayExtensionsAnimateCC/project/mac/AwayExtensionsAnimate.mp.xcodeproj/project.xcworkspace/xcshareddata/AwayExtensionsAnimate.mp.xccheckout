@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>41CD44A5-BBAB-4DB8-8F7F-BE1A77CD6967</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AwayExtensionsAnimate.mp</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>1AF003D0C5FA82152659457A86914B3CE82E49F0</key>
+		<string>https://github.com/awaytools/AwayExtensions-FlashPro.git</string>
+		<key>8E28D3EFAD150407007820D01B78E1859844DA14</key>
+		<string>https://github.com/awaytools/awd-sdk.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>cpp/AwayExtensionsAnimateCC/project/mac/AwayExtensionsAnimate.mp.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>1AF003D0C5FA82152659457A86914B3CE82E49F0</key>
+		<string>../../../../../..</string>
+		<key>8E28D3EFAD150407007820D01B78E1859844DA14</key>
+		<string>../../../../../../../awd-sdk</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/awaytools/AwayExtensions-FlashPro.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>1AF003D0C5FA82152659457A86914B3CE82E49F0</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1AF003D0C5FA82152659457A86914B3CE82E49F0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AwayExtensions-Animate</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8E28D3EFAD150407007820D01B78E1859844DA14</string>
+			<key>IDESourceControlWCCName</key>
+			<string>awd-sdk</string>
+		</dict>
+	</array>
+</dict>
+</plist>
