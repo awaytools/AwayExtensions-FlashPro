@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		427D53891C67BD9C0079E444 /* AwayExtensionsAnimate_Precomp.pch in Sources */ = {isa = PBXBuildFile; fileRef = 428B5F971C67B80600B1BD89 /* AwayExtensionsAnimate_Precomp.pch */; };
 		428B5F941C67B3A100B1BD89 /* project_release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 428B5F911C67B3A100B1BD89 /* project_release.xcconfig */; };
 		428B5F951C67B3A100B1BD89 /* project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 428B5F921C67B3A100B1BD89 /* project.xcconfig */; };
+		42A1D62A1C767B6A00CE690C /* geomutilShapes.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42A1D6291C767B6A00CE690C /* geomutilShapes.cc */; };
+		42B22C621C69977900E044C8 /* AnimateToAWDEncoder_textfields.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42B22C611C69977900E044C8 /* AnimateToAWDEncoder_textfields.cpp */; };
+		42C3DB881D0E4F03007769C9 /* ConcanetedStream.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42C3DB861D0E4F03007769C9 /* ConcanetedStream.cc */; };
+		42C3DB891D0E4F03007769C9 /* MovieClip.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42C3DB871D0E4F03007769C9 /* MovieClip.cc */; };
 		42CA66FF1AF5E16F00F208E2 /* awd_project.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66AA1AF5E16F00F208E2 /* awd_project.cc */; };
 		42CA67001AF5E16F00F208E2 /* AnimationClipBase.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66AC1AF5E16F00F208E2 /* AnimationClipBase.cc */; };
 		42CA67011AF5E16F00F208E2 /* AnimationFrameBase.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66AD1AF5E16F00F208E2 /* AnimationFrameBase.cc */; };
@@ -45,7 +48,6 @@
 		42CA671F1AF5E16F00F208E2 /* TextElement.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66CC1AF5E16F00F208E2 /* TextElement.cc */; };
 		42CA67201AF5E16F00F208E2 /* TextFormat.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66CD1AF5E16F00F208E2 /* TextFormat.cc */; };
 		42CA67211AF5E16F00F208E2 /* TextureProjector.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66CE1AF5E16F00F208E2 /* TextureProjector.cc */; };
-		42CA67221AF5E16F00F208E2 /* Timeline.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66CF1AF5E16F00F208E2 /* Timeline.cc */; };
 		42CA67231AF5E16F00F208E2 /* UVAnimationClip.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66D01AF5E16F00F208E2 /* UVAnimationClip.cc */; };
 		42CA67241AF5E16F00F208E2 /* UVPose.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66D11AF5E16F00F208E2 /* UVPose.cc */; };
 		42CA67251AF5E16F00F208E2 /* VertexAnimationClip.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42CA66D21AF5E16F00F208E2 /* VertexAnimationClip.cc */; };
@@ -158,12 +160,19 @@
 		"09e16f42-a590-33ea-bf89-3152a65b62a1" /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ApplicationServices.framework; sourceTree = "<group>"; };
 		"163c156c-990d-3bbe-b1df-52bc72c85705" /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreServices.framework; sourceTree = "<group>"; };
 		"39c2f374-f2b6-3757-ba02-b26ecbea7e97" /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Foundation.framework; sourceTree = "<group>"; };
-		427D538D1C67C10F0079E444 /* checked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = checked.h; sourceTree = "<group>"; };
-		427D538E1C67C10F0079E444 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
-		427D538F1C67C10F0079E444 /* unchecked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unchecked.h; sourceTree = "<group>"; };
+		427721841C6E3BD800924AAA /* AwayExtensionsAnimate.Release copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "AwayExtensionsAnimate.Release copy-Info.plist"; path = "/Users/80prozent/_awayjs/AwayExtensions-Animate/cpp/AwayExtensionsAnimateCC/project/mac/AwayExtensionsAnimate.Release copy-Info.plist"; sourceTree = "<absolute>"; };
 		428B5F911C67B3A100B1BD89 /* project_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = project_release.xcconfig; path = AwayExtensionsAnimate.xcconfigs/project_release.xcconfig; sourceTree = SOURCE_ROOT; };
 		428B5F921C67B3A100B1BD89 /* project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = project.xcconfig; path = AwayExtensionsAnimate.xcconfigs/project.xcconfig; sourceTree = SOURCE_ROOT; };
 		428B5F971C67B80600B1BD89 /* AwayExtensionsAnimate_Precomp.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AwayExtensionsAnimate_Precomp.pch; sourceTree = SOURCE_ROOT; };
+		42A1D6291C767B6A00CE690C /* geomutilShapes.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = geomutilShapes.cc; sourceTree = "<group>"; };
+		42B22C5C1C69701A00E044C8 /* checked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = checked.h; sourceTree = "<group>"; };
+		42B22C5D1C69701A00E044C8 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
+		42B22C5E1C69701A00E044C8 /* unchecked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unchecked.h; sourceTree = "<group>"; };
+		42B22C611C69977900E044C8 /* AnimateToAWDEncoder_textfields.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = AnimateToAWDEncoder_textfields.cpp; sourceTree = "<group>"; };
+		42C3DB861D0E4F03007769C9 /* ConcanetedStream.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConcanetedStream.cc; sourceTree = "<group>"; };
+		42C3DB871D0E4F03007769C9 /* MovieClip.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MovieClip.cc; sourceTree = "<group>"; };
+		42C3DB8A1D0E4F21007769C9 /* ConcanetedStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConcanetedStream.h; sourceTree = "<group>"; };
+		42C3DB8B1D0E4F21007769C9 /* movieclip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = movieclip.h; sourceTree = "<group>"; };
 		42CA66631AF5E13E00F208E2 /* awd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = awd.h; sourceTree = "<group>"; };
 		42CA66641AF5E13E00F208E2 /* awd_project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = awd_project.h; sourceTree = "<group>"; };
 		42CA66661AF5E13E00F208E2 /* anim_clip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = anim_clip.h; sourceTree = "<group>"; };
@@ -200,7 +209,6 @@
 		42CA66861AF5E13E00F208E2 /* text_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = text_element.h; sourceTree = "<group>"; };
 		42CA66871AF5E13E00F208E2 /* text_format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = text_format.h; sourceTree = "<group>"; };
 		42CA66881AF5E13E00F208E2 /* texture_projector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture_projector.h; sourceTree = "<group>"; };
-		42CA66891AF5E13E00F208E2 /* timeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeline.h; sourceTree = "<group>"; };
 		42CA668A1AF5E13E00F208E2 /* uv_anim_clip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uv_anim_clip.h; sourceTree = "<group>"; };
 		42CA668B1AF5E13E00F208E2 /* uv_pose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uv_pose.h; sourceTree = "<group>"; };
 		42CA668C1AF5E13E00F208E2 /* vertex_anim_clip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vertex_anim_clip.h; sourceTree = "<group>"; };
@@ -263,7 +271,6 @@
 		42CA66CC1AF5E16F00F208E2 /* TextElement.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextElement.cc; sourceTree = "<group>"; };
 		42CA66CD1AF5E16F00F208E2 /* TextFormat.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextFormat.cc; sourceTree = "<group>"; };
 		42CA66CE1AF5E16F00F208E2 /* TextureProjector.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureProjector.cc; sourceTree = "<group>"; };
-		42CA66CF1AF5E16F00F208E2 /* Timeline.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timeline.cc; sourceTree = "<group>"; };
 		42CA66D01AF5E16F00F208E2 /* UVAnimationClip.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UVAnimationClip.cc; sourceTree = "<group>"; };
 		42CA66D11AF5E16F00F208E2 /* UVPose.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UVPose.cc; sourceTree = "<group>"; };
 		42CA66D21AF5E16F00F208E2 /* VertexAnimationClip.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexAnimationClip.cc; sourceTree = "<group>"; };
@@ -380,12 +387,12 @@
 			path = ../../../../../../../../Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks;
 			sourceTree = SOURCE_ROOT;
 		};
-		427D538C1C67C10F0079E444 /* utf8 */ = {
+		42B22C5B1C69701A00E044C8 /* utf8 */ = {
 			isa = PBXGroup;
 			children = (
-				427D538D1C67C10F0079E444 /* checked.h */,
-				427D538E1C67C10F0079E444 /* core.h */,
-				427D538F1C67C10F0079E444 /* unchecked.h */,
+				42B22C5C1C69701A00E044C8 /* checked.h */,
+				42B22C5D1C69701A00E044C8 /* core.h */,
+				42B22C5E1C69701A00E044C8 /* unchecked.h */,
 			);
 			path = utf8;
 			sourceTree = "<group>";
@@ -393,7 +400,7 @@
 		42CA66621AF5E13E00F208E2 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				427D538C1C67C10F0079E444 /* utf8 */,
+				42B22C5B1C69701A00E044C8 /* utf8 */,
 				42E2714D1B0BEEEF00A3316F /* HTTPServer.h */,
 				42CA66631AF5E13E00F208E2 /* awd.h */,
 				42CA66641AF5E13E00F208E2 /* awd_project.h */,
@@ -425,6 +432,8 @@
 		42CA666D1AF5E13E00F208E2 /* blocks */ = {
 			isa = PBXGroup;
 			children = (
+				42C3DB8A1D0E4F21007769C9 /* ConcanetedStream.h */,
+				42C3DB8B1D0E4F21007769C9 /* movieclip.h */,
 				42CA666E1AF5E13E00F208E2 /* anim_set.h */,
 				42CA666F1AF5E13E00F208E2 /* animator.h */,
 				42CA66701AF5E13E00F208E2 /* audio.h */,
@@ -454,7 +463,6 @@
 				42CA66861AF5E13E00F208E2 /* text_element.h */,
 				42CA66871AF5E13E00F208E2 /* text_format.h */,
 				42CA66881AF5E13E00F208E2 /* texture_projector.h */,
-				42CA66891AF5E13E00F208E2 /* timeline.h */,
 				42CA668A1AF5E13E00F208E2 /* uv_anim_clip.h */,
 				42CA668B1AF5E13E00F208E2 /* uv_pose.h */,
 				42CA668C1AF5E13E00F208E2 /* vertex_anim_clip.h */,
@@ -539,6 +547,8 @@
 		42CA66B31AF5E16F00F208E2 /* blocks */ = {
 			isa = PBXGroup;
 			children = (
+				42C3DB861D0E4F03007769C9 /* ConcanetedStream.cc */,
+				42C3DB871D0E4F03007769C9 /* MovieClip.cc */,
 				42CA66B41AF5E16F00F208E2 /* AnimationSet.cc */,
 				42CA66B51AF5E16F00F208E2 /* Animator.cc */,
 				42CA66B61AF5E16F00F208E2 /* Audio.cc */,
@@ -568,7 +578,6 @@
 				42CA66CC1AF5E16F00F208E2 /* TextElement.cc */,
 				42CA66CD1AF5E16F00F208E2 /* TextFormat.cc */,
 				42CA66CE1AF5E16F00F208E2 /* TextureProjector.cc */,
-				42CA66CF1AF5E16F00F208E2 /* Timeline.cc */,
 				42CA66D01AF5E16F00F208E2 /* UVAnimationClip.cc */,
 				42CA66D11AF5E16F00F208E2 /* UVPose.cc */,
 				42CA66D21AF5E16F00F208E2 /* VertexAnimationClip.cc */,
@@ -653,6 +662,7 @@
 		42CA66F81AF5E16F00F208E2 /* geomutil */ = {
 			isa = PBXGroup;
 			children = (
+				42A1D6291C767B6A00CE690C /* geomutilShapes.cc */,
 				42CA66F91AF5E16F00F208E2 /* geomutil.cc */,
 				42CA66FA1AF5E16F00F208E2 /* geomutil_helper.cc */,
 			);
@@ -724,6 +734,7 @@
 		B89ED4A51A8D964D003A027C /* src */ = {
 			isa = PBXGroup;
 			children = (
+				42B22C611C69977900E044C8 /* AnimateToAWDEncoder_textfields.cpp */,
 				42D369A01C67B0A50024C7CE /* AnimateToAWDEncoder_fills.cpp */,
 				42D369A11C67B0A50024C7CE /* AnimateToAWDEncoder_fonts.cpp */,
 				42D369A21C67B0A50024C7CE /* AnimateToAWDEncoder_mediaItems.cpp */,
@@ -775,6 +786,7 @@
 				F5D3574E0948ECD5008C36CA /* Resources */,
 				F5D3574D0948ECCD008C36CA /* Sources */,
 				F5D357400948EBCB008C36CA /* Products */,
+				427721841C6E3BD800924AAA /* AwayExtensionsAnimate.Release copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -949,7 +961,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				427D53891C67BD9C0079E444 /* AwayExtensionsAnimate_Precomp.pch in Sources */,
 				42CA67161AF5E16F00F208E2 /* Namespace.cc in Sources */,
 				42CA67081AF5E16F00F208E2 /* Animator.cc in Sources */,
 				42CA673A1AF5E16F00F208E2 /* ShadingMethod.cc in Sources */,
@@ -976,6 +987,7 @@
 				42CA672C1AF5E16F00F208E2 /* BlockInstance.cc in Sources */,
 				42CA67471AF5E16F00F208E2 /* geomutil_helper.cc in Sources */,
 				42CA67191AF5E16F00F208E2 /* Scene.cc in Sources */,
+				42C3DB891D0E4F03007769C9 /* MovieClip.cc in Sources */,
 				42CA67061AF5E16F00F208E2 /* StateElementbase.cc in Sources */,
 				42CA670B1AF5E16F00F208E2 /* Camera.cc in Sources */,
 				B89ED4C61A8D964D003A027C /* PublisherUtils.cpp in Sources */,
@@ -1023,6 +1035,7 @@
 				42E270ED1AF7F5D600A3316F /* Billboard.cc in Sources */,
 				42D369A71C67B0A50024C7CE /* AnimateToAWDEncoder_mediaItems.cpp in Sources */,
 				42D369A81C67B0A50024C7CE /* AnimateToAWDEncoder_shapes.cpp in Sources */,
+				42C3DB881D0E4F03007769C9 /* ConcanetedStream.cc in Sources */,
 				42CA67041AF5E16F00F208E2 /* DataBlockBase.cc in Sources */,
 				B89ED4C81A8D964D003A027C /* Utils.cpp in Sources */,
 				42CA67131AF5E16F00F208E2 /* Material.cc in Sources */,
@@ -1032,6 +1045,7 @@
 				42CA67241AF5E16F00F208E2 /* UVPose.cc in Sources */,
 				42CA673F1AF5E16F00F208E2 /* awdzlib.cc in Sources */,
 				42CA67491AF5E16F00F208E2 /* texture_atlas_util.cc in Sources */,
+				42A1D62A1C767B6A00CE690C /* geomutilShapes.cc in Sources */,
 				42CA670A1AF5E16F00F208E2 /* BitmapTexture.cc in Sources */,
 				42CA67401AF5E16F00F208E2 /* FileReader.cc in Sources */,
 				42CA67011AF5E16F00F208E2 /* AnimationFrameBase.cc in Sources */,
@@ -1039,13 +1053,13 @@
 				42CA67481AF5E16F00F208E2 /* Settings.cc in Sources */,
 				42CA671E1AF5E16F00F208E2 /* SkyBox.cc in Sources */,
 				42D369A61C67B0A50024C7CE /* AnimateToAWDEncoder_fonts.cpp in Sources */,
+				42B22C621C69977900E044C8 /* AnimateToAWDEncoder_textfields.cpp in Sources */,
 				42CA67031AF5E16F00F208E2 /* BlockBase.cc in Sources */,
 				42CA67211AF5E16F00F208E2 /* TextureProjector.cc in Sources */,
 				42CA673D1AF5E16F00F208E2 /* AWDFile.cc in Sources */,
 				42CA67391AF5E16F00F208E2 /* Vertex.cc in Sources */,
 				42CA673E1AF5E16F00F208E2 /* awdlzma.cc in Sources */,
 				42CA67291AF5E16F00F208E2 /* NumAttrList.cc in Sources */,
-				42CA67221AF5E16F00F208E2 /* Timeline.cc in Sources */,
 				42CA67201AF5E16F00F208E2 /* TextFormat.cc in Sources */,
 				42CA671C1AF5E16F00F208E2 /* SkeletonAnimationClip.cc in Sources */,
 				42CA67341AF5E16F00F208E2 /* PathSegment.cc in Sources */,
@@ -1075,6 +1089,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
@@ -1085,7 +1100,7 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
 			name = Default;
@@ -1096,13 +1111,48 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = NO;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = ../../../../AwayExtensionsAnimateCC_eclipse/ExtensionContent/plugin/lib/mac/;
+				CONFIGURATION_BUILD_DIR = "/Library/Application Support/Adobe/CEP/extensions/com.away.AwayExtensionsAnimateCC/plugin/lib/mac";
+				DVA_BUILD_YEAR = 2016;
 				DVA_BUNDLE_IDENTIFIER = com.adobe.flashpro.AwayExtensionsAnimate.plugin;
-				FRAMEWORK_SEARCH_PATHS = "";
+				DVA_COPYRIGHT_YEAR = 2016;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
+				FRAMEWORK_SEARCH_PATHS = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AwayExtensionsAnimate_Precomp.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DVA_COCOA_UI=1",
+					NS_BUILD_32_LIKE_64,
+					BOOST_ALL_NO_LIB,
+					BOOST_SYSTEM_NO_DEPRECATED,
+					FLASHPRO_DVA_CUSTOM,
+					BOOST_ALL_DYN_LINK,
+					"__ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES=0",
+					PRERELEASE,
+					"DVA_MAJOR_DISPLAY_VERSION=2014",
+					"DVA_MINOR_DISPLAY_VERSION=0",
+					"DVA_PATCH_DISPLAY_VERSION=0",
+					"DVA_SUITE_VERSION=14",
+					"DVA_MAJOR_VERSION=14",
+					"DVA_MINOR_VERSION=1",
+					"DVA_PATCH_VERSION=0",
+					"DVA_BUILD_YEAR=2014",
+					MAC_ENV,
+					_MAC,
+					"USE_DVA_WORKSPACE=1",
+					"USE_EXO_MESSAGING=1",
+					NDEBUG,
+					"FEATURE_MAC_BUNDLED_JRE=1",
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				HEADER_SEARCH_PATHS = (
 					"../mac-xcode",
 					../../../../XDK/core/include/common,

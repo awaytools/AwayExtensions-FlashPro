@@ -115,7 +115,8 @@ AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, A
 
     std::string text_field_text = AwayJS::Utils::ToString(text, this->m_pCallback);
     //std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-	
+    
+    //std::wstring text_field_text2 = (wchar_t*)text;//converter.from_bytes(text_field_text.c_str());
 #ifdef _WINDOWS
     std::wstring text_field_text2 = (wchar_t*)text;//converter.from_bytes(text_field_text.c_str());
 	//if(text)
@@ -234,7 +235,8 @@ AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, A
             textrun->GetLength(txt_length);
 
 			// get text for this textrun
-			std::string text_run_text = text_field_text.substr (startIdx, txt_length);
+            std::string text_run_text = text_field_text.substr (startIdx, txt_length);
+            //std::wstring text_run_text2 = text_field_text2.substr (startIdx, txt_length);
 
 #ifdef _WINDOWS
 			std::wstring text_run_text2 = text_field_text2.substr (startIdx, txt_length);
@@ -253,8 +255,6 @@ AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, A
             if (found!=std::string::npos)
                 font_name_str.replace(font_name_str.find(str2),str2.length(),"");
          
-            //if(font_name)AwayJS::Utils::Trace(this->m_pCallback, "textfield fontName = %s \n",font_name_str.c_str());
-
             FCM::StringRep8 font_style;
             text_style->GetFontStyle(&font_style);
             // string build from all properties is used as identifier for all text-format (cache)
@@ -293,7 +293,7 @@ AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, A
             FCM::StringRep16 this_link_target;
             text_style->GetLinkTarget(&this_link_target);
 			
-            AwayJS::Utils::Trace(this->m_pCallback, "text_format_string = %s\n", text_format_string.c_str());
+            //AwayJS::Utils::Trace(this->m_pCallback, "text_format_string = %s\n", text_format_string.c_str());
             BLOCKS::TextFormat* this_text_format = reinterpret_cast<BLOCKS::TextFormat*>(this->awd_project->get_block_by_external_id_and_type(text_format_string, BLOCK::block_type::TEXT_FORMAT, true));
             this_text_format->set_name("text_format_"+std::to_string(this->text_fomat_cnt));
             this_text_format->add_scene_name(this->current_scene_name);
@@ -321,14 +321,12 @@ AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, A
             this_text_format->set_linespacing(paragraphstyle.lineSpacing);
             this_text_format->set_leftmargin(paragraphstyle.leftMargin);
             this_text_format->set_rightmargin(paragraphstyle.rightMargin);
-                
 
 
             awd_textrun->set_format(this_text_format);
                 
             BLOCKS::Font* this_font = reinterpret_cast<BLOCKS::Font*>(this->awd_project->get_block_by_name_and_type(font_name_str, BLOCK::block_type::FONT, true));
             this_font->set_name(font_name_str);
-            //AwayJS::Utils::Trace(this->m_pCallback, "textfield_font = %s\n", font_name_str.c_str());
             this_font->add_scene_name(this->current_scene_name);
             FONT::FontStyle* this_font_style = this_font->get_font_style(font_style);
 				
@@ -353,45 +351,36 @@ AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, A
 				
 				if(this->awd_project->get_settings()->get_bool(SETTINGS::bool_settings::EmbbedAllChars)){
 					for(U_Int16 c : text_run_text2) {
-							this_font_style->get_fontShape(c);
+                        this_font_style->get_fontShape(c);
 					}
 				}
-				//disable export of all text isnide textfield. todo: make this a option
-                 
-				//AwayJS::Utils::Trace(m_pCallback, "utf8line = %s\n", utf8line.c_str());
-				//AwayJS::Utils::Trace(m_pCallback, "text_run_text = %s\n", text_run_text.c_str());
 				awd_textrun->set_text(utf8line);
 #endif
                 
-				
+		
 #ifdef __APPLE__
+                
+                // stupid way to collect the correct portion of the utf16 string into a U_int16 vector
+                // chars with code 13 (\r) will be replaced with a escaped linebreak (\\n)
 				std::vector<U_Int16> chars_as_uint16;
 				if(this->awd_project->get_settings()->get_bool(SETTINGS::bool_settings::EmbbedAllChars)){
-                
 					int t2=0;
-					for(t2=startIdx; t2<(startIdx+txt_length); t2++){                        
-						//AwayJS::Utils::Trace(m_pCallback, "\n export Font-char code 3 = %d \n", (U_Int16)text[t2]);
-						chars_as_uint16.push_back(text[t2]);
-						this_font_style->get_fontShape(text[t2]);
-                        
+					for(t2=startIdx; t2<(startIdx+txt_length); t2++){
+                        if(text[t2]==13){
+                            chars_as_uint16.push_back(92);
+                            chars_as_uint16.push_back(110);
+                        }
+                        else{
+                            chars_as_uint16.push_back(text[t2]);
+                            this_font_style->get_fontShape(text[t2]);
+                        }
 					}
 				}
-				std::wstring wstr2=L"\r";
-				std::wstring wstr=(wchar_t*)chars_as_uint16.data();
-				std::size_t found_linebreak = wstr.find(wstr2);
-				while (found_linebreak!=std::string::npos){
-					wstr.replace(wstr.find(wstr2),wstr2.length(),L"\\n");
-					found_linebreak = wstr.find(wstr2);
-				}
+                // convert the utf16 string to utf8
                 FCM::AutoPtr<FCM::IFCMStringUtils> pIFCMStringUtils = AwayJS::Utils::GetStringUtilsService(m_pCallback);
                 FCM::StringRep8 outstr;
                 pIFCMStringUtils->ConvertStringRep16to8(chars_as_uint16.data(), outstr);
-                
-				//std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-                //std::string utf8str = converter.to_bytes(wstr);
-                AwayJS::Utils::Trace(m_pCallback, "utf8line = %s\n", outstr);
-                
-				awd_textrun->set_text(outstr);
+                awd_textrun->set_text(outstr);
 #endif
 			}
                 

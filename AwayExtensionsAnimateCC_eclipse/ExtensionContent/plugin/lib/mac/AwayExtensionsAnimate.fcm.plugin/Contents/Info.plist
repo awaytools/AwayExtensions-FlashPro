@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>AwayExtensionsAnimate</string>
 	<key>CFBundleGetInfoString</key>
-	<string>AwayExtensionsAnimate .., Copyright © 2016-2016 Adobe Systems Incorporated.  All rights reserved.</string>
+	<string>AwayExtensionsAnimate 14.1.0, Copyright © 2014-2014 Adobe Systems Incorporated.  All rights reserved.</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.adobe.flashpro.AwayExtensionsAnimate.plugin</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>..</string>
+	<string>14.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>...</string>
+	<string>14.1.0.14</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
@@ -39,6 +39,6 @@
 	<key>DTXcodeBuild</key>
 	<string>6C131e</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2016-2016 Adobe Systems Incorporated.  All rights reserved.</string>
+	<string>Copyright © 2014-2014 Adobe Systems Incorporated.  All rights reserved.</string>
 </dict>
 </plist>
