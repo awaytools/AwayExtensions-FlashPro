@@ -1,5 +1,0 @@
-﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(346,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  Main.cpp
-..\..\obj\win\release\64\Main.obj : warning LNK4042: object specified more than once; extras ignored
-     Creating library C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\AwayExtensionsFlashPro\plugin\lib\win\AwayExtensionsFlashPro.lib and object C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\AwayExtensionsFlashPro\plugin\lib\win\AwayExtensionsFlashPro.exp
-  AwayExtensionsFlashPro.vcxproj -> C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\AwayExtensionsFlashPro\plugin\lib\win\AwayExtensionsFlashPro.fcm

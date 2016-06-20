@@ -186,12 +186,13 @@ namespace AwayJS
 		if(new_bitmaptexture==NULL)
 			return FCM_SUCCESS;  
 		new_bitmaptexture->add_scene_name(this->awd_converter->current_scene_name);
-		// get the material-block for this color (create if does not exist)
+		// get the material-block for this bitmap (create if does not exist)
 		std::string matname = "mat_"+new_bitmaptexture->get_name();
 		BLOCKS::Material* new_fill_material=reinterpret_cast<BLOCKS::Material*>(this->awd_converter->get_project()->get_block_by_name_and_type(matname,  BLOCK::SIMPLE_MATERIAL, true));
 		new_fill_material->add_res_id(FILES::int_to_string(resourceId));
 		new_fill_material->add_scene_name(this->awd_converter->current_scene_name);
 		new_fill_material->set_name(matname);
+		new_fill_material->needsAlphaTex=true;
 		new_fill_material->set_material_type(MATERIAL::type::TEXTURE_MATERIAL);
 	//	new_fill_material->set_uv_transform_mtx(this->convert_matrix2x3(matrix));
 		new_fill_material->set_texture(reinterpret_cast<BLOCKS::BitmapTexture*>(new_texture));

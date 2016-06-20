@@ -358,6 +358,7 @@ FCM::Result AnimateToAWDEncoder::ExportBitmapFillStyle(DOM::FillStyle::IBitmapFi
 	// get the material-block for this color (create if does not exist)
 	BLOCKS::Material* new_fill_material=reinterpret_cast<BLOCKS::Material*>(this->awd_project->get_block_by_name_and_type(matname,  BLOCK::SIMPLE_MATERIAL, true));
 	new_fill_material->set_name(matname);
+	new_fill_material->needsAlphaTex=true;
 	new_fill_material->add_scene_name(this->current_scene_name);
 	new_fill_material->set_material_type(MATERIAL::type::SOLID_TEXTUREATLAS_MATERIAL);
 	//new_fill_material->set_uv_transform_mtx(this->convert_matrix2x3(matrix));

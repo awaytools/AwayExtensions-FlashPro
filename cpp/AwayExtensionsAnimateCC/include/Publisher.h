@@ -116,11 +116,25 @@ namespace AwayJS
         ~CPublisher();
 
 	private:
+		
+		DOM::PIFLADocument fla_document;
+		DOM::PITimeline timeline;
+		const Exporter::Service::RANGE* frameRange;
+		FCM::PIFCMDictionary pDict;
+		FCM::PIFCMDictionary pDictConfig;
 		AnimateToAWDEncoder* animate_to_awd_encode;
 		AWDProject* awd_project;
-		DOM::PIFLADocument fla_document;
-
-		FCM::PIFCMDictionary _pDict;
+		AWD::SETTINGS::BlockSettings* awd_settings;
+        std::string outFile;
+        FCM::AutoPtr<FCM::IFCMCalloc> pCalloc;
+        FCM::Result res;
+        FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
+        FCM::AutoPtr<FCM::IFCMUnknown> pUnk2;
+		
+		DOM::Utils::COLOR color;
+		FCM::U_Int32 stageHeight;
+		FCM::U_Int32 stageWidth;
+		FCM::Double fps;
 
         bool ReadString(
             const FCM::PIFCMDictionary pDict, 
@@ -155,9 +169,23 @@ namespace AwayJS
             const PIFCMDictionary pDictPublishSettings, 
             const PIFCMDictionary pDictConfig);
 
+        AWD::result CreateAWDProject();
+		
+        AWD::result CreateAWDSettings();
+
+        AWD::result CollectDocumentData();
+
+        AWD::result ProcessData();
+
+        AWD::result OpenFile();
+		
+        AWD::result PrintStatistics();
+
+        AWD::result OpenPreview();
+
         FCM::Boolean IsPreviewNeeded(const PIFCMDictionary pDictConfig);
 
-		AWD::result ExportLibraryItems(FCM::FCMListPtr pLibraryItemList, bool, bool, bool, bool);
+		AWD::result ExportLibraryItems(FCM::FCMListPtr pLibraryItemList);
 		
     };
 	

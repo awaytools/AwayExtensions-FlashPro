@@ -13,25 +13,25 @@ $( document ).ready(function() {
 
     csInterface = new CSInterface();
 
-/*
-    document.getElementById("includeVisiblelayers").checked=true;
-    document.getElementById("usePreview").checked=true;
-    document.getElementById("exportShapesInDebugMode").checked=false;
+    /*
+     document.getElementById("includeVisiblelayers").checked=true;
+     document.getElementById("usePreview").checked=true;
+     document.getElementById("exportShapesInDebugMode").checked=false;
 
-    document.getElementById("exportLibFonts").checked=true;
-    document.getElementById("embbed_sounds").checked=true;
-    document.getElementById("embbed_textures").checked=true;
-    document.getElementById("exportFrameScript").checked=true;
-    document.getElementById("appendFilename").checked=false;
-    document.getElementById("exportLibBitmaps").checked=true;
-    document.getElementById("exportLibSounds").checked=true;
-    document.getElementById("printExportLog").checked=true;
-    document.getElementById("sound_type").selectedIndex = "2";
-    document.getElementById("radialGradientSize").selectedIndex = "2";
-    document.getElementById("timelineDepth").selectedIndex = "0";
-    document.getElementById("fontData").selectedIndex = "0";
-    document.getElementById("geometryData").selectedIndex = "0";
-*/
+     document.getElementById("exportLibFonts").checked=true;
+     document.getElementById("embbed_sounds").checked=true;
+     document.getElementById("embbed_textures").checked=true;
+     document.getElementById("exportFrameScript").checked=true;
+     document.getElementById("appendFilename").checked=false;
+     document.getElementById("exportLibBitmaps").checked=true;
+     document.getElementById("exportLibSounds").checked=true;
+     document.getElementById("printExportLog").checked=true;
+     document.getElementById("sound_type").selectedIndex = "2";
+     document.getElementById("radialGradientSize").selectedIndex = "2";
+     document.getElementById("timelineDepth").selectedIndex = "0";
+     document.getElementById("fontData").selectedIndex = "0";
+     document.getElementById("geometryData").selectedIndex = "0";
+     */
 
     var skinInfo = JSON.parse(window.__adobe_cep__.getHostEnvironment()).appSkinInfo;
     var styleSheets= document.styleSheets;
@@ -95,7 +95,7 @@ function enableUIElements(event_obj)
 {
     var panel_names=[];
     panel_names.push("exportTimelines");
-    panel_names.push("exportGeometries");
+    //panel_names.push("exportGeometries");
     panel_names.push("exportFonts");
     panel_names.push("exportBitmaps");
     panel_names.push("exportSounds");
@@ -139,11 +139,10 @@ function serializeUI()
     //writeCheckboxToSettings("exportTimelines", "PublishSettings.ExportTimelines", pubSettings);
     writeCheckboxToSettings("includeVisiblelayers", "PublishSettings.IncludeInvisibleLayer", pubSettings);
     writeCheckboxToSettings("exportFrameScript", "PublishSettings.ExportFrameScript", pubSettings);
-    writeCheckboxToSettings("exportExternalFrameScript", "PublishSettings.ExternalScripts", pubSettings);
-    writeCheckboxToSettings("printExportLogTimeline", "PublishSettings.PrintExportLogTimelines", pubSettings);
+    //writeCheckboxToSettings("exportExternalFrameScript", "PublishSettings.ExternalScripts", pubSettings);
+    //writeCheckboxToSettings("printExportLogTimeline", "PublishSettings.PrintExportLogTimelines", pubSettings);
 
     //writeCheckboxToSettings("exportGeometries", "PublishSettings.ExportGeometries", pubSettings);
-    writeCheckboxToSettings("exportShapesInDebugMode", "PublishSettings.ExportShapesInDebugMode", pubSettings);
 
     //writeCheckboxToSettings("exportFonts", "PublishSettings.ExportFonts", pubSettings);
     writeCheckboxToSettings("exportLibFonts", "PublishSettings.ExportLibFonts", pubSettings);
@@ -159,7 +158,7 @@ function serializeUI()
     writeCheckboxToSettings("embbed_sounds", "PublishSettings.EmbbedSounds", pubSettings);
     writeCheckboxToSettings("exportLibSounds", "PublishSettings.ExportLibSounds", pubSettings);
     writeCheckboxToSettings("exportTimelineSounds", "PublishSettings.ExportTimelineSounds", pubSettings);
-    writeCheckboxToSettings("createAudioMap", "PublishSettings.CreateAudioMap", pubSettings);
+    //writeCheckboxToSettings("createAudioMap", "PublishSettings.CreateAudioMap", pubSettings);
 
     pubSettings["PublishSettings.SaveSoundsAs"] = document.getElementById("sound_type").selectedIndex;
 
@@ -194,11 +193,11 @@ function setUIFromData(uiState)
     //setCheckBoxFromSettings("exportTimelines", "PublishSettings.ExportTimelines", uiState, true);
     setCheckBoxFromSettings("includeVisiblelayers", "PublishSettings.IncludeInvisibleLayer", uiState, true);
     setCheckBoxFromSettings("exportFrameScript", "PublishSettings.ExportFrameScript", uiState, true);
-    setCheckBoxFromSettings("exportExternalFrameScript", "PublishSettings.ExternalScripts", uiState, true);
-    setCheckBoxFromSettings("printExportLogTimeline", "PublishSettings.PrintExportLogTimelines", uiState, false);
+    //setCheckBoxFromSettings("exportExternalFrameScript", "PublishSettings.ExternalScripts", uiState, true);
+    //setCheckBoxFromSettings("printExportLogTimeline", "PublishSettings.PrintExportLogTimelines", uiState, false);
 
     //setCheckBoxFromSettings("exportGeometries", "PublishSettings.ExportGeometries", uiState, true);
-    setCheckBoxFromSettings("exportShapesInDebugMode", "PublishSettings.ExportShapesInDebugMode", uiState, false);
+    //setCheckBoxFromSettings("exportShapesInDebugMode", "PublishSettings.ExportShapesInDebugMode", uiState, false);
 
     //setCheckBoxFromSettings("exportFonts", "PublishSettings.ExportFonts", uiState, true);
     setCheckBoxFromSettings("exportLibFonts", "PublishSettings.ExportLibFonts", uiState, true);
@@ -215,7 +214,7 @@ function setUIFromData(uiState)
     setCheckBoxFromSettings("embbed_sounds", "PublishSettings.EmbbedSounds", uiState, true);
     setCheckBoxFromSettings("exportLibSounds", "PublishSettings.ExportLibSounds", uiState, true);
     setCheckBoxFromSettings("exportTimelineSounds", "PublishSettings.ExportTimelineSounds", uiState, true);
-    setCheckBoxFromSettings("createAudioMap", "PublishSettings.CreateAudioMap", uiState, false);
+    //setCheckBoxFromSettings("createAudioMap", "PublishSettings.CreateAudioMap", uiState, false);
 
     if(uiState["PublishSettings.SaveSoundsAs"] != null && uiState["PublishSettings.SaveSoundsAs"] != "undefined")
     {

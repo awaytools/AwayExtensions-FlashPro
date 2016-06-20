@@ -4,12 +4,256 @@ function batchExport() {
 	var files = FLfile.listFolder(folder + "/*.fla", "files");
 	for (file in files) {
 		var curFile = files[file];
-		// open document, publish, and close
+		// open document, update publisher settings, publish, discard changes, close
 		fl.openDocument(folder + "/" + curFile);
+		updatePublishSettingsForBatchExport();
 		fl.getDocumentDOM().publish();
+		fl.getDocumentDOM().revert();
 		fl.closeDocument(fl.getDocumentDOM());
 	}
 }
+
+function updatePublishSettingsForBatchExport() {
+	var profileXML = new XML(fl.getDocumentDOM().exportPublishProfileString());
+	for(var i=0; i<profileXML.PublishProperties.length(); i++){
+		if(profileXML.PublishProperties[i].@name=="AwayExtensionsAnimateCC"){
+			for(var k=0;k<profileXML.PublishProperties[i].Property.length();k++){
+				if(profileXML.PublishProperties[i].Property[k].@name=="out_file"){
+					profileXML.PublishProperties[i].Property[k]="";
+				}
+				else if(profileXML.PublishProperties[i].Property[k].@name=="OpenPreview"){
+					profileXML.PublishProperties[i].Property[k]=false;
+				}
+				else if(profileXML.PublishProperties[i].Property[k].@name=="CopyRuntime"){
+					profileXML.PublishProperties[i].Property[k]=false;
+				}
+				else if(profileXML.PublishProperties[i].Property[k].@name=="PrintExportLog"){
+					profileXML.PublishProperties[i].Property[k]=false;
+				}
+				else if(profileXML.PublishProperties[i].Property[k].@name=="PrintExportLogTimelines"){
+					profileXML.PublishProperties[i].Property[k]=false;
+				}
+			}
+		}
+	}
+	fl.getDocumentDOM().importPublishProfileString(profileXML.toXMLString());
+}
+
+function hasValidDoc() {
+	// check if the current doc is a Away Document
+	if(fl.getDocumentDOM()){
+		var profileXML =  new XML(fl.getDocumentDOM().exportPublishProfileString());
+		for(var i=0; i<profileXML.PublishProperties.length(); i++){
+			fl.trace(profileXML.PublishProperties[i].@name);
+			if(profileXML.PublishProperties[i].@name=="AwayExtensionsAnimateCC"){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+function getPublisherSettings() {
+	var profileXML = new XML(fl.getDocumentDOM().exportPublishProfileString('Default'));
+	var settings_str="";
+
+	for(var i=0; i<profileXML.PublishProperties.length(); i++){
+		if(profileXML.PublishProperties[i].@name=="AwayExtensionsAnimateCC"){
+			for(var k=0;k<profileXML.PublishProperties[i].Property.length();k++){
+				settings_str+=profileXML.PublishProperties[i].Property[k].@name+"="+profileXML.PublishProperties[i].Property[k]+"###";
+			}
+		}
+	}
+	return settings_str;
+
+}
+
+function importFrameScriptsFromJS(){
+	var uri = fl.browseForFileURL("open", "Select a JS file", "Javascript file (*.js)", "js");
+	var str = FLfile.read( uri);
+	if (str) {
+		var functions_ls=str.split("//AnimateCC: Symbol: ");
+		if(functions_ls.length<=1){
+			alert("The selected File contains no scripts that can be applied to document");
+		}
+		else{
+			var i=1;
+			var lastMC=undefined;
+			var lastMC_name="";
+			var currentdoc_lib = fl.getDocumentDOM().library;
+			var lib_items = currentdoc_lib.items;
+			var mcs_found=[];// aray of arrays - one array for each MC that has been found
+			var mcs_not_found=[];// aray of arrays - one array for each MC that has been found
+			for(i=1;i<functions_ls.length; i++){
+				var splitted=functions_ls[i].split("\n");
+				if(splitted.length<=2){
+					alert("Error when parsing the script");
+				}
+				else{
+					var name_and_frame=splitted[0].split("  #frame: ");
+					if(lastMC_name!=name_and_frame[0]){
+						lastMC_name=name_and_frame[0];
+						var idx=currentdoc_lib.findItemIndex(lastMC_name);
+						lastMC=null;
+						if(idx!=""){
+							if((lib_items[idx].itemType=="movie clip")||(lib_items[idx].itemType=="graphic")){
+								lastMC=lib_items[idx];
+								mcs_found.push([lastMC.timeline, [], []]);
+							}
+						}
+						else{
+							var t = 0;
+							var curTimelines = fl.getDocumentDOM().timelines;
+							while(t < fl.getDocumentDOM().timelines.length){
+								if(curTimelines[t].name==lastMC_name){
+									lastMC=curTimelines[t];
+									mcs_found.push([lastMC, [], []]);
+									t=fl.getDocumentDOM().timelines.length;
+								};
+								++t;
+							}
+						}
+						if(lastMC==null){
+							mcs_not_found.push(name_and_frame[0]);
+						}
+					}
+					if(lastMC!=null){
+						var k=2;
+						var thisscript="";
+						for(k=2;k<splitted.length-1; k++){
+							thisscript+=splitted[k]+"\n";
+						}
+						mcs_found[mcs_found.length-1][1].push(thisscript);
+						mcs_found[mcs_found.length-1][2].push(name_and_frame[1]);
+					}
+				}
+			}
+			var doit=true;
+			if(mcs_not_found.length>0){
+				doit=false;
+				if(mcs_found.length>0){
+					var questionstring="Found framescript for "+mcs_not_found.length+" MovieClip or Graphic that could not be found in the current Document.\n";
+					questionstring+="The names of those Movieclips have been printed to the console.\n";
+					questionstring+="Still apply scripts of MovieClips that could be found ?";
+					for(i=0;i<mcs_not_found.length; i++){
+						fl.trace("Did not found any MovieClip or Graphic with name '"+mcs_not_found[i]+"'");
+					}
+					doit = confirm(questionstring);
+				}
+				else{
+					confirm("Found framescript for "+mcs_not_found.length+ " Movieclips, but none of those MovieClips could be found in the current Document.");
+				}
+			}
+			if((mcs_found.length>0)&&(doit)){
+				var done_count = 0;
+				// apply the stuff to the movieclips we found
+				for(i=0;i<mcs_found.length; i++){
+					var timeline=mcs_found[i][0];
+					var layerCount = timeline.layerCount;
+					var k=0;
+					for(k=0; k<mcs_found[i][1].length; k++){
+						var frameIdx=mcs_found[i][2][k];
+						var framescript=mcs_found[i][1][k];
+						layerCount = timeline.layerCount;
+						if(layerCount>0){
+							var awayjs_code_layer=-1;
+							var framescriptAssigned=false;
+							while (layerCount--){
+								var layer = timeline.layers[layerCount];
+								var frame = layer.frames[frameIdx-1];
+								if ( frame == undefined){
+									continue;
+								}
+								if( frame.startFrame==frameIdx-1){
+									if(!framescriptAssigned){
+										awayjs_code_layer=layerCount;
+									}
+									if(frame.actionScript!=""){
+										if(!framescriptAssigned){
+											framescriptAssigned=true;
+											done_count++;
+											frame.actionScript=framescript;
+										}
+										else{
+											frame.actionScript="";
+										}
+									};
+								}
+							}
+							if(!framescriptAssigned){
+								if(awayjs_code_layer!=-1){
+									var frame = timeline.layers[awayjs_code_layer].frames[frameIdx-1];
+									if ( frame == undefined){
+										continue;
+									}
+									if( frame.startFrame==frameIdx-1){
+										done_count++;
+										frame.actionScript=framescript;
+									}
+								}
+								else{
+									fl.trace("Error when trying to set framescript for frame "+frameIdx+" on Movieclip '"+mcs_found[i][0].name+"'. No keyframe exists for this frame");
+								}
+							}
+						}
+					}
+				}
+				alert("Imported "+done_count+" framescripts into "+mcs_found.length+" Movieclips");
+
+			}
+		}
+	}
+	else{
+		alert("The selected File contains no scripts that can be applied to document");
+	}
+}
+
+function getFrameScript() {
+	// check if the current doc is a Away Document
+	if(fl.getDocumentDOM()){
+		var profileXML =  fl.getDocumentDOM().exportPublishProfileString('Default');
+		var findString = "AwayExtensionsAnimateCC";
+		var startIndex = profileXML.indexOf(findString);
+		if(startIndex>0){
+			var timeline=fl.getDocumentDOM().getTimeline();
+			if(timeline){
+				var scripts="";
+				layerCount = timeline.layerCount;
+				if(layerCount>0) {
+					var awayjs_code_layer = -1;
+					var framescriptAssigned = false;
+					while (layerCount--) {
+						var layer = timeline.layers[layerCount];
+						var frame = layer.frames[timeline.currentFrame];
+						if (frame == undefined) {
+							continue;
+						}
+						if (frame.startFrame == timeline.currentFrame) {
+							scripts += frame.actionScript;
+						}
+					}
+				}
+				var script_lines=scripts.split("\n");
+				scripts="";
+				for(var i=0; i<script_lines.length; i++){
+					scripts+=script_lines[i];
+					if(i<script_lines.length-1){
+						scripts+="<br>"
+					}
+				}
+				//fl.trace(scripts);
+				return scripts;
+			}
+		}
+	}
+	return "";
+}
+
+
+
+
+
+// stuff that might be used later:
 
 function showXMLPanel(xmlString){
   var tempUrl = fl.configURI + "Commands/test.xml"
@@ -207,216 +451,3 @@ function exportMotions() {
 	return collectallMotionsXML;
 }
 
-function importFrameScriptsFromJS(){
-	var uri = fl.browseForFileURL("open", "Select a JS file", "Javascript file (*.js)", "js");
-	var str = FLfile.read( uri);
-	if (str) {
-		var functions_ls=str.split("//AnimateCC: Symbol: ");
-		if(functions_ls.length<=1){
-			alert("The selected File contains no scripts that can be applied to document");
-		}
-		else{
-			var i=1;
-			var lastMC=undefined;
-			var lastMC_name="";
-			var currentdoc_lib = fl.getDocumentDOM().library;
-			var lib_items = currentdoc_lib.items;
-			var mcs_found=[];// aray of arrays - one array for each MC that has been found
-			var mcs_not_found=[];// aray of arrays - one array for each MC that has been found
-			for(i=1;i<functions_ls.length; i++){
-				var splitted=functions_ls[i].split("\n");
-				if(splitted.length<=2){
-					alert("Error when parsing the script");
-				}
-				else{
-					var name_and_frame=splitted[0].split("  #frame: ");
-					if(lastMC_name!=name_and_frame[0]){
-						lastMC_name=name_and_frame[0];
-						var idx=currentdoc_lib.findItemIndex(lastMC_name);
-						lastMC=null;
-						if(idx!=""){
-							if((lib_items[idx].itemType=="movie clip")||(lib_items[idx].itemType=="graphic")){
-								lastMC=lib_items[idx];
-								mcs_found.push([lastMC.timeline, [], []]);
-							}
-						}
-						else{
-							var t = 0;
-							var curTimelines = fl.getDocumentDOM().timelines;
-							while(t < fl.getDocumentDOM().timelines.length){
-								if(curTimelines[t].name==lastMC_name){
-									lastMC=curTimelines[t];
-									mcs_found.push([lastMC, [], []]);
-									t=fl.getDocumentDOM().timelines.length;
-								};
-								++t;
-							}
-						}
-						if(lastMC==null){
-							mcs_not_found.push(name_and_frame[0]);
-						}
-					}
-					if(lastMC!=null){
-						var k=2;
-						var thisscript="";
-						for(k=2;k<splitted.length-1; k++){
-							thisscript+=splitted[k]+"\n";
-						}
-						mcs_found[mcs_found.length-1][1].push(thisscript);
-						mcs_found[mcs_found.length-1][2].push(name_and_frame[1]);
-					}
-				}
-			}
-			var doit=true;
-			if(mcs_not_found.length>0){
-				doit=false;
-				if(mcs_found.length>0){
-					var questionstring="Found framescript for "+mcs_not_found.length+" MovieClip or Graphic that could not be found in the current Document.\n";
-					questionstring+="The names of those Movieclips have been printed to the console.\n";
-					questionstring+="Still apply scripts of MovieClips that could be found ?";
-					for(i=0;i<mcs_not_found.length; i++){
-						fl.trace("Did not found any MovieClip or Graphic with name '"+mcs_not_found[i]+"'");
-					}
-					doit = confirm(questionstring);
-				}
-				else{
-					confirm("Found framescript for "+mcs_not_found.length+ " Movieclips, but none of those MovieClips could be found in the current Document.");
-				}
-			}
-			if((mcs_found.length>0)&&(doit)){
-				var done_count = 0;
-				// apply the stuff to the movieclips we found
-				for(i=0;i<mcs_found.length; i++){
-					var timeline=mcs_found[i][0];
-					var layerCount = timeline.layerCount;
-					var k=0;
-					for(k=0; k<mcs_found[i][1].length; k++){
-						var frameIdx=mcs_found[i][2][k];
-						var framescript=mcs_found[i][1][k];
-						layerCount = timeline.layerCount;
-						if(layerCount>0){
-							var awayjs_code_layer=-1;
-							var framescriptAssigned=false;
-							while (layerCount--){
-								var layer = timeline.layers[layerCount];
-								var frame = layer.frames[frameIdx-1];
-								if ( frame == undefined){
-									continue;
-								}
-								if( frame.startFrame==frameIdx-1){
-									if(!framescriptAssigned){
-										awayjs_code_layer=layerCount;
-									}
-									if(frame.actionScript!=""){
-										if(!framescriptAssigned){
-											framescriptAssigned=true;
-											done_count++;
-											frame.actionScript=framescript;
-										}
-										else{
-											frame.actionScript="";
-										}
-									};
-								}
-							}
-							if(!framescriptAssigned){
-								if(awayjs_code_layer!=-1){
-									var frame = timeline.layers[awayjs_code_layer].frames[frameIdx-1];
-									if ( frame == undefined){
-										continue;
-									}
-									if( frame.startFrame==frameIdx-1){
-										done_count++;
-										frame.actionScript=framescript;
-									}
-								}
-								else{
-									fl.trace("Error when trying to set framescript for frame "+frameIdx+" on Movieclip '"+mcs_found[i][0].name+"'. No keyframe exists for this frame");
-								}
-							}
-						}
-					}
-				}
-				alert("Imported "+done_count+" framescripts into "+mcs_found.length+" Movieclips");
-
-			}
-		}
-	}
-	else{
-		alert("The selected File contains no scripts that can be applied to document");
-	}
-}
-
-
-function hasValidDoc() {
-	// check if the current doc is a Away Document
-	if(fl.getDocumentDOM()){
-		var profileXML =  new XML(fl.getDocumentDOM().exportPublishProfileString('Default'));
-		for(var i=0; i<profileXML.PublishProperties.length(); i++){
-			if(profileXML.PublishProperties[i].@name=="AwayExtensionsAnimateCC"){
-				return true;
-
-			}
-		}
-
-	}
-	return false;
-}
-
-
-function getFrameScript() {
-	// check if the current doc is a Away Document
-	if(fl.getDocumentDOM()){
-		var profileXML =  fl.getDocumentDOM().exportPublishProfileString('Default');
-		var findString = "AwayExtensionsAnimateCC";
-		var startIndex = profileXML.indexOf(findString);
-		if(startIndex>0){
-			var timeline=fl.getDocumentDOM().getTimeline();
-			if(timeline){
-				var scripts="";
-				layerCount = timeline.layerCount;
-				if(layerCount>0) {
-					var awayjs_code_layer = -1;
-					var framescriptAssigned = false;
-					while (layerCount--) {
-						var layer = timeline.layers[layerCount];
-						var frame = layer.frames[timeline.currentFrame];
-						if (frame == undefined) {
-							continue;
-						}
-						if (frame.startFrame == timeline.currentFrame) {
-							scripts += frame.actionScript;
-						}
-					}
-				}
-				var script_lines=scripts.split("\n");
-				scripts="";
-				for(var i=0; i<script_lines.length; i++){
-					scripts+=script_lines[i];
-					if(i<script_lines.length-1){
-						scripts+="<br>"
-					}
-				}
-				//fl.trace(scripts);
-				return scripts;
-			}
-		}
-	}
-	return "";
-}
-
-
-function getPublisherSettings() {
-	var profileXML = new XML(fl.getDocumentDOM().exportPublishProfileString('Default'));
-	var settings_str="";
-
-	for(var i=0; i<profileXML.PublishProperties.length(); i++){
-		if(profileXML.PublishProperties[i].@name=="AwayExtensionsAnimateCC"){
-			for(var k=0;k<profileXML.PublishProperties[i].Property.length();k++){
-				settings_str+=profileXML.PublishProperties[i].Property[k].@name+"="+profileXML.PublishProperties[i].Property[k]+"###";
-			}
-		}
-	}
-	return settings_str;
-
-}
