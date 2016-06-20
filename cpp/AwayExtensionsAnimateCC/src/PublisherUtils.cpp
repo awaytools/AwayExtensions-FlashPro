@@ -680,8 +680,9 @@ namespace AwayJS
 
 		preview_ids.push_back("AWD_STAGEHEIGHT_AWD");
 		preview_values.push_back(FILES::int_to_string(this->stageHeight));
-           
-		awd_result = this->awd_project->open_preview(preview_file_url, preview_ids, preview_values, std::string(""), false); 
+        
+        std::string preview_path = "";
+		awd_result = this->awd_project->open_preview(preview_file_url, preview_ids, preview_values, preview_path, false);
 		if(awd_result!=result::AWD_SUCCESS){
 			Utils::Trace(GetCallback(), "FAILED TO OPEN PREVIEW FILE \n");
 			return awd_result;
