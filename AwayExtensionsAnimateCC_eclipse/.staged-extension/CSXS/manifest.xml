@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.away.AwayExtensionsAnimateCC" ExtensionBundleVersion="1.0.9"
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.away.AwayExtensionsAnimateCC" ExtensionBundleVersion="1.0.91"
 		ExtensionBundleName="AwayExtensionsAnimateCC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
-		<Extension Id="com.away.AwayExtensionsAnimateCC.PublishSettings" Version="1.0.9" />
-		<Extension Id="com.away.AwayExtensionsAnimateCC.Plugin" Version="1.0.9" />
-		<Extension Id="com.away.AwayExtensionsAnimateCC.Panel" Version="1.0.9" />
+		<Extension Id="com.away.AwayExtensionsAnimateCC.PublishSettings" Version="1.0.91" />
+		<Extension Id="com.away.AwayExtensionsAnimateCC.Plugin" Version="1.0.91" />
+		<Extension Id="com.away.AwayExtensionsAnimateCC.Panel" Version="1.0.91" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
