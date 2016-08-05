@@ -175,7 +175,7 @@ namespace AwayJS
 			Utils::Trace(GetCallback(), "\nErrorMessage: %s\n", AWD::get_string_for_result(awd_result).c_str());
 			return FCM_EXPORT_FAILED;
 		}
-
+		
 		awd_result = this->ProcessData();
 		if(awd_result!=AWD::result::AWD_SUCCESS) {
 			Utils::Trace(GetCallback(), "\nFailed to process the data !\n");

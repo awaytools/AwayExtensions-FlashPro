@@ -301,7 +301,7 @@ namespace AwayJS
 					
 
 		// some settings that are no longer available in the UI, but need setting anyway until they are refactored out for good:
-		this->awd_settings->set_curve_threshold(0.05);
+		this->awd_settings->set_curve_threshold(0.02); // 0.08
 		this->awd_settings->set_max_iterations(50);
 		this->awd_settings->set_exterior_threshold(0.0, TYPES::filled_region_type::STANDART_FILL);
 		//this->awd_settings->set_distinglish_interior_exterior_triangles_2d(false);
@@ -479,12 +479,13 @@ namespace AwayJS
 			Utils::Trace(GetCallback(), "\nCreating Textureatlas took '%d' ms\n", this->awd_project->get_time_since_last_call());
 		
 	
-		
+		/*
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
 			Utils::Trace(GetCallback(), "\nStart mergin vertex-streams");
 		this->awd_project->create_merged_streams();
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
 			Utils::Trace(GetCallback(), "\nMerging vertex-streams took '%d' ms\n", this->awd_project->get_time_since_last_call());
+			*/
 
 		return awd_result;
 	}

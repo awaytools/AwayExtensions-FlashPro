@@ -313,6 +313,7 @@ AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, A
             this_text_format->set_fill_material(new_fill_material);
             this_text_format->set_letterSpacing(letter_spaceing);
             this_text_format->set_is_rotated(is_rotated);
+            this_text_format->set_color(awdColor);
             this_text_format->set_autokerning(auto_kernable);
             this_text_format->set_baseLineShift(FONT::baselineshift_type(base_line_shift_style));
                     

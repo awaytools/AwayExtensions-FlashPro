@@ -204,7 +204,7 @@ FCM::Result AnimateToAWDEncoder::ExportRadialGradientFillStyle(DOM::FillStyle::I
 	FCM::U_Int8 i = 0;
 	std::vector<TYPES::UINT32> gradient_pos;
 	std::vector<GEOM::VECTOR4D> gradient_color;
-	bool needsAlpha=false;
+	bool needsAlpha=true;
     for ( i = 0; i < nColors; i++)
     {
         DOM::Utils::GRADIENT_COLOR_POINT point;
@@ -258,7 +258,7 @@ FCM::Result AnimateToAWDEncoder::ExportLinearGradientFillStyle(DOM::FillStyle::I
 	//AwayJS::Utils::Trace(this->m_pCallback, "spread %d \n", spread);
     ASSERT(FCM_SUCCESS_CODE(res));
 
-	bool needsAlpha=false;
+	bool needsAlpha=true;
     res = gradientFill->GetColorGradient(pGrad.m_Ptr);
     ASSERT(FCM_SUCCESS_CODE(res));
 
