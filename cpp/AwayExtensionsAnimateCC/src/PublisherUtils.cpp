@@ -394,7 +394,7 @@ namespace AwayJS
 			return awd_result;
 		}	
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
-			Utils::Trace(GetCallback(), "\nEexporting Library took '%d' ms\n", this->awd_project->get_time_since_last_call());
+			Utils::Trace(GetCallback(), "\nExporting Library took '%d' ms\n", this->awd_project->get_time_since_last_call());
 		
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
 			Utils::Trace(GetCallback(), "\nStart finalizing MovieClips");
@@ -479,13 +479,13 @@ namespace AwayJS
 			Utils::Trace(GetCallback(), "\nCreating Textureatlas took '%d' ms\n", this->awd_project->get_time_since_last_call());
 		
 	
-		/*
+		
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
 			Utils::Trace(GetCallback(), "\nStart mergin vertex-streams");
 		this->awd_project->create_merged_streams();
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
 			Utils::Trace(GetCallback(), "\nMerging vertex-streams took '%d' ms\n", this->awd_project->get_time_since_last_call());
-			*/
+			
 
 		return awd_result;
 	}

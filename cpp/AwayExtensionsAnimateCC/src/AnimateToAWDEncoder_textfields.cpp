@@ -364,24 +364,32 @@ AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, A
                 // stupid way to collect the correct portion of the utf16 string into a U_int16 vector
                 // chars with code 13 (\r) will be replaced with a escaped linebreak (\\n)
 				std::vector<U_Int16> chars_as_uint16;
-				if(this->awd_project->get_settings()->get_bool(SETTINGS::bool_settings::EmbbedAllChars)){
-					int t2=0;
-					for(t2=startIdx; t2<(startIdx+txt_length); t2++){
-                        if(text[t2]==13){
-                            chars_as_uint16.push_back(92);
-                            chars_as_uint16.push_back(110);
-                        }
-                        else{
-                            chars_as_uint16.push_back(text[t2]);
+                int t2=0;
+                for(t2=startIdx; t2<(startIdx+txt_length); t2++){
+                    if(text[t2]==13){
+                        chars_as_uint16.push_back(92);
+                        chars_as_uint16.push_back(110);
+                    }
+                    else{
+                        chars_as_uint16.push_back(text[t2]);
+                        //AwayJS::Utils::Trace(m_pCallback, "text %d\n", text[t2]);
+                        if(this->awd_project->get_settings()->get_bool(SETTINGS::bool_settings::EmbbedAllChars)){
                             this_font_style->get_fontShape(text[t2]);
                         }
 					}
-				}
-                // convert the utf16 string to utf8
-                FCM::AutoPtr<FCM::IFCMStringUtils> pIFCMStringUtils = AwayJS::Utils::GetStringUtilsService(m_pCallback);
-                FCM::StringRep8 outstr;
-                pIFCMStringUtils->ConvertStringRep16to8(chars_as_uint16.data(), outstr);
-                awd_textrun->set_text(outstr);
+                }
+                if(chars_as_uint16.size()>0){
+                    // make sure string is null determinated
+                    chars_as_uint16.push_back(0);
+                    // convert the utf16 string to utf8
+                    FCM::AutoPtr<FCM::IFCMStringUtils> pIFCMStringUtils = AwayJS::Utils::GetStringUtilsService(m_pCallback);
+                    FCM::StringRep8 outstr;
+                    pIFCMStringUtils->ConvertStringRep16to8(chars_as_uint16.data(), outstr);
+                    //AwayJS::Utils::Trace(m_pCallback, "text %s\n", outstr);
+                    std::string final_str=std::string(outstr);
+                        awd_textrun->set_text(final_str);
+                    
+                }
 #endif
 			}
                 

@@ -9,29 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/blocks/MetaData.cc"
-            timestampString = "476840996.435241"
+            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/geomutil/geomutilShapes.cc"
+            timestampString = "492398509.853219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "MetaData::MetaData(const std::string&amp; generator_name, const std::string&amp; generator_version)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "477019610.149874"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
-            landmarkName = "CPublisher::GetSettingsFloat(const PIFCMDictionary pDictPublishSettings, std::string settingsname, double default_value)"
+            startingLineNumber = "1046"
+            endingLineNumber = "1046"
+            landmarkName = "GEOM::ProcessShapeGeometry(Geometry* geom, AWDProject* awd_project, SETTINGS::Settings* subgeom_settings)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,75 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "477019762.843963"
+            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/geomutil/geomutilShapes.cc"
+            timestampString = "492398537.261924"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "CPublisher::GetOutputFileName(DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const PIFCMDictionary pDictPublishSettings, std::string&amp; outFile)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "477019789.493054"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
-            landmarkName = "CPublisher::CreateAWDProject()"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AwayJS::CPublisher::GetOutputFileName(DOM::IFLADocument*, DOM::ITimeline*, FCM::IFCMDictionary*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;&amp;)"
-                  moduleName = "AwayExtensionsAnimate"
-                  urlString = "file:///Users/80prozent/_awayjs/AwayExtensions-Animate/cpp/AwayExtensionsAnimateCC/src/PublisherUtils.cpp"
-                  timestampString = "477019789.497308"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "210"
-                  endingLineNumber = "210"
-                  offsetFromSymbolStart = "1156">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AwayJS::CPublisher::GetOutputFileName(DOM::IFLADocument*, DOM::ITimeline*, FCM::IFCMDictionary*, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;&amp;)"
-                  moduleName = "AwayExtensionsAnimate"
-                  urlString = "file:///Users/80prozent/_awayjs/AwayExtensions-Animate/cpp/AwayExtensionsAnimateCC/src/PublisherUtils.cpp"
-                  timestampString = "477019789.497506"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "210"
-                  endingLineNumber = "210"
-                  offsetFromSymbolStart = "1308">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "477019890.872006"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "CPublisher::GetOutputFileName(DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const PIFCMDictionary pDictPublishSettings, std::string&amp; outFile)"
+            startingLineNumber = "1052"
+            endingLineNumber = "1052"
+            landmarkName = "GEOM::ProcessShapeGeometry(Geometry* geom, AWDProject* awd_project, SETTINGS::Settings* subgeom_settings)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -119,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "477020007.046523"
+            filePath = "../../../../../awd-sdk/cpp-libawd/src/elements/geom/SubGeom.cc"
+            timestampString = "492398676.559908"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
-            landmarkName = "CPublisher::GetOutputFileName(DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const PIFCMDictionary pDictPublishSettings, std::string&amp; outFile)"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "SubGeom::get_tri_cnt()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -135,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "477020008.561086"
+            filePath = "../../../../../awd-sdk/cpp-libawd/src/elements/geom/SubGeom.cc"
+            timestampString = "492398677.257699"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "CPublisher::GetOutputFileName(DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const PIFCMDictionary pDictPublishSettings, std::string&amp; outFile)"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "SubGeom::get_tri_cnt()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -151,509 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "477020011.455665"
+            filePath = "../../../../../awd-sdk/cpp-libawd/src/elements/geom/SubGeom.cc"
+            timestampString = "492398711.140911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
-            landmarkName = "CPublisher::GetOutputFileName(DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const PIFCMDictionary pDictPublishSettings, std::string&amp; outFile)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "477020066.765631"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "477020213.823487"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "477020317.141866"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "477020334.306545"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "477020392.866613"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "298"
-            endingLineNumber = "298"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487488300.071296"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "639"
-            endingLineNumber = "639"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487488501.94916"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "637"
-            endingLineNumber = "637"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487488503.549393"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "638"
-            endingLineNumber = "638"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/blocks/MetaData.cc"
-            timestampString = "487488573.409324"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "MetaData::MetaData(const std::string&amp; generator_name, const std::string&amp; generator_version)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488640.609547"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "397"
-            endingLineNumber = "397"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488641.873461"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "399"
-            endingLineNumber = "399"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488642.76144"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "402"
-            endingLineNumber = "402"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488645.179202"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "409"
-            endingLineNumber = "409"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488648.23246"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "414"
-            endingLineNumber = "414"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488649.866137"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "419"
-            endingLineNumber = "419"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488652.025853"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "429"
-            endingLineNumber = "429"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488748.621309"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "406"
-            endingLineNumber = "406"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488796.84862"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "449"
-            endingLineNumber = "449"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488797.640808"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "447"
-            endingLineNumber = "447"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488943.004292"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "427"
-            endingLineNumber = "427"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488985.779209"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487488988.981626"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "417"
-            endingLineNumber = "417"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487489032.341089"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "412"
-            endingLineNumber = "412"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../../../../awd-sdk/cpp-libawd/src/utils/util.cc"
-            timestampString = "487489034.564986"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "407"
-            endingLineNumber = "407"
-            landmarkName = "FILES::open_preview(FILES::AWDFile* output_file, std::string&amp; preview_file, std::vector&lt;std::string&gt; change_ids, std::vector&lt;std::string&gt; change_values, std::string&amp; open_path, bool append_name)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487489532.117646"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "602"
-            endingLineNumber = "602"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487489533.007919"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "603"
-            endingLineNumber = "603"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487489533.431691"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "604"
-            endingLineNumber = "604"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487489533.999608"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "605"
-            endingLineNumber = "605"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487489534.359494"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "606"
-            endingLineNumber = "606"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/AnimateToAWDEncoder_textfields.cpp"
-            timestampString = "487607554.547289"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
-            landmarkName = "AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, AWDBlock** awd_block, const std::string ressource_id)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/AnimateToAWDEncoder_textfields.cpp"
-            timestampString = "487607555.54855"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "AnimateToAWDEncoder::ExportText(DOM::FrameElement::IClassicText* classic_text, AWDBlock** awd_block, const std::string ressource_id)"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "SubGeom::get_tri_cnt()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -663,93 +89,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487612564.311796"
+            filePath = "../../../../../awd-sdk/cpp-libawd/src/elements/geom/SubGeomInternal.cc"
+            timestampString = "492398752.714493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487612565.33501"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "478"
-            endingLineNumber = "478"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/Publisher.cpp"
-            timestampString = "487612566.850219"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "481"
-            endingLineNumber = "481"
-            landmarkName = "CPublisher::Export( DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const Exporter::Service::RANGE* pFrameRange, const PIFCMDictionary pDictPublishSettings, const PIFCMDictionary pDictConfig)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "487612745.409175"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "CPublisher::GetOutputFileName(DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const PIFCMDictionary pDictPublishSettings, std::string&amp; outFile)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "487612746.340914"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
-            landmarkName = "CPublisher::GetOutputFileName(DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const PIFCMDictionary pDictPublishSettings, std::string&amp; outFile)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../src/PublisherUtils.cpp"
-            timestampString = "487612819.909845"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
-            landmarkName = "CPublisher::GetOutputFileName(DOM::PIFLADocument pFlaDocument, DOM::PITimeline pTimeline, const PIFCMDictionary pDictPublishSettings, std::string&amp; outFile)"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "SubGeomInternal::get_tri_cnt()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
