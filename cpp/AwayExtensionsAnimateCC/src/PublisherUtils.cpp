@@ -280,6 +280,7 @@ namespace AwayJS
 		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::ExportLibSounds, GetSettingsBool(this->pDict, "PublishSettings.ExportLibSounds", true));
 		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::ExportTimelineSounds, GetSettingsBool(this->pDict, "PublishSettings.ExportTimelineSounds", true));
 		//this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::CreateAudioMap, GetSettingsBool(this->pDict, "PublishSettings.CreateAudioMap", false));
+		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::ExportEmptyFontsForFNT, GetSettingsBool(this->pDict, "PublishSettings.ExportEmptyFontsForFNT", true));
 		
 		std::string sound_file_type_str;
 		ReadString(this->pDict, (FCM::StringRep8)"PublishSettings.SaveSoundsAs", sound_file_type_str);
