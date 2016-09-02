@@ -290,6 +290,8 @@ namespace AwayJS
 			sound_file_type_str="wav";}
 		else if(sound_file_type_str=="2"){
 			sound_file_type_str="mp3";}
+        else{
+            sound_file_type_str="keep";}
 		this->awd_settings->set_sound_file_extension(sound_file_type_str);
 				
 		/*
@@ -646,7 +648,7 @@ namespace AwayJS
 	#endif
 
 	#ifdef __APPLE__
-		std::string findThis="plugin/lib/mac/AwayExtensionsAnimate.fcm.plugin/Contents";
+		std::string findThis="plugin/lib/mac/AwayExtensionsAnimateCC.fcm.plugin/Contents";
 		int foundIndex=plugin_directory.find(findThis);
 		if(foundIndex>0){
 			plugin_directory = plugin_directory.substr(0, foundIndex);

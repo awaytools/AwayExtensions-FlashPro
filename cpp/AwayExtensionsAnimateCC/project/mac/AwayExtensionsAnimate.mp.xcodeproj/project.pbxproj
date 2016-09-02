@@ -352,7 +352,7 @@
 		B89ED4B41A8D964D003A027C /* Publisher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Publisher.cpp; sourceTree = "<group>"; };
 		B89ED4B51A8D964D003A027C /* PublisherUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PublisherUtils.cpp; sourceTree = "<group>"; };
 		B89ED4B71A8D964D003A027C /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
-		F5D357480948EC91008C36CA /* AwayExtensionsAnimate.fcm.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwayExtensionsAnimate.fcm.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5D357480948EC91008C36CA /* AwayExtensionsAnimateCC.fcm.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwayExtensionsAnimateCC.fcm.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		"a5c8cc87-799c-3623-8213-805ddee9f093" /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppKit.framework; sourceTree = "<group>"; };
 		"eb67bf0d-8e7a-3332-8636-505d02f49323" /* libxerces-c-3.1.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = "libxerces-c-3.1.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -793,7 +793,7 @@
 		F5D357400948EBCB008C36CA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F5D357480948EC91008C36CA /* AwayExtensionsAnimate.fcm.plugin */,
+				F5D357480948EC91008C36CA /* AwayExtensionsAnimateCC.fcm.plugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -857,7 +857,7 @@
 			);
 			name = AwayExtensionsAnimate.Release;
 			productName = Release;
-			productReference = F5D357480948EC91008C36CA /* AwayExtensionsAnimate.fcm.plugin */;
+			productReference = F5D357480948EC91008C36CA /* AwayExtensionsAnimateCC.fcm.plugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -1176,7 +1176,7 @@
 					"-std=c++0x",
 					"-fvisibility=default",
 				);
-				PRODUCT_NAME = AwayExtensionsAnimate;
+				PRODUCT_NAME = AwayExtensionsAnimateCC;
 				WRAPPER_EXTENSION = fcm.plugin;
 			};
 			name = Default;

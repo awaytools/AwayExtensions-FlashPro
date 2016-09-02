@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.away.AwayExtensionsAnimateCC" ExtensionBundleVersion="1.0.91"
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.away.AwayExtensionsAnimateCC" ExtensionBundleVersion="1.0.92"
 		ExtensionBundleName="AwayExtensionsAnimateCC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
-		<Extension Id="com.away.AwayExtensionsAnimateCC.PublishSettings" Version="1.0.91" />
-		<Extension Id="com.away.AwayExtensionsAnimateCC.Plugin" Version="1.0.91" />
-		<Extension Id="com.away.AwayExtensionsAnimateCC.Panel" Version="1.0.91" />
+		<Extension Id="com.away.AwayExtensionsAnimateCC.PublishSettings" Version="1.0.92" />
+		<Extension Id="com.away.AwayExtensionsAnimateCC.Plugin" Version="1.0.92" />
+		<Extension Id="com.away.AwayExtensionsAnimateCC.Panel" Version="1.0.92" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
@@ -15,7 +15,7 @@
 			<Locale Code="All" />
 		</LocaleList>
 		<RequiredRuntimeList>
-			<RequiredRuntime Name="CSXS" Version="4.0" />
+			<RequiredRuntime Name="CSXS" Version="6.0" />
 
 		</RequiredRuntimeList>
 	</ExecutionEnvironment>

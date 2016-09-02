@@ -205,8 +205,6 @@ namespace AwayJS
 		}
 		
 			
-
-		// copy the Preview files to output directory
 		
 		Utils::Trace(GetCallback(), "\nAwayJS-Document-Export Complete. ");
 		delete this->awd_project;

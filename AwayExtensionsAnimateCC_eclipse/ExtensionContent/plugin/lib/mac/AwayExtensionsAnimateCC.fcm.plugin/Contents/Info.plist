@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>14A389</string>
+	<string>15G31</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>AwayExtensionsAnimate</string>
+	<string>AwayExtensionsAnimateCC</string>
 	<key>CFBundleGetInfoString</key>
-	<string>AwayExtensionsAnimate .., Copyright © 2016-2016 Adobe Systems Incorporated.  All rights reserved.</string>
+	<string>AwayExtensionsAnimateCC .., Copyright © 2016-2016 Adobe Systems Incorporated.  All rights reserved.</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.adobe.flashpro.AwayExtensionsAnimate.plugin</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>AwayExtensionsAnimate</string>
+	<string>AwayExtensionsAnimateCC</string>
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>

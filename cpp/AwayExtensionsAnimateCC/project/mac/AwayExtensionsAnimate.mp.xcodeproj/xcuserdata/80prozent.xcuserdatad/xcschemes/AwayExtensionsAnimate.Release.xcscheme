@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "77186053-fc6d-3c6a-b941-bb2ba01205b2"
-               BuildableName = "AwayExtensionsAnimate.fcm.plugin"
+               BuildableName = "AwayExtensionsAnimateCC.fcm.plugin"
                BlueprintName = "AwayExtensionsAnimate.Release"
                ReferencedContainer = "container:AwayExtensionsAnimate.mp.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "77186053-fc6d-3c6a-b941-bb2ba01205b2"
-            BuildableName = "AwayExtensionsAnimate.fcm.plugin"
+            BuildableName = "AwayExtensionsAnimateCC.fcm.plugin"
             BlueprintName = "AwayExtensionsAnimate.Release"
             ReferencedContainer = "container:AwayExtensionsAnimate.mp.xcodeproj">
          </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "77186053-fc6d-3c6a-b941-bb2ba01205b2"
-            BuildableName = "AwayExtensionsAnimate.fcm.plugin"
+            BuildableName = "AwayExtensionsAnimateCC.fcm.plugin"
             BlueprintName = "AwayExtensionsAnimate.Release"
             ReferencedContainer = "container:AwayExtensionsAnimate.mp.xcodeproj">
          </BuildableReference>
