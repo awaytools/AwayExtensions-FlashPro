@@ -140,7 +140,9 @@ a:hover, a:active {
     text-align:center;
     width:100%;
 }
-
+.range_number{
+    color:#000;
+}
 .myLabel3{
     width:180px;
     text-align:left;
@@ -226,6 +228,25 @@ input[type="text"]:selected{
 }
 
 
+.ui_comp_slider {
+// background-color: rgba(116, 90, 92, 0.55);
+    padding: 5px;
+    padding-top: 10px;
+    width:220px;
+    max-width:500px;
+    float:left;
+    height:35px;
+    margin:1px;
+}
+.ui_comp_number {
+// background-color: rgba(116, 90, 92, 0.55);
+    padding: 5px;
+    padding-top: 10px;
+    width:70px;
+    float:left;
+    height:35px;
+    margin:1px;
+}
 .ui_comp_double {
 //background-color: rgba(116, 90, 92, 0.55);
     padding: 5px;

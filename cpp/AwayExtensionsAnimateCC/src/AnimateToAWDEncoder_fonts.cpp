@@ -271,6 +271,7 @@ AWD::result AnimateToAWDEncoder::FinalizeFonts(DOM::PIFLADocument pFlaDocument)
         else{
             // todo: collect all chars from this awd_font into the already existing one
             awd_font->delegate_to_font=fontmap[awd_font->get_name()];
+			fontmap[awd_font->get_name()]->addFontCharsFromFont(awd_font);
         }
     }
 	// loop over all awd Font-blocks, and check for each font-style if all chars have been generated already.

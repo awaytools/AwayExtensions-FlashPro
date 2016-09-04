@@ -43,10 +43,10 @@ webpackJsonp([0],[
 	var controllers_1 = __webpack_require__(495);
 	var net_1 = __webpack_require__(545);
 	var utils_1 = __webpack_require__(576);
-	var display_1 = __webpack_require__(110);
+	var display_1 = __webpack_require__(137);
 	var projections_1 = __webpack_require__(556);
 	var partition_1 = __webpack_require__(369);
-	var parsers_1 = __webpack_require__(286);
+	var parsers_1 = __webpack_require__(289);
 	var AWD3ViewerMinimal = (function () {
 	    /**
 	     * Constructor
@@ -73,8 +73,8 @@ webpackJsonp([0],[
 	        this._renderer.renderableSorter = null; //new RenderableSort2D();
 	        this._view = new awayjs_full_1.View(this._renderer);
 	        this._view.backgroundColor = 0x000000;
-	        this._stage_width = 200;
-	        this._stage_height = 200;
+	        this._stage_width = 550;
+	        this._stage_height = 400;
 	        //for plugin preview-runtime:
 	        this._view.backgroundColor = parseInt(document.getElementById("bgColor").innerHTML.replace("#", "0x"));
 	        this._stage_width = parseInt(document.getElementById("awdWidth").innerHTML);
@@ -197,8 +197,6 @@ webpackJsonp([0],[
 	        this._view.x = 0;
 	        this._view.width = window.innerWidth;
 	        this._view.height = window.innerHeight;
-	        this._projection.fieldOfView = Math.atan(this._stage_height / 2000) * 800 / Math.PI;
-	        this._projection.originX = (0.5 - 0.5 * (window.innerHeight / this._stage_height) * (this._stage_width / window.innerWidth));
 	        var newHeight = this._stage_height;
 	        this._projection.fieldOfView = Math.atan(newHeight / 1000 / 2) * 360 / Math.PI;
 	        this._projection.originX = (0.5 - 0.5 * (window.innerHeight / newHeight) * (this._stage_width / window.innerWidth));
@@ -206,6 +204,7 @@ webpackJsonp([0],[
 	    return AWD3ViewerMinimal;
 	}());
 	window.onload = function () {
+	    document.getElementsByTagName("BODY")[0].style.overflow = "hidden";
 	    new AWD3ViewerMinimal();
 	};
 

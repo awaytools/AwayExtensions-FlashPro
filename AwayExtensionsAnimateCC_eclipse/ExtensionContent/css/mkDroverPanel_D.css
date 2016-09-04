@@ -237,6 +237,38 @@ input[type="text"]:selected{
     height:35px;
     margin:1px;
 }
+.range_number{
+    color:#000;
+}
+.ui_comp_singleLabel {
+// background-color: rgba(116, 90, 92, 0.55);
+    padding: 5px;
+    padding-top: 10px;
+    width:60px;
+    max-width:500px;
+    float:left;
+    height:35px;
+    margin:1px;
+}
+.ui_comp_slider {
+// background-color: rgba(116, 90, 92, 0.55);
+    padding: 5px;
+    padding-top: 10px;
+    width:220px;
+    max-width:500px;
+    float:left;
+    height:35px;
+    margin:1px;
+}
+.ui_comp_number {
+// background-color: rgba(116, 90, 92, 0.55);
+    padding: 5px;
+    padding-top: 10px;
+    width:70px;
+    float:left;
+    height:35px;
+    margin:1px;
+}
 .ui_comp_single2 {
    // background-color: rgba(116, 90, 92, 0.55);
     padding: 5px;

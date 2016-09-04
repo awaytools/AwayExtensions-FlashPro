@@ -146,12 +146,12 @@ namespace AwayJS
             std::string settingsname,
 			bool default_value);
 		
-        bool GetSettingsFloat(
+        double GetSettingsFloat(
             const PIFCMDictionary pDictPublishSettings,
             std::string settingsname,
 			double default_value);
 		
-        bool GetSettingsInt(
+        int GetSettingsInt(
             const PIFCMDictionary pDictPublishSettings,
             std::string settingsname,
 			int default_value);

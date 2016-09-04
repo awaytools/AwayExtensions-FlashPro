@@ -118,30 +118,57 @@
                 </div>
             </div>
         </div>
-        <!--div class="panel-group">
-            <div class="panel panel-default"-->
+        <div class="panel-group">
+            <div class="panel panel-default">
                 <!--div class="chboxwrap2">
                     <input type="checkbox" class="awayjs_checkbox" id="exportGeometries" onChange="enableUIElements(this)"/>
                 </div-->
-                <!--a data-toggle="collapse" id="exportGeometries_open" href="#exportGeometries_panel">
+                <a data-toggle="collapse" id="exportGeometries_open" href="#exportGeometries_panel">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            Shapes / Geometry
+                            Shapes / Graphics
                         </h4>
                     </div>
                 </a>
                 <div id="exportGeometries_panel" class="panel-collapse collapse">
                     <div id="exportGeometries_settings" class="panel-body">
-                        <div class="ui_comp_single3">
+                        <div class="ui_comp_single2">
                             <div class="chboxwrap">
-                                <input type="checkbox" id="exportShapesInDebugMode"/>
+                                <input type="checkbox" id="tessellateGraphics"/>
                             </div>
-                            <label class="myCHBXLabel2" for="exportShapesInDebugMode">Debug mode</label>
+                            <label class="myCHBXLabel2" for="tessellateGraphics">Tessellate Curves</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <button class="awayjs_button" id="resetTessSettingsGraphics" onclick="resetTessSettingsGraphics()">Reset</button>
+                        </div>
+
+                        <div class="ui_comp_slider" style="height:50px">
+                            <input type="range" id="tessThresholdGraphics" min="0" max="1" step="0.01" oninput="updateSlider('tessThresholdGraphics', value, min, max)"/>
+                            <label for="tessThresholdGraphics">Segment-Curviness Threshold</label>
+                        </div>
+                        <div class="ui_comp_number" style="height:50px">
+                            <input class="range_number" type="number" id="tessThresholdGraphics2" min="0" max="1" step="0.01" onChange="updateSlider('tessThresholdGraphics', value, min, max)"/>
+                        </div>
+
+                        <div class="ui_comp_slider" style="height:50px">
+                            <input type="range" id="tessMinLenghtGraphics" min="1" max="50" step="0.1" oninput="updateSlider('tessMinLenghtGraphics', value, min, max)"/>
+                            <label for="tessMinLenghtGraphics">Max segment length to subdivide</label>
+                        </div>
+                        <div class="ui_comp_number" style="height:50px">
+                            <input class="range_number" type="number" id="tessMinLenghtGraphics2" min="1" max="50" step="0.1" onChange="updateSlider('tessMinLenghtGraphics', value, min, max)"/>
+                        </div>
+
+                        <div class="ui_comp_slider" style="height:50px">
+                            <input type="range" id="tessThresholdx2Graphics" min="1" max="50" step="0.1" oninput="updateSlider('tessThresholdx2Graphics', value, min, max)"/>
+                            <label for="tessThresholdx2Graphics">Max segment length for using threshold x 2</label>
+                        </div>
+                        <div class="ui_comp_number" style="height:50px">
+                            <input class="range_number" type="number" id="tessThresholdx2Graphics2" min="1" max="50" step="0.1" onChange="updateSlider('tessThresholdx2Graphics', value, min, max)"/>
                         </div>
                     </div>
                 </div>
             </div>
-        </div-->
+        </div>
         <div class="panel-group">
             <div class="panel panel-default">
                 <!--div class="chboxwrap2">
@@ -168,11 +195,41 @@
                             </div>
                             <label class="myCHBXLabel2" for="embbedAllChars">Embed used chars</label>
                         </div>
-                        <div class="ui_comp_single3">
+                        <div class="ui_comp_single2">
                             <div class="chboxwrap">
                                 <input type="checkbox"  class="awayjs_checkbox" id="exportEmptyFontsForFNT">
                             </div>
                             <label class="myCHBXLabel2" for="embbedAllChars">Export for FNT (no glyphs exported)</label>
+                        </div>
+                        <div class="ui_comp_single2">
+                            <div class="chboxwrap">
+                                <input type="checkbox" id="tessellateGlyphs"/>
+                            </div>
+                            <label class="myCHBXLabel2" for="tessellateGlyphs">Tessellate Glyphs</label>
+                        </div>
+                        <div class="ui_comp_slider" style="height:50px">
+                            <input type="range" id="tessThresholdGlyphs" min="0" max="1" step="0.01" oninput="updateSlider('tessThresholdGlyphs', value, min, max)"/>
+                            <label for="tessThresholdGlyphs">Segment-Curviness Threshold</label>
+                        </div>
+                        <div class="ui_comp_number" style="height:50px">
+                            <input class="range_number" type="number" id="tessThresholdGlyphs2" min="0" max="1" step="0.01" onChange="updateSlider('tessThresholdGlyphs', value, min, max)"/>
+                        </div>
+                        <div class="ui_comp_slider" style="height:50px">
+                            <input type="range" id="tessMinLenghtGlyphs" min="1" max="50" step="0.1" oninput="updateSlider('tessMinLenghtGlyphs', value, min, max)"/>
+                            <label for="tessMinLenghtGlyphs">Max segment length to subdivide</label>
+                        </div>
+                        <div class="ui_comp_number" style="height:50px">
+                            <input class="range_number" type="number" id="tessMinLenghtGlyphs2" min="1" max="50" step="0.1" onChange="updateSlider('tessMinLenghtGlyphs', value, min, max)"/>
+                        </div>
+                        <div class="ui_comp_slider" style="height:50px">
+                            <input type="range" id="tessThresholdx2Glyphs" min="1" max="50" step="0.1" oninput="updateSlider('tessThresholdx2Glyphs', value, min, max)"/>
+                            <label for="tessThresholdx2Glyphs">Max segment length for using threshold x 2</label>
+                        </div>
+                        <div class="ui_comp_number" style="height:50px">
+                            <input class="range_number" type="number" id="tessThresholdx2Glyphs2" min="1" max="50" step="0.1" onChange="updateSlider('tessThresholdx2Glyphs', value, min, max)"/>
+                        </div>
+                        <div class="ui_comp_slider">
+                            <button class="awayjs_button" id="resetTessSettingsGlyphs" onclick="resetTessSettingsGlyphs()">Reset Tessellation Settings</button>
                         </div>
                     </div>
                 </div>
@@ -271,7 +328,7 @@
                     </div>
                 </div>
 
-                <div id="version_display"><br><br>v1.0.92<br><a onclick="open_github()" >AwayExensionsAnimateCC</a></div>
+                <div id="version_display"><br><br>v1.0.93<br><a onclick="open_github()" >AwayExensionsAnimateCC</a></div>
             </div>
         </div>
     </div>

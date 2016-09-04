@@ -113,15 +113,17 @@ namespace AwayJS
 			return default_value;
 	}
 
-	bool CPublisher::GetSettingsFloat(const PIFCMDictionary pDictPublishSettings, std::string settingsname, double default_value){
+	double CPublisher::GetSettingsFloat(const PIFCMDictionary pDictPublishSettings, std::string settingsname, double default_value){
 			std::string value_str;
 			ReadString(pDictPublishSettings, (FCM::StringRep8)settingsname.c_str(), value_str);
-			//if(!value_str.empty())
-			//	return std::stod(value_str);
+			if(!value_str.empty()){
+				double testValue=std::atof(value_str.c_str());
+				return testValue;
+			}
 			return default_value;
 	}
 
-	bool CPublisher::GetSettingsInt(const PIFCMDictionary pDictPublishSettings, std::string settingsname, int default_value){
+	int CPublisher::GetSettingsInt(const PIFCMDictionary pDictPublishSettings, std::string settingsname, int default_value){
 			std::string value_str;
 			ReadString(pDictPublishSettings, (FCM::StringRep8)settingsname.c_str(), value_str);
 			//if(!value_str.empty())
@@ -282,11 +284,14 @@ namespace AwayJS
 		//this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::CreateAudioMap, GetSettingsBool(this->pDict, "PublishSettings.CreateAudioMap", false));
 		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::ExportEmptyFontsForFNT, GetSettingsBool(this->pDict, "PublishSettings.ExportEmptyFontsForFNT", true));
 		
+		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::TesselateGraphics, GetSettingsBool(this->pDict, "PublishSettings.TesselateGraphics", true));
+		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::TesselateGlyphs, GetSettingsBool(this->pDict, "PublishSettings.TesselateGlyphs", true));
+		
 		std::string sound_file_type_str;
 		ReadString(this->pDict, (FCM::StringRep8)"PublishSettings.SaveSoundsAs", sound_file_type_str);
 		if(sound_file_type_str=="0"){
 			sound_file_type_str="keep";}
-		else if(sound_file_type_str=="1"){
+		else if(sound_file_type_str=="1"){			
 			sound_file_type_str="wav";}
 		else if(sound_file_type_str=="2"){
 			sound_file_type_str="mp3";}
@@ -301,10 +306,17 @@ namespace AwayJS
 		ReadString(this->pDict, (FCM::StringRep8)"PublishSettings.PreviewPath", preview_output_path);
 		bool append_file_name = GetSettingsBool(this->pDict, "PublishSettings.AppendFilename", false);
 		*/
+		double testval= GetSettingsFloat(this->pDict, "PublishSettings.TessellateThresholdGraphics", 0.02);
+		this->awd_settings->set_double(AWD::SETTINGS::double_settings::TessellateThresholdGraphics,testval);
+		this->awd_settings->set_double(AWD::SETTINGS::double_settings::TessellateThresholdGlyphs, GetSettingsFloat(this->pDict, "PublishSettings.TessellateThresholdGlyphs", 0.02));
+		
+		this->awd_settings->set_double(AWD::SETTINGS::double_settings::TessThresholdx2Graphics, GetSettingsFloat(this->pDict, "PublishSettings.TessThresholdx2Graphics", 3));
+		this->awd_settings->set_double(AWD::SETTINGS::double_settings::TessThresholdx2Glyphs, GetSettingsFloat(this->pDict, "PublishSettings.TessThresholdx2Glyphs", 3));
+		
+		this->awd_settings->set_double(AWD::SETTINGS::double_settings::TessMinLenghtGraphics, GetSettingsFloat(this->pDict, "PublishSettings.TessMinLenghtGraphics",8));
+		this->awd_settings->set_double(AWD::SETTINGS::double_settings::TessMinLenghtGlpyhs, GetSettingsFloat(this->pDict, "PublishSettings.TessMinLenghtGlpyhs", 8));
 					
 
-		// some settings that are no longer available in the UI, but need setting anyway until they are refactored out for good:
-		this->awd_settings->set_curve_threshold(0.02); // 0.08
 		this->awd_settings->set_max_iterations(50);
 		this->awd_settings->set_exterior_threshold(0.0, TYPES::filled_region_type::STANDART_FILL);
 		//this->awd_settings->set_distinglish_interior_exterior_triangles_2d(false);
@@ -325,6 +337,10 @@ namespace AwayJS
 		res = this->fla_document->GetFrameRate(this->fps);
 		ASSERT(FCM_SUCCESS_CODE(res));
 		awd_settings->set_fps(fps);
+
+		awd_project->shared_geom->get_sub_at(0)->get_settings()->create_streams(false,false,!this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::TesselateGraphics));
+        
+		awd_settings->create_streams(false,false,!this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::TesselateGraphics));
         
 		return awd_result;
 	}
