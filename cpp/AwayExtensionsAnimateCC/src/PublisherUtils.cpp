@@ -393,8 +393,9 @@ namespace AwayJS
 		{
 			AutoPtr<DOM::ITimeline> oneTimeline = pTimelineList[i];
 			if(this->timeline!=NULL)
-				oneTimeline = this->timeline;			
-			this->ExportTimeline(this->pDict, oneTimeline, i, std::string(""));
+				oneTimeline = this->timeline;
+            std::string empty="";
+			this->ExportTimeline(this->pDict, oneTimeline, i, empty);
 		}
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
 			Utils::Trace(GetCallback(), "\nEncoding  Scenes took '%d' ms\n", this->awd_project->get_time_since_last_call());
@@ -419,7 +420,8 @@ namespace AwayJS
 		
 		FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AwayJS::Utils::GetCallocService(GetCallback());
 		ASSERT(pCalloc.m_Ptr != NULL);
-		if(this->ExportLibraryItems(pLibraryItemList, pCalloc, std::string(""))!=result::AWD_SUCCESS){
+        std::string empty="";
+		if(this->ExportLibraryItems(pLibraryItemList, pCalloc, empty)!=result::AWD_SUCCESS){
 			Utils::Trace(GetCallback(), "\n		FAILED TO COLLECT LIBRARY ITEMS \n");
 			return awd_result;
 		}	

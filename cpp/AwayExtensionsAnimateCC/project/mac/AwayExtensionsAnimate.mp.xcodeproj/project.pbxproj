@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4282E56A1F819C8C005A8579 /* SubShapePath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4282E5691F819C8C005A8579 /* SubShapePath.cpp */; };
 		428B5F941C67B3A100B1BD89 /* project_release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 428B5F911C67B3A100B1BD89 /* project_release.xcconfig */; };
 		428B5F951C67B3A100B1BD89 /* project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 428B5F921C67B3A100B1BD89 /* project.xcconfig */; };
 		42A1D62A1C767B6A00CE690C /* geomutilShapes.cc in Sources */ = {isa = PBXBuildFile; fileRef = 42A1D6291C767B6A00CE690C /* geomutilShapes.cc */; };
@@ -161,6 +162,7 @@
 		"163c156c-990d-3bbe-b1df-52bc72c85705" /* CoreServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoreServices.framework; sourceTree = "<group>"; };
 		"39c2f374-f2b6-3757-ba02-b26ecbea7e97" /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Foundation.framework; sourceTree = "<group>"; };
 		427721841C6E3BD800924AAA /* AwayExtensionsAnimate.Release copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "AwayExtensionsAnimate.Release copy-Info.plist"; path = "/Users/80prozent/_awayjs/AwayExtensions-Animate/cpp/AwayExtensionsAnimateCC/project/mac/AwayExtensionsAnimate.Release copy-Info.plist"; sourceTree = "<absolute>"; };
+		4282E5691F819C8C005A8579 /* SubShapePath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SubShapePath.cpp; sourceTree = "<group>"; };
 		428B5F911C67B3A100B1BD89 /* project_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = project_release.xcconfig; path = AwayExtensionsAnimate.xcconfigs/project_release.xcconfig; sourceTree = SOURCE_ROOT; };
 		428B5F921C67B3A100B1BD89 /* project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = project.xcconfig; path = AwayExtensionsAnimate.xcconfigs/project.xcconfig; sourceTree = SOURCE_ROOT; };
 		428B5F971C67B80600B1BD89 /* AwayExtensionsAnimate_Precomp.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AwayExtensionsAnimate_Precomp.pch; sourceTree = SOURCE_ROOT; };
@@ -620,6 +622,7 @@
 		42CA66DE1AF5E16F00F208E2 /* geom */ = {
 			isa = PBXGroup;
 			children = (
+				4282E5691F819C8C005A8579 /* SubShapePath.cpp */,
 				42CA66DF1AF5E16F00F208E2 /* DataStream.cc */,
 				42CA66E01AF5E16F00F208E2 /* DataStreamAttrBase.cc */,
 				42CA66E11AF5E16F00F208E2 /* FilledRegion.cc */,
@@ -984,6 +987,7 @@
 				42CA670F1AF5E16F00F208E2 /* Font.cc in Sources */,
 				42E2714F1B0BEEFD00A3316F /* HTTPServer.cpp in Sources */,
 				42CA67321AF5E16F00F208E2 /* geom_types.cc in Sources */,
+				4282E56A1F819C8C005A8579 /* SubShapePath.cpp in Sources */,
 				42CA672C1AF5E16F00F208E2 /* BlockInstance.cc in Sources */,
 				42CA67471AF5E16F00F208E2 /* geomutil_helper.cc in Sources */,
 				42CA67191AF5E16F00F208E2 /* Scene.cc in Sources */,
