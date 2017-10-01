@@ -145,7 +145,13 @@ void
 AnimateToAWDEncoder::convert_shape_to_geometry(DOM::FrameElement::IShape* thisShape, BLOCKS::Geometry* shapeBlock)
 {	
 	ExportFilledShape( thisShape, TYPES::filled_region_type::STANDART_FILL);
-    ExportStroke(thisShape);
+	// switch here between exporting tesselated strokes as fills or directly exporting path-data
+	if(this->awd_project->get_settings()->get_bool(AWD::SETTINGS::bool_settings::RealTimeStrokes)){
+		ExportStrokePath(thisShape);
+	}
+	else{
+		ExportStroke(thisShape);
+	}
 }
 
 FCM::Result 
@@ -176,7 +182,7 @@ AnimateToAWDEncoder::ExportFilledShape(DOM::FrameElement::PIShape pIShape, TYPES
         res = pFilledRegion->GetFillStyle(fillStyle.m_Ptr);
         ASSERT(FCM_SUCCESS_CODE(res));
 
-        res = ExportFillStyle(fillStyle);
+        res = ExportFillStyle(fillStyle, false);
         ASSERT(FCM_SUCCESS_CODE(res));
 
         // Boundary
@@ -221,7 +227,7 @@ FCM::Result AnimateToAWDEncoder::ExportPath(DOM::Service::Shape::PIPath pPath)
     res = pEdgeList->Count(edgeCount);
     ASSERT(FCM_SUCCESS_CODE(res));
 		
-	//AwayJS::Utils::Trace(m_pCallback, "edgeCount = %d\n", edgeCount);
+	AwayJS::Utils::Trace(m_pCallback, "edgeCount = %d\n", edgeCount);
     for (FCM::U_Int32 l = 0; l < edgeCount; l++)
     {
         DOM::Utils::SEGMENT segment;
@@ -277,6 +283,31 @@ FCM::Result AnimateToAWDEncoder::SetSegment(const DOM::Utils::SEGMENT& segment)
     {			
 		awdPathSeg->set_startPoint(GEOM::VECTOR2D(segment.line.endPoint1.x*flipx , segment.line.endPoint1.y*flipy));
 		awdPathSeg->set_endPoint(GEOM::VECTOR2D(segment.line.endPoint2.x*flipx, segment.line.endPoint2.y*flipy));
+		/*
+		if(segment.line.endPoint1.x>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.line.endPoint1.x);
+		}
+		if(segment.line.endPoint1.x<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.line.endPoint1.x);
+		}
+		if(segment.line.endPoint2.x>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.line.endPoint2.x);
+		}
+		if(segment.line.endPoint2.x<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.line.endPoint2.x);
+		}
+		if(segment.line.endPoint1.y>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.line.endPoint1.y);
+		}
+		if(segment.line.endPoint1.y<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.line.endPoint1.y);
+		}
+		if(segment.line.endPoint2.y>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.line.endPoint2.y);
+		}
+		if(segment.line.endPoint2.y<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.line.endPoint2.y);
+		}*/
 	}
     else{
 		//AwayJS::Utils::Trace(m_pCallback, "Curve\n");
@@ -286,6 +317,45 @@ FCM::Result AnimateToAWDEncoder::SetSegment(const DOM::Utils::SEGMENT& segment)
 		awdPathSeg->set_controlPoint(GEOM::VECTOR2D(segment.quadBezierCurve.control.x*flipx, segment.quadBezierCurve.control.y*flipy));
 
 		awdPathSeg->set_edgeType(GEOM::edge_type::CURVED_EDGE);
+		/*
+		if(segment.quadBezierCurve.anchor1.x>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.quadBezierCurve.anchor1.x);
+		}
+		if(segment.quadBezierCurve.anchor1.x<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.quadBezierCurve.anchor1.x);
+		}
+		if(segment.quadBezierCurve.anchor2.x>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.quadBezierCurve.anchor2.x);
+		}
+		if(segment.quadBezierCurve.anchor2.x<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.quadBezierCurve.anchor2.x);
+		}
+
+		if(segment.quadBezierCurve.anchor1.y>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.quadBezierCurve.anchor1.y);
+		}
+		if(segment.quadBezierCurve.anchor1.y<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.quadBezierCurve.anchor1.y);
+		}
+		if(segment.quadBezierCurve.anchor2.y>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.quadBezierCurve.anchor2.y);
+		}
+		if(segment.quadBezierCurve.anchor2.y<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.quadBezierCurve.anchor2.y);
+		};
+
+		if(segment.quadBezierCurve.control.x>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.quadBezierCurve.control.x);
+		}
+		if(segment.quadBezierCurve.control.x<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.quadBezierCurve.control.x);
+		}
+		if(segment.quadBezierCurve.control.y>1638){
+			AwayJS::Utils::Trace(m_pCallback, "Bigger than 1638 = %f.\n", segment.quadBezierCurve.control.y);
+		}
+		if(segment.quadBezierCurve.control.y<-1638){
+			AwayJS::Utils::Trace(m_pCallback, "Smaller than -1638 = %f.\n", segment.quadBezierCurve.control.y);
+		}*/
 	}	
 	
 	this->current_filled_region->add_segment(awdPathSeg);
@@ -380,7 +450,8 @@ FCM::Result AnimateToAWDEncoder::ExportStroke(DOM::FrameElement::PIShape pIShape
 
 	// use the shapeservice to convert stroke to shape
 	// than handle the new shape as normal shape (exportFILL())		
-					
+	
+
 	DOM::FrameElement::PIShape outShape;
 	res=this->pIShapeService->ConvertStrokeToFill(pIShape, outShape);
 	//Utils::Trace(GetCallback(), "Export Stroke count = %d .\n", res);
@@ -392,3 +463,167 @@ FCM::Result AnimateToAWDEncoder::ExportStroke(DOM::FrameElement::PIShape pIShape
     return res;
 }
 
+FCM::Result AnimateToAWDEncoder::ExportStrokePath(DOM::FrameElement::PIShape pIShape)
+{
+		
+        FCM::FCMListPtr pStrokeGroupList;
+        FCM::U_Int32 strokeStyleCount;
+        FCM::Result res;
+
+
+        res = this->pIRegionGeneratorService->GetStrokeGroups(pIShape, pStrokeGroupList.m_Ptr);
+        ASSERT(FCM_SUCCESS_CODE(res));
+
+        res = pStrokeGroupList->Count(strokeStyleCount);
+        ASSERT(FCM_SUCCESS_CODE(res));
+
+        FCM::AutoPtr<DOM::FillStyle::ISolidFillStyle> pSolidFillStyle = NULL;
+        FCM::AutoPtr<DOM::FillStyle::IGradientFillStyle> pGradientFillStyle = NULL;
+        FCM::AutoPtr<DOM::FillStyle::IBitmapFillStyle> pBitmapFillStyle = NULL;
+        FCM::AutoPtr<FCM::IFCMUnknown> pGrad;
+        for (FCM::U_Int32 j = 0; j < strokeStyleCount; j++)
+        {
+            FCM::AutoPtr<DOM::Service::Shape::IStrokeGroup> pStrokeGroup = pStrokeGroupList[j];
+            ASSERT(pStrokeGroup);
+
+           // res = m_pOutputWriter->StartDefineStrokeGroup();
+           // ASSERT(FCM_SUCCESS_CODE(res));
+
+            FCM::AutoPtr<FCM::IFCMUnknown> pStrokeStyle;
+            pStrokeGroup->GetStrokeStyle(pStrokeStyle.m_Ptr);
+
+            DOM::Utils::COLOR color = {};
+
+            FCM::FCMListPtr pPathList;
+            FCM::U_Int32 pathCount;
+
+            res = pStrokeGroup->GetPaths(pPathList.m_Ptr);
+            ASSERT(FCM_SUCCESS_CODE(res));
+
+            res = pPathList->Count(pathCount);
+            ASSERT(FCM_SUCCESS_CODE(res));
+
+            for (FCM::U_Int32 k = 0; k < pathCount; k++)
+            {
+                FCM::AutoPtr<DOM::Service::Shape::IPath> pPath;
+
+                pPath = pPathList[k];
+                ASSERT(pPath);
+				this->current_stroke_path = new GEOM::SubShapePath();
+				this->current_geom->add_path_subgeo(this->current_stroke_path);
+
+				
+				FCM::Result res = FCM_SUCCESS;
+				FCM::AutoPtr<DOM::StrokeStyle::ISolidStrokeStyle> pSolidStrokeStyle;
+
+				pSolidStrokeStyle = pStrokeStyle;
+
+				if (pSolidStrokeStyle)
+				{
+						FCM::Result res;
+						FCM::Double thickness;
+						FCM::AutoPtr<DOM::IFCMUnknown> pFillStyle;
+						DOM::StrokeStyle::CAP_STYLE capStyle;
+						DOM::StrokeStyle::JOIN_STYLE joinStyle;
+						DOM::Utils::ScaleType scaleType;
+						FCM::Boolean strokeHinting;
+
+
+						capStyle.structSize = sizeof(DOM::StrokeStyle::CAP_STYLE);
+						res = pSolidStrokeStyle->GetCapStyle(capStyle);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						this->current_stroke_path->capStyle=capStyle.type;
+						 
+						joinStyle.structSize = sizeof(DOM::StrokeStyle::JOIN_STYLE);
+						res = pSolidStrokeStyle->GetJoinStyle(joinStyle);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						this->current_stroke_path->jointStlye=joinStyle.type;
+						this->current_stroke_path->mitter=joinStyle.miterJoinProp.miterLimit;
+						res = pSolidStrokeStyle->GetThickness(thickness);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						this->current_stroke_path->thickness=thickness;
+
+						if (thickness < 0.1)
+						{
+							thickness = 0.1;
+						}
+
+						res = pSolidStrokeStyle->GetScaleType(scaleType);
+						ASSERT(FCM_SUCCESS_CODE(res));
+
+						res = pSolidStrokeStyle->GetStrokeHinting(strokeHinting);
+						ASSERT(FCM_SUCCESS_CODE(res));
+						
+						// Stroke fill styles
+						res = pSolidStrokeStyle->GetFillStyle(pFillStyle.m_Ptr);
+						ASSERT(FCM_SUCCESS_CODE(res));
+
+						res = ExportFillStyle(pFillStyle, true);
+						ASSERT(FCM_SUCCESS_CODE(res));
+
+				}
+				else
+				{
+					// Other stroke styles are not tested yet.
+				}
+
+                //res = ExportStrokeStyle(pStrokeStyle);
+               // ASSERT(FCM_SUCCESS_CODE(res));
+				
+				FCM::U_Int32 edgeCount;
+				FCM::FCMListPtr pEdgeList;
+
+				res = pPath->GetEdges(pEdgeList.m_Ptr);
+				ASSERT(FCM_SUCCESS_CODE(res));
+
+				res = pEdgeList->Count(edgeCount);
+				ASSERT(FCM_SUCCESS_CODE(res));
+		
+				//AwayJS::Utils::Trace(m_pCallback, "edgeCount = %d\n", edgeCount);
+				for (FCM::U_Int32 l = 0; l < edgeCount; l++)
+				{
+					DOM::Utils::SEGMENT segment;
+
+					segment.structSize = sizeof(DOM::Utils::SEGMENT);
+
+					FCM::AutoPtr<DOM::Service::Shape::IEdge> pEdge = pEdgeList[l];
+
+					res = pEdge->GetSegment(segment);
+					if (segment.segmentType == DOM::Utils::LINE_SEGMENT)
+					{	
+						if(this->current_stroke_path->path_data.size()==0){
+							this->current_stroke_path->path_data.push_back(1.0);
+							this->current_stroke_path->path_data.push_back(segment.line.endPoint1.x);
+							this->current_stroke_path->path_data.push_back(segment.line.endPoint1.y);
+
+						}
+						this->current_stroke_path->path_data.push_back(2.0);
+						this->current_stroke_path->path_data.push_back(segment.line.endPoint2.x);
+						this->current_stroke_path->path_data.push_back(segment.line.endPoint2.y);
+					}
+					else{
+						if(this->current_stroke_path->path_data.size()==0){
+							this->current_stroke_path->path_data.push_back(1.0);
+							this->current_stroke_path->path_data.push_back(segment.quadBezierCurve.anchor1.x);
+							this->current_stroke_path->path_data.push_back(segment.quadBezierCurve.anchor1.y);
+
+						}
+						this->current_stroke_path->path_data.push_back(3.0);
+						this->current_stroke_path->path_data.push_back(segment.quadBezierCurve.anchor2.x);
+						this->current_stroke_path->path_data.push_back(segment.quadBezierCurve.anchor2.y);
+						this->current_stroke_path->path_data.push_back(segment.quadBezierCurve.control.x);
+						this->current_stroke_path->path_data.push_back(segment.quadBezierCurve.control.y);
+					}	
+				}
+
+                //res = m_pOutputWriter->EndDefineStroke();
+                //ASSERT(FCM_SUCCESS_CODE(res));
+            }
+
+            //res = m_pOutputWriter->EndDefineStrokeGroup();
+            //ASSERT(FCM_SUCCESS_CODE(res));
+        }
+
+	
+    return res;
+}

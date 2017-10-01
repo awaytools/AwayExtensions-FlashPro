@@ -132,22 +132,22 @@
 			<Value name="Stream" supported="true"/>
 		</Property>
 		<Property name="FileFormat" supported="true">
-			<Value name="AIF"supported="true"/>
+			<Value name="AIF" supported="true"/>
 			<Value name="WAV" supported = "true"/>
 			<Value name="MP3" supported = "true"/>
-			<Value name="ASND"supported="true"/>
-			<Value name="SND"supported="true"/>
-			<Value name="AU"supported="true"/>
-			<Value name="SD2"supported="true"/>
-			<Value name="OGG"supported="true"/>
-			<Value name="OGA"supported="true"/>
-			<Value name="FLAC"supported="true"/>
+			<Value name="ASND" supported="true"/>
+			<Value name="SND" supported="true"/>
+			<Value name="AU" supported="true"/>
+			<Value name="SD2" supported="true"/>
+			<Value name="OGG" supported="true"/>
+			<Value name="OGA" supported="true"/>
+			<Value name="FLAC" supported="true"/>
 		</Property>
 		<Property name="Compression" default="Default" supported="true">
 			<Value name="Default" supported = "true"/>
-			<Value name="ADPCM"supported="true"/>
+			<Value name="ADPCM" supported="true"/>
 			<Value name="MP3" supported = "true"/>
-			<Value name="Raw"supported="true"/>
+			<Value name="Raw" supported="true"/>
 			<Value name="Speech" supported ="false"/>
 		</Property>
 	</Feature>
@@ -155,7 +155,7 @@
 	</Feature>	
 	<Feature name="ClassicTween" supported="true">
 		<Property name="Rotate" default="Auto" supported="true">
-			<Value name="None"supported="true"/>
+			<Value name="None" supported="true"/>
 			<Value name="Auto" supported = "true"/>
 			<Value name="CW" supported = "true"/>
 			<Value name="CCW" supported = "true"/>

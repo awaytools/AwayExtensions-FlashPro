@@ -125,7 +125,7 @@ AnimateXMLToAWD::~AnimateXMLToAWD()
 {
 
 }
-
+ 
 
 AWD::result AnimateXMLToAWD::preparseSymbol(std::wstring symbolName)
 {

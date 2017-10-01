@@ -83,7 +83,7 @@
 
 // Export a fillstyle as a Material. Called during shape-converting.
 
-FCM::Result AnimateToAWDEncoder::ExportFillStyle(FCM::PIFCMUnknown pFillStyle)
+FCM::Result AnimateToAWDEncoder::ExportFillStyle(FCM::PIFCMUnknown pFillStyle, bool strokes)
 {
     FCM::Result res = FCM_SUCCESS;
     FCM::AutoPtr<DOM::FillStyle::ISolidFillStyle> pSolidFillStyle;
@@ -94,7 +94,7 @@ FCM::Result AnimateToAWDEncoder::ExportFillStyle(FCM::PIFCMUnknown pFillStyle)
     pSolidFillStyle = pFillStyle;
     if (pSolidFillStyle)
     {
-        res = ExportSolidFillStyle(pSolidFillStyle);
+        res = ExportSolidFillStyle(pSolidFillStyle, strokes);
         ASSERT(FCM_SUCCESS_CODE(res));
 		return res;
     }
@@ -110,13 +110,13 @@ FCM::Result AnimateToAWDEncoder::ExportFillStyle(FCM::PIFCMUnknown pFillStyle)
 
 			if (FCM::AutoPtr<DOM::Utils::IRadialColorGradient>(pGrad))
 			{
-				res = ExportRadialGradientFillStyle(pGradientFillStyle);
+				res = ExportRadialGradientFillStyle(pGradientFillStyle, strokes);
 				ASSERT(FCM_SUCCESS_CODE(res));
 				return res;
 			}
 			else if (FCM::AutoPtr<DOM::Utils::ILinearColorGradient>(pGrad))
 			{
-				res = ExportLinearGradientFillStyle(pGradientFillStyle);
+				res = ExportLinearGradientFillStyle(pGradientFillStyle, strokes);
 				ASSERT(FCM_SUCCESS_CODE(res));
 				return res;
 			}
@@ -125,7 +125,7 @@ FCM::Result AnimateToAWDEncoder::ExportFillStyle(FCM::PIFCMUnknown pFillStyle)
 			pBitmapFillStyle = pFillStyle;
 			if (pBitmapFillStyle)
 			{
-				res = ExportBitmapFillStyle(pBitmapFillStyle);
+				res = ExportBitmapFillStyle(pBitmapFillStyle, strokes);
 				ASSERT(FCM_SUCCESS_CODE(res));
 				return res;
 			}
@@ -134,7 +134,7 @@ FCM::Result AnimateToAWDEncoder::ExportFillStyle(FCM::PIFCMUnknown pFillStyle)
     return res;
 }
 	
-FCM::Result AnimateToAWDEncoder::ExportSolidFillStyle(DOM::FillStyle::ISolidFillStyle* pSolidFillStyle)
+FCM::Result AnimateToAWDEncoder::ExportSolidFillStyle(DOM::FillStyle::ISolidFillStyle* pSolidFillStyle, bool strokes)
 {
     FCM::Result res;
     DOM::Utils::COLOR color;
@@ -148,29 +148,34 @@ FCM::Result AnimateToAWDEncoder::ExportSolidFillStyle(DOM::FillStyle::ISolidFill
 	// convert the color-components to a uint32 color.
 	TYPES::COLOR awdColor = TYPES::create_color_from_ints( color.alpha, color.red, color.green, color.blue );
 
-	// get the material-block for this color (create if does not exist)
-	BLOCKS::Material* new_fill_material=this->awd_project->get_default_material_by_color(awdColor, true, MATERIAL::type::SOLID_COLOR_MATERIAL);
-	new_fill_material->set_alpha(double(color.alpha)/double(255));
-	new_fill_material->add_scene_name(this->current_scene_name);
-	// set name for fill (incl color as hex-string)
-	std::stringstream sstream_color;
-	sstream_color << std::hex << awdColor;
-	new_fill_material->set_name("SolidFill_#"+sstream_color.str());
-	// set color-components for color.
-	new_fill_material->set_color_components(color.red, color.green, color.blue, color.alpha);
-	if(color.alpha!=255){
-		new_fill_material->needsAlphaTex=true;
+	if(strokes){
+		this->current_stroke_path->color=awdColor;
 	}
+	else{
+		// get the material-block for this color (create if does not exist)
+		BLOCKS::Material* new_fill_material=this->awd_project->get_default_material_by_color(awdColor, true, MATERIAL::type::SOLID_COLOR_MATERIAL);
+		new_fill_material->set_alpha(double(color.alpha)/double(255));
+		new_fill_material->add_scene_name(this->current_scene_name);
+		// set name for fill (incl color as hex-string)
+		std::stringstream sstream_color;
+		sstream_color << std::hex << awdColor;
+		new_fill_material->set_name("SolidFill_#"+sstream_color.str());
+		// set color-components for color.
+		new_fill_material->set_color_components(color.red, color.green, color.blue, color.alpha);
+		if(color.alpha!=255){
+			new_fill_material->needsAlphaTex=true;
+		}
 
-	// assign the material to the currently active Path-Shape
-	this->current_filled_region->set_material(new_fill_material);
+		// assign the material to the currently active Path-Shape
+		this->current_filled_region->set_material(new_fill_material);
+	}
 
 	//AwayJS::Utils::Trace(this->m_pCallback, "The color mat: '%06X' should have been created.\n", awdColor);
 	
     return res;
 }
 
-FCM::Result AnimateToAWDEncoder::ExportRadialGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle)
+FCM::Result AnimateToAWDEncoder::ExportRadialGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle, bool strokes)
 {
 
 	DOM::FillStyle::GradientSpread spread;	
@@ -249,7 +254,7 @@ FCM::Result AnimateToAWDEncoder::ExportRadialGradientFillStyle(DOM::FillStyle::I
 	return FCM_SUCCESS;
 }
 
-FCM::Result AnimateToAWDEncoder::ExportLinearGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle)
+FCM::Result AnimateToAWDEncoder::ExportLinearGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle, bool strokes)
 {    
 	DOM::FillStyle::GradientSpread spread;	
     FCM::AutoPtr<FCM::IFCMUnknown> pGrad;
@@ -322,7 +327,7 @@ FCM::Result AnimateToAWDEncoder::ExportLinearGradientFillStyle(DOM::FillStyle::I
 	return FCM_SUCCESS;
 }
 
-FCM::Result AnimateToAWDEncoder::ExportBitmapFillStyle(DOM::FillStyle::IBitmapFillStyle* pBitmapFillStyle)
+FCM::Result AnimateToAWDEncoder::ExportBitmapFillStyle(DOM::FillStyle::IBitmapFillStyle* pBitmapFillStyle, bool strokes)
 {
 
     DOM::AutoPtr<DOM::LibraryItem::IMediaItem> pMediaItem;

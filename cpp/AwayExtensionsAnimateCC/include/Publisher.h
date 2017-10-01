@@ -96,7 +96,7 @@ namespace AwayJS
         END_INTERFACE_MAP
         
     public:
-		AWD::result ExportTimeline(const PIFCMDictionary pDictPublishSettings, DOM::ITimeline* pTimeline, int);
+		AWD::result ExportTimeline(const PIFCMDictionary pDictPublishSettings, DOM::ITimeline* pTimeline, int scene_id, std::string& folderName);
         virtual FCM::Result _FCMCALL Publish(
             DOM::PIFLADocument pFlaDocument, 
             const PIFCMDictionary pDictPublishSettings, 
@@ -185,7 +185,7 @@ namespace AwayJS
 
         FCM::Boolean IsPreviewNeeded(const PIFCMDictionary pDictConfig);
 
-		AWD::result ExportLibraryItems(FCM::FCMListPtr pLibraryItemList);
+		AWD::result ExportLibraryItems(FCM::FCMListPtr pLibraryItemList, FCM::AutoPtr<FCM::IFCMCalloc> pCalloc, std::string& folderName);
 		
     };
 	

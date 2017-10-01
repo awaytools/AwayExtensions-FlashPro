@@ -73,6 +73,12 @@
     <Filter Include="Source\lib_awd\utf8">
       <UniqueIdentifier>{9140d9a3-a430-40ec-88f6-a9e6ee10ab2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header\lib_awd\geom">
+      <UniqueIdentifier>{b3c0c967-70b1-47d1-9b1c-6d4adcc8761d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\lib_awd\core">
+      <UniqueIdentifier>{436a4fe9-4987-4a38-9c04-4351c1d19a7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\DocType.h">
@@ -689,6 +695,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\blocks\ConcanetedStream.cc">
       <Filter>Source\lib_awd\blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\SubShapePath.cpp">
+      <Filter>Source\lib_awd\elements\geom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -132,13 +132,31 @@
                 </a>
                 <div id="exportGeometries_panel" class="panel-collapse collapse">
                     <div id="exportGeometries_settings" class="panel-body">
-                        <div class="ui_comp_single2">
+                        <div class="ui_comp_single3">
+                            <div class="chboxwrap">
+                                <input type="checkbox" id="RealTimeStrokes"/>
+                            </div>
+                            <label class="myCHBXLabel2" for="RealTimeStrokes">Strokes as pathes</label>
+                        </div>
+                        <!--div class="ui_comp_single3">
+                            <div class="chboxwrap">
+                                <input type="checkbox" id="realtimeFills"/>
+                            </div>
+                            <label class="myCHBXLabel2" for="realtimeFills">Fills as pathes</label>
+                        </div-->
+                        <div class="ui_comp_single3">
                             <div class="chboxwrap">
                                 <input type="checkbox" id="tessellateGraphics"/>
                             </div>
                             <label class="myCHBXLabel2" for="tessellateGraphics">Tessellate Curves</label>
                         </div>
-                        <div class="ui_comp_single2">
+                        <!--div class="ui_comp_single3">
+                            <div class="chboxwrap">
+                                <input type="checkbox" id="uint16Positions"/>
+                            </div>
+                            <label class="myCHBXLabel2" for="uint16Positions">uint16 data</label>
+                        </div-->
+                        <!--div class="ui_comp_single2">
                             <button class="awayjs_button" id="resetTessSettingsGraphics" onclick="resetTessSettingsGraphics()">Reset</button>
                         </div>
 
@@ -164,7 +182,7 @@
                         </div>
                         <div class="ui_comp_number" style="height:50px">
                             <input class="range_number" type="number" id="tessThresholdx2Graphics2" min="1" max="50" step="0.1" onChange="updateSlider('tessThresholdx2Graphics', value, min, max)"/>
-                        </div>
+                        </div-->
                     </div>
                 </div>
             </div>
@@ -207,7 +225,7 @@
                             </div>
                             <label class="myCHBXLabel2" for="tessellateGlyphs">Tessellate Glyphs</label>
                         </div>
-                        <div class="ui_comp_slider" style="height:50px">
+                        <!--div class="ui_comp_slider" style="height:50px">
                             <input type="range" id="tessThresholdGlyphs" min="0" max="1" step="0.01" oninput="updateSlider('tessThresholdGlyphs', value, min, max)"/>
                             <label for="tessThresholdGlyphs">Segment-Curviness Threshold</label>
                         </div>
@@ -230,7 +248,7 @@
                         </div>
                         <div class="ui_comp_slider">
                             <button class="awayjs_button" id="resetTessSettingsGlyphs" onclick="resetTessSettingsGlyphs()">Reset Tessellation Settings</button>
-                        </div>
+                        </div-->
                     </div>
                 </div>
             </div>
@@ -328,7 +346,7 @@
                     </div>
                 </div>
 
-                <div id="version_display"><br><br>v1.0.93<br><a onclick="open_github()" >AwayExensionsAnimateCC</a></div>
+                <div id="version_display"><br><br>v1.0.94<br><a onclick="open_github()" >AwayExensionsAnimateCC</a></div>
             </div>
         </div>
     </div>

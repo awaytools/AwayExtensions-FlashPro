@@ -4,12 +4,12 @@ $(document).ready(function () {
     var a = JSON.parse(window.__adobe_cep__.getHostEnvironment()).appSkinInfo;
     ChangePanelTheme(a);
     csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, onAppThemeColorChanged);
-    csInterface.addEventListener("com.adobe.events.flash.documentChanged", changed_document);
-    csInterface.addEventListener("com.adobe.events.flash.documentSaved", changed_document);
-    csInterface.addEventListener("com.adobe.events.flash.documentOpened", changed_document);
-    csInterface.addEventListener("com.adobe.events.flash.documentClosed", changed_document);
-    csInterface.addEventListener("com.adobe.events.flash.documentNew", changed_document);
-    evalScript("fl.runScript('" + awayjsfl_script_path + "', 'hasValidDoc');", hasDocumentCallback);
+    //csInterface.addEventListener("com.adobe.events.flash.documentChanged", changed_document);
+    //csInterface.addEventListener("com.adobe.events.flash.documentSaved", changed_document);
+    //csInterface.addEventListener("com.adobe.events.flash.documentOpened", changed_document);
+    //csInterface.addEventListener("com.adobe.events.flash.documentClosed", changed_document);
+    //csInterface.addEventListener("com.adobe.events.flash.documentNew", changed_document);
+    //evalScript("fl.runScript('" + awayjsfl_script_path + "', 'hasValidDoc');", hasDocumentCallback);
     document.getElementById("scrollable_content").addEventListener("scroll", function (a) {
         var f = 0, f = document.getElementById("scrollable_content");
         a = document.getElementById("logo");
@@ -91,14 +91,14 @@ function onCS6_AS2_XFL() {
 function loading_done_callback() {
     document.getElementById("overlay_loading").className = "overlayactive";
     document.getElementById("overlay_loading").innerHTML = "";
-    evalScript("fl.runScript('" + awayjsfl_script_path + "', 'hasValidDoc');", hasDocumentCallback)
+    //evalScript("fl.runScript('" + awayjsfl_script_path + "', 'hasValidDoc');", hasDocumentCallback)
 }
 function hasDocumentCallback(a) {
     "true" == a ? ("importAS2" == panel_state && (document.getElementById("overlay_no_doc").innerHTML = "", document.getElementById("scrollable_content").style.opacity = 1), document.getElementById("publish_panel").disabled = !1, document.getElementById("publish_panel").style.opacity = 1, document.getElementById("ok_panel").disabled = !1, document.getElementById("ok_panel").style.opacity = 1) : ("importAS2" != panel_state && (document.getElementById("overlay_no_doc").innerHTML = "No valid Away Document opened",
         document.getElementById("scrollable_content").style.opacity = 0.3), document.getElementById("publish_panel").disabled = !0, document.getElementById("publish_panel").style.opacity = 0.3, document.getElementById("ok_panel").disabled = !0, document.getElementById("ok_panel").style.opacity = 0.3)
 }
 function changed_document(a) {
-    evalScript("fl.runScript('" + awayjsfl_script_path + "', 'hasValidDoc');", hasDocumentCallback)
+    //evalScript("fl.runScript('" + awayjsfl_script_path + "', 'hasValidDoc');", hasDocumentCallback)
 }
 function populate_textfield1(a) {
     document.getElementById("inputFileAS2").value = a

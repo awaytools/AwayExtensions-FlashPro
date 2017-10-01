@@ -56,20 +56,20 @@ function setNumberFromSettings(a, b, c, d) {
     if(null != c[b] && "undefined" != c[b] && c[b] !== ""){document.getElementById(a).value =  c[b];}
 }
 function resetTessSettingsGraphics(){
-    document.getElementById("tessThresholdGraphics").value=0.02;
+  /*  document.getElementById("tessThresholdGraphics").value=0.02;
     document.getElementById("tessMinLenghtGraphics").value=3;
     document.getElementById("tessThresholdx2Graphics").value=8;
     document.getElementById("tessThresholdGraphics2").value=0.02;
     document.getElementById("tessMinLenghtGraphics2").value=3;
-    document.getElementById("tessThresholdx2Graphics2").value=8;
+    document.getElementById("tessThresholdx2Graphics2").value=8;*/
 }
 function resetTessSettingsGlyphs(){
-    document.getElementById("tessThresholdGlyphs").value=0.02;
+   /* document.getElementById("tessThresholdGlyphs").value=0.02;
     document.getElementById("tessMinLenghtGlyphs").value=3;
     document.getElementById("tessThresholdx2Glyphs").value=8;
     document.getElementById("tessThresholdGlyphs2").value=0.02;
     document.getElementById("tessMinLenghtGlyphs2").value=3;
-    document.getElementById("tessThresholdx2Glyphs2").value=8;
+    document.getElementById("tessThresholdx2Glyphs2").value=8;*/
 }
 function updateSlider(name, value, min, max){
     if(value<min) value=min;
@@ -97,6 +97,8 @@ function serializeUI() {
     writeCheckboxToSettings("exportLibSounds", "PublishSettings.ExportLibSounds", b);
     writeCheckboxToSettings("exportTimelineSounds", "PublishSettings.ExportTimelineSounds", b);
     b["PublishSettings.SaveSoundsAs"] = document.getElementById("sound_type").selectedIndex;
+    writeCheckboxToSettings("RealTimeStrokes", "PublishSettings.RealTimeStrokes", b);
+    /*
     writeNumberToSettings("tessThresholdGraphics", "PublishSettings.TessellateThresholdGraphics", b);
     writeNumberToSettings("tessMinLenghtGraphics", "PublishSettings.TessMinLenghtGraphics", b);
     writeNumberToSettings("tessThresholdx2Graphics", "PublishSettings.TessThresholdx2Graphics", b);
@@ -108,7 +110,7 @@ function serializeUI() {
     writeNumberToSettings("tessThresholdx2Graphics2", "PublishSettings.TessThresholdx2Graphics", b);
     writeNumberToSettings("tessThresholdGlyphs2", "PublishSettings.TessellateThresholdGlyphs", b);
     writeNumberToSettings("tessMinLenghtGlyphs2", "PublishSettings.TessMinLenghtGlpyhs", b);
-    writeNumberToSettings("tessThresholdx2Glyphs2", "PublishSettings.TessThresholdx2Glyphs", b);
+    writeNumberToSettings("tessThresholdx2Glyphs2", "PublishSettings.TessThresholdx2Glyphs", b);*/
     a.scope = "APPLICATION";
     a.type = "com.adobe.events.flash.extension.savestate";
     a.data = JSON.stringify(b);
@@ -124,7 +126,6 @@ function setUIFromData(a) {
     setCheckBoxFromSettings("copyRuntime", "PublishSettings.CopyRuntime", a, !0);
     //setCheckBoxFromSettings("createLogfile", "PublishSettings.PrintExportLog", a, !1);
     setCheckBoxFromSettings("includeVisiblelayers", "PublishSettings.IncludeInvisibleLayer", a, !0);
-    setCheckBoxFromSettings("tessellateGlyphs", "PublishSettings.TesselateGlyphs",   a, !0);
     setCheckBoxFromSettings("exportFrameScript", "PublishSettings.ExportFrameScript",   a, !0);
     setCheckBoxFromSettings("exportLibFonts", "PublishSettings.ExportLibFonts", a, !0);
     setCheckBoxFromSettings("embbedAllChars", "PublishSettings.EmbbedAllChars", a, !0);
@@ -137,7 +138,9 @@ function setUIFromData(a) {
     setCheckBoxFromSettings("exportLibSounds", "PublishSettings.ExportLibSounds", a, !0);
     setCheckBoxFromSettings("exportTimelineSounds", "PublishSettings.ExportTimelineSounds", a, !0);
     setCheckBoxFromSettings("tessellateGraphics", "PublishSettings.TesselateGraphics",   a, !0);
+    setCheckBoxFromSettings("tessellateGlyphs", "PublishSettings.TesselateGlyphs",   a, !0);
 
+    /*
     setNumberFromSettings("tessThresholdGraphics", "PublishSettings.TessellateThresholdGraphics",   a, 0.02);
     setNumberFromSettings("tessMinLenghtGraphics", "PublishSettings.TessMinLenghtGraphics",   a, 3);
     setNumberFromSettings("tessThresholdx2Graphics", "PublishSettings.TessThresholdx2Graphics",   a, 8);
@@ -150,6 +153,8 @@ function setUIFromData(a) {
     setNumberFromSettings("tessThresholdGlyphs2", "PublishSettings.TessellateThresholdGlyphs",   a, 0.02);
     setNumberFromSettings("tessMinLenghtGlyphs2", "PublishSettings.TessMinLenghtGlpyhs",   a, 3);
     setNumberFromSettings("tessThresholdx2Glyphs2", "PublishSettings.TessThresholdx2Glyphs",   a, 8);
+    */
+    setCheckBoxFromSettings("RealTimeStrokes", "PublishSettings.RealTimeStrokes",   a, !0);
     if(a["PublishSettings.SaveSoundsAs"]!=null && a["PublishSettings.SaveSoundsAs"]!="undefined"){document.getElementById("sound_type").selectedIndex = a["PublishSettings.SaveSoundsAs"];}
     enableUIElements()
 }

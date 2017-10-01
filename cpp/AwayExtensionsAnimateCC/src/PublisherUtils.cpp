@@ -44,7 +44,7 @@ namespace AwayJS
         return FCM_SUCCESS;
     }
 	
-	AWD::result CPublisher::ExportTimeline(const PIFCMDictionary pDictPublishSettings, DOM::ITimeline* pTimeline, int scene_id)
+	AWD::result CPublisher::ExportTimeline(const PIFCMDictionary pDictPublishSettings, DOM::ITimeline* pTimeline, int scene_id, std::string& folderName)
 	{
 			FCM::AutoPtr<FCM::IFCMUnknown> pUnk;
 			AutoPtr<IFrameCommandGenerator> m_frameCmdGeneratorService;
@@ -77,6 +77,9 @@ namespace AwayJS
 			FCM::StringRep16 scene_name_str;
 			pTimeline->GetName(&scene_name_str);
 			std::string scene_name=AwayJS::Utils::ToString(scene_name_str, GetCallback());
+			if(folderName!=""){
+				scene_name=folderName+"/"+scene_name;
+			}
 		
 			Utils::Trace(GetCallback(), "\n		Start exporting Timeline name: '%s'", scene_name.c_str());
 
@@ -91,6 +94,7 @@ namespace AwayJS
 			if(scene_id>=0){
 				scene_timeline_block->set_scene_id(scene_id+1);
 			}
+			scene_timeline_block->set_symbol_name(scene_name);
 			// clear the external ids from all awd-blocks
 			if(this->awd_project->clear_external_ids()!=result::AWD_SUCCESS)
 				Utils::Trace(GetCallback(), "PROBLEM IN CONVERTING RESSOURCE_ID TO AWDBLOCKS FOR FRAMECOMMANDS!!!\nEXPORT STILL CONTINUES !!!\n");
@@ -259,6 +263,7 @@ namespace AwayJS
 		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::IncludeInvisibleTimelineLayer, GetSettingsBool(this->pDict, "PublishSettings.IncludeInvisibleLayer", true));
 		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::ExportFrameScript, GetSettingsBool(this->pDict, "PublishSettings.ExportFrameScript", true));
 		//this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::ExternalScripts, GetSettingsBool(this->pDict, "PublishSettings.ExternalScripts", true));
+		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::ExternalScripts, true);
 		
 		
 		// geometries settings
@@ -307,6 +312,10 @@ namespace AwayJS
 		bool append_file_name = GetSettingsBool(this->pDict, "PublishSettings.AppendFilename", false);
 		*/
 		double testval= GetSettingsFloat(this->pDict, "PublishSettings.TessellateThresholdGraphics", 0.02);
+
+		
+		this->awd_settings->set_bool(AWD::SETTINGS::bool_settings::RealTimeStrokes, GetSettingsBool(this->pDict, "PublishSettings.RealTimeStrokes", true));
+
 		this->awd_settings->set_double(AWD::SETTINGS::double_settings::TessellateThresholdGraphics,testval);
 		this->awd_settings->set_double(AWD::SETTINGS::double_settings::TessellateThresholdGlyphs, GetSettingsFloat(this->pDict, "PublishSettings.TessellateThresholdGlyphs", 0.02));
 		
@@ -338,9 +347,9 @@ namespace AwayJS
 		ASSERT(FCM_SUCCESS_CODE(res));
 		awd_settings->set_fps(fps);
 
-		awd_project->shared_geom->get_sub_at(0)->get_settings()->create_streams(false,false,!this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::TesselateGraphics));
+		awd_project->shared_geom->get_sub_at(0)->get_settings()->create_streams(false,false,!this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::TesselateGraphics), false);
         
-		awd_settings->create_streams(false,false,!this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::TesselateGraphics));
+		awd_settings->create_streams(false,false,!this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::TesselateGraphics), false);
         
 		return awd_result;
 	}
@@ -385,7 +394,7 @@ namespace AwayJS
 			AutoPtr<DOM::ITimeline> oneTimeline = pTimelineList[i];
 			if(this->timeline!=NULL)
 				oneTimeline = this->timeline;			
-			this->ExportTimeline(this->pDict, oneTimeline, i);
+			this->ExportTimeline(this->pDict, oneTimeline, i, std::string(""));
 		}
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
 			Utils::Trace(GetCallback(), "\nEncoding  Scenes took '%d' ms\n", this->awd_project->get_time_since_last_call());
@@ -407,8 +416,10 @@ namespace AwayJS
 			return awd_result;
 		}
 		this->animate_to_awd_encode->current_scene_name="Library";
-
-		if(this->ExportLibraryItems(pLibraryItemList)!=result::AWD_SUCCESS){
+		
+		FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AwayJS::Utils::GetCallocService(GetCallback());
+		ASSERT(pCalloc.m_Ptr != NULL);
+		if(this->ExportLibraryItems(pLibraryItemList, pCalloc, std::string(""))!=result::AWD_SUCCESS){
 			Utils::Trace(GetCallback(), "\n		FAILED TO COLLECT LIBRARY ITEMS \n");
 			return awd_result;
 		}	
@@ -497,6 +508,16 @@ namespace AwayJS
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
 			Utils::Trace(GetCallback(), "\nCreating Textureatlas took '%d' ms\n", this->awd_project->get_time_since_last_call());
 		
+		AWD::create_TextureAtlasfor_timelines_refactor(this->awd_project, fileName2);
+		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
+			Utils::Trace(GetCallback(), "\nCreating Textureatlas took '%d' ms\n", this->awd_project->get_time_since_last_call());
+		
+		
+		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
+			Utils::Trace(GetCallback(), "\nStart processing slice9Scale");
+		this->awd_project->processSlice9ScaleMcs();
+		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
+			Utils::Trace(GetCallback(), "\nProcessing slice9Scale took '%d' ms\n", this->awd_project->get_time_since_last_call());
 	
 		
 		if(this->awd_settings->get_bool(AWD::SETTINGS::bool_settings::PrintExportLog))
@@ -509,7 +530,7 @@ namespace AwayJS
 		return awd_result;
 	}
 
-	AWD::result CPublisher::ExportLibraryItems(FCM::FCMListPtr pLibraryItemList) {
+	AWD::result CPublisher::ExportLibraryItems(FCM::FCMListPtr pLibraryItemList, FCM::AutoPtr<FCM::IFCMCalloc> pCalloc, std::string& folderName) {
 		FCM::U_Int32 count = 0;
 		FCM::Result res;
 
@@ -518,8 +539,6 @@ namespace AwayJS
 		ASSERT(FCM_SUCCESS_CODE(res));
 		
 		Utils::Trace(GetCallback(), "\n		Encountered %d library items", count);
-		FCM::AutoPtr<FCM::IFCMCalloc> pCalloc = AwayJS::Utils::GetCallocService(GetCallback());
-		ASSERT(pCalloc.m_Ptr != NULL);
 
 		AWD::result awd_res=result::AWD_SUCCESS;
 		
@@ -531,10 +550,16 @@ namespace AwayJS
 			if(pFolder_item){
 				//Utils::Trace(GetCallback(), "\n	->	Found Folder");
 				// export a folder item from library. just call this function for all its children.			
+				FCM::StringRep16 folder_name=NULL;
+				plibrary_item->GetName(&folder_name);
+				std::string folder_name_str=AwayJS::Utils::ToString(folder_name, GetCallback());
+				if(folderName!=""){
+					folder_name_str=folderName+"/"+folder_name_str;
+				}
 				FCM::FCMListPtr pLibraryItems;
 				res = pFolder_item->GetChildren(pLibraryItems.m_Ptr);
 				ASSERT(FCM_SUCCESS_CODE(res));
-				awd_res=ExportLibraryItems(pLibraryItems);
+				awd_res=ExportLibraryItems(pLibraryItems, pCalloc, folder_name_str);
 				if(awd_res!=result::AWD_SUCCESS)
 					return awd_res;
 				continue;
@@ -580,24 +605,28 @@ namespace AwayJS
 					FCM::StringRep16 symbol_name=NULL;
 					plibrary_item->GetName(&symbol_name);
 					std::string symbol_name_str=AwayJS::Utils::ToString(symbol_name, GetCallback());
+					//symbol_name_str.spl
 					// export a symbol (timeline). If the timeline has already been encoded, nothing will happen. 
 					//Utils::Trace(GetCallback(), "\n	->	Found Symbol %s | %s", symbol_name_str.c_str(), timeline_name_str.c_str());
 					BLOCKS::MovieClip* this_timeline = this->awd_project->get_timeline_by_symbol_name(symbol_name_str);
 					if(this_timeline!=NULL){
 						this_timeline->add_scene_name("script-linkage");
 						this_timeline->set_name(script_name);
-						if(symbol_name)
+						if(symbol_name){
 							pCalloc->Free((FCM::PVoid)symbol_name);
+							symbol_name=NULL;
+						}
 						continue;
 					}
 					AutoPtr<DOM::ITimeline> timeline;
 					res = pSymbol_item->GetTimeLine(timeline.m_Ptr);
-					this->ExportTimeline(this->pDict, timeline, -1);
+					this->ExportTimeline(this->pDict, timeline, -1, folderName);
 					this_timeline = this->awd_project->get_timeline_by_symbol_name(symbol_name_str);
 					this_timeline->set_name(script_name);
 					
-					if(symbol_name)
-						pCalloc->Free((FCM::PVoid)symbol_name);
+					// todo: this crashes - why ?
+					/*if(symbol_name)
+						pCalloc->Free((FCM::PVoid)symbol_name);*/
 				}
 				continue;
 				//}	

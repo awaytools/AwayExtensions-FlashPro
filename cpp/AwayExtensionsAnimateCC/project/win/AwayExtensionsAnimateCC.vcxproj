@@ -192,6 +192,7 @@
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\SharedVertex.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\SubGeom.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\SubGeomInternal.cc" />
+    <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\SubShapePath.cpp" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\Triangle.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\geom\Vertex.cc" />
     <ClCompile Include="..\..\..\..\..\..\awd-sdk\cpp-libawd\src\elements\ShadingMethod.cc" />

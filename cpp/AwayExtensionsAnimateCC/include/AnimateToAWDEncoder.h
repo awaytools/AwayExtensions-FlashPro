@@ -60,6 +60,7 @@ class AnimateToAWDEncoder
 		FCM::AutoPtr<DOM::Service::Shape::IRegionGeneratorService> pIRegionGeneratorService;
 		BLOCKS::Geometry*  current_geom;
 		GEOM::FilledRegion* current_filled_region;
+		GEOM::SubShapePath* current_stroke_path;
 		
 // AnimateToAWDEncoder_geometry.cpp:
 		void convert_shape_to_geometry(DOM::FrameElement::IShape* thisShape, BLOCKS::Geometry* shapeBlock);
@@ -102,6 +103,7 @@ class AnimateToAWDEncoder
 		
         FCM::Result ExportFilledShape(DOM::FrameElement::PIShape pIShape, TYPES::filled_region_type from_stroke);
         FCM::Result ExportStroke(DOM::FrameElement::PIShape pIShape);
+        FCM::Result ExportStrokePath(DOM::FrameElement::PIShape pIShape);
 		
         FCM::Result ExportPath_font(DOM::Service::Shape::PIPath pPath);
         FCM::Result ExportPath(DOM::Service::Shape::PIPath pPath);
@@ -111,15 +113,15 @@ class AnimateToAWDEncoder
 		
 		
 // AnimateToAWDEncoder_fills.cpp:	
-		FCM::Result ExportFillStyle(FCM::PIFCMUnknown pFillStyle);
+		FCM::Result ExportFillStyle(FCM::PIFCMUnknown pFillStyle, bool strokes);
 
-        FCM::Result ExportSolidFillStyle(DOM::FillStyle::ISolidFillStyle* pSolidFillStyle);
+        FCM::Result ExportSolidFillStyle(DOM::FillStyle::ISolidFillStyle* pSolidFillStyle, bool strokes);
 
-        FCM::Result ExportRadialGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle);
+        FCM::Result ExportRadialGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle, bool strokes);
 
-        FCM::Result ExportLinearGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle);
+        FCM::Result ExportLinearGradientFillStyle(DOM::FillStyle::IGradientFillStyle* pGradientFillStyle, bool strokes);
 
-        FCM::Result ExportBitmapFillStyle(DOM::FillStyle::IBitmapFillStyle* pBitmapFillStyle);
+        FCM::Result ExportBitmapFillStyle(DOM::FillStyle::IBitmapFillStyle* pBitmapFillStyle, bool strokes);
 		
 		
 // AnimateToAWDEncoder_fonts.cpp:	

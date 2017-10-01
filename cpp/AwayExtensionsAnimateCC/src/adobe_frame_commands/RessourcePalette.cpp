@@ -190,6 +190,7 @@ namespace AwayJS
 		std::string matname = "mat_"+new_bitmaptexture->get_name();
 		BLOCKS::Material* new_fill_material=reinterpret_cast<BLOCKS::Material*>(this->awd_converter->get_project()->get_block_by_name_and_type(matname,  BLOCK::SIMPLE_MATERIAL, true));
 		new_fill_material->add_res_id(FILES::int_to_string(resourceId));
+		new_fill_material->set_external_id(matname);
 		new_fill_material->add_scene_name(this->awd_converter->current_scene_name);
 		new_fill_material->set_name(matname);
 		new_fill_material->needsAlphaTex=true;

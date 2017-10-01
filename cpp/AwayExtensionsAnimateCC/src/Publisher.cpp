@@ -263,34 +263,34 @@ namespace AwayJS
                 // Level 2 Dictionary
                 AutoPtr<IFCMDictionary> pCategory;
                 res = pPlugin->AddLevel(
-                    (const FCM::StringRep8)kFlashCategoryKey_Publisher, //kApplicationCategoryKey_Publisher
+                    (const FCM::StringRep8)kApplicationCategoryKey_Publisher, // kFlashCategoryKey_Publisher 
                     pCategory.m_Ptr);
 
                 {
                     // Level 3 Dictionary
                     std::string str_name = PUBLISHER_NAME;
                     res = pCategory->Add(
-                        (const FCM::StringRep8)kFlashCategoryKey_Name, //kApplicationCategoryKey_Name
+                        (const FCM::StringRep8)kApplicationCategoryKey_Name, //kFlashCategoryKey_Name 
                         kFCMDictType_StringRep8, 
                         (FCM::PVoid)str_name.c_str(),
                         (FCM::U_Int32)str_name.length() + 1);
 
                     std::string str_uniname = PUBLISHER_UNIVERSAL_NAME;
                     res = pCategory->Add(
-                        (const FCM::StringRep8)kFlashCategoryKey_UniversalName, //kApplicationCategoryKey_UniversalName
+                        (const FCM::StringRep8)kApplicationCategoryKey_UniversalName, //kFlashCategoryKey_UniversalName 
                         kFCMDictType_StringRep8,
                         (FCM::PVoid)str_uniname.c_str(),
                         (FCM::U_Int32)str_uniname.length() + 1);
 
                     std::string str_ui = PUBLISH_SETTINGS_UI_ID;
                     res = pCategory->Add(
-                        (const FCM::StringRep8)kFlashPublisherKey_UI,		//kApplicationPublisherKey_UI
+                        (const FCM::StringRep8)kApplicationPublisherKey_UI,		//kFlashPublisherKey_UI 
                         kFCMDictType_StringRep8, 
                         (FCM::PVoid)str_ui.c_str(),
                         (FCM::U_Int32)str_ui.length() + 1);
 					
                     AutoPtr<IFCMDictionary> pDocs;
-                    res = pCategory->AddLevel((const FCM::StringRep8)kFlashPublisherKey_TargetDocs, pDocs.m_Ptr);//kApplicationPublisherKey_TargetDocs
+                    res = pCategory->AddLevel((const FCM::StringRep8)kApplicationPublisherKey_TargetDocs, pDocs.m_Ptr);// kFlashPublisherKey_TargetDocs 
 
                     {
                         // Level 4 Dictionary
